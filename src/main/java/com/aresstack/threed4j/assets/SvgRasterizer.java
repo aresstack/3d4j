@@ -86,12 +86,13 @@ public final class SvgRasterizer {
         try {
             SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
             SVGDocument document = factory.createSVGDocument("file:///asset.svg", new StringReader(svg));
+            boolean sized = giveRootASize(document.getDocumentElement());
             OfflineAgent agent = new OfflineAgent();
             BridgeContext context = new BridgeContext(agent, new DocumentLoader(agent));
             context.setDynamicState(BridgeContext.STATIC);
             node = new GVTBuilder().build(context, document);
             Dimension2D size = context.getDocumentSize();
-            area = size != null && size.getWidth() > 0 && size.getHeight() > 0
+            area = sized && size != null && size.getWidth() > 0 && size.getHeight() > 0
                     ? new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight())
                     : (node == null ? null : node.getPrimitiveBounds());
         } catch (IOException | RuntimeException e) {
@@ -118,6 +119,30 @@ public final class SvgRasterizer {
             g.dispose();
         }
         return image;
+    }
+
+    /**
+     * An SVG with only a {@code viewBox} has no size of its own: it wants to fill
+     * whatever it is placed in. Batik would then lay it out in a one-pixel viewport.
+     * This gives such a root the size of its viewBox.
+     *
+     * @return {@code false} if the root has neither a size nor a viewBox
+     */
+    private static boolean giveRootASize(org.w3c.dom.Element root) {
+        if (isLength(root.getAttribute("width")) && isLength(root.getAttribute("height"))) {
+            return true;
+        }
+        String[] viewBox = root.getAttribute("viewBox").trim().split("[\\s,]+");
+        if (viewBox.length != 4) {
+            return false;
+        }
+        root.setAttribute("width", viewBox[2]);
+        root.setAttribute("height", viewBox[3]);
+        return true;
+    }
+
+    private static boolean isLength(String value) {
+        return value != null && !value.isBlank() && !value.contains("%");
     }
 
     /** Share of the pixels that are opaque, from 0 to 1 – tells an empty or a fully filled picture apart from a sprite. */
