@@ -1,5 +1,6 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.core.Engine;
 import com.aresstack.threed4j.core.EngineConfig;
 import com.aresstack.threed4j.core.EngineContext;
@@ -150,7 +151,7 @@ public final class PlazaDemo implements Game {
                 .scalar("uTime"));
         skyShader = graphics.createShader("sky", ShaderLayout.attributes(3, 3)
                 .mat4("uViewProjection"));
-        spriteAtlas = Textures.fromImage(graphics, SpriteAtlas.paint(), true);
+        spriteAtlas = Textures.fromImage(graphics, SpriteAtlas.paint(AssetStore.standard()), true);
         spriteShader.setTexture(spriteAtlas);
         scene = new PlazaScene(graphics);
         System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 3 draw calls%n",

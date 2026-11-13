@@ -31,12 +31,12 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Build runnable JAR
+      - name: Test and build runnable JAR
         shell: bash
         run: |
           set -euo pipefail
           chmod +x ./gradlew
-          ./gradlew --no-daemon clean jar --stacktrace
+          ./gradlew --no-daemon clean test jar --stacktrace
 
       - name: Verify manifest and class file versions
         shell: bash
@@ -82,6 +82,39 @@ jobs:
               --screenshot=build/smoke-test-scene.png
           test -s build/smoke-test-scene.png
 
+      - name: Smoke-test artwork from the asset folder and the generator command
+        shell: bash
+        run: |
+          set -euo pipefail
+          # An SVG dropped into the asset folder must replace a built-in sprite. This also
+          # proves that Batik works from inside the combined JAR.
+          mkdir -p build/assets
+          cat > build/assets/blossom-tree.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+            <rect x="108" y="300" width="40" height="212" fill="#8A5A3C" stroke="#3B2A4A" stroke-width="8"/>
+            <circle cx="128" cy="200" r="110" fill="#F7A8CF" stroke="#3B2A4A" stroke-width="8"/>
+          </svg>
+          SVG
+          xvfb-run -a -s "-screen 0 1400x900x24" \
+            java -Dthreed4j.assets=build/assets -jar build/libs/3d4j.jar --benchmark --frames=60 --no-vsync \
+              --screenshot=build/smoke-test-assets.png | tee build/assets.log
+          grep -q "Sprites: 1 of 6" build/assets.log
+          test -s build/assets/blossom-tree.png
+
+          # The generator command must start from the JAR and explain itself when nothing is
+          # configured; with a KeePass entry but no KeePass running it must say so. The second
+          # call also proves that the KeePass library loads from the combined JAR.
+          export HOME="$PWD/build/empty-home"
+          mkdir -p "$HOME"
+          set +e
+          java -Duser.home="$HOME" -jar build/libs/3d4j.jar generate > build/generate-1.log 2>&1
+          java -Duser.home="$HOME" -jar build/libs/3d4j.jar generate --base-url=http://127.0.0.1:9/v1 --entry=demo \
+            < /dev/null > build/generate-2.log 2>&1
+          set -e
+          cat build/generate-1.log build/generate-2.log
+          grep -q "address of the AI service is unknown" build/generate-1.log
+          grep -q "KeePass" build/generate-2.log
+
       - name: Upload JAR as workflow artifact
         uses: actions/upload-artifact@v4
         with:
@@ -90,6 +123,7 @@ jobs:
             build/libs/3d4j.jar
             build/smoke-test-title.png
             build/smoke-test-scene.png
+            build/smoke-test-assets.png
           if-no-files-found: error
           retention-days: 30
 

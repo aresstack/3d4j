@@ -13,6 +13,10 @@ java {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 sourceSets {
     // The launcher is compiled WITHOUT --enable-preview so that a plain
     // "java -jar 3d4j.jar" can load it. It then restarts the JVM with the flag.
@@ -21,6 +25,21 @@ sourceSets {
             srcDir 'src/launcher/java'
         }
     }
+}
+
+// Libraries are welcome as long as they are written in Java only (no native code).
+dependencies {
+    // SVG to image, for artwork that arrives as SVG text
+    implementation 'org.apache.xmlgraphics:batik-bridge:1.17'
+    implementation 'org.apache.xmlgraphics:batik-anim:1.17'
+    // API key from KeePass (KeePassRPC plugin); brings Gson and Java-WebSocket
+    implementation 'com.aresstack:keepassrpc-java:0.1.0-beta.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
+
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -33,14 +52,34 @@ tasks.named('compileJava') {
     options.compilerArgs += ['--enable-preview', '-Xlint:-preview']
 }
 
+tasks.named('compileTestJava') {
+    options.compilerArgs += ['--enable-preview', '-Xlint:-preview']
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    jvmArgs '--enable-preview', '--enable-native-access=ALL-UNNAMED', '-Djava.awt.headless=true'
+    testLogging {
+        events 'failed'
+        exceptionFormat 'full'
+    }
+}
+
 def engineJvmArgs = ['--enable-preview', '--enable-native-access=ALL-UNNAMED']
 def launcherClass = 'com.aresstack.threed4j.launcher.Launcher'
 def demoClass = 'com.aresstack.threed4j.demo.PlazaDemo'
 
-// One runnable JAR: launcher classes (no preview) + engine classes (preview).
+// One runnable JAR: launcher classes (no preview), engine classes (preview) and all libraries.
 tasks.named('jar') {
     archiveFileName = '3d4j.jar'
     from sourceSets.launcher.output
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // Signatures of the library JARs do not match the combined JAR.
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'module-info.class',
+            'META-INF/versions/*/module-info.class'
     manifest {
         attributes(
                 'Main-Class': launcherClass,

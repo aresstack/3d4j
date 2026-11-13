@@ -1,5 +1,9 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.AssetCatalog;
+import com.aresstack.threed4j.assets.AssetSpec;
+import com.aresstack.threed4j.assets.AssetStore;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,8 +14,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * Paints the placeholder sprites of the test plaza with Java 2D: trees, a street
- * lamp and visitors, side by side in one image. Real artwork can replace this
- * image later without touching the scene code.
+ * lamp and visitors, side by side in one image. Pictures in the asset folder
+ * ({@link AssetStore}) replace the placeholders cell by cell.
  */
 final class SpriteAtlas {
 
@@ -31,6 +35,47 @@ final class SpriteAtlas {
     private SpriteAtlas() {
     }
 
+    /** Which asset file replaces which cell. */
+    private static final AssetSpec[] CELL_ASSETS = {
+            AssetCatalog.BLOSSOM_TREE, AssetCatalog.GREEN_TREE, AssetCatalog.LAMP,
+            AssetCatalog.VISITOR_1, AssetCatalog.VISITOR_2, AssetCatalog.VISITOR_3};
+
+    /**
+     * Paints the atlas. Every cell for which the asset folder holds a picture shows
+     * that picture; the others keep the built-in placeholder.
+     */
+    static BufferedImage paint(AssetStore store) {
+        BufferedImage image = paint();
+        Graphics2D g = image.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        int replaced = 0;
+        for (int cell = 0; cell < CELL_ASSETS.length; cell++) {
+            BufferedImage picture = store.load(CELL_ASSETS[cell]);
+            if (picture == null) {
+                continue;
+            }
+            // As large as fits into the cell minus its transparent margin, standing on the bottom edge.
+            int maxWidth = CELL_WIDTH - 8;
+            int maxHeight = CELL_HEIGHT - 4;
+            double scale = Math.min((double) maxWidth / picture.getWidth(), (double) maxHeight / picture.getHeight());
+            int width = Math.max(1, (int) Math.round(picture.getWidth() * scale));
+            int height = Math.max(1, (int) Math.round(picture.getHeight() * scale));
+            int x = cell * CELL_WIDTH + (CELL_WIDTH - width) / 2;
+            int y = CELL_HEIGHT - height;
+            g.setComposite(java.awt.AlphaComposite.Clear);
+            g.fillRect(cell * CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT);
+            g.setComposite(java.awt.AlphaComposite.SrcOver);
+            g.drawImage(picture, x, y, width, height, null);
+            replaced++;
+        }
+        g.dispose();
+        System.out.println("Sprites: " + replaced + " of " + CELL_ASSETS.length + " from " + store.directory()
+                + ", the rest built in");
+        return image;
+    }
+
+    /** Paints the atlas with the built-in placeholders only. */
     static BufferedImage paint() {
         BufferedImage image = new BufferedImage(CELLS * CELL_WIDTH, CELL_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
