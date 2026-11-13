@@ -23,7 +23,7 @@ public final class KeePassRpcLink {
      * @param url      the first address stored in the entry, or an empty string
      * @param password empty in listings; filled by {@link #entry}
      */
-    public record Entry(String title, String url, String password) {
+    public record Entry(String title, String url, String userName, String password) {
     }
 
     /** KeePass could not be used; {@link #rejected()} tells whether a new pairing would help. */
@@ -61,7 +61,7 @@ public final class KeePassRpcLink {
         try (KeePassRpcTransport.Session session = new WebSocketKeePassRpcTransport(config).open(key.toCharArray())) {
             List<Entry> entries = new ArrayList<>();
             for (KeePassEntry entry : session.allEntries()) {
-                entries.add(new Entry(entry.title(), entry.url(), ""));
+                entries.add(new Entry(entry.title(), entry.url(), entry.userName(), ""));
             }
             return entries;
         } catch (KeePassRpcException e) {
@@ -73,7 +73,7 @@ public final class KeePassRpcLink {
     public static Entry entry(KeePassRpcConfig config, String key, String title) throws Failure {
         try (KeePassRpcTransport.Session session = new WebSocketKeePassRpcTransport(config).open(key.toCharArray())) {
             try (KeePassEntry entry = session.findEntryByTitle(title)) {
-                return entry == null ? null : new Entry(entry.title(), entry.url(), new String(entry.password()));
+                return entry == null ? null : new Entry(entry.title(), entry.url(), entry.userName(), new String(entry.password()));
             }
         } catch (KeePassRpcException e) {
             throw new Failure(e);

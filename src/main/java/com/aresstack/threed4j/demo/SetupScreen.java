@@ -574,7 +574,9 @@ final class SetupScreen implements AutoCloseable {
             try {
                 offered = AiSetup.listModels(address, key);
             } catch (Exception e) {
-                throw new Exception("Der KI-Dienst hat die Modelle nicht geliefert.\n(" + firstLine(e) + ")");
+                throw new Exception(firstLine(e).startsWith("proxy route")
+                        ? "Der Weg zum KI-Dienst lässt sich nicht bestimmen (Proxy).\n(" + firstLine(e) + ")"
+                        : "Der KI-Dienst hat die Modelle nicht geliefert.\n(" + firstLine(e) + ")");
             }
             return () -> {
                 models = offered;
@@ -650,6 +652,9 @@ final class SetupScreen implements AutoCloseable {
         }
         if (problem.contains("background is not transparent")) {
             return "Das Motiv war nicht freigestellt.";
+        }
+        if (problem.contains("proxy route")) {
+            return "Kein Weg zum Dienst (Proxy).";
         }
         if (problem.contains("cannot reach")) {
             return "Der Dienst ist nicht erreichbar.";

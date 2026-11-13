@@ -35,6 +35,9 @@ dependencies {
     // WebSocket for the KeePassRPC code copied from enterprise-ai-client (see its UPSTREAM.md)
     implementation 'org.java-websocket:Java-WebSocket:1.5.2'
     implementation 'com.google.code.gson:gson:2.10.1'
+    // Way through the company proxy (PAC script of Windows, evaluated with GraalJS), as in the
+    // Enterprise AI Client and Space Harvester
+    implementation 'com.aresstack:win-proxy-java:0.2.0'
     runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
 
     testImplementation platform('org.junit:junit-bom:5.10.2')
@@ -69,13 +72,53 @@ def engineJvmArgs = ['--enable-preview', '--enable-native-access=ALL-UNNAMED']
 def launcherClass = 'com.aresstack.threed4j.launcher.Launcher'
 def demoClass = 'com.aresstack.threed4j.demo.PlazaDemo'
 
+// ServiceLoader files (META-INF/services/*) exist in several library JARs under the same name:
+// GraalJS registers its languages (JavaScript, regular expressions) that way. Copying the JARs
+// together would keep only the first file of each name, so the lists are merged here, as the
+// fat JAR of the Enterprise AI Client does.
+def runtimeJars = configurations.runtimeClasspath.filter { it.name.endsWith('.jar') }
+def mergedServicesDir = layout.buildDirectory.dir('merged-services')
+def mergeServices = tasks.register('mergeServices') {
+    inputs.files(runtimeJars)
+    outputs.dir(mergedServicesDir)
+    doLast {
+        def prefix = 'META-INF/services/'
+        Map<String, Set<String>> providers = new TreeMap<String, Set<String>>()
+        runtimeJars.files.each { File jar ->
+            new java.util.zip.ZipFile(jar).withCloseable { zip ->
+                Collections.list(zip.entries()).each { entry ->
+                    String name = entry.name
+                    if (!entry.directory && name.startsWith(prefix) && name.indexOf('/', prefix.length()) < 0) {
+                        zip.getInputStream(entry).withCloseable { input ->
+                            def lines = input.getText('UTF-8').readLines()
+                                    .collect { it.replaceFirst('#.*$', '').trim() }.findAll { !it.isEmpty() }
+                            providers.computeIfAbsent(name.substring(prefix.length())) { new LinkedHashSet<String>() }
+                                    .addAll(lines)
+                        }
+                    }
+                }
+            }
+        }
+        File root = mergedServicesDir.get().asFile
+        root.deleteDir()
+        File target = new File(root, prefix)
+        target.mkdirs()
+        providers.each { String service, Set<String> lines ->
+            new File(target, service).setText(lines.join('\n') + '\n', 'UTF-8')
+        }
+    }
+}
+
 // One runnable JAR: launcher classes (no preview), engine classes (preview) and all libraries.
 tasks.named('jar') {
+    dependsOn mergeServices
     archiveFileName = '3d4j.jar'
     from sourceSets.launcher.output
+    from mergedServicesDir
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    // The merged service lists come first; the copies inside the library JARs are skipped as duplicates.
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     // Signatures of the library JARs do not match the combined JAR.
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'module-info.class',
@@ -84,7 +127,8 @@ tasks.named('jar') {
         attributes(
                 'Main-Class': launcherClass,
                 'Implementation-Title': project.name,
-                'Implementation-Version': project.version
+                'Implementation-Version': project.version,
+                'Multi-Release': 'true'
         )
     }
 }

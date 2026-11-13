@@ -153,8 +153,17 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
   KeePass verwendet; dann muss die Adresse angegeben sein.
 - **Weitere Argumente:** `--parallel=N` (Standard 4), `--only=lamp,visitor-1`, `--force`
   (vorhandene Motive neu erzeugen).
-- **Zertifikate:** Unter Windows vertraut der Generator den Zertifikaten des Windows-Speichers,
-  damit ein Dienst mit hauseigener Zertifizierungsstelle erreichbar ist.
+- **Proxy:** Den Weg zum Dienst bestimmt `win-proxy-java`, wie im Enterprise AI Client und in
+  Space Harvester. Gelesen wird `network.proxy.*` aus der Konfiguration des Enterprise AI
+  Client (Modus, PAC-URL, Host, Port, `nonProxyHosts`, BASIC-Anmeldung aus KeePass); dieselben
+  Schlüssel in `.3d4j/generator.properties` haben Vorrang, davor
+  `-Dthreed4j.proxy.mode=… -Dthreed4j.proxy.pacUrl=… -Dthreed4j.proxy.host=… -Dthreed4j.proxy.port=…`.
+  Ohne Einstellung gilt unter Windows `PAC_URL_POWERSHELL` (PAC-Skript der Windows-Einstellungen),
+  sonst `DISABLED`. `java -jar 3d4j.jar generate --route=https://dienst/` zeigt Schritt für
+  Schritt, welcher Weg für eine Adresse herauskommt. Menü und Generator verwenden denselben Weg.
+- **Zertifikate:** Unter Windows gelten Javas eigene Liste und zusätzlich die Stammzertifikate
+  des Windows-Speichers, damit firmeneigene Zertifikate (Dienst oder prüfender Proxy) akzeptiert
+  werden.
 
 Abgelehnte Antworten des Modells landen zur Ansicht als `<name>.rejected.txt` im Asset-Ordner.
 
@@ -217,7 +226,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
-| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig` |
+| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
 | `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
@@ -297,8 +306,9 @@ schlichten `java -jar` (einmal den Ladebildschirm, einmal den Testplatz) und ver
 - Text, Audio, Kollision und das Laden von Modelldateien fehlen noch.
 - Menü und Generator sind nur gegen einen nachgebauten Dienst getestet, nicht gegen ein echtes
   KeePass und nicht gegen den echten KI-Dienst. Kopplung und Eintragsliste laufen gegen den
-  nachgebauten KeePassRPC-Server des Enterprise AI Client (`FakeKeePassRpcServer`). Einen Proxy
-  unterstützen sie nicht.
+  nachgebauten KeePassRPC-Server des Enterprise AI Client (`FakeKeePassRpcServer`). Der Weg
+  über einen Proxy ist mit festem Proxy und mit einer PAC-Datei geprüft, nicht mit den
+  Windows-Modi (PowerShell) und nicht mit Anmeldung am Proxy.
 - Das Menü ist als ein Bild mit Java 2D gemalt; Textfelder kennen nur Anhängen, Löschen am
   Ende und Einfügen.
 - Ohne Dateien im Asset-Ordner sind die Sprites mit Java 2D gemalte Platzhalter (`SpriteAtlas`).

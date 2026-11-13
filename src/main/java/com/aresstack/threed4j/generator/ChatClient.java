@@ -5,26 +5,41 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.time.Duration;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Minimal client for an OpenAI-compatible chat API: one question, one answer
  * ({@code POST <baseUrl>/chat/completions}). Safe to use from several threads.
+ *
+ * <p>Connections are made the way the Enterprise AI Client makes them: with
+ * {@link HttpURLConnection} through the route of {@link ProxyRoutes} (directly or
+ * through the proxy of the company network), so that Windows logs in at the proxy
+ * by itself where the proxy asks for it.</p>
  */
 final class ChatClient {
 
-    private final HttpClient http;
+    private static final SSLSocketFactory TRUST = windowsTrust();
+
+    private final ProxyRoutes routes = ProxyRoutes.shared();
     private final URI endpoint;
     private final URI modelsEndpoint;
     private final String model;
@@ -35,40 +50,129 @@ final class ChatClient {
         this.modelsEndpoint = URI.create(baseUrl + "/models");
         this.model = model;
         this.apiKey = apiKey;
-        HttpClient.Builder builder = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(20));
-        SSLContext windowsTrust = windowsTrustStore();
-        if (windowsTrust != null) {
-            builder.sslContext(windowsTrust);
-        }
-        this.http = builder.build();
     }
 
     /**
-     * On Windows, trust the certificates Windows trusts. An in-house service usually
-     * has a certificate from an in-house authority that Java's own list does not know.
+     * On Windows, trust what Java trusts and what Windows trusts. An in-house service
+     * usually has a certificate from an in-house authority that Java's own list does
+     * not know; a company proxy that inspects traffic signs with such an authority too.
+     *
+     * @return {@code null} to keep Java's own list
      */
-    private static SSLContext windowsTrustStore() {
+    private static SSLSocketFactory windowsTrust() {
         if (!System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("windows")) {
             return null;
         }
         try {
-            KeyStore roots = KeyStore.getInstance("Windows-ROOT");
-            roots.load(null, null);
-            TrustManagerFactory trust = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trust.init(roots);
+            List<X509TrustManager> managers = new ArrayList<>();
+            managers.add(trustManager(null)); // Java's own list
+            try {
+                KeyStore windows = KeyStore.getInstance("Windows-ROOT");
+                windows.load(null, null);
+                managers.add(trustManager(windows));
+            } catch (GeneralSecurityException | IOException e) {
+                // the Windows list is not available; Java's own still counts
+            }
             SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, trust.getTrustManagers(), null);
-            return context;
-        } catch (GeneralSecurityException | IOException e) {
-            return null; // fall back to Java's own list
+            context.init(null, new TrustManager[] {new AnyOf(managers)}, null);
+            return context.getSocketFactory();
+        } catch (GeneralSecurityException e) {
+            return null;
         }
+    }
+
+    private static X509TrustManager trustManager(KeyStore store) throws GeneralSecurityException {
+        TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        factory.init(store);
+        for (TrustManager manager : factory.getTrustManagers()) {
+            if (manager instanceof X509TrustManager x509) {
+                return x509;
+            }
+        }
+        throw new GeneralSecurityException("no X.509 trust manager");
+    }
+
+    /** Accepts a server that at least one of the lists accepts. */
+    private record AnyOf(List<X509TrustManager> managers) implements X509TrustManager {
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            CertificateException last = null;
+            for (X509TrustManager manager : managers) {
+                try {
+                    manager.checkServerTrusted(chain, authType);
+                    return;
+                } catch (CertificateException e) {
+                    last = e;
+                }
+            }
+            throw last != null ? last : new CertificateException("no trust list");
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            throw new CertificateException("not a server");
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            List<X509Certificate> all = new ArrayList<>();
+            for (X509TrustManager manager : managers) {
+                all.addAll(List.of(manager.getAcceptedIssuers()));
+            }
+            return all.toArray(new X509Certificate[0]);
+        }
+    }
+
+    /**
+     * Sends one request and returns the body of a 2xx answer.
+     *
+     * @param body {@code null} for GET, otherwise the JSON to POST
+     * @throws IOException with a message for the user if the service cannot be reached or refuses
+     */
+    private String exchange(URI address, String body, int readTimeoutMillis) throws IOException {
+        Proxy proxy = routes.proxyFor(address);
+        String way = proxy == Proxy.NO_PROXY ? "directly, proxy mode " + routes.describe() : "through proxy " + proxy.address();
+        int status;
+        String text;
+        try {
+            HttpURLConnection connection = (HttpURLConnection) address.toURL().openConnection(proxy);
+            if (TRUST != null && connection instanceof HttpsURLConnection https) {
+                https.setSSLSocketFactory(TRUST);
+            }
+            connection.setConnectTimeout(20_000);
+            connection.setReadTimeout(readTimeoutMillis);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("User-Agent", "3d4j");
+            if (apiKey != null && !apiKey.isBlank()) {
+                connection.setRequestProperty("Authorization", "Bearer " + apiKey);
+            }
+            if (body != null) {
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json");
+                try (OutputStream out = connection.getOutputStream()) {
+                    out.write(body.getBytes(StandardCharsets.UTF_8));
+                }
+            }
+            status = connection.getResponseCode();
+            try (InputStream in = status / 100 == 2 ? connection.getInputStream() : connection.getErrorStream()) {
+                text = in == null ? "" : new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            }
+        } catch (IOException e) {
+            throw new IOException("cannot reach " + address + " " + way + " (" + e.getClass().getSimpleName() + ": "
+                    + e.getMessage() + ")", e);
+        }
+        if (status / 100 != 2) {
+            throw new IOException(address + " answered HTTP " + status + " (" + way + "): " + abbreviate(text));
+        }
+        return text;
     }
 
     /**
      * @return the text of the model's answer
      * @throws IOException with a message for the user if the service cannot be reached or refuses
      */
-    String ask(String systemPrompt, String userPrompt) throws IOException, InterruptedException {
+    String ask(String systemPrompt, String userPrompt) throws IOException {
         JsonObject body = new JsonObject();
         body.addProperty("model", model);
         JsonArray messages = new JsonArray();
@@ -77,35 +181,17 @@ final class ChatClient {
         body.add("messages", messages);
         body.addProperty("stream", false);
 
-        HttpRequest.Builder request = HttpRequest.newBuilder(endpoint)
-                .timeout(Duration.ofMinutes(5))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString(), StandardCharsets.UTF_8));
-        if (apiKey != null && !apiKey.isBlank()) {
-            request.header("Authorization", "Bearer " + apiKey);
-        }
-
-        HttpResponse<String> response;
+        String response = exchange(endpoint, body.toString(), 5 * 60_000);
         try {
-            response = http.send(request.build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            throw new IOException("cannot reach " + endpoint + " (" + e.getClass().getSimpleName() + ": "
-                    + e.getMessage() + ")", e);
-        }
-        if (response.statusCode() / 100 != 2) {
-            throw new IOException(endpoint + " answered HTTP " + response.statusCode() + ": "
-                    + abbreviate(response.body()));
-        }
-        try {
-            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+            JsonObject json = JsonParser.parseString(response).getAsJsonObject();
             JsonElement content = json.getAsJsonArray("choices").get(0).getAsJsonObject()
                     .getAsJsonObject("message").get("content");
             if (content == null || content.isJsonNull()) {
-                throw new IOException("the answer has no text: " + abbreviate(response.body()));
+                throw new IOException("the answer has no text: " + abbreviate(response));
             }
             return content.getAsString();
         } catch (RuntimeException e) {
-            throw new IOException("unexpected answer format: " + abbreviate(response.body()), e);
+            throw new IOException("unexpected answer format: " + abbreviate(response), e);
         }
     }
 
@@ -113,31 +199,17 @@ final class ChatClient {
      * @return the ids of the models the service offers ({@code GET <baseUrl>/models}), sorted
      * @throws IOException with a message for the user if the service cannot be reached or refuses
      */
-    java.util.List<String> models() throws IOException, InterruptedException {
-        HttpRequest.Builder request = HttpRequest.newBuilder(modelsEndpoint).timeout(Duration.ofSeconds(60)).GET();
-        if (apiKey != null && !apiKey.isBlank()) {
-            request.header("Authorization", "Bearer " + apiKey);
-        }
-        HttpResponse<String> response;
-        try {
-            response = http.send(request.build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            throw new IOException("cannot reach " + modelsEndpoint + " (" + e.getClass().getSimpleName() + ": "
-                    + e.getMessage() + ")", e);
-        }
-        if (response.statusCode() / 100 != 2) {
-            throw new IOException(modelsEndpoint + " answered HTTP " + response.statusCode() + ": "
-                    + abbreviate(response.body()));
-        }
+    java.util.List<String> models() throws IOException {
+        String response = exchange(modelsEndpoint, null, 60_000);
         try {
             java.util.List<String> ids = new java.util.ArrayList<>();
-            for (JsonElement model : JsonParser.parseString(response.body()).getAsJsonObject().getAsJsonArray("data")) {
+            for (JsonElement model : JsonParser.parseString(response).getAsJsonObject().getAsJsonArray("data")) {
                 ids.add(model.getAsJsonObject().get("id").getAsString());
             }
             java.util.Collections.sort(ids, String.CASE_INSENSITIVE_ORDER);
             return ids;
         } catch (RuntimeException e) {
-            throw new IOException("unexpected answer format: " + abbreviate(response.body()), e);
+            throw new IOException("unexpected answer format: " + abbreviate(response), e);
         }
     }
 

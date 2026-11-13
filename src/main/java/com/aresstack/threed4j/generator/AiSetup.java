@@ -142,7 +142,7 @@ public final class AiSetup {
     }
 
     /** @return the ids of the models the service offers, sorted */
-    public static List<String> listModels(String baseUrl, String apiKey) throws IOException, InterruptedException {
+    public static List<String> listModels(String baseUrl, String apiKey) throws IOException {
         return new ChatClient(URI.create(baseUrl), "", apiKey).models();
     }
 

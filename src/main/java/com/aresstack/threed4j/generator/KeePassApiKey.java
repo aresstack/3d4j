@@ -102,6 +102,18 @@ final class KeePassApiKey {
         });
     }
 
+    /**
+     * User name and password of the entry with exactly this title (login at a proxy).
+     *
+     * @return both, or {@code null} if KeePass has no such entry
+     */
+    static String[] credentials(Path home, String title, Supplier<String> codeProvider) throws IOException {
+        return connected(home, codeProvider, (config, key) -> {
+            KeePassRpcLink.Entry entry = KeePassRpcLink.entry(config, key, title);
+            return entry == null ? null : new String[] {entry.userName(), entry.password()};
+        });
+    }
+
     private interface Call<T> {
         T run(KeePassRpcConfig config, String key) throws KeePassRpcLink.Failure;
     }

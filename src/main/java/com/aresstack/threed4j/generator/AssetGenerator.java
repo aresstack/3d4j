@@ -51,6 +51,14 @@ public final class AssetGenerator {
     }
 
     public static void main(String[] args) throws Exception {
+        // "generate --route=https://host/" shows how that address is reached (proxy or directly) and stops.
+        for (String arg : args) {
+            if (arg.startsWith("--route=")) {
+                ProxyRoutes.shared().diagnose(java.net.URI.create(arg.substring("--route=".length())))
+                        .forEach(System.out::println);
+                System.exit(0);
+            }
+        }
         try {
             System.exit(run(args, AssetStore.standard(), System.getenv(API_KEY_VARIABLE)) ? 0 : 1);
         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -143,9 +151,6 @@ public final class AssetGenerator {
                 lastAnswer = chat.ask(STYLE, prompt);
             } catch (IOException e) {
                 return e.getMessage(); // a network or service problem does not get better by asking again
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return "interrupted";
             }
             String svg = SvgRasterizer.extract(lastAnswer);
             if (svg.isEmpty()) {

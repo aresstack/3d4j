@@ -115,6 +115,16 @@ jobs:
           grep -q "address of the AI service is unknown" build/generate-1.log
           grep -q "KeePass" build/generate-2.log
 
+          # The way through a company proxy: a PAC script must be evaluated from the combined JAR
+          # (GraalJS finds its languages through the merged META-INF/services files).
+          printf 'function FindProxyForURL(url, host) {\n  return shExpMatch(host, "*.firma.test") ? "PROXY proxy.firma.test:8080" : "DIRECT";\n}\n' > build/test.pac
+          java -Duser.home="$HOME" -Dthreed4j.proxy.mode=PAC_URL_MANUAL -Dthreed4j.proxy.pacUrl="file://$PWD/build/test.pac" \
+            -jar build/libs/3d4j.jar generate --route=https://ki.firma.test/v1 2>&1 | tee build/route-1.log
+          grep -q "PROXY proxy.firma.test:8080" build/route-1.log
+          java -Duser.home="$HOME" -Dthreed4j.proxy.mode=PAC_URL_MANUAL -Dthreed4j.proxy.pacUrl="file://$PWD/build/test.pac" \
+            -jar build/libs/3d4j.jar generate --route=https://example.org/ 2>&1 | tee build/route-2.log
+          grep -q "Result: DIRECT" build/route-2.log
+
       - name: Upload JAR as workflow artifact
         uses: actions/upload-artifact@v4
         with:
