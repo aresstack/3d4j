@@ -1,5 +1,6 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.AssetCatalog;
 import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.core.Engine;
 import com.aresstack.threed4j.core.EngineConfig;
@@ -36,7 +37,9 @@ import java.util.Locale;
  * {@code --scale=0.5} sets the internal resolution, {@code --frames=N} stops after
  * N frames, {@code --screenshot=FILE} saves the last of those frames,
  * {@code --time=SECONDS} freezes the scene at that moment (comparable pictures),
- * {@code --no-title} skips the loading screen, {@code --no-vsync} runs uncapped.</p>
+ * {@code --no-title} skips the loading screen, {@code --setup} / {@code --no-setup}
+ * force or suppress the "create the world" menu (by default it opens while no
+ * generated artwork exists), {@code --no-vsync} runs uncapped.</p>
  */
 public final class PlazaDemo implements Game {
 
@@ -60,6 +63,12 @@ public final class PlazaDemo implements Game {
     private boolean playing;
     private double titleShownSince = -1;
 
+    // The "create the world" menu between loading screen and game
+    private SetupScreen setup;
+    private Texture setupImage;
+    private int setupImageWidth;
+    private int setupImageHeight;
+
     // Scene
     private PlazaScene scene;
     private Shader sceneShader;
@@ -77,14 +86,16 @@ public final class PlazaDemo implements Game {
         this.options = options;
     }
 
-    private record Options(boolean benchmark, boolean showTitle, float renderScale, Double frozenTime,
-                           Path finalScreenshot, long finalFrame) {
+    /** @param showSetup {@code null} decides by whether generated artwork exists already */
+    private record Options(boolean benchmark, boolean showTitle, Boolean showSetup, float renderScale,
+                           Double frozenTime, Path finalScreenshot, long finalFrame) {
     }
 
     public static void main(String[] args) {
         EngineConfig config = EngineConfig.of("Nur zur ZIHR", 1280, 720);
         boolean benchmark = false;
         boolean showTitle = true;
+        Boolean showSetup = null;
         float scale = 1f;
         Double time = null;
         Path screenshot = null;
@@ -100,15 +111,21 @@ public final class PlazaDemo implements Game {
             } else if (arg.equals("--benchmark")) {
                 benchmark = true;
                 showTitle = false;
+                showSetup = false;
             } else if (arg.equals("--no-title")) {
                 showTitle = false;
+            } else if (arg.equals("--setup")) {
+                showSetup = true;
+            } else if (arg.equals("--no-setup")) {
+                showSetup = false;
             } else if (arg.equals("--no-vsync")) {
                 config = config.withVsync(false);
             } else {
                 throw new IllegalArgumentException("Unknown argument: " + arg);
             }
         }
-        Engine.run(config, new PlazaDemo(new Options(benchmark, showTitle, scale, time, screenshot, config.maxFrames())));
+        Engine.run(config, new PlazaDemo(
+                new Options(benchmark, showTitle, showSetup, scale, time, screenshot, config.maxFrames())));
     }
 
     // --------------------------------------------------------------------- init
@@ -126,7 +143,19 @@ public final class PlazaDemo implements Game {
         titleImage = Textures.fromResource(graphics, "/images/loading.jpg", true);
         white = graphics.createTexture(1, 1, new int[]{0xFFFFFFFF}, false);
         if (!options.showTitle()) {
-            loadScene(context);
+            afterTitle(context);
+        }
+    }
+
+    /** The loading screen is over: open the menu if it is wanted, otherwise start the game. */
+    private void afterTitle(EngineContext context) {
+        AssetStore store = AssetStore.standard();
+        boolean nothingGenerated = AssetCatalog.ALL.stream().noneMatch(store::has);
+        boolean wanted = options.showSetup() != null ? options.showSetup() : nothingGenerated;
+        if (wanted) {
+            setup = new SetupScreen(store, Textures.readResource("/images/loading.jpg"),
+                    Textures.readResource("/images/cover.jpg"));
+        } else {
             startPlaying(context);
         }
     }
@@ -159,6 +188,9 @@ public final class PlazaDemo implements Game {
     }
 
     private void startPlaying(EngineContext context) {
+        if (scene == null) {
+            loadScene(context); // after the menu, so that freshly generated artwork is used
+        }
         playing = true;
         context.frameStats().reset(); // loading must not count as slow frames
     }
@@ -171,16 +203,29 @@ public final class PlazaDemo implements Game {
         if (input.wasPressed(Key.ESCAPE)) {
             context.quit();
         }
-        if (input.wasPressed(Key.P)) {
-            context.requestScreenshot(Path.of("screenshot.png"));
-        }
         if (options.finalScreenshot() != null && context.frame() == Math.max(1, options.finalFrame())) {
             context.requestScreenshot(options.finalScreenshot());
         }
 
+        if (setup != null) {
+            setup.update(input, context.window().width(), context.window().height());
+            if (setup.isFinished()) {
+                setup.close();
+                setup = null;
+                if (setupImage != null) {
+                    setupImage.close();
+                    setupImage = null;
+                }
+                startPlaying(context);
+            }
+            return;
+        }
         if (!playing) {
             updateTitle(context, input);
             return;
+        }
+        if (input.wasPressed(Key.P)) { // not in the menu: there P is a letter to type
+            context.requestScreenshot(Path.of("screenshot.png"));
         }
 
         sceneTime = options.frozenTime() != null ? options.frozenTime() : sceneTime + deltaSeconds;
@@ -196,16 +241,12 @@ public final class PlazaDemo implements Game {
     private void updateTitle(EngineContext context, Input input) {
         if (titleShownSince < 0) {
             titleShownSince = context.timeSeconds();
-            return; // let the first frame with the picture reach the screen before loading blocks
-        }
-        if (scene == null) {
-            loadScene(context);
             return;
         }
         boolean skip = input.wasPressed(Key.SPACE) || input.wasPressed(Key.ENTER)
                 || input.wasPressed(MouseButton.LEFT);
         if (skip || titleProgress(context) >= 1f) {
-            startPlaying(context);
+            afterTitle(context);
         }
     }
 
@@ -338,6 +379,10 @@ public final class PlazaDemo implements Game {
             return;
         }
         GraphicsDevice graphics = context.graphics();
+        if (setup != null) {
+            renderSetup(context, graphics);
+            return;
+        }
         float windowAspect = context.aspectRatio();
         float imageAspect = (float) titleImage.width() / titleImage.height();
 
@@ -358,6 +403,22 @@ public final class PlazaDemo implements Game {
         drawImage(graphics, 0.6f * progress, 0.012f, -0.6f * (1f - progress), -0.93f, new Vec3(0.98f, 0.62f, 0.82f));
     }
 
+    /** The menu is one image the size of the window, repainted only when something changed. */
+    private void renderSetup(EngineContext context, GraphicsDevice graphics) {
+        int width = context.window().width();
+        int height = context.window().height();
+        if (setup.consumeDirty() || setupImage == null || width != setupImageWidth || height != setupImageHeight) {
+            if (setupImage != null) {
+                setupImage.close();
+            }
+            setupImage = Textures.fromImage(graphics, setup.paint(width, height), true);
+            setupImageWidth = width;
+            setupImageHeight = height;
+        }
+        imageShader.setTexture(setupImage);
+        drawImage(graphics, 1f, 1f, 0f, 0f, new Vec3(1f, 1f, 1f));
+    }
+
     private static float fitX(float windowAspect, float imageAspect) {
         return windowAspect > imageAspect ? imageAspect / windowAspect : 1f;
     }
@@ -375,6 +436,12 @@ public final class PlazaDemo implements Game {
 
     @Override
     public void dispose() {
+        if (setup != null) {
+            setup.close();
+        }
+        if (setupImage != null) {
+            setupImage.close();
+        }
         if (scene != null) {
             scene.close();
             spriteAtlas.close();

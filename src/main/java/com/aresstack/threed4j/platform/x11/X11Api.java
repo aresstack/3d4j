@@ -76,6 +76,7 @@ final class X11Api {
     static final long CLIENT_MESSAGE_DATA = 56;
 
     static final int XK_SPACE = 0x0020;
+    static final int XK_BACKSPACE = 0xff08;
     static final int XK_TAB = 0xff09;
     static final int XK_RETURN = 0xff0d;
     static final int XK_ESCAPE = 0xff1b;
@@ -129,6 +130,8 @@ final class X11Api {
     private static final MethodHandle XPending = x11("XPending", FunctionDescriptor.of(JAVA_INT, ADDRESS));
     private static final MethodHandle XNextEvent = x11("XNextEvent", FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
     private static final MethodHandle XLookupKeysym = x11("XLookupKeysym", FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_INT));
+    private static final MethodHandle XLookupString = x11("XLookupString",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS, JAVA_INT, ADDRESS, ADDRESS));
     private static final MethodHandle XkbSetDetectableAutoRepeat = x11("XkbSetDetectableAutoRepeat",
             FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_INT, ADDRESS));
     private static final MethodHandle XFree = x11("XFree", FunctionDescriptor.of(JAVA_INT, ADDRESS));
@@ -307,6 +310,21 @@ final class X11Api {
     static long lookupKeysym(MemorySegment keyEvent) {
         try {
             return (long) XLookupKeysym.invokeExact(keyEvent, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * The characters a key press produces with the current keyboard layout and
+     * modifiers, as Latin-1 bytes.
+     *
+     * @return number of bytes written to {@code buffer}
+     */
+    static int lookupString(MemorySegment keyEvent, MemorySegment buffer) {
+        try {
+            return (int) XLookupString.invokeExact(keyEvent, buffer, (int) buffer.byteSize(),
+                    MemorySegment.NULL, MemorySegment.NULL);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

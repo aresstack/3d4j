@@ -60,6 +60,7 @@ final class Win32Api {
     static final int WM_ERASEBKGND = 0x0014;
     static final int WM_KEYDOWN = 0x0100;
     static final int WM_KEYUP = 0x0101;
+    static final int WM_CHAR = 0x0102;
     static final int WM_SYSKEYDOWN = 0x0104;
     static final int WM_SYSKEYUP = 0x0105;
     static final int WM_MOUSEMOVE = 0x0200;
@@ -70,6 +71,7 @@ final class Win32Api {
     static final int WM_MBUTTONDOWN = 0x0207;
     static final int WM_MBUTTONUP = 0x0208;
 
+    static final int VK_BACK = 0x08;
     static final int VK_TAB = 0x09;
     static final int VK_RETURN = 0x0D;
     static final int VK_SHIFT = 0x10;

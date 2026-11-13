@@ -221,6 +221,11 @@ public final class Win32Window implements GLWindow {
                     input.onKey(mapKey((int) wParam), true);
                     return 0;
                 }
+                case WM_CHAR -> {
+                    // TranslateMessage turns key presses into the characters of the keyboard layout.
+                    input.onText((char) wParam);
+                    return 0;
+                }
                 case WM_KEYUP -> {
                     input.onKey(mapKey((int) wParam), false);
                     return 0;
@@ -279,6 +284,7 @@ public final class Win32Window implements GLWindow {
             case VK_RETURN -> Key.ENTER;
             case VK_SPACE -> Key.SPACE;
             case VK_TAB -> Key.TAB;
+            case VK_BACK -> Key.BACKSPACE;
             case VK_SHIFT -> Key.SHIFT;
             case VK_CONTROL -> Key.CONTROL;
             case VK_LEFT -> Key.LEFT;

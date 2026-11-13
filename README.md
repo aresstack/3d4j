@@ -105,7 +105,28 @@ Batik in ein PNG um. Es genügt also, ein SVG in den Ordner zu legen, auch eines
 einem Chat kopiert hat. Beim Laden der Szene meldet die Konsole, wie viele Sprites aus dem
 Ordner kommen.
 
-Der Generator lässt ein Chatmodell die Motive zeichnen:
+### Das Menü „Die Welt erschaffen“
+
+Solange noch keine erzeugten Motive im Asset-Ordner liegen, öffnet sich nach dem Ladebildschirm
+ein Menü im Stil des Spiels. Es führt in vier Schritten zur erzeugten Welt, nach dem Vorbild der
+Einrichtungsassistenten von Space Harvester und Enterprise AI Client:
+
+1. **KI-Dienst:** Adresse des Dienstes und Titel des KeePass-Eintrags mit dem API-Key. Beides
+   ist vorbelegt, wenn der Enterprise AI Client auf dem Rechner eingerichtet ist.
+2. **KeePass:** „Koppeln“ verbindet das Spiel mit KeePass. KeePass zeigt ein Einmal-Passwort,
+   das man im Menü eintippt. Danach liest das Spiel den API-Key.
+3. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `openai/gpt-oss-120b` vor,
+   falls angeboten.
+4. **Welt:** „Zeichnen lassen“ fragt alle Motive gleichzeitig an und zeigt je Motiv den Stand.
+   „Spielen“ startet das Spiel mit dem, was gelungen ist.
+
+„Ohne KI spielen“ verlässt das Menü jederzeit. `--setup` öffnet es auch dann, wenn schon Motive
+vorhanden sind, `--no-setup` unterdrückt es. Bedient wird es mit der Maus; Tab wechselt das
+Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
+
+### Der Generator auf der Kommandozeile
+
+Dasselbe ohne Menü:
 
 ```
 java -jar 3d4j.jar generate
@@ -190,8 +211,8 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
-| `generator` | `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `GeneratorConfig` |
-| `demo` | `PlazaDemo` (Ladebildschirm und Testplatz), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
+| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `GeneratorConfig` |
+| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.
@@ -267,8 +288,10 @@ schlichten `java -jar` (einmal den Ladebildschirm, einmal den Testplatz) und ver
 ## Grenzen und nächste Schritte
 
 - Text, Audio, Kollision und das Laden von Modelldateien fehlen noch.
-- Der Generator ist nur gegen einen nachgebauten Dienst getestet, nicht gegen ein echtes
-  KeePass und nicht gegen den echten KI-Dienst. Einen Proxy unterstützt er nicht.
+- Menü und Generator sind nur gegen einen nachgebauten Dienst getestet, nicht gegen ein echtes
+  KeePass und nicht gegen den echten KI-Dienst. Einen Proxy unterstützen sie nicht.
+- Das Menü ist als ein Bild mit Java 2D gemalt; Textfelder kennen nur Anhängen, Löschen am
+  Ende und Einfügen.
 - Ohne Dateien im Asset-Ordner sind die Sprites mit Java 2D gemalte Platzhalter (`SpriteAtlas`).
 - Texturen haben keine Mipmaps, weit entfernte Sprites flimmern deshalb leicht.
 - macOS wird nicht unterstützt (dort wäre Cocoa über `objc_msgSend` nötig).

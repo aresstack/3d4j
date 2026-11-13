@@ -18,6 +18,7 @@ public final class Input {
     private int mouseDeltaX;
     private int mouseDeltaY;
     private boolean mouseSeen;
+    private final StringBuilder typed = new StringBuilder();
 
     /** {@code true} while the key is held down. */
     public boolean isDown(Key key) {
@@ -58,8 +59,32 @@ public final class Input {
         return mouseDeltaY;
     }
 
+    /**
+     * The characters typed since the previous frame, as the keyboard layout produces
+     * them (upper and lower case, umlauts, symbols). Use this for text fields and
+     * {@link #wasPressed(Key)} for controls. Backspace arrives as {@code '\b'}
+     * (repeating while held), Tab as {@code '\t'}, Enter as {@code '\r'} and
+     * Ctrl+V as the character {@link #PASTE} – in the order they were typed, which
+     * matters when someone types faster than the game draws.
+     */
+    public String typedText() {
+        return typed.toString();
+    }
+
+    /** What Ctrl+V produces in {@link #typedText()}. */
+    public static final char PASTE = 0x16;
+
+    /** Called by the platform window for every character the keyboard produced. */
+    public void onText(char character) {
+        if (character >= ' ' && character != 0x7F || character == PASTE || character == '\b'
+                || character == '\t' || character == '\r') {
+            typed.append(character);
+        }
+    }
+
     /** Called by the engine before events are polled: forgets last frame's presses and movement. */
     public void beginFrame() {
+        typed.setLength(0);
         Arrays.fill(pressed, false);
         Arrays.fill(mousePressed, false);
         mouseDeltaX = 0;

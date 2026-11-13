@@ -26,11 +26,13 @@ final class ChatClient {
 
     private final HttpClient http;
     private final URI endpoint;
+    private final URI modelsEndpoint;
     private final String model;
     private final String apiKey;
 
     ChatClient(URI baseUrl, String model, String apiKey) {
         this.endpoint = URI.create(baseUrl + "/chat/completions");
+        this.modelsEndpoint = URI.create(baseUrl + "/models");
         this.model = model;
         this.apiKey = apiKey;
         HttpClient.Builder builder = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(20));
@@ -102,6 +104,38 @@ final class ChatClient {
                 throw new IOException("the answer has no text: " + abbreviate(response.body()));
             }
             return content.getAsString();
+        } catch (RuntimeException e) {
+            throw new IOException("unexpected answer format: " + abbreviate(response.body()), e);
+        }
+    }
+
+    /**
+     * @return the ids of the models the service offers ({@code GET <baseUrl>/models}), sorted
+     * @throws IOException with a message for the user if the service cannot be reached or refuses
+     */
+    java.util.List<String> models() throws IOException, InterruptedException {
+        HttpRequest.Builder request = HttpRequest.newBuilder(modelsEndpoint).timeout(Duration.ofSeconds(60)).GET();
+        if (apiKey != null && !apiKey.isBlank()) {
+            request.header("Authorization", "Bearer " + apiKey);
+        }
+        HttpResponse<String> response;
+        try {
+            response = http.send(request.build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new IOException("cannot reach " + modelsEndpoint + " (" + e.getClass().getSimpleName() + ": "
+                    + e.getMessage() + ")", e);
+        }
+        if (response.statusCode() / 100 != 2) {
+            throw new IOException(modelsEndpoint + " answered HTTP " + response.statusCode() + ": "
+                    + abbreviate(response.body()));
+        }
+        try {
+            java.util.List<String> ids = new java.util.ArrayList<>();
+            for (JsonElement model : JsonParser.parseString(response.body()).getAsJsonObject().getAsJsonArray("data")) {
+                ids.add(model.getAsJsonObject().get("id").getAsString());
+            }
+            java.util.Collections.sort(ids, String.CASE_INSENSITIVE_ORDER);
+            return ids;
         } catch (RuntimeException e) {
             throw new IOException("unexpected answer format: " + abbreviate(response.body()), e);
         }

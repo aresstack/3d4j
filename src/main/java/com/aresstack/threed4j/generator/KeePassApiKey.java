@@ -15,13 +15,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
+import java.util.function.Supplier;
 
 /**
  * Reads the API key from KeePass through the KeePassRPC plugin, using
  * {@code keepassrpc-java}.
  *
  * <p>The first call pairs this program with KeePass: KeePass shows a one-time code,
- * the user types it into the console. The result is stored in
+ * the user types it into this program. The result is stored in
  * {@code .3d4j/keepass.properties}; later calls connect without asking.</p>
  */
 final class KeePassApiKey {
@@ -34,9 +35,39 @@ final class KeePassApiKey {
     private KeePassApiKey() {
     }
 
-    /** @throws IllegalStateException with a message for the user if KeePass does not hand out the key */
-    static String read(String entryTitle, Path home) throws IOException {
-        Path file = home.resolve("keepass.properties");
+    static Path pairingFile(Path home) {
+        return home.resolve("keepass.properties");
+    }
+
+    /** {@code true} if an earlier pairing is stored. Whether KeePass still accepts it shows only when connecting. */
+    static boolean isPaired(Path home) {
+        return Files.isRegularFile(pairingFile(home));
+    }
+
+    /** Forgets the stored pairing; the entry in KeePass stays. */
+    static void unpair(Path home) throws IOException {
+        Files.deleteIfExists(pairingFile(home));
+    }
+
+    /** Reads the pairing code from the console. */
+    static String codeFromConsole() {
+        System.out.print("KeePass now shows a code. Type it here: ");
+        System.out.flush();
+        try {
+            String line = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)).readLine();
+            return line == null ? "" : line.trim();
+        } catch (IOException e) {
+            return "";
+        }
+    }
+
+    /**
+     * @param codeProvider called if pairing is needed, while KeePass shows its one-time
+     *                     code; returns what the user typed (may block until then)
+     * @throws IllegalStateException with a message for the user if KeePass does not hand out the key
+     */
+    static String read(String entryTitle, Path home, Supplier<String> codeProvider) throws IOException {
+        Path file = pairingFile(home);
         Properties stored = new Properties();
         if (Files.isRegularFile(file)) {
             try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
@@ -48,7 +79,7 @@ final class KeePassApiKey {
         String srpKey = stored.getProperty("srpKey");
 
         if (srpKey == null || srpKey.isBlank()) {
-            KeePassRpcPairingResult result = pair(host, port);
+            KeePassRpcPairingResult result = pair(host, port, codeProvider);
             host = result.getEndpoint().getHost();
             port = result.getEndpoint().getPort();
             srpKey = result.getSrpKey();
@@ -59,7 +90,6 @@ final class KeePassApiKey {
             try (Writer out = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
                 stored.store(out, "3d4j pairing with KeePassRPC");
             }
-            System.out.println("Paired with KeePass. The pairing is stored in " + file);
         }
 
         try (KeePassRpcCredentialClient client =
@@ -80,26 +110,16 @@ final class KeePassApiKey {
         }
     }
 
-    private static KeePassRpcPairingResult pair(String host, int port) {
-        System.out.println("Pairing with KeePass (needed once) ...");
+    private static KeePassRpcPairingResult pair(String host, int port, Supplier<String> codeProvider) {
         KeePassRpcPairingRequest request = KeePassRpcPairingRequest.builder()
                 .host(host)
                 .port(port)
                 .origin(ORIGIN)
                 .clientId(CLIENT_ID)
-                .clientDisplayName("3d4j Asset Generator")
+                .clientDisplayName("3d4j")
                 .build();
         try {
-            return new DefaultKeePassRpcPairingService().pair(request, session -> {
-                System.out.print("KeePass now shows a code. Type it here: ");
-                System.out.flush();
-                try {
-                    String line = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)).readLine();
-                    return line == null ? "" : line.trim();
-                } catch (IOException e) {
-                    return "";
-                }
-            });
+            return new DefaultKeePassRpcPairingService().pair(request, session -> codeProvider.get());
         } catch (RuntimeException e) {
             throw new IllegalStateException("Pairing with KeePass failed (" + e.getMessage() + ").\n"
                     + "Check that KeePass is running with the KeePassRPC plugin and the database is unlocked.", e);

@@ -85,7 +85,8 @@ public final class AssetGenerator {
                 throw new IllegalArgumentException("No API key: pass the title of the KeePass entry once with "
                         + "--entry=TITLE, or set the environment variable " + API_KEY_VARIABLE + ".");
             }
-            apiKey = KeePassApiKey.read(config.keePassEntry(), config.home());
+            System.out.println("Reading the API key from KeePass (pairs once if needed) ...");
+            apiKey = KeePassApiKey.read(config.keePassEntry(), config.home(), KeePassApiKey::codeFromConsole);
         }
 
         System.out.println("Asking " + config.model() + " at " + config.baseUrl() + " for " + wanted.size()
@@ -119,7 +120,7 @@ public final class AssetGenerator {
      *
      * @return {@code null} on success, otherwise why the last attempt failed
      */
-    private static String generate(ChatClient chat, AssetStore store, AssetSpec spec) {
+    static String generate(ChatClient chat, AssetStore store, AssetSpec spec) {
         String problem = null;
         String lastAnswer = null;
         for (int attempt = 1; attempt <= ATTEMPTS; attempt++) {

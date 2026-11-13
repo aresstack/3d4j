@@ -14,6 +14,11 @@ public final class Textures {
 
     /** Loads a PNG or JPEG from the classpath, e.g. {@code "/images/loading.jpg"}. */
     public static Texture fromResource(GraphicsDevice graphics, String path, boolean smooth) {
+        return fromImage(graphics, readResource(path), smooth);
+    }
+
+    /** Reads a PNG or JPEG from the classpath as an image, e.g. to paint with it in Java 2D. */
+    public static BufferedImage readResource(String path) {
         try (InputStream in = Textures.class.getResourceAsStream(path)) {
             if (in == null) {
                 throw new IllegalArgumentException("Image resource not found: " + path);
@@ -25,7 +30,7 @@ public final class Textures {
             if (image == null) {
                 throw new IllegalArgumentException("Not a readable image: " + path);
             }
-            return fromImage(graphics, image, smooth);
+            return image;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

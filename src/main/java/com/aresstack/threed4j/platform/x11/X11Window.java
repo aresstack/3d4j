@@ -33,6 +33,7 @@ public final class X11Window implements GLWindow {
     private final long netWmName;
     private final long utf8String;
     private final MemorySegment event;
+    private final MemorySegment textBuffer;
 
     private int width;
     private int height;
@@ -49,6 +50,7 @@ public final class X11Window implements GLWindow {
         width = config.width();
         height = config.height();
         event = Native.bytes(arena, SIZEOF_XEVENT);
+        textBuffer = Native.bytes(arena, 16);
 
         try (Arena temp = Arena.ofConfined()) {
             MemorySegment fbConfig = chooseFramebufferConfig(temp, screen);
@@ -170,7 +172,15 @@ public final class X11Window implements GLWindow {
             nextEvent(display, event);
             int type = event.get(JAVA_INT, 0);
             switch (type) {
-                case KEY_PRESS, KEY_RELEASE -> input.onKey(mapKey(lookupKeysym(event)), type == KEY_PRESS);
+                case KEY_PRESS, KEY_RELEASE -> {
+                    input.onKey(mapKey(lookupKeysym(event)), type == KEY_PRESS);
+                    if (type == KEY_PRESS) {
+                        int length = lookupString(event, textBuffer);
+                        for (int i = 0; i < length; i++) {
+                            input.onText((char) (textBuffer.get(java.lang.foreign.ValueLayout.JAVA_BYTE, i) & 0xFF));
+                        }
+                    }
+                }
                 // While a button is held, X keeps sending the motion to this window (implicit grab).
                 case MOTION_NOTIFY -> input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
                 case BUTTON_PRESS, BUTTON_RELEASE -> {
@@ -204,6 +214,7 @@ public final class X11Window implements GLWindow {
             case XK_RETURN -> Key.ENTER;
             case XK_SPACE -> Key.SPACE;
             case XK_TAB -> Key.TAB;
+            case XK_BACKSPACE -> Key.BACKSPACE;
             case XK_SHIFT_L, XK_SHIFT_R -> Key.SHIFT;
             case XK_CONTROL_L, XK_CONTROL_R -> Key.CONTROL;
             case XK_LEFT -> Key.LEFT;
