@@ -31,7 +31,8 @@ import java.util.Locale;
  * <p>Keys: W A S D move, E / Q up and down, Shift faster, hold a mouse button and
  * drag (or arrow keys) to look around. 1 to 5 choose the internal resolution
  * (100, 75, 50, 33, 25 percent), F toggles smooth and blocky upscaling, R resets
- * the frame statistics, P saves {@code screenshot.png}, Escape quits.</p>
+ * the frame statistics, P saves {@code screenshot.png}, Escape opens the pause
+ * menu (continue, settings, quit).</p>
  *
  * <p>Arguments: {@code --benchmark} skips the title and flies a fixed camera path,
  * {@code --scale=0.5} sets the internal resolution, {@code --frames=N} stops after
@@ -41,10 +42,10 @@ import java.util.Locale;
  * force or suppress the "create the world" menu (by default it opens while no
  * generated artwork exists), {@code --no-vsync} runs uncapped.</p>
  */
-public final class PlazaDemo implements Game {
+public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     private static final float TITLE_SECONDS = 3.5f;
-    private static final float[] RENDER_SCALES = {1f, 0.75f, 0.5f, 1f / 3f, 0.25f};
+    private static final float[] RENDER_SCALES = PauseMenu.RENDER_SCALES;
     private static final Key[] SCALE_KEYS = {Key.DIGIT_1, Key.DIGIT_2, Key.DIGIT_3, Key.DIGIT_4, Key.DIGIT_5};
 
     private static final Vec3 LIGHT_DIRECTION = new Vec3(-0.45f, -1.0f, -0.6f);
@@ -69,6 +70,14 @@ public final class PlazaDemo implements Game {
     private int setupImageWidth;
     private int setupImageHeight;
 
+    // The pause menu over the running game
+    private PauseMenu pause;
+    private Texture pauseImage;
+    private int pauseImageWidth;
+    private int pauseImageHeight;
+    private GameSettings settings = GameSettings.DEFAULTS;
+    private EngineContext engine;
+
     // Scene
     private PlazaScene scene;
     private Shader sceneShader;
@@ -87,7 +96,7 @@ public final class PlazaDemo implements Game {
     }
 
     /** @param showSetup {@code null} decides by whether generated artwork exists already */
-    private record Options(boolean benchmark, boolean showTitle, Boolean showSetup, float renderScale,
+    private record Options(boolean benchmark, boolean showTitle, Boolean showSetup, Float renderScale,
                            Double frozenTime, Path finalScreenshot, long finalFrame) {
     }
 
@@ -96,7 +105,7 @@ public final class PlazaDemo implements Game {
         boolean benchmark = false;
         boolean showTitle = true;
         Boolean showSetup = null;
-        float scale = 1f;
+        Float scale = null; // not given: what the player chose in the settings
         Double time = null;
         Path screenshot = null;
         for (String arg : args) {
@@ -134,7 +143,17 @@ public final class PlazaDemo implements Game {
     @Override
     public void init(EngineContext context) {
         GraphicsDevice graphics = context.graphics();
-        graphics.setRenderScale(options.renderScale());
+        engine = context;
+        // A measurement must not depend on what was chosen in the settings.
+        if (!options.benchmark()) {
+            settings = GameSettings.load(GameSettings.file());
+        }
+        if (options.renderScale() != null) {
+            settings = new GameSettings(options.renderScale(), settings.smoothUpscale());
+        }
+        graphics.setRenderScale(settings.renderScale());
+        graphics.setSmoothUpscale(settings.smoothUpscale());
+        smoothUpscale = settings.smoothUpscale();
         imageShader = graphics.createShader("image", ShaderLayout.attributes(2, 2)
                 .vec3("uScale")
                 .vec3("uOffset")
@@ -190,6 +209,11 @@ public final class PlazaDemo implements Game {
     private void startPlaying(EngineContext context) {
         if (scene == null) {
             loadScene(context); // after the menu, so that freshly generated artwork is used
+        } else {
+            // Back from "draw the world again": show the new artwork.
+            spriteAtlas.close();
+            spriteAtlas = Textures.fromImage(context.graphics(), SpriteAtlas.paint(AssetStore.standard()), true);
+            spriteShader.setTexture(spriteAtlas);
         }
         playing = true;
         context.frameStats().reset(); // loading must not count as slow frames
@@ -201,7 +225,14 @@ public final class PlazaDemo implements Game {
     public void update(EngineContext context, double deltaSeconds) {
         Input input = context.input();
         if (input.wasPressed(Key.ESCAPE)) {
-            context.quit();
+            if (setup != null && scene != null) {
+                setup.leave(); // opened from the pause menu: back to the game
+            } else if (!playing || options.benchmark()) {
+                context.quit();
+            } else if (pause == null) {
+                pause = new PauseMenu(this, settings);
+                return;
+            }
         }
         if (options.finalScreenshot() != null && context.frame() == Math.max(1, options.finalFrame())) {
             context.requestScreenshot(options.finalScreenshot());
@@ -222,6 +253,11 @@ public final class PlazaDemo implements Game {
         }
         if (!playing) {
             updateTitle(context, input);
+            return;
+        }
+        if (pause != null) {
+            // The game stands still while the menu is open.
+            pause.update(input, context.window().width(), context.window().height());
             return;
         }
         if (input.wasPressed(Key.P)) { // not in the menu: there P is a letter to type
@@ -261,16 +297,65 @@ public final class PlazaDemo implements Game {
         GraphicsDevice graphics = context.graphics();
         for (int i = 0; i < SCALE_KEYS.length; i++) {
             if (input.wasPressed(SCALE_KEYS[i])) {
-                graphics.setRenderScale(RENDER_SCALES[i]);
-                context.frameStats().reset();
+                renderScale(RENDER_SCALES[i]);
             }
         }
         if (input.wasPressed(Key.F)) {
-            smoothUpscale = !smoothUpscale;
-            graphics.setSmoothUpscale(smoothUpscale);
+            smoothUpscale(!smoothUpscale);
         }
         if (input.wasPressed(Key.R)) {
             context.frameStats().reset();
+        }
+    }
+
+    // ------------------------------------------------- what the pause menu asks for
+
+    @Override
+    public void resume() {
+        closePause();
+        engine.frameStats().reset(); // the standstill must not count
+    }
+
+    @Override
+    public void quit() {
+        engine.quit();
+    }
+
+    @Override
+    public void renderScale(float scale) {
+        engine.graphics().setRenderScale(scale);
+        engine.frameStats().reset();
+        remember(new GameSettings(scale, smoothUpscale));
+    }
+
+    @Override
+    public void smoothUpscale(boolean smooth) {
+        smoothUpscale = smooth;
+        engine.graphics().setSmoothUpscale(smooth);
+        remember(new GameSettings(settings.renderScale(), smooth));
+    }
+
+    @Override
+    public void recreateWorld() {
+        closePause();
+        playing = false;
+        setup = new SetupScreen(AssetStore.standard(), Textures.readResource("/images/loading.jpg"),
+                Textures.readResource("/images/cover.jpg"));
+        setup.openedFromGame();
+    }
+
+    private void remember(GameSettings changed) {
+        settings = changed;
+        if (!options.benchmark()) {
+            changed.save(GameSettings.file());
+        }
+    }
+
+    private void closePause() {
+        pause = null;
+        if (pauseImage != null) {
+            pauseImage.close();
+            pauseImage = null;
         }
     }
 
@@ -375,10 +460,13 @@ public final class PlazaDemo implements Game {
     /** The loading screen: the title picture in full window resolution with a progress bar. */
     @Override
     public void renderOverlay(EngineContext context) {
+        GraphicsDevice graphics = context.graphics();
         if (playing) {
+            if (pause != null) {
+                renderPause(context, graphics);
+            }
             return;
         }
-        GraphicsDevice graphics = context.graphics();
         if (setup != null) {
             renderSetup(context, graphics);
             return;
@@ -419,6 +507,24 @@ public final class PlazaDemo implements Game {
         drawImage(graphics, 1f, 1f, 0f, 0f, new Vec3(1f, 1f, 1f));
     }
 
+    /** The pause menu is a card in the middle of the window, over the standing game. */
+    private void renderPause(EngineContext context, GraphicsDevice graphics) {
+        int width = context.window().width();
+        int height = context.window().height();
+        if (pause.consumeDirty() || pauseImage == null || width != pauseImageWidth || height != pauseImageHeight) {
+            if (pauseImage != null) {
+                pauseImage.close();
+            }
+            pauseImage = Textures.fromImage(graphics, pause.paint(width, height), true);
+            pauseImageWidth = width;
+            pauseImageHeight = height;
+        }
+        float scale = (float) PauseMenu.scale(width, height);
+        imageShader.setTexture(pauseImage);
+        drawImage(graphics, PauseMenu.CARD_WIDTH * scale / width, PauseMenu.CARD_HEIGHT * scale / height, 0f, 0f,
+                new Vec3(1f, 1f, 1f));
+    }
+
     private static float fitX(float windowAspect, float imageAspect) {
         return windowAspect > imageAspect ? imageAspect / windowAspect : 1f;
     }
@@ -441,6 +547,9 @@ public final class PlazaDemo implements Game {
         }
         if (setupImage != null) {
             setupImage.close();
+        }
+        if (pauseImage != null) {
+            pauseImage.close();
         }
         if (scene != null) {
             scene.close();

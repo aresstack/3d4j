@@ -127,6 +127,7 @@ final class SetupScreen implements AutoCloseable {
     private boolean generating;
     private boolean generatedOnce;
     private boolean finished;
+    private boolean fromGame;
 
     private final List<Runnable> posted = new ArrayList<>();
     private final List<Region> regions = new ArrayList<>();
@@ -671,6 +672,20 @@ final class SetupScreen implements AutoCloseable {
         return problem;
     }
 
+    /** Tells the menu that it was opened from the running game, for the wording of its way out. */
+    void openedFromGame() {
+        fromGame = true;
+        dirty = true;
+    }
+
+    /** Leaves the menu as "Schließen" does; ignored while artwork is being drawn. */
+    void leave() {
+        if (!generating) {
+            finish();
+            dirty = true;
+        }
+    }
+
     private void finish() {
         if (codeAnswer != null) {
             codeAnswer.complete(""); // releases a pairing that still waits for its code
@@ -744,7 +759,7 @@ final class SetupScreen implements AutoCloseable {
     }
 
     /** A five-petal cherry blossom with a leaf. */
-    private static void blossom(Graphics2D g, double x, double y, double radius) {
+    static void blossom(Graphics2D g, double x, double y, double radius) {
         AffineTransform old = g.getTransform();
         g.translate(x, y);
         g.setColor(LEAF);
@@ -1030,7 +1045,7 @@ final class SetupScreen implements AutoCloseable {
         }
         // Leaving is always possible: the game runs with the built-in pictures.
         if (!generating) {
-            button(g, generatedOnce ? "Schließen" : "Ohne KI spielen", 146, 600, 250, PINK_LIGHT, INK, this::finish);
+            button(g, generatedOnce ? "Schließen" : fromGame ? "Zurück ins Spiel" : "Ohne KI spielen", 146, 600, 250, PINK_LIGHT, INK, this::finish);
         }
     }
 

@@ -57,7 +57,7 @@ und Besuchern.
 | F | Hochskalieren weich oder pixelig |
 | R | Framezeit-Statistik zurücksetzen |
 | P | `screenshot.png` speichern |
-| Esc | Beenden |
+| Esc | Pausenmenü (Weiterspielen, Einstellungen, Spiel beenden) |
 
 Umgesehen wird mit gehaltener Maustaste statt mit eingefangenem Mauszeiger, weil das auch in
 Remote-Sitzungen und virtuellen Maschinen zuverlässig funktioniert.
@@ -128,6 +128,18 @@ Einrichtungsassistenten von Space Harvester und Enterprise AI Client:
 „Ohne KI spielen“ verlässt das Menü jederzeit. `--setup` öffnet es auch dann, wenn schon Motive
 vorhanden sind, `--no-setup` unterdrückt es. Bedient wird es mit der Maus; Tab wechselt das
 Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
+
+### Das Pausenmenü
+
+Esc hält das Spiel an und zeigt eine Karte im Stil des Menüs: **Weiterspielen**,
+**Einstellungen**, **Spiel beenden**. Bedient wird sie mit der Maus oder mit Pfeiltasten und
+Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
+
+Die Einstellungen enthalten die Auflösung (100 bis 25 %, wie die Tasten 1 bis 5), das
+Hochskalieren (weich oder pixelig, wie F) und „Welt neu zeichnen lassen …“. Das öffnet das Menü
+„Die Welt erschaffen“ aus dem laufenden Spiel; dort ersetzt „Alles neu zeichnen“ auch Motive,
+die schon vorhanden sind. Auflösung und Hochskalieren merkt sich das Spiel in
+`.3d4j/game.properties`; `--scale=` hat Vorrang, `--benchmark` ignoriert die Datei.
 
 ### Der Generator auf der Kommandozeile
 
@@ -231,7 +243,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
 | `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
-| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
+| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.
