@@ -151,6 +151,9 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
   man in die Konsole tippt; die Kopplung liegt danach in `.3d4j/keepass.properties` und gilt
   auch für das Menü. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird sie statt
   KeePass verwendet; dann muss die Adresse angegeben sein.
+- **Antwortlänge:** Jede Anfrage sendet `max_tokens` (Standard 8192, sonst `chat.maxTokens` aus
+  `.3d4j/generator.properties` oder dem Enterprise AI Client). Meldet der Dienst
+  `finish_reason=length`, gilt die Antwort als abgeschnitten und wird nicht verwendet.
 - **Weitere Argumente:** `--parallel=N` (Standard 4), `--only=lamp,visitor-1`, `--force`
   (vorhandene Motive neu erzeugen).
 - **Proxy:** Den Weg zum Dienst bestimmt `win-proxy-java`, wie im Enterprise AI Client und in

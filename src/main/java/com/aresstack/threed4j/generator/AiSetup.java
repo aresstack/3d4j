@@ -66,6 +66,23 @@ public final class AiSetup {
                 entry);
     }
 
+    /**
+     * Upper limit of tokens per answer, sent as {@code max_tokens}: {@code chat.maxTokens}
+     * from {@code .3d4j/generator.properties}, else from the Enterprise AI Client, else 8192.
+     */
+    public static int maxTokens() {
+        Properties own = read(settingsFile());
+        String appData = System.getenv("APPDATA");
+        Properties client = read(Path.of(appData != null && !appData.isBlank() ? appData : System.getProperty("user.home"),
+                ".enterprise-ai-client", "enterprise-ai-client.properties"));
+        try {
+            return Math.max(256, Integer.parseInt(first(own.getProperty("chat.maxTokens"),
+                    client.getProperty("chat.maxTokens"), "8192")));
+        } catch (NumberFormatException e) {
+            return 8192;
+        }
+    }
+
     public static void save(Settings settings) throws IOException {
         Properties own = read(settingsFile());
         // An empty value is removed, so that the generator falls back as documented.

@@ -44,6 +44,7 @@ final class ChatClient {
     private final URI modelsEndpoint;
     private final String model;
     private final String apiKey;
+    private final int maxTokens = AiSetup.maxTokens();
 
     ChatClient(URI baseUrl, String model, String apiKey) {
         this.endpoint = URI.create(baseUrl + "/chat/completions");
@@ -180,6 +181,8 @@ final class ChatClient {
         messages.add(message("user", userPrompt));
         body.add("messages", messages);
         body.addProperty("stream", false);
+        // Without a limit of its own the service may cut a long drawing short.
+        body.addProperty("max_tokens", maxTokens);
 
         String response = exchange(endpoint, body.toString(), 5 * 60_000);
         try {
@@ -188,6 +191,11 @@ final class ChatClient {
                     .getAsJsonObject("message").get("content");
             if (content == null || content.isJsonNull()) {
                 throw new IOException("the answer has no text: " + abbreviate(response));
+            }
+            JsonElement finish = json.getAsJsonArray("choices").get(0).getAsJsonObject().get("finish_reason");
+            if (finish != null && !finish.isJsonNull() && finish.getAsString().equals("length")) {
+                throw new IOException("the answer was cut off at max_tokens=" + maxTokens
+                        + "; raise chat.maxTokens in .3d4j/generator.properties");
             }
             return content.getAsString();
         } catch (RuntimeException e) {

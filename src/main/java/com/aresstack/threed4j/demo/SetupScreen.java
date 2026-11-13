@@ -653,6 +653,9 @@ final class SetupScreen implements AutoCloseable {
         if (problem.contains("background is not transparent")) {
             return "Das Motiv war nicht freigestellt.";
         }
+        if (problem.contains("cut off at max_tokens")) {
+            return "Die Antwort wurde abgeschnitten (chat.maxTokens erhöhen).";
+        }
         if (problem.contains("proxy route")) {
             return "Kein Weg zum Dienst (Proxy).";
         }
