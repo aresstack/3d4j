@@ -79,7 +79,7 @@ tasks.named('jar') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     // Signatures of the library JARs do not match the combined JAR.
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'module-info.class',
-            'META-INF/versions/*/module-info.class
+            'META-INF/versions/*/module-info.class'
     manifest {
         attributes(
                 'Main-Class': launcherClass,
