@@ -38,6 +38,9 @@ public final class X11Window implements GLWindow {
     private int height;
     private boolean closeRequested;
     private boolean closed;
+    private boolean mouseCaptured;
+    private long invisibleCursor;
+    private final MemorySegment scratch;
 
     public X11Window(WindowConfig config) {
         display = openDisplay();
@@ -49,6 +52,7 @@ public final class X11Window implements GLWindow {
         width = config.width();
         height = config.height();
         event = Native.bytes(arena, SIZEOF_XEVENT);
+        scratch = Native.bytes(arena, 40);
 
         try (Arena temp = Arena.ofConfined()) {
             MemorySegment fbConfig = chooseFramebufferConfig(temp, screen);
@@ -66,7 +70,7 @@ public final class X11Window implements GLWindow {
             MemorySegment attributes = Native.bytes(temp, SIZEOF_SET_WINDOW_ATTRIBUTES);
             attributes.set(JAVA_LONG, SWA_BORDER_PIXEL, 0L);
             attributes.set(JAVA_LONG, SWA_EVENT_MASK, KEY_PRESS_MASK | KEY_RELEASE_MASK | BUTTON_PRESS_MASK | BUTTON_RELEASE_MASK
-                    | POINTER_MOTION_MASK | STRUCTURE_NOTIFY_MASK);
+                    | POINTER_MOTION_MASK | STRUCTURE_NOTIFY_MASK | FOCUS_CHANGE_MASK);
             attributes.set(JAVA_LONG, SWA_COLORMAP, colormap);
             window = createWindow(display, root, width, height, depth, visual,
                     CW_BORDER_PIXEL | CW_EVENT_MASK | CW_COLORMAP, attributes);
@@ -172,9 +176,18 @@ public final class X11Window implements GLWindow {
             switch (type) {
                 case KEY_PRESS, KEY_RELEASE -> input.onKey(mapKey(lookupKeysym(event)), type == KEY_PRESS);
                 // While a button is held, X keeps sending the motion to this window (implicit grab).
-                case MOTION_NOTIFY -> input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                case MOTION_NOTIFY -> {
+                    // While captured, the movement is measured below; these positions would only
+                    // reflect the pointer being put back to the center.
+                    if (!mouseCaptured) {
+                        input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                    }
+                }
+                case FOCUS_OUT -> setMouseCaptured(false); // another window is active: give the pointer back
                 case BUTTON_PRESS, BUTTON_RELEASE -> {
-                    input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                    if (!mouseCaptured) {
+                        input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                    }
                     input.onMouseButton(switch (event.get(JAVA_INT, BUTTON_NUMBER)) {
                         case 1 -> MouseButton.LEFT;
                         case 2 -> MouseButton.MIDDLE;
@@ -195,6 +208,46 @@ public final class X11Window implements GLWindow {
                 }
             }
         }
+        if (mouseCaptured) {
+            measureCapturedMouse();
+        }
+    }
+
+    private void measureCapturedMouse() {
+        // Movement = how far the pointer got from the window center since it was put there.
+        queryPointer(display, window, scratch);
+        int deltaX = scratch.get(JAVA_INT, 24) - width / 2;
+        int deltaY = scratch.get(JAVA_INT, 28) - height / 2;
+        if (deltaX != 0 || deltaY != 0) {
+            input.onMouseDelta(deltaX, deltaY);
+            warpPointer(display, window, width / 2, height / 2);
+        }
+    }
+
+    @Override
+    public void setMouseCaptured(boolean captured) {
+        if (captured == mouseCaptured) {
+            return;
+        }
+        mouseCaptured = captured;
+        input.forgetMousePosition();
+        if (captured) {
+            if (invisibleCursor == 0L) {
+                scratch.fill((byte) 0);
+                invisibleCursor = createInvisibleCursor(display, window, scratch);
+            }
+            grabPointer(display, window, BUTTON_PRESS_MASK | BUTTON_RELEASE_MASK | POINTER_MOTION_MASK,
+                    invisibleCursor);
+            warpPointer(display, window, width / 2, height / 2);
+        } else {
+            ungrabPointer(display);
+        }
+        flush(display);
+    }
+
+    @Override
+    public boolean isMouseCaptured() {
+        return mouseCaptured;
     }
 
     private static Key mapKey(long keysym) {

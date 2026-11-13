@@ -56,6 +56,7 @@ final class Win32Api {
 
     static final int WM_DESTROY = 0x0002;
     static final int WM_SIZE = 0x0005;
+    static final int WM_KILLFOCUS = 0x0008;
     static final int WM_CLOSE = 0x0010;
     static final int WM_ERASEBKGND = 0x0014;
     static final int WM_KEYDOWN = 0x0100;
@@ -199,6 +200,14 @@ final class Win32Api {
             FunctionDescriptor.of(ADDRESS, ADDRESS));
     private static final MethodHandle ReleaseCapture = Native.downcall(USER32, "ReleaseCapture",
             FunctionDescriptor.of(JAVA_INT));
+    private static final MethodHandle ShowCursor = Native.downcall(USER32, "ShowCursor",
+            FunctionDescriptor.of(JAVA_INT, JAVA_INT));
+    private static final MethodHandle GetCursorPos = Native.downcall(USER32, "GetCursorPos",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS));
+    private static final MethodHandle SetCursorPos = Native.downcall(USER32, "SetCursorPos",
+            FunctionDescriptor.of(JAVA_INT, JAVA_INT, JAVA_INT));
+    private static final MethodHandle ClientToScreen = Native.downcall(USER32, "ClientToScreen",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
     private static final MethodHandle GetSystemMetrics = Native.downcall(USER32, "GetSystemMetrics",
             FunctionDescriptor.of(JAVA_INT, JAVA_INT));
     /** OpenGL 1.1 function, a plain export of opengl32.dll: usable before the GL class is. */
@@ -241,6 +250,41 @@ final class Win32Api {
     static void releaseCapture() {
         try {
             int ignored = (int) ReleaseCapture.invokeExact();
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Shows or hides the mouse pointer. Windows counts these calls, so they must be balanced. */
+    static void showCursor(boolean show) {
+        try {
+            int counter = (int) ShowCursor.invokeExact(show ? 1 : 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Writes the pointer position in screen coordinates into a {@code POINT} (two 32-bit integers). */
+    static void getCursorPos(MemorySegment point) {
+        try {
+            int ignored = (int) GetCursorPos.invokeExact(point);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void setCursorPos(int x, int y) {
+        try {
+            int ignored = (int) SetCursorPos.invokeExact(x, y);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Converts a {@code POINT} from window to screen coordinates, in place. */
+    static void clientToScreen(MemorySegment window, MemorySegment point) {
+        try {
+            int ignored = (int) ClientToScreen.invokeExact(window, point);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

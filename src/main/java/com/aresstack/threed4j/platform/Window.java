@@ -24,6 +24,16 @@ public interface Window extends AutoCloseable {
 
     Input input();
 
+    /**
+     * Captures the mouse for looking around: the pointer is hidden and held in the
+     * window, and {@link Input#mouseDeltaX()} / {@link Input#mouseDeltaY()} report
+     * its movement without any button being held. The window releases the mouse by
+     * itself when it loses the keyboard focus.
+     */
+    void setMouseCaptured(boolean captured);
+
+    boolean isMouseCaptured();
+
     void setTitle(String title);
 
     /** Destroys the window (and its OpenGL context, if it has one). */

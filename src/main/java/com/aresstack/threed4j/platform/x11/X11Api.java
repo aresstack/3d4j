@@ -43,12 +43,15 @@ final class X11Api {
     static final long BUTTON_RELEASE_MASK = 1L << 3;
     static final long POINTER_MOTION_MASK = 1L << 6;
     static final long STRUCTURE_NOTIFY_MASK = 1L << 17;
+    static final long FOCUS_CHANGE_MASK = 1L << 21;
+    static final int GRAB_MODE_ASYNC = 1;
 
     static final int KEY_PRESS = 2;
     static final int KEY_RELEASE = 3;
     static final int BUTTON_PRESS = 4;
     static final int BUTTON_RELEASE = 5;
     static final int MOTION_NOTIFY = 6;
+    static final int FOCUS_OUT = 10;
     static final int CONFIGURE_NOTIFY = 22;
     static final int CLIENT_MESSAGE = 33;
 
@@ -131,6 +134,21 @@ final class X11Api {
     private static final MethodHandle XLookupKeysym = x11("XLookupKeysym", FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_INT));
     private static final MethodHandle XkbSetDetectableAutoRepeat = x11("XkbSetDetectableAutoRepeat",
             FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_INT, ADDRESS));
+    private static final MethodHandle XGrabPointer = x11("XGrabPointer",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_LONG,
+                    JAVA_LONG, JAVA_LONG));
+    private static final MethodHandle XUngrabPointer = x11("XUngrabPointer",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG));
+    private static final MethodHandle XWarpPointer = x11("XWarpPointer",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT,
+                    JAVA_INT, JAVA_INT));
+    private static final MethodHandle XQueryPointer = x11("XQueryPointer",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, ADDRESS, ADDRESS, ADDRESS, ADDRESS, ADDRESS,
+                    ADDRESS, ADDRESS));
+    private static final MethodHandle XCreateBitmapFromData = x11("XCreateBitmapFromData",
+            FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_LONG, ADDRESS, JAVA_INT, JAVA_INT));
+    private static final MethodHandle XCreatePixmapCursor = x11("XCreatePixmapCursor",
+            FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_LONG, JAVA_LONG, ADDRESS, ADDRESS, JAVA_INT, JAVA_INT));
     private static final MethodHandle XFree = x11("XFree", FunctionDescriptor.of(JAVA_INT, ADDRESS));
     private static final MethodHandle XFlush = x11("XFlush", FunctionDescriptor.of(JAVA_INT, ADDRESS));
 
@@ -315,6 +333,61 @@ final class X11Api {
     static void setDetectableAutoRepeat(MemorySegment display) {
         try {
             int ignored = (int) XkbSetDetectableAutoRepeat.invokeExact(display, 1, MemorySegment.NULL);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * Holds the pointer inside the window and shows the given cursor until
+     * {@link #ungrabPointer}.
+     */
+    static void grabPointer(MemorySegment display, long window, long eventMask, long cursor) {
+        try {
+            int ignored = (int) XGrabPointer.invokeExact(display, window, 1, (int) eventMask, GRAB_MODE_ASYNC,
+                    GRAB_MODE_ASYNC, window, cursor, 0L);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void ungrabPointer(MemorySegment display) {
+        try {
+            int ignored = (int) XUngrabPointer.invokeExact(display, 0L);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Moves the pointer to a position inside the window. */
+    static void warpPointer(MemorySegment display, long window, int x, int y) {
+        try {
+            int ignored = (int) XWarpPointer.invokeExact(display, 0L, window, 0, 0, 0, 0, x, y);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * Asks for the pointer position relative to the window.
+     *
+     * @param scratch at least 40 bytes; afterwards x is the int at offset 24, y at offset 28
+     */
+    static void queryPointer(MemorySegment display, long window, MemorySegment scratch) {
+        try {
+            int ignored = (int) XQueryPointer.invokeExact(display, window,
+                    scratch, scratch.asSlice(8), scratch.asSlice(16), scratch.asSlice(20),
+                    scratch.asSlice(24), scratch.asSlice(28), scratch.asSlice(32));
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** X has no "hide the pointer": this creates a cursor that is one transparent pixel. */
+    static long createInvisibleCursor(MemorySegment display, long window, MemorySegment zeros) {
+        try {
+            long bitmap = (long) XCreateBitmapFromData.invokeExact(display, window, zeros, 1, 1);
+            return (long) XCreatePixmapCursor.invokeExact(display, bitmap, bitmap, zeros, zeros, 0, 0);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }
