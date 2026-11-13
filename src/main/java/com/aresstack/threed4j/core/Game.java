@@ -1,12 +1,12 @@
 package com.aresstack.threed4j.core;
 
 /**
- * What a game implements. All methods are called on the main thread while the
- * OpenGL context is current, so OpenGL may be used in every one of them.
+ * What a game implements. All methods are called on the main thread, and
+ * {@link EngineContext#graphics()} may be used in every one of them.
  */
 public interface Game {
 
-    /** Called once before the first frame: load shaders, meshes, set OpenGL state. */
+    /** Called once before the first frame: load shaders and meshes. */
     void init(EngineContext context);
 
     /**
@@ -17,7 +17,7 @@ public interface Game {
      */
     void update(EngineContext context, double deltaSeconds);
 
-    /** Draws the current state. The viewport already covers the whole window. */
+    /** Draws the current state: clear, then draw meshes. */
     void render(EngineContext context);
 
     /** Called once after the last frame: release GPU resources. */

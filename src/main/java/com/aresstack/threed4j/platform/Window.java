@@ -1,7 +1,8 @@
 package com.aresstack.threed4j.platform;
 
 /**
- * A native window with a current OpenGL 3.3 core context.
+ * A native window with keyboard input. What draws into it is a
+ * {@code GraphicsDevice}.
  *
  * <p>All methods must be called from the thread that created the window.</p>
  */
@@ -9,9 +10,6 @@ public interface Window extends AutoCloseable {
 
     /** Processes pending window and input events without blocking. */
     void pollEvents();
-
-    /** Shows the frame that was just rendered. */
-    void swapBuffers();
 
     /** {@code true} once the user closed the window or {@link #requestClose()} was called. */
     boolean shouldClose();
@@ -28,7 +26,7 @@ public interface Window extends AutoCloseable {
 
     void setTitle(String title);
 
-    /** Destroys the OpenGL context and the window. */
+    /** Destroys the window (and its OpenGL context, if it has one). */
     @Override
     void close();
 }

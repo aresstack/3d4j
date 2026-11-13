@@ -4,7 +4,7 @@ import com.aresstack.threed4j.ffm.Native;
 import com.aresstack.threed4j.gl.GLLoader;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
-import com.aresstack.threed4j.platform.Window;
+import com.aresstack.threed4j.platform.GLWindow;
 import com.aresstack.threed4j.platform.WindowConfig;
 
 import java.lang.foreign.Arena;
@@ -19,7 +19,7 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
 import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
 /** Linux window: Xlib for the window and its events, GLX for the OpenGL context. */
-public final class X11Window implements Window {
+public final class X11Window implements GLWindow {
 
     private final Arena arena = Arena.ofConfined();
     private final Input input = new Input();

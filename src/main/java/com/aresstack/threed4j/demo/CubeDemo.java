@@ -5,17 +5,17 @@ import com.aresstack.threed4j.core.EngineConfig;
 import com.aresstack.threed4j.core.EngineContext;
 import com.aresstack.threed4j.core.Game;
 import com.aresstack.threed4j.gfx.Camera;
+import com.aresstack.threed4j.gfx.GraphicsDevice;
 import com.aresstack.threed4j.gfx.Mesh;
 import com.aresstack.threed4j.gfx.Meshes;
-import com.aresstack.threed4j.gfx.ShaderProgram;
+import com.aresstack.threed4j.gfx.Shader;
+import com.aresstack.threed4j.gfx.ShaderLayout;
 import com.aresstack.threed4j.math.Mat4;
 import com.aresstack.threed4j.math.Vec3;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
 
 import java.nio.file.Path;
-
-import static com.aresstack.threed4j.gl.GL.*;
 
 /**
  * A lit, rotating cube.
@@ -24,7 +24,8 @@ import static com.aresstack.threed4j.gl.GL.*;
  * P saves {@code screenshot.png}, Escape quits.</p>
  *
  * <p>Arguments: {@code --frames=N} stops after N frames, {@code --screenshot=FILE}
- * saves the last of those frames, {@code --no-vsync} runs uncapped.</p>
+ * saves the last of those frames, {@code --angle=RADIANS} starts paused at a fixed
+ * rotation (for comparable screenshots), {@code --no-vsync} runs uncapped.</p>
  */
 public final class CubeDemo implements Game {
 
@@ -33,7 +34,7 @@ public final class CubeDemo implements Game {
     private final Path finalScreenshot;
     private final long finalFrame;
 
-    private ShaderProgram shader;
+    private Shader shader;
     private Mesh cube;
     private final Camera camera = new Camera();
 
@@ -43,35 +44,45 @@ public final class CubeDemo implements Game {
     private float orbitPitch = 0.45f;
     private float orbitDistance = 3.2f;
 
-    private CubeDemo(Path finalScreenshot, long finalFrame) {
+    private CubeDemo(Path finalScreenshot, long finalFrame, Double fixedAngle) {
         this.finalScreenshot = finalScreenshot;
         this.finalFrame = finalFrame;
+        if (fixedAngle != null) {
+            cubeAngle = fixedAngle;
+            paused = true;
+        }
     }
 
     public static void main(String[] args) {
         EngineConfig config = EngineConfig.of("3d4j – Cube Demo", 1280, 720);
         Path screenshot = null;
+        Double angle = null;
         for (String arg : args) {
             if (arg.startsWith("--frames=")) {
                 config = config.withMaxFrames(Long.parseLong(arg.substring("--frames=".length())));
             } else if (arg.startsWith("--screenshot=")) {
                 screenshot = Path.of(arg.substring("--screenshot=".length()));
+            } else if (arg.startsWith("--angle=")) {
+                angle = Double.parseDouble(arg.substring("--angle=".length()));
             } else if (arg.equals("--no-vsync")) {
                 config = config.withVsync(false);
             } else {
                 throw new IllegalArgumentException("Unknown argument: " + arg);
             }
         }
-        Engine.run(config, new CubeDemo(screenshot, config.maxFrames()));
+        Engine.run(config, new CubeDemo(screenshot, config.maxFrames(), angle));
     }
 
     @Override
     public void init(EngineContext context) {
-        shader = ShaderProgram.fromResources("/shaders/basic.vert", "/shaders/basic.frag");
-        cube = Meshes.cube();
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glClearColor(0.08f, 0.09f, 0.12f, 1f);
+        GraphicsDevice graphics = context.graphics();
+        // Attributes: position, normal, color. The uniform order must match the cbuffer in basic.hlsl.
+        shader = graphics.createShader("basic", ShaderLayout.attributes(3, 3, 3)
+                .mat4("uModel")
+                .mat4("uView")
+                .mat4("uProjection")
+                .vec3("uLightDirection"));
+        cube = Meshes.cube(graphics);
     }
 
     @Override
@@ -124,16 +135,16 @@ public final class CubeDemo implements Game {
 
     @Override
     public void render(EngineContext context) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GraphicsDevice graphics = context.graphics();
+        graphics.clear(0.08f, 0.09f, 0.12f);
 
         Mat4 model = Mat4.rotationY((float) cubeAngle).multiply(Mat4.rotationX((float) (cubeAngle * 0.6)));
 
-        shader.use();
         shader.setUniform("uModel", model);
         shader.setUniform("uView", camera.viewMatrix());
         shader.setUniform("uProjection", camera.projectionMatrix(context.aspectRatio()));
         shader.setUniform("uLightDirection", LIGHT_DIRECTION);
-        cube.draw();
+        graphics.draw(cube, shader);
     }
 
     @Override

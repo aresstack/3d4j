@@ -13,7 +13,7 @@ public final class Meshes {
      * (3 floats each). Every face has its own four vertices so that normals and
      * colors are constant per face.
      */
-    public static Mesh cube() {
+    public static Mesh cube(GraphicsDevice graphics) {
         // Per face: two edge directions (their cross product points outwards) and a color.
         float[][] faces = {
                 {0, 0, -1, 0, 1, 0, 0.90f, 0.30f, 0.25f},  // +X red
@@ -59,6 +59,6 @@ public final class Meshes {
             indices[i++] = first + 2;
             indices[i++] = first + 3;
         }
-        return new Mesh(vertices, indices, 3, 3, 3);
+        return graphics.createMesh(vertices, indices, 3, 3, 3);
     }
 }

@@ -63,6 +63,14 @@ public final class Native {
         return LINKER.downcallHandle(address, descriptor);
     }
 
+    /**
+     * Creates a method handle for calling through function pointers that are only
+     * known at call time (COM methods). The pointer is the handle's first argument.
+     */
+    public static MethodHandle functionPointer(FunctionDescriptor descriptor) {
+        return LINKER.downcallHandle(descriptor);
+    }
+
     // ------------------------------------------------------------------ strings
 
     /** Allocates a zero-terminated UTF-8 string ({@code const char*}). */
@@ -83,6 +91,19 @@ public final class Native {
             return null;
         }
         return pointer.reinterpret(Long.MAX_VALUE).getUtf8String(0);
+    }
+
+    /** Reads a zero-terminated UTF-16 string of at most {@code maxChars} characters. */
+    public static String readWideString(MemorySegment memory, int maxChars) {
+        StringBuilder text = new StringBuilder();
+        for (int i = 0; i < maxChars; i++) {
+            char c = memory.get(ValueLayout.JAVA_CHAR, i * 2L);
+            if (c == 0) {
+                break;
+            }
+            text.append(c);
+        }
+        return text.toString();
     }
 
     // ------------------------------------------------------------------- memory

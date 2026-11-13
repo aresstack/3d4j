@@ -13,8 +13,8 @@ out vec3 vNormal;
 out vec3 vColor;
 
 void main() {
-    // Inverse transpose keeps normals perpendicular under non-uniform scaling.
-    vNormal = mat3(transpose(inverse(uModel))) * aNormal;
+    // Correct as long as the model matrix has no non-uniform scaling.
+    vNormal = mat3(uModel) * aNormal;
     vColor = aColor;
     gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
 }

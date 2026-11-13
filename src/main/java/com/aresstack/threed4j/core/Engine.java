@@ -1,14 +1,12 @@
 package com.aresstack.threed4j.core;
 
+import com.aresstack.threed4j.gfx.GraphicsDevice;
 import com.aresstack.threed4j.gfx.Screenshot;
-import com.aresstack.threed4j.platform.Platform;
 import com.aresstack.threed4j.platform.Window;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-
-import static com.aresstack.threed4j.gl.GL.*;
 
 /** Opens the window and runs the game loop. */
 public final class Engine {
@@ -21,21 +19,21 @@ public final class Engine {
 
     /** Runs the game on the calling thread and returns when the window has been closed. */
     public static void run(EngineConfig config, Game game) {
-        try (Window window = Platform.createWindow(config.window())) {
-            System.out.printf("OpenGL %s | %s | GLSL %s%n",
-                    glGetString(GL_VERSION), glGetString(GL_RENDERER), glGetString(GL_SHADING_LANGUAGE_VERSION));
+        try (Display display = Display.open(config.window())) {
+            System.out.println(display.graphics().description());
 
-            EngineContext context = new EngineContext(window);
+            EngineContext context = new EngineContext(display.window(), display.graphics());
             game.init(context);
             try {
-                loop(config, game, window, context);
+                loop(config, game, display.window(), display.graphics(), context);
             } finally {
                 game.dispose();
             }
         }
     }
 
-    private static void loop(EngineConfig config, Game game, Window window, EngineContext context) {
+    private static void loop(EngineConfig config, Game game, Window window, GraphicsDevice graphics,
+                             EngineContext context) {
         long start = System.nanoTime();
         long previous = start;
         long fpsWindowStart = start;
@@ -52,14 +50,14 @@ public final class Engine {
 
             game.update(context, delta);
 
-            glViewport(0, 0, window.width(), window.height());
+            graphics.beginFrame(window.width(), window.height());
             game.render(context);
 
             Path screenshot = context.takePendingScreenshot();
             if (screenshot != null) {
-                saveScreenshot(window, screenshot);
+                saveScreenshot(graphics, screenshot);
             }
-            window.swapBuffers();
+            graphics.present();
 
             fpsWindowFrames++;
             if (now - fpsWindowStart >= 1_000_000_000L) {
@@ -75,9 +73,9 @@ public final class Engine {
         }
     }
 
-    private static void saveScreenshot(Window window, Path file) {
+    private static void saveScreenshot(GraphicsDevice graphics, Path file) {
         try {
-            Screenshot.save(window.width(), window.height(), file);
+            Screenshot.save(graphics.readPixels(), file);
             System.out.println("Screenshot saved: " + file.toAbsolutePath());
         } catch (IOException e) {
             throw new UncheckedIOException(e);

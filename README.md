@@ -1,23 +1,26 @@
 # 3d4j
 
 Grundgerüst für eine 3D-Engine in reinem Java 21 – ohne eine einzige zusätzliche Bibliothek.
-Fenster, Eingabe und OpenGL werden über die Foreign Function & Memory API (FFM) direkt
+Fenster, Eingabe und Grafik werden über die Foreign Function & Memory API (FFM) direkt
 aus den Systembibliotheken angesprochen:
 
-| Plattform | Fenster und Eingabe | OpenGL-Kontext |
+| Plattform | Fenster und Eingabe | Grafik |
 |---|---|---|
-| Windows x64 | `user32.dll`, `gdi32.dll` | WGL (`opengl32.dll`) |
-| Linux x64 | Xlib (`libX11.so.6`) | GLX (`libGL.so.1`) |
+| Windows x64 | `user32.dll` | Direct3D 11 (`d3d11.dll`, `d3dcompiler_47.dll`), ersatzweise OpenGL 3.3 über WGL |
+| Linux x64 | Xlib (`libX11.so.6`) | OpenGL 3.3 über GLX (`libGL.so.1`) |
 
-Gerendert wird mit einem OpenGL-3.3-Core-Kontext, also mit Shadern, Vertex-Buffern und
-voller Hardwarebeschleunigung.
+Gerendert wird mit Shadern, Vertex-Buffern und voller Hardwarebeschleunigung. Unter Windows
+ist Direct3D 11 der Standard, weil es auch dort läuft, wo kein OpenGL-Treiber vorhanden ist
+(Firmenrechner, virtuelle Maschinen, Remote-Sitzungen): Fehlt ein Hardware-Treiber, nutzt
+die Engine WARP, den Software-Renderer von Windows.
 
 ## Voraussetzungen
 
 - **Genau JDK 21.** Die FFM-API ist dort eine Preview-API, und Preview-Klassen laufen nur
   auf der Java-Version, für die sie kompiliert wurden.
 - Windows x64 oder Linux x64 mit X11 (unter Wayland über XWayland).
-- Ein Grafiktreiber mit OpenGL 3.3 oder neuer.
+- Windows: nichts weiter, Direct3D 11 gehört zum System. Linux: ein Treiber mit OpenGL 3.3
+  oder neuer.
 
 ## Starten
 
@@ -48,7 +51,13 @@ Die Demo zeigt einen beleuchteten, rotierenden Würfel:
 | Esc | Beenden |
 
 Argumente der Demo: `--frames=N` beendet nach N Frames, `--screenshot=DATEI` speichert den
-letzten dieser Frames, `--no-vsync` schaltet die Bildsynchronisation ab.
+letzten dieser Frames, `--angle=RADIANT` startet pausiert mit fester Drehung, `--no-vsync`
+schaltet die Bildsynchronisation ab.
+
+Beim Start gibt die Engine aus, womit sie rendert, zum Beispiel
+`Direct3D 11 (feature level 11_0, hardware) | <Name der Grafikkarte>`. Die Grafik-API lässt
+sich mit `-Dthreed4j.backend=d3d11` oder `-Dthreed4j.backend=opengl` erzwingen
+(Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler OpenGL).
 
 ## Der Launcher
 
@@ -100,15 +109,30 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `launcher` | Selbststart mit `--enable-preview` (eigenes Source-Set, ohne Preview kompiliert) |
 | `ffm` | `Native`: Hilfsschicht über der FFM-API (Bibliotheken laden, Strings, Speicher) |
 | `gl` | `GL`: handgeschriebene OpenGL-Bindings; `GLLoader`: Auflösung der Funktionsadressen |
-| `platform` | `Window`, `Input`, `Key` und die Auswahl der Plattform |
-| `platform.win32` | `Win32Api` (Bindings) und `Win32Window` (Fenster, Nachrichten, WGL) |
+| `platform` | `Window`, `GLWindow`, `Input`, `Key` |
+| `platform.win32` | `Win32Api` (Bindings) und `Win32Window` (Fenster, Nachrichten, optional WGL) |
 | `platform.x11` | `X11Api` (Bindings) und `X11Window` (Fenster, Events, GLX) |
-| `core` | `Engine` (Game-Loop), `Game`, `EngineContext`, `EngineConfig` |
-| `gfx` | `ShaderProgram`, `Mesh`, `Meshes`, `Camera`, `Screenshot` |
+| `gfx` | Die Grafik-Schnittstelle der Engine: `GraphicsDevice`, `Shader`, `ShaderLayout`, `Mesh`, dazu `Meshes`, `Camera`, `Screenshot` |
+| `gfx.gl` | OpenGL-Implementierung: `GLDevice`, `GLShader`, `GLMesh` |
+| `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh` |
+| `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig` |
 | `math` | `Vec3`, `Mat4` |
 | `demo` | `CubeDemo` |
 
-Die Shader liegen als Ressourcen unter `src/main/resources/shaders`.
+Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
+nichts.
+
+### Shader
+
+Jeder Shader liegt unter `src/main/resources/shaders` in beiden Sprachen vor: `name.vert` und
+`name.frag` (GLSL) für OpenGL, `name.hlsl` mit den Einstiegspunkten `vertexMain` und
+`pixelMain` für Direct3D. Das `ShaderLayout` in Java beschreibt Vertex-Attribute und Uniforms.
+Für die HLSL-Datei ist seine Reihenfolge bindend: Attribut `i` hat die Semantik `ATTRIBUTEi`,
+und die Uniforms bilden in derselben Reihenfolge einen `cbuffer` an Register `b0`.
+
+Beide Backends verhalten sich gleich: Matrizen folgen den OpenGL-Konventionen von `Mat4`,
+Dreiecke gegen den Uhrzeigersinn zeigen zum Betrachter, Rückseiten werden verworfen. Den
+anderen Tiefenbereich von Direct3D gleicht eine Zeile im HLSL-Vertex-Shader aus.
 
 ### Ein eigenes Spiel
 
@@ -118,9 +142,9 @@ public final class MyGame implements Game {
         Engine.run(EngineConfig.of("Mein Spiel", 1280, 720), new MyGame());
     }
 
-    @Override public void init(EngineContext context) { /* Shader und Meshes laden */ }
+    @Override public void init(EngineContext context) { /* context.graphics(): Shader und Meshes anlegen */ }
     @Override public void update(EngineContext context, double deltaSeconds) { /* Logik, Eingabe */ }
-    @Override public void render(EngineContext context) { /* zeichnen */ }
+    @Override public void render(EngineContext context) { /* graphics.clear(...), graphics.draw(mesh, shader) */ }
     @Override public void dispose() { /* GPU-Ressourcen freigeben */ }
 }
 ```
@@ -128,7 +152,8 @@ public final class MyGame implements Game {
 ### Eine OpenGL-Funktion ergänzen
 
 In `GL` ein Handle mit der C-Signatur und eine statische Wrapper-Methode anlegen, nach dem
-Muster der vorhandenen Funktionen. `GL` darf erst benutzt werden, wenn ein `Window`
+Muster der vorhandenen Funktionen. Für Direct3D entsprechend in `D3D11Api`: Dort steht zu
+jeder COM-Methode ihre Slot-Nummer in der virtuellen Methodentabelle. `GL` darf erst benutzt werden, wenn ein `Window`
 existiert: Die Funktionsadressen liefert unter Windows erst der Grafiktreiber, sobald ein
 Kontext aktiv ist.
 
@@ -142,9 +167,11 @@ schlichten `java -jar` und veröffentlicht es anschließend unter dem festen Rel
 
 | Umgebung | Stand |
 |---|---|
-| Linux x64, Mesa (llvmpipe) unter Xvfb | getestet: Start über den Launcher, Rendering, Tastatur, Größenänderung, Schließen |
-| Windows-Codepfad mit Windows-JDK 21 unter Wine | getestet: dieselben Punkte |
-| Echtes Windows mit echtem Grafiktreiber | noch nicht getestet |
+| Linux x64, OpenGL (Mesa llvmpipe unter Xvfb) | getestet: Start über den Launcher, Rendering, Tastatur, Größenänderung, Schließen |
+| Windows-Codepfad mit Windows-JDK 21 unter Wine, Direct3D 11 | getestet: dieselben Punkte; das Bild ist pixelgleich mit dem OpenGL-Bild |
+| Windows-Codepfad unter Wine, OpenGL | getestet: dieselben Punkte |
+| Echtes Windows, Direct3D 11 | noch nicht getestet, ebenso wenig der Rückfall auf WARP |
+| Echtes Windows ohne OpenGL-Treiber, OpenGL | scheitert erwartungsgemäß mit einer Diagnose („GDI Generic“) |
 
 ## Grenzen und nächste Schritte
 

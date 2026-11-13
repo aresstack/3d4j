@@ -4,7 +4,7 @@ import com.aresstack.threed4j.ffm.Native;
 import com.aresstack.threed4j.gl.GLLoader;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
-import com.aresstack.threed4j.platform.Window;
+import com.aresstack.threed4j.platform.GLWindow;
 import com.aresstack.threed4j.platform.WindowConfig;
 
 import java.lang.foreign.Arena;
@@ -19,8 +19,11 @@ import static java.lang.foreign.ValueLayout.JAVA_BYTE;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 import static java.lang.foreign.ValueLayout.JAVA_SHORT;
 
-/** Windows window: user32 for the window and its messages, WGL for the OpenGL context. */
-public final class Win32Window implements Window {
+/**
+ * Windows window: user32 for the window and its messages. It can carry an OpenGL
+ * context (WGL) or stay a plain window that Direct3D renders into.
+ */
+public final class Win32Window implements GLWindow {
 
     private static final String CLASS_NAME = "threed4j.Window";
 
@@ -40,7 +43,11 @@ public final class Win32Window implements Window {
     private boolean closeRequested;
     private boolean closed;
 
-    public Win32Window(WindowConfig config) {
+    /**
+     * @param openGL {@code true} to create an OpenGL 3.3 core context for the window,
+     *               {@code false} for a plain window (used by the Direct3D backend)
+     */
+    public Win32Window(WindowConfig config, boolean openGL) {
         width = config.width();
         height = config.height();
         setProcessDpiAware();
@@ -81,9 +88,13 @@ public final class Win32Window implements Window {
             throw new IllegalStateException("GetDC failed");
         }
 
-        context = createCoreContext();
-        GLLoader.install(Win32Api::glFunction);
-        setSwapInterval(config.vsync() ? 1 : 0);
+        if (openGL) {
+            context = createCoreContext();
+            GLLoader.install(Win32Api::glFunction);
+            setSwapInterval(config.vsync() ? 1 : 0);
+        } else {
+            context = MemorySegment.NULL;
+        }
 
         showWindow(window, SW_SHOW);
         getClientRect(window, rect);
@@ -266,8 +277,16 @@ public final class Win32Window implements Window {
         }
     }
 
+    /** The {@code HWND}. */
+    public MemorySegment handle() {
+        return window;
+    }
+
     @Override
     public void swapBuffers() {
+        if (Native.isNull(context)) {
+            throw new IllegalStateException("This window has no OpenGL context");
+        }
         Win32Api.swapBuffers(deviceContext);
     }
 
@@ -309,8 +328,10 @@ public final class Win32Window implements Window {
             return;
         }
         closed = true;
-        wglMakeCurrent(MemorySegment.NULL, MemorySegment.NULL);
-        wglDeleteContext(context);
+        if (!Native.isNull(context)) {
+            wglMakeCurrent(MemorySegment.NULL, MemorySegment.NULL);
+            wglDeleteContext(context);
+        }
         releaseDC(window, deviceContext);
         destroyWindow(window); // still sends messages, so the stub must outlive it
         unregisterClass(className, instance);

@@ -1,5 +1,6 @@
 package com.aresstack.threed4j.core;
 
+import com.aresstack.threed4j.gfx.GraphicsDevice;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Window;
 
@@ -9,13 +10,20 @@ import java.nio.file.Path;
 public final class EngineContext {
 
     private final Window window;
+    private final GraphicsDevice graphics;
     private double timeSeconds;
     private long frame;
     private double framesPerSecond;
     private Path pendingScreenshot;
 
-    EngineContext(Window window) {
+    EngineContext(Window window, GraphicsDevice graphics) {
         this.window = window;
+        this.graphics = graphics;
+    }
+
+    /** Creates shaders and meshes, clears and draws. */
+    public GraphicsDevice graphics() {
+        return graphics;
     }
 
     public Window window() {
