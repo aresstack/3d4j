@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JOptionPane;
 
 /**
  * Entry point of the runnable JAR.
@@ -15,7 +18,8 @@ import java.util.List;
  * JVM that was started without that flag. This class is therefore compiled
  * <em>without</em> preview features and has no compile-time dependency on the engine.
  * It checks whether the engine can be loaded and, if not, starts the same JVM again
- * with the required flags and waits for it.</p>
+ * with the required flags and waits for it. That makes the JAR runnable with a plain
+ * {@code java -jar} or a double-click.</p>
  *
  * <p>System properties:</p>
  * <ul>
@@ -37,21 +41,29 @@ public final class Launcher {
     private Launcher() {
     }
 
-    public static void main(String[] args) throws Throwable {
+    public static void main(String[] args) {
+        try {
+            run(args);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            fail(t.toString());
+        }
+    }
+
+    private static void run(String[] args) throws Throwable {
         int java = Runtime.version().feature();
         if (java != REQUIRED_JAVA) {
-            System.err.println("3d4j needs exactly Java " + REQUIRED_JAVA + " (running on Java " + java + ").");
-            System.err.println("The FFM API is a preview API there, and preview class files only run on the");
-            System.err.println("Java version they were compiled for.");
-            System.exit(1);
+            fail("3d4j needs exactly Java " + REQUIRED_JAVA + " (running on Java " + java + ").\n"
+                    + "The FFM API is a preview API there, and preview class files only run on the\n"
+                    + "Java version they were compiled for.");
         }
 
         if (!previewEnabled()) {
             if (Boolean.getBoolean(RELAUNCHED_PROPERTY)) {
                 throw new IllegalStateException("Relaunch with --enable-preview did not enable preview features");
             }
+            // Errors of the second JVM are reported by that JVM; only its exit code is passed on.
             System.exit(relaunch(args));
-            return;
         }
 
         String mainName = System.getProperty(MAIN_PROPERTY, DEFAULT_MAIN);
@@ -62,6 +74,22 @@ public final class Launcher {
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
+    }
+
+    /**
+     * Reports a fatal error and exits. A JAR started by double-click runs on
+     * {@code javaw}, which has no console, so the message is also shown in a dialog there.
+     */
+    private static void fail(String message) {
+        System.err.println(message);
+        if (javaExecutable().toLowerCase(Locale.ROOT).matches(".*javaw(\\.exe)?")) {
+            try {
+                JOptionPane.showMessageDialog(null, message, "3d4j", JOptionPane.ERROR_MESSAGE);
+            } catch (Throwable ignored) {
+                // No display available: the message on stderr has to do.
+            }
+        }
+        System.exit(1);
     }
 
     /**

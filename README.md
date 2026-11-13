@@ -19,14 +19,23 @@ voller Hardwarebeschleunigung.
 - Windows x64 oder Linux x64 mit X11 (unter Wayland über XWayland).
 - Ein Grafiktreiber mit OpenGL 3.3 oder neuer.
 
-## Bauen und starten
+## Starten
+
+Das fertige JAR baut eine GitHub Action bei jedem Push auf `main` und legt es als festes
+Release-Asset ab:
+
+**[3d4j.jar herunterladen](https://github.com/aresstack/3d4j/releases/download/latest/3d4j.jar)**
+
+Starten per Doppelklick oder mit
 
 ```
-./gradlew jar
-java -jar build/libs/3d4j.jar
+java -jar 3d4j.jar
 ```
 
-Unter Windows `gradlew.bat jar`. Für ein Fenster ohne Konsole `javaw -jar build\libs\3d4j.jar`.
+Mehr ist nicht nötig: Das Manifest nennt den `Launcher` als Hauptklasse, und der startet die
+JVM selbst noch einmal mit `--enable-preview` (siehe [Der Launcher](#der-launcher)).
+Bei einem Doppelklick läuft das Programm auf `javaw` ohne Konsole; Fehler wie eine falsche
+Java-Version erscheinen dann in einem Dialog.
 
 Die Demo zeigt einen beleuchteten, rotierenden Würfel:
 
@@ -69,6 +78,9 @@ java -Dthreed4j.main=mein.spiel.Main -jar build/libs/3d4j.jar
 ```
 
 ## Entwickeln und Debuggen
+
+Lokal bauen: `./gradlew jar` (unter Windows `gradlew.bat jar`), das JAR liegt danach unter
+`build/libs/3d4j.jar`.
 
 `./gradlew run` startet die Demo direkt mit den Preview-Flags, ohne zweiten Prozess.
 In der IDE entsprechend: Hauptklasse `CubeDemo`, VM-Optionen
@@ -119,6 +131,12 @@ In `GL` ein Handle mit der C-Signatur und eine statische Wrapper-Methode anlegen
 Muster der vorhandenen Funktionen. `GL` darf erst benutzt werden, wenn ein `Window`
 existiert: Die Funktionsadressen liefert unter Windows erst der Grafiktreiber, sobald ein
 Kontext aktiv ist.
+
+## Build
+
+`.github/workflows/build.yml` baut das JAR, prüft Manifest und Class-File-Versionen (Launcher
+ohne, FFM-Schicht mit Preview-Markierung), startet es auf einem virtuellen Display mit einem
+schlichten `java -jar` und veröffentlicht es anschließend unter dem festen Release-Tag `latest`.
 
 ## Teststand
 

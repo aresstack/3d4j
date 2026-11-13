@@ -1,0 +1,116 @@
+name: Build runnable JAR
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-jar-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-jar:
+    name: Build, smoke-test and publish 3d4j.jar
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Build runnable JAR
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew --no-daemon clean jar --stacktrace
+
+      - name: Verify manifest and class file versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          jar="build/libs/3d4j.jar"
+          unzip -p "$jar" META-INF/MANIFEST.MF
+          unzip -p "$jar" META-INF/MANIFEST.MF | grep -q '^Main-Class: com.aresstack.threed4j.launcher.Launcher'
+
+          # The launcher must load without --enable-preview (minor version 0),
+          # the FFM layer must be a preview class file (minor version 65535).
+          launcher_minor="$(javap -v -cp "$jar" com.aresstack.threed4j.launcher.Launcher | awk '/minor version/ {print $3}')"
+          engine_minor="$(javap -v -cp "$jar" com.aresstack.threed4j.ffm.Native | awk '/minor version/ {print $3}')"
+          echo "Launcher minor version: $launcher_minor, engine minor version: $engine_minor"
+          test "$launcher_minor" = "0"
+          test "$engine_minor" = "65535"
+
+      - name: Install virtual display and software OpenGL
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            xvfb \
+            libx11-6 \
+            libgl1 \
+            libglx-mesa0 \
+            libgl1-mesa-dri
+
+      - name: Smoke-test the JAR exactly as a user starts it
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Plain "java -jar" without any flags: the launcher has to restart the JVM
+          # with --enable-preview by itself.
+          xvfb-run -a -s "-screen 0 1400x900x24" \
+            java -jar build/libs/3d4j.jar --frames=120 --no-vsync --screenshot=build/smoke-test.png
+          test -s build/smoke-test.png
+
+      - name: Upload JAR as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 3d4j-jar
+          path: |
+            build/libs/3d4j.jar
+            build/smoke-test.png
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish fixed release asset
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: latest
+          RELEASE_TITLE: 3d4j – aktueller Build
+          ASSET_NAME: 3d4j.jar
+        run: |
+          set -euo pipefail
+          archive_path="build/libs/$ASSET_NAME"
+          release_notes="Automatically updated from main commit $GITHUB_SHA. Runnable JAR for Java 21: start it with a double-click or with java -jar 3d4j.jar. It restarts itself with --enable-preview."
+
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" \
+              --target "$GITHUB_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes "$release_notes"
+          else
+            # Keep the tag on the commit the asset was built from.
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/$RELEASE_TAG" \
+              -f sha="$GITHUB_SHA" -F force=true >/dev/null
+            gh release edit "$RELEASE_TAG" \
+              --title "$RELEASE_TITLE" \
+              --notes "$release_notes"
+          fi
+
+          gh release upload "$RELEASE_TAG" "$archive_path" --clobber
