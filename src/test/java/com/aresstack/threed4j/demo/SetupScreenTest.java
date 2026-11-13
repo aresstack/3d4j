@@ -87,6 +87,48 @@ class SetupScreenTest {
     }
 
     @Test
+    void theStepsAtTheTopOpenOnlyWhatIsPossibleYet() {
+        Input input = new Input();
+        // "3 Welt" without access and model: nothing happens, the first step stays in view.
+        screen.paint(1280, 720);
+        screen.consumeDirty();
+        input.onMouseMove(735, 159);
+        input.onMouseButton(MouseButton.LEFT, true);
+        screen.update(input, 1280, 720);
+        input.onMouseButton(MouseButton.LEFT, false);
+        input.beginFrame();
+        BufferedImage before = screen.paint(1280, 720);
+
+        // "2 Modell" with an address typed in acts like "Weiter": the address is checked.
+        chooseManual(input);
+        screen.paint(1280, 720);
+        for (char c : "keine adresse".toCharArray()) {
+            input.onText(c);
+        }
+        screen.update(input, 1280, 720);
+        input.beginFrame();
+        screen.paint(1280, 720);
+        input.onMouseMove(620, 159);
+        input.onMouseButton(MouseButton.LEFT, true);
+        screen.update(input, 1280, 720);
+        BufferedImage after = screen.paint(1280, 720);
+        // The complaint about the address is painted in red below the fields.
+        boolean complaint = false;
+        for (int x = 430; x < 800 && !complaint; x++) {
+            for (int y = 520; y < 560; y++) {
+                int rgb = after.getRGB(x, y);
+                if (((rgb >> 16) & 0xFF) > 150 && ((rgb >> 8) & 0xFF) < 110 && (rgb & 0xFF) < 110) {
+                    complaint = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(complaint, "clicking the model step checks the typed address");
+        assertEquals(before.getWidth(), after.getWidth());
+        assertFalse(screen.isFinished());
+    }
+
+    @Test
     void suggestsTheEntryUsedLastTimeThenTheOnlyOneWithAnAddress() {
         KeePassEntry wiki = new KeePassEntry("Wiki", "https://wiki.intern", "a");
         KeePassEntry ai = new KeePassEntry("KI-Dienst", "https://ki.intern/v1", "b");

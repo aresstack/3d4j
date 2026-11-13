@@ -81,8 +81,8 @@ final class SetupScreen implements AutoCloseable {
     private static final String[] HINTS = {
             HINT_KEEPASS,
             "Diese Modelle bietet der Dienst an. Ich habe eines vorgewählt, du kannst ein anderes anklicken.",
-            "Das Modell zeichnet nun die Bewohner und Pflanzen der Stadt, alle gleichzeitig. "
-                    + "Was gelingt, siehst du gleich im Spiel."
+            "Das Modell zeichnet die Bewohner und Pflanzen der Stadt, alle gleichzeitig. „neu“ zeichnet ein "
+                    + "einzelnes Motiv noch einmal. Was gelingt, siehst du gleich im Spiel."
     };
 
     private final AssetStore store;
@@ -128,6 +128,15 @@ final class SetupScreen implements AutoCloseable {
     private boolean generatedOnce;
     private boolean finished;
     private boolean fromGame;
+
+    /**
+     * Address, key and model that worked last in this run of the program. Kept in
+     * memory only, so that drawing again does not need KeePass a second time.
+     */
+    private record Access(String serviceUrl, String apiKey, String model) {
+    }
+
+    private static volatile Access lastAccess;
 
     private final List<Runnable> posted = new ArrayList<>();
     private final List<Region> regions = new ArrayList<>();
@@ -602,17 +611,25 @@ final class SetupScreen implements AutoCloseable {
             return;
         }
         say("", false);
+        lastAccess = new Access(serviceUrl, apiKey, selectedModel);
         step = WORLD;
     }
 
-    /** Asks for all assets at the same time; each reports back on its own. */
+    /** Asks for all assets, or only for the missing ones. */
     private void generate(boolean everything) {
         List<AssetSpec> wanted = new ArrayList<>();
         for (AssetSpec spec : AssetCatalog.ALL) {
             if (everything || !store.has(spec)) {
                 wanted.add(spec);
-                assetStates.put(spec, "wird gezeichnet …");
             }
+        }
+        generate(wanted);
+    }
+
+    /** Asks for the given assets at the same time; each reports back on its own. */
+    private void generate(List<AssetSpec> wanted) {
+        for (AssetSpec spec : wanted) {
+            assetStates.put(spec, "wird gezeichnet …");
         }
         if (wanted.isEmpty()) {
             say("Alles ist schon da. „Alles neu zeichnen“ ersetzt es.", false);
@@ -676,6 +693,80 @@ final class SetupScreen implements AutoCloseable {
     void openedFromGame() {
         fromGame = true;
         dirty = true;
+        Access known = lastAccess;
+        if (known != null) {
+            // Everything was chosen earlier in this run: straight to the drawing.
+            connectOnOpen = false;
+            serviceUrl = known.serviceUrl();
+            apiKey = known.apiKey();
+            selectedModel = known.model();
+            step = WORLD;
+        } else if (useKeePass && AiSetup.isPaired() && !rememberedEntry.isBlank()
+                && selectedModel != null && !selectedModel.isBlank()) {
+            // Chosen in an earlier run: fetch the entry again without asking, then straight to the drawing.
+            connectOnOpen = false;
+            String title = rememberedEntry;
+            inBackground("Hole den Zugang aus KeePass …", () -> {
+                KeePassEntry entry;
+                try {
+                    entry = AiSetup.keePassEntry(title, () -> ""); // an empty code cancels a pairing nobody asked for
+                } catch (Exception e) {
+                    throw new Exception(keePassProblem(e));
+                }
+                String address = entry == null ? null : AiSetup.normalizeBaseUrl(entry.url());
+                if (address == null || entry.password().isBlank()) {
+                    throw new Exception("Der Eintrag „" + title + "“ liefert keinen Zugang mehr. Bitte neu wählen.");
+                }
+                return () -> {
+                    serviceUrl = address;
+                    apiKey = entry.password();
+                    lastAccess = new Access(serviceUrl, apiKey, selectedModel);
+                    step = WORLD;
+                };
+            });
+        }
+    }
+
+    // ------------------------------------------------------------ step navigation
+
+    private boolean accessKnown() {
+        return serviceUrl != null && apiKey != null;
+    }
+
+    /** Whether the step can be opened right now by clicking it in the trail at the top. */
+    private boolean reachable(int target) {
+        if (busy != null || generating) {
+            return false;
+        }
+        boolean accessEntered = useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank();
+        return switch (target) {
+            case ACCESS -> true;
+            case MODEL -> accessKnown() || step == ACCESS && accessEntered;
+            default -> accessKnown() && selectedModel != null && !selectedModel.isBlank();
+        };
+    }
+
+    /** Opens a step from the trail; where the step in view has something to confirm, that happens first. */
+    private void goTo(int target) {
+        if (target == step || !reachable(target)) {
+            return;
+        }
+        say("", false);
+        boolean accessEntered = useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank();
+        if (step == ACCESS && target == MODEL && accessEntered) {
+            confirmAccess(); // like "Weiter": takes what is chosen here and loads the models
+            return;
+        }
+        if (step == MODEL && target == WORLD && !models.isEmpty()) {
+            confirmModel(); // like "Weiter": remembers the model
+            return;
+        }
+        closeEntries();
+        step = target;
+        focus = target == ACCESS && !useKeePass ? baseUrl : null;
+        if (target == MODEL && models.isEmpty()) {
+            loadModels();
+        }
     }
 
     /** Leaves the menu as "Schließen" does; ignored while artwork is being drawn. */
@@ -789,10 +880,14 @@ final class SetupScreen implements AutoCloseable {
             String label = (i + 1) + "  " + STEPS[i];
             int pill = g.getFontMetrics().stringWidth(label) + 36;
             Shape shape = new RoundRectangle2D.Double(x, 142, pill, 34, 34, 34);
-            g.setColor(i == step ? PINK_DARK : i < step ? PINK : PINK_LIGHT);
+            // The step in view is dark; steps that a click opens are pink, the others pale.
+            boolean open = i != step && reachable(i);
+            g.setColor(i == step ? PINK_DARK : open ? PINK : PINK_LIGHT);
             g.fill(shape);
-            g.setColor(i <= step ? Color.WHITE : TEXT);
+            g.setColor(i == step || open ? Color.WHITE : TEXT);
             g.drawString(label, x + 18, 165);
+            int target = i;
+            regions.add(new Region(shape.getBounds2D(), () -> goTo(target)));
             x += pill + 12;
         }
 
@@ -1001,12 +1096,18 @@ final class SetupScreen implements AutoCloseable {
         int y = 356;
         for (Map.Entry<AssetSpec, String> entry : assetStates.entrySet()) {
             String state = entry.getValue();
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
             g.setColor(state.startsWith("Fehler") ? BAD : state.equals("fertig") ? GOOD : TEXT);
             g.fill(new Ellipse2D.Double(432, y - 12, 12, 12));
             g.setColor(INK);
             g.drawString(displayName(entry.getKey()), 456, y);
             g.setColor(state.startsWith("Fehler") ? BAD : state.equals("fertig") ? GOOD : TEXT);
-            g.drawString(fitted(g, state, 500), 630, y);
+            g.drawString(fitted(g, state, 380), 630, y);
+            if (!generating) {
+                // One motif alone, e.g. only the cherry tree.
+                AssetSpec spec = entry.getKey();
+                button(g, "neu", 1056, y - 22, 74, 30, PINK_LIGHT, INK, () -> generate(List.of(spec)));
+            }
             y += 34;
         }
         if (!generating) {
@@ -1121,24 +1222,34 @@ final class SetupScreen implements AutoCloseable {
     private void back(Graphics2D g, int target) {
         if (busy == null) {
             button(g, "Zurück", 430, 600, 110, PINK_LIGHT, INK, () -> {
-                step = target;
                 say("", false);
+                closeEntries();
+                step = target;
                 focus = target == ACCESS && !useKeePass ? baseUrl : null;
+                if (target == MODEL && models.isEmpty() && accessKnown()) {
+                    loadModels(); // the drawing step was opened directly, the list is not there yet
+                }
             });
         }
     }
 
     private void button(Graphics2D g, String text, int x, int y, int width, Color fill, Color ink, Runnable action) {
-        Shape shape = new RoundRectangle2D.Double(x, y, width, 46, 46, 46);
+        button(g, text, x, y, width, 46, fill, ink, action);
+    }
+
+    private void button(Graphics2D g, String text, int x, int y, int width, int height, Color fill, Color ink,
+                        Runnable action) {
+        Shape shape = new RoundRectangle2D.Double(x, y, width, height, height, height);
         g.setColor(fill);
         g.fill(shape);
-        g.setStroke(new BasicStroke(2.5f));
+        g.setStroke(new BasicStroke(height < 40 ? 2f : 2.5f));
         g.setColor(PINK_DARK);
         g.draw(shape);
-        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+        int fontSize = height < 40 ? 14 : 17;
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
         g.setColor(ink);
         int textWidth = g.getFontMetrics().stringWidth(text);
-        g.drawString(text, x + (width - textWidth) / 2, y + 29);
+        g.drawString(text, x + (width - textWidth) / 2, y + height / 2 + fontSize / 3 + 1);
         regions.add(new Region(shape.getBounds2D(), action));
     }
 

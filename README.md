@@ -125,6 +125,14 @@ Einrichtungsassistenten von Space Harvester und Enterprise AI Client:
 3. **Welt:** „Zeichnen lassen“ fragt alle Motive gleichzeitig an und zeigt je Motiv den Stand.
    „Spielen“ startet das Spiel mit dem, was gelungen ist.
 
+Die Schritte oben sind anklickbar, sobald sie möglich sind (Modell erst mit Zugang, Welt erst mit
+Modell); ein Klick auf den nächsten Schritt wirkt wie „Weiter“. Im Schritt „Welt“ zeichnet „neu“
+neben einem Motiv nur dieses eine noch einmal.
+
+Aus dem Pausenmenü geöffnet, springt das Menü direkt zum Schritt „Welt“: Zugang und Modell der
+letzten Runde gelten weiter (im selben Programmlauf aus dem Speicher, sonst holt das Menü den
+gemerkten Eintrag ohne Nachfrage aus KeePass). Ändern lässt sich beides über die Schritte oben.
+
 „Ohne KI spielen“ verlässt das Menü jederzeit. `--setup` öffnet es auch dann, wenn schon Motive
 vorhanden sind, `--no-setup` unterdrückt es. Bedient wird es mit der Maus; Tab wechselt das
 Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
