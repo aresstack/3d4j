@@ -57,6 +57,7 @@ public final class GLDevice implements GraphicsDevice {
         glBindFramebuffer(GL_FRAMEBUFFER, sceneFramebuffer);
         glViewport(0, 0, sceneWidth, sceneHeight);
         glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
         overlay = false;
     }
 
@@ -109,6 +110,9 @@ public final class GLDevice implements GraphicsDevice {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glViewport(0, 0, width, height);
         glDisable(GL_DEPTH_TEST);
+        // The overlay is 2D drawn back to front: transparent pixels let show what is below.
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override

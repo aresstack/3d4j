@@ -519,6 +519,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             pauseImageWidth = width;
             pauseImageHeight = height;
         }
+        // A veil over the standing game, so that the card stands out.
+        imageShader.setTexture(white);
+        drawImage(graphics, 1f, 1f, 0f, 0f, new Vec3(0.20f, 0.11f, 0.27f), 0.45f);
         float scale = (float) PauseMenu.scale(width, height);
         imageShader.setTexture(pauseImage);
         drawImage(graphics, PauseMenu.CARD_WIDTH * scale / width, PauseMenu.CARD_HEIGHT * scale / height, 0f, 0f,
@@ -534,7 +537,13 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     private void drawImage(GraphicsDevice graphics, float scaleX, float scaleY, float centerX, float centerY, Vec3 tint) {
-        imageShader.setUniform("uScale", new Vec3(scaleX, scaleY, 1f));
+        drawImage(graphics, scaleX, scaleY, centerX, centerY, tint, 1f);
+    }
+
+    /** @param opacity 1 draws the image as it is, less lets show what is below (the image's own transparency counts too) */
+    private void drawImage(GraphicsDevice graphics, float scaleX, float scaleY, float centerX, float centerY, Vec3 tint,
+                           float opacity) {
+        imageShader.setUniform("uScale", new Vec3(scaleX, scaleY, opacity));
         imageShader.setUniform("uOffset", new Vec3(centerX, centerY, 0f));
         imageShader.setUniform("uTint", tint);
         graphics.draw(screenQuad, imageShader);

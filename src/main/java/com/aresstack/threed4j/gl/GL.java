@@ -52,6 +52,8 @@ public final class GL {
     public static final int GL_CULL_FACE = 0x0B44;
     public static final int GL_DEPTH_TEST = 0x0B71;
     public static final int GL_BLEND = 0x0BE2;
+    public static final int GL_SRC_ALPHA = 0x0302;
+    public static final int GL_ONE_MINUS_SRC_ALPHA = 0x0303;
     public static final int GL_PACK_ALIGNMENT = 0x0D05;
 
     public static final int GL_UNSIGNED_BYTE = 0x1401;
@@ -102,6 +104,7 @@ public final class GL {
     private static final MethodHandle glClear = bindVoid("glClear", JAVA_INT);
     private static final MethodHandle glEnable = bindVoid("glEnable", JAVA_INT);
     private static final MethodHandle glDisable = bindVoid("glDisable", JAVA_INT);
+    private static final MethodHandle glBlendFunc = bindVoid("glBlendFunc", JAVA_INT, JAVA_INT);
     private static final MethodHandle glDepthFunc = bindVoid("glDepthFunc", JAVA_INT);
     private static final MethodHandle glCullFace = bindVoid("glCullFace", JAVA_INT);
     private static final MethodHandle glGetError = bind("glGetError", JAVA_INT);
@@ -204,6 +207,14 @@ public final class GL {
     public static void glEnable(int capability) {
         try {
             glEnable.invokeExact(capability);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glBlendFunc(int sourceFactor, int destinationFactor) {
+        try {
+            glBlendFunc.invokeExact(sourceFactor, destinationFactor);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

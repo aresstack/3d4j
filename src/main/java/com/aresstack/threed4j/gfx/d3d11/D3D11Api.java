@@ -71,6 +71,11 @@ final class D3D11Api {
     static final int D3D11_MAP_READ = 1;
     static final int D3D11_CLEAR_DEPTH = 0x1;
     static final int D3D11_CLEAR_STENCIL = 0x2;
+    static final int D3D11_BLEND_ZERO = 1;
+    static final int D3D11_BLEND_ONE = 2;
+    static final int D3D11_BLEND_SRC_ALPHA = 5;
+    static final int D3D11_BLEND_INV_SRC_ALPHA = 6;
+    static final int D3D11_BLEND_OP_ADD = 1;
     static final int D3D11_FILL_SOLID = 3;
     static final int D3D11_CULL_BACK = 3;
     static final int D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST = 4;
@@ -438,6 +443,45 @@ final class D3D11Api {
             check((int) INT_PLPP.invokeExact(device.method(slot), device.pointer, bytecode, size,
                     MemorySegment.NULL, out), call);
             return out.get(ADDRESS, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * A blend state for ordinary transparency in the first render target:
+     * {@code source * alpha + destination * (1 - alpha)}.
+     */
+    static MemorySegment createAlphaBlendState(ComObject device) {
+        try (Arena arena = Arena.ofConfined()) {
+            // D3D11_BLEND_DESC: two BOOLs, then eight D3D11_RENDER_TARGET_BLEND_DESC of 32 bytes
+            // (BOOL enable, six enums, one byte write mask, padding).
+            MemorySegment desc = Native.bytes(arena, 8 + 8 * 32);
+            for (int target = 0; target < 8; target++) {
+                long at = 8 + target * 32L;
+                desc.set(JAVA_INT, at, target == 0 ? 1 : 0);
+                desc.set(JAVA_INT, at + 4, target == 0 ? D3D11_BLEND_SRC_ALPHA : D3D11_BLEND_ONE);
+                desc.set(JAVA_INT, at + 8, target == 0 ? D3D11_BLEND_INV_SRC_ALPHA : D3D11_BLEND_ZERO);
+                desc.set(JAVA_INT, at + 12, D3D11_BLEND_OP_ADD);
+                desc.set(JAVA_INT, at + 16, D3D11_BLEND_ONE);
+                desc.set(JAVA_INT, at + 20, target == 0 ? D3D11_BLEND_INV_SRC_ALPHA : D3D11_BLEND_ZERO);
+                desc.set(JAVA_INT, at + 24, D3D11_BLEND_OP_ADD);
+                desc.set(JAVA_BYTE, at + 28, (byte) 0x0F); // write red, green, blue and alpha
+            }
+            MemorySegment out = arena.allocate(ADDRESS);
+            check((int) INT_PP.invokeExact(device.method(20), device.pointer, desc, out),
+                    "ID3D11Device::CreateBlendState");
+            return out.get(ADDRESS, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** @param blendState a blend state, or NULL for the default (no blending) */
+    static void omSetBlendState(ComObject context, MemorySegment blendState) {
+        try {
+            // No blend factor (NULL means 1, 1, 1, 1), all samples.
+            VOID_PPI.invokeExact(context.method(35), context.pointer, blendState, MemorySegment.NULL, 0xFFFFFFFF);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

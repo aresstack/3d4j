@@ -131,7 +131,7 @@ Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
 
 ### Das Pausenmenü
 
-Esc hält das Spiel an und zeigt eine Karte im Stil des Menüs: **Weiterspielen**,
+Esc hält das Spiel an, legt einen Schleier darüber und zeigt eine Karte im Stil des Menüs: **Weiterspielen**,
 **Einstellungen**, **Spiel beenden**. Bedient wird sie mit der Maus oder mit Pfeiltasten und
 Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
 
@@ -140,6 +140,10 @@ Hochskalieren (weich oder pixelig, wie F) und „Welt neu zeichnen lassen …“
 „Die Welt erschaffen“ aus dem laufenden Spiel; dort ersetzt „Alles neu zeichnen“ auch Motive,
 die schon vorhanden sind. Auflösung und Hochskalieren merkt sich das Spiel in
 `.3d4j/game.properties`; `--scale=` hat Vorrang, `--benchmark` ignoriert die Datei.
+
+Dafür mischt der Renderer im Overlay (nach dem Hochskalieren der Szene) durchsichtige Pixel
+mit dem, was darunter liegt, in OpenGL wie in Direct3D 11. Die Szene selbst bleibt deckend
+gezeichnet; im laufenden Spiel kostet das nichts.
 
 ### Der Generator auf der Kommandozeile
 

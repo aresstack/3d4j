@@ -34,6 +34,7 @@ public final class D3D11Device implements GraphicsDevice {
     private final ComObject context;
     private final ComObject swapChain;
     private final MemorySegment rasterizerState;
+    private final MemorySegment overlayBlendState;
     private final MemorySegment smoothSampler;
     private final MemorySegment blockySampler;
     private final String description;
@@ -111,6 +112,7 @@ public final class D3D11Device implements GraphicsDevice {
         rasterizerDesc.set(JAVA_INT, RD_FRONT_COUNTER_CLOCKWISE, 1);
         rasterizerDesc.set(JAVA_INT, RD_DEPTH_CLIP_ENABLE, 1);
         rasterizerState = createRasterizerState(device, rasterizerDesc);
+        overlayBlendState = createAlphaBlendState(device);
 
         smoothSampler = createSampler(D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT);
         blockySampler = createSampler(D3D11_FILTER_MIN_MAG_MIP_POINT);
@@ -253,6 +255,7 @@ public final class D3D11Device implements GraphicsDevice {
         omSetRenderTarget(context, renderTargetArray, sceneDepthView);
         setViewport(sceneWidth, sceneHeight);
         rsSetState(context, rasterizerState);
+        omSetBlendState(context, MemorySegment.NULL); // the scene is opaque (sprites are cut out, not blended)
         overlay = false;
     }
 
@@ -294,6 +297,8 @@ public final class D3D11Device implements GraphicsDevice {
         blitShader.bind();
         blitQuad.draw();
         psSetShaderResource(context, nullArray);
+        // The overlay is 2D drawn back to front: transparent pixels let show what is below.
+        omSetBlendState(context, overlayBlendState);
     }
 
     /** The GPU cannot hand out the back buffer directly: copy it to a CPU-readable texture first. */
@@ -410,6 +415,7 @@ public final class D3D11Device implements GraphicsDevice {
         ComObject.release(backBufferView);
         ComObject.release(blockySampler);
         ComObject.release(smoothSampler);
+        ComObject.release(overlayBlendState);
         ComObject.release(rasterizerState);
         swapChain.release();
         context.release();

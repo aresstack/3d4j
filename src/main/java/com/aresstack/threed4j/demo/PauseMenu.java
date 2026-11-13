@@ -23,8 +23,8 @@ import java.util.List;
  * <p>Like that menu it is painted with Java 2D into an image; the game shows the
  * image as one texture in the middle of the window. The card is laid out on a fixed
  * {@value #CARD_WIDTH} x {@value #CARD_HEIGHT} surface whose size relative to the
- * window follows from {@link #scale}. The corners of the card are square on
- * purpose: the image is drawn without transparency.</p>
+ * window follows from {@link #scale}. Outside its rounded outline the image is
+ * transparent.</p>
  */
 final class PauseMenu {
 
@@ -164,19 +164,24 @@ final class PauseMenu {
         double scale = scale(windowWidth, windowHeight);
         int width = Math.max(1, (int) Math.round(CARD_WIDTH * scale));
         int height = Math.max(1, (int) Math.round(CARD_HEIGHT * scale));
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.scale((double) width / CARD_WIDTH, (double) height / CARD_HEIGHT);
 
-        // Frame: pink to the very edge (the corners are not transparent), the card inside.
-        g.setColor(PINK_DARK);
-        g.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
-        g.setColor(PINK);
-        g.fillRect(4, 4, CARD_WIDTH - 8, CARD_HEIGHT - 8);
+        // A soft shadow, then the card with its pink frame; everything else stays transparent.
+        for (int i = 0; i < 6; i++) {
+            g.setColor(new Color(74, 42, 94, 14));
+            g.fill(new RoundRectangle2D.Double(10 - i, 14 - i, CARD_WIDTH - 14 + 2 * i, CARD_HEIGHT - 16 + 2 * i,
+                    52 + 2 * i, 52 + 2 * i));
+        }
+        Shape card = new RoundRectangle2D.Double(8, 6, CARD_WIDTH - 20, CARD_HEIGHT - 20, 48, 48);
         g.setColor(CARD);
-        g.fill(new RoundRectangle2D.Double(12, 12, CARD_WIDTH - 24, CARD_HEIGHT - 24, 40, 40));
+        g.fill(card);
+        g.setStroke(new BasicStroke(5f));
+        g.setColor(PINK);
+        g.draw(card);
         SetupScreen.blossom(g, 44, 46, 30);
         SetupScreen.blossom(g, CARD_WIDTH - 60, CARD_HEIGHT - 44, 30);
         SetupScreen.blossom(g, CARD_WIDTH - 52, 44, 17);

@@ -27,5 +27,7 @@ VertexOutput vertexMain(VertexInput input) {
 }
 
 float4 pixelMain(VertexOutput input) : SV_Target {
-    return float4(uTexture.Sample(uSampler, input.uv).rgb * uTint, 1.0);
+    // uScale.z is the opacity; it counts in the overlay, where the device blends.
+    float4 texel = uTexture.Sample(uSampler, input.uv);
+    return float4(texel.rgb * uTint, texel.a * uScale.z);
 }
