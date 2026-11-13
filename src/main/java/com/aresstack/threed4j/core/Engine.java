@@ -7,6 +7,7 @@ import com.aresstack.threed4j.platform.Window;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.Locale;
 
 /** Opens the window and runs the game loop. */
 public final class Engine {
@@ -27,6 +28,8 @@ public final class Engine {
             try {
                 loop(config, game, display.window(), display.graphics(), context);
             } finally {
+                System.out.println("Frame times at " + display.graphics().sceneWidth() + "x"
+                        + display.graphics().sceneHeight() + ": " + context.frameStats().total());
                 game.dispose();
             }
         }
@@ -36,22 +39,26 @@ public final class Engine {
                              EngineContext context) {
         long start = System.nanoTime();
         long previous = start;
-        long fpsWindowStart = start;
-        int fpsWindowFrames = 0;
+        long titleUpdated = start;
 
         while (!window.shouldClose()) {
             long now = System.nanoTime();
-            double delta = Math.min((now - previous) / 1e9, MAX_DELTA_SECONDS);
+            double elapsed = (now - previous) / 1e9;
             previous = now;
+            if (context.frame() > 0) {
+                context.frameStats().add(elapsed * 1000.0);
+            }
 
             window.input().beginFrame();
             window.pollEvents();
             context.beginFrame((now - start) / 1e9);
 
-            game.update(context, delta);
+            game.update(context, Math.min(elapsed, MAX_DELTA_SECONDS));
 
             graphics.beginFrame(window.width(), window.height());
             game.render(context);
+            graphics.beginOverlay();
+            game.renderOverlay(context);
 
             Path screenshot = context.takePendingScreenshot();
             if (screenshot != null) {
@@ -59,13 +66,13 @@ public final class Engine {
             }
             graphics.present();
 
-            fpsWindowFrames++;
-            if (now - fpsWindowStart >= 1_000_000_000L) {
-                double fps = fpsWindowFrames * 1e9 / (now - fpsWindowStart);
-                context.framesPerSecond(fps);
-                window.setTitle(config.title() + " | " + Math.round(fps) + " fps");
-                fpsWindowStart = now;
-                fpsWindowFrames = 0;
+            if (now - titleUpdated >= 1_000_000_000L) {
+                FrameStats.Summary second = context.frameStats().sinceLastCall();
+                context.lastSecond(second);
+                window.setTitle(String.format(Locale.ROOT, "%s | %dx%d | %.0f fps | avg %.1f ms, p99 %.1f ms",
+                        config.title(), graphics.sceneWidth(), graphics.sceneHeight(),
+                        second.framesPerSecond(), second.averageMillis(), second.p99Millis()));
+                titleUpdated = now;
             }
             if (config.maxFrames() > 0 && context.frame() >= config.maxFrames()) {
                 window.requestClose();

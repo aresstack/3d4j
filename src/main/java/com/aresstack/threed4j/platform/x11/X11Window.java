@@ -4,6 +4,7 @@ import com.aresstack.threed4j.ffm.Native;
 import com.aresstack.threed4j.gl.GLLoader;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
+import com.aresstack.threed4j.platform.MouseButton;
 import com.aresstack.threed4j.platform.GLWindow;
 import com.aresstack.threed4j.platform.WindowConfig;
 
@@ -64,7 +65,8 @@ public final class X11Window implements GLWindow {
             colormap = createColormap(display, root, visual, ALLOC_NONE);
             MemorySegment attributes = Native.bytes(temp, SIZEOF_SET_WINDOW_ATTRIBUTES);
             attributes.set(JAVA_LONG, SWA_BORDER_PIXEL, 0L);
-            attributes.set(JAVA_LONG, SWA_EVENT_MASK, KEY_PRESS_MASK | KEY_RELEASE_MASK | STRUCTURE_NOTIFY_MASK);
+            attributes.set(JAVA_LONG, SWA_EVENT_MASK, KEY_PRESS_MASK | KEY_RELEASE_MASK | BUTTON_PRESS_MASK | BUTTON_RELEASE_MASK
+                    | POINTER_MOTION_MASK | STRUCTURE_NOTIFY_MASK);
             attributes.set(JAVA_LONG, SWA_COLORMAP, colormap);
             window = createWindow(display, root, width, height, depth, visual,
                     CW_BORDER_PIXEL | CW_EVENT_MASK | CW_COLORMAP, attributes);
@@ -169,6 +171,17 @@ public final class X11Window implements GLWindow {
             int type = event.get(JAVA_INT, 0);
             switch (type) {
                 case KEY_PRESS, KEY_RELEASE -> input.onKey(mapKey(lookupKeysym(event)), type == KEY_PRESS);
+                // While a button is held, X keeps sending the motion to this window (implicit grab).
+                case MOTION_NOTIFY -> input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                case BUTTON_PRESS, BUTTON_RELEASE -> {
+                    input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                    input.onMouseButton(switch (event.get(JAVA_INT, BUTTON_NUMBER)) {
+                        case 1 -> MouseButton.LEFT;
+                        case 2 -> MouseButton.MIDDLE;
+                        case 3 -> MouseButton.RIGHT;
+                        default -> null; // 4 and 5 are the scroll wheel
+                    }, type == BUTTON_PRESS);
+                }
                 case CONFIGURE_NOTIFY -> {
                     width = event.get(JAVA_INT, CONFIGURE_WIDTH);
                     height = event.get(JAVA_INT, CONFIGURE_HEIGHT);

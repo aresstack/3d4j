@@ -35,7 +35,7 @@ tasks.named('compileJava') {
 
 def engineJvmArgs = ['--enable-preview', '--enable-native-access=ALL-UNNAMED']
 def launcherClass = 'com.aresstack.threed4j.launcher.Launcher'
-def demoClass = 'com.aresstack.threed4j.demo.CubeDemo'
+def demoClass = 'com.aresstack.threed4j.demo.PlazaDemo'
 
 // One runnable JAR: launcher classes (no preview) + engine classes (preview).
 tasks.named('jar') {
@@ -54,7 +54,7 @@ tasks.named('jar') {
 // IDE run configuration) for debugging, because no second JVM is involved.
 tasks.register('run', JavaExec) {
     group = 'application'
-    description = 'Runs the cube demo directly with --enable-preview.'
+    description = 'Runs the plaza demo directly with --enable-preview.'
     classpath = sourceSets.main.runtimeClasspath
     mainClass = demoClass
     jvmArgs = engineJvmArgs

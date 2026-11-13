@@ -14,6 +14,7 @@ public final class Screenshot {
     public static void save(PixelImage frame, Path file) throws IOException {
         BufferedImage image = new BufferedImage(frame.width(), frame.height(), BufferedImage.TYPE_INT_RGB);
         image.setRGB(0, 0, frame.width(), frame.height(), frame.rgb(), 0, frame.width());
+        ImageIO.setUseCache(false); // no temp file while encoding
         ImageIO.write(image, "png", file.toFile());
     }
 }

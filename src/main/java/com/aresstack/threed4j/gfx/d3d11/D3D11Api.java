@@ -60,7 +60,13 @@ final class D3D11Api {
     static final int D3D11_BIND_VERTEX_BUFFER = 0x1;
     static final int D3D11_BIND_INDEX_BUFFER = 0x2;
     static final int D3D11_BIND_CONSTANT_BUFFER = 0x4;
+    static final int D3D11_BIND_SHADER_RESOURCE = 0x8;
+    static final int D3D11_BIND_RENDER_TARGET = 0x20;
     static final int D3D11_BIND_DEPTH_STENCIL = 0x40;
+    static final int D3D11_FILTER_MIN_MAG_MIP_POINT = 0x00;
+    static final int D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT = 0x14;
+    static final int D3D11_TEXTURE_ADDRESS_CLAMP = 3;
+    static final int D3D11_COMPARISON_NEVER = 1;
     static final int D3D11_CPU_ACCESS_READ = 0x20000;
     static final int D3D11_MAP_READ = 1;
     static final int D3D11_CLEAR_DEPTH = 0x1;
@@ -89,8 +95,18 @@ final class D3D11Api {
     static final long BD_USAGE = 4;
     static final long BD_BIND_FLAGS = 8;
 
-    /** {@code D3D11_SUBRESOURCE_DATA}: the pointer to the initial data is its first field. */
+    /** {@code D3D11_SUBRESOURCE_DATA}: pointer to the initial data, then the byte length of one row. */
     static final long SIZEOF_SUBRESOURCE_DATA = 16;
+    static final long SD_ROW_PITCH = 8;
+
+    /** {@code D3D11_SAMPLER_DESC}. */
+    static final long SIZEOF_SAMPLER_DESC = 52;
+    static final long SAMPLER_FILTER = 0;
+    static final long SAMPLER_ADDRESS_U = 4;
+    static final long SAMPLER_ADDRESS_V = 8;
+    static final long SAMPLER_ADDRESS_W = 12;
+    static final long SAMPLER_COMPARISON = 24;
+    static final long SAMPLER_MAX_LOD = 48;
 
     /** {@code D3D11_TEXTURE2D_DESC}. */
     static final long SIZEOF_TEXTURE2D_DESC = 44;
@@ -125,8 +141,13 @@ final class D3D11Api {
     /** {@code D3D11_VIEWPORT}: x, y, width, height, min depth, max depth as floats. */
     static final long SIZEOF_VIEWPORT = 24;
 
-    /** {@code DXGI_ADAPTER_DESC}: starts with {@code WCHAR Description[128]}. */
+    /** {@code DXGI_ADAPTER_DESC}: {@code WCHAR Description[128]}, then vendor and device id. */
     static final long SIZEOF_ADAPTER_DESC = 304;
+    static final long AD_VENDOR_ID = 256;
+    static final long AD_DEVICE_ID = 260;
+    /** Vendor and device id of the "Microsoft Basic Render Driver", i.e. WARP. */
+    static final int VENDOR_MICROSOFT = 0x1414;
+    static final int DEVICE_BASIC_RENDER_DRIVER = 0x8c;
 
     // ------------------------------------------------------- exported functions
 
@@ -360,8 +381,14 @@ final class D3D11Api {
         return create(device, 3, desc, initialData, "ID3D11Device::CreateBuffer");
     }
 
-    static MemorySegment createTexture2D(ComObject device, MemorySegment desc) {
-        return create(device, 5, desc, MemorySegment.NULL, "ID3D11Device::CreateTexture2D");
+    /** {@code CreateTexture2D}; {@code initialData} may be NULL. */
+    static MemorySegment createTexture2D(ComObject device, MemorySegment desc, MemorySegment initialData) {
+        return create(device, 5, desc, initialData, "ID3D11Device::CreateTexture2D");
+    }
+
+    /** With a NULL description: a view of the whole texture, as shaders sample it. */
+    static MemorySegment createShaderResourceView(ComObject device, MemorySegment resource) {
+        return create(device, 7, resource, MemorySegment.NULL, "ID3D11Device::CreateShaderResourceView");
     }
 
     /** With a NULL description: a view of the whole resource in its own format. */
@@ -427,6 +454,17 @@ final class D3D11Api {
         }
     }
 
+    static MemorySegment createSamplerState(ComObject device, MemorySegment desc) {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment out = arena.allocate(ADDRESS);
+            check((int) INT_PP.invokeExact(device.method(23), device.pointer, desc, out),
+                    "ID3D11Device::CreateSamplerState");
+            return out.get(ADDRESS, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
     // ------------------------------------------------------- ID3D11DeviceContext
     // These run every frame, so they take prepared native memory and allocate nothing.
 
@@ -442,6 +480,24 @@ final class D3D11Api {
     static void psSetConstantBuffer(ComObject context, MemorySegment buffers) {
         try {
             VOID_IIP.invokeExact(context.method(16), context.pointer, 0, 1, buffers);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** @param views native array holding one shader resource view (the entry may be NULL to unbind) */
+    static void psSetShaderResource(ComObject context, MemorySegment views) {
+        try {
+            VOID_IIP.invokeExact(context.method(8), context.pointer, 0, 1, views);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** @param samplers native array holding one sampler state */
+    static void psSetSampler(ComObject context, MemorySegment samplers) {
+        try {
+            VOID_IIP.invokeExact(context.method(10), context.pointer, 0, 1, samplers);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

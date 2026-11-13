@@ -19,6 +19,34 @@ public final class Camera {
         return this;
     }
 
+    /**
+     * Places the camera and turns it like a head: {@code yaw} around the vertical
+     * axis (0 looks along -Z, positive turns right), {@code pitch} up and down.
+     * Both in radians.
+     */
+    public Camera orient(Vec3 position, float yaw, float pitch) {
+        Vec3 direction = new Vec3(
+                (float) (Math.cos(pitch) * Math.sin(yaw)),
+                (float) Math.sin(pitch),
+                (float) (-Math.cos(pitch) * Math.cos(yaw)));
+        return lookAt(position, position.add(direction));
+    }
+
+    /** Unit vector from the camera towards what it looks at. */
+    public Vec3 forward() {
+        return target.subtract(position).normalize();
+    }
+
+    /** Horizontal unit vector pointing to the camera's right. */
+    public Vec3 right() {
+        return forward().cross(up).normalize();
+    }
+
+    /** The view matrix without the camera's position: for things that follow the camera, like the sky. */
+    public Mat4 viewRotationMatrix() {
+        return Mat4.lookAt(Vec3.ZERO, forward(), up);
+    }
+
     /** @param fieldOfView vertical field of view in radians */
     public Camera perspective(float fieldOfView, float near, float far) {
         this.fieldOfView = fieldOfView;

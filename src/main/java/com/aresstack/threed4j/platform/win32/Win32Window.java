@@ -4,6 +4,7 @@ import com.aresstack.threed4j.ffm.Native;
 import com.aresstack.threed4j.gl.GLLoader;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
+import com.aresstack.threed4j.platform.MouseButton;
 import com.aresstack.threed4j.platform.GLWindow;
 import com.aresstack.threed4j.platform.WindowConfig;
 
@@ -224,6 +225,24 @@ public final class Win32Window implements GLWindow {
                     input.onKey(mapKey((int) wParam), false);
                     return 0;
                 }
+                case WM_MOUSEMOVE -> {
+                    // The position is two signed 16-bit values: negative while dragging outside the window.
+                    input.onMouseMove((short) (lParam & 0xFFFF), (short) ((lParam >>> 16) & 0xFFFF));
+                    return 0;
+                }
+                case WM_LBUTTONDOWN, WM_MBUTTONDOWN, WM_RBUTTONDOWN -> {
+                    input.onMouseButton(mapButton(messageId), true);
+                    setCapture(hwnd); // a drag keeps working when the pointer leaves the window
+                    return 0;
+                }
+                case WM_LBUTTONUP, WM_MBUTTONUP, WM_RBUTTONUP -> {
+                    input.onMouseButton(mapButton(messageId), false);
+                    if (!input.isDown(MouseButton.LEFT) && !input.isDown(MouseButton.MIDDLE)
+                            && !input.isDown(MouseButton.RIGHT)) {
+                        releaseCapture();
+                    }
+                    return 0;
+                }
                 // Keys pressed together with Alt: record them, but let Windows handle Alt+F4 etc.
                 case WM_SYSKEYDOWN -> input.onKey(mapKey((int) wParam), true);
                 case WM_SYSKEYUP -> input.onKey(mapKey((int) wParam), false);
@@ -244,6 +263,14 @@ public final class Win32Window implements GLWindow {
             width = newWidth;
             height = newHeight;
         }
+    }
+
+    private static MouseButton mapButton(int messageId) {
+        return switch (messageId) {
+            case WM_LBUTTONDOWN, WM_LBUTTONUP -> MouseButton.LEFT;
+            case WM_MBUTTONDOWN, WM_MBUTTONUP -> MouseButton.MIDDLE;
+            default -> MouseButton.RIGHT;
+        };
     }
 
     private static Key mapKey(int virtualKey) {

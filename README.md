@@ -40,24 +40,49 @@ JVM selbst noch einmal mit `--enable-preview` (siehe [Der Launcher](#der-launche
 Bei einem Doppelklick läuft das Programm auf `javaw` ohne Konsole; Fehler wie eine falsche
 Java-Version erscheinen dann in einem Dialog.
 
-Die Demo zeigt einen beleuchteten, rotierenden Würfel:
+Gestartet wird „Nur zur ZIHR“: erst das Titelbild als Ladebildschirm (Leertaste, Enter oder
+Mausklick überspringt ihn), dann ein begehbarer Testplatz mit 140 Gebäuden, Bäumen, Laternen
+und Besuchern.
 
 | Taste | Wirkung |
 |---|---|
-| Pfeiltasten | Kamera um den Würfel drehen |
-| W / S | Heran- und herauszoomen |
-| Leertaste | Rotation anhalten |
+| W A S D | Gehen |
+| E / Q | Hoch / runter |
+| Umschalt | Schneller |
+| Maustaste halten und ziehen, oder Pfeiltasten | Umsehen |
+| 1 bis 5 | Interne Auflösung: 100, 75, 50, 33, 25 Prozent |
+| F | Hochskalieren weich oder pixelig |
+| R | Framezeit-Statistik zurücksetzen |
 | P | `screenshot.png` speichern |
 | Esc | Beenden |
 
-Argumente der Demo: `--frames=N` beendet nach N Frames, `--screenshot=DATEI` speichert den
-letzten dieser Frames, `--angle=RADIANT` startet pausiert mit fester Drehung, `--no-vsync`
-schaltet die Bildsynchronisation ab.
+Umgesehen wird mit gehaltener Maustaste statt mit eingefangenem Mauszeiger, weil das auch in
+Remote-Sitzungen und virtuellen Maschinen zuverlässig funktioniert.
+
+### Messen
+
+Die Titelzeile zeigt jede Sekunde die interne Auflösung, die Bildrate sowie mittlere Framezeit
+und 99. Perzentil. Beim Beenden gibt die Engine die Statistik des ganzen Laufs aus, mit 95. und
+99. Perzentil. Für vergleichbare Zahlen gibt es eine feste Kamerafahrt:
+
+```
+java -jar 3d4j.jar --benchmark --no-vsync --frames=3000
+java -jar 3d4j.jar --benchmark --no-vsync --frames=3000 --scale=0.5
+```
+
+Argumente: `--benchmark` (kein Ladebildschirm, feste Kamerafahrt), `--scale=0.5` (interne
+Auflösung), `--frames=N` (nach N Frames beenden), `--screenshot=DATEI` (den letzten dieser
+Frames speichern), `--time=SEKUNDEN` (Szene an diesem Zeitpunkt einfrieren, für vergleichbare
+Bilder), `--no-title`, `--no-vsync`.
+
+Der drehende Würfel ist als Minimalbeispiel weiter enthalten:
+`java -Dthreed4j.main=com.aresstack.threed4j.demo.CubeDemo -jar 3d4j.jar`.
 
 Beim Start gibt die Engine aus, womit sie rendert, zum Beispiel
-`Direct3D 11 (feature level 11_0, hardware) | <Name der Grafikkarte>`. Die Grafik-API lässt
-sich mit `-Dthreed4j.backend=d3d11` oder `-Dthreed4j.backend=opengl` erzwingen
-(Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler OpenGL).
+`Direct3D 11 (feature level 11_0) | <Name der Grafikkarte> | hardware`. Steht dort
+`software rendering on the CPU (WARP)`, ist kein Grafiktreiber nutzbar und die CPU rechnet.
+Die Grafik-API lässt sich mit `-Dthreed4j.backend=d3d11` oder `-Dthreed4j.backend=opengl`
+erzwingen (Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler OpenGL).
 
 ## Der Launcher
 
@@ -109,18 +134,33 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `launcher` | Selbststart mit `--enable-preview` (eigenes Source-Set, ohne Preview kompiliert) |
 | `ffm` | `Native`: Hilfsschicht über der FFM-API (Bibliotheken laden, Strings, Speicher) |
 | `gl` | `GL`: handgeschriebene OpenGL-Bindings; `GLLoader`: Auflösung der Funktionsadressen |
-| `platform` | `Window`, `GLWindow`, `Input`, `Key` |
+| `platform` | `Window`, `GLWindow`, `Input`, `Key`, `MouseButton` |
 | `platform.win32` | `Win32Api` (Bindings) und `Win32Window` (Fenster, Nachrichten, optional WGL) |
 | `platform.x11` | `X11Api` (Bindings) und `X11Window` (Fenster, Events, GLX) |
-| `gfx` | Die Grafik-Schnittstelle der Engine: `GraphicsDevice`, `Shader`, `ShaderLayout`, `Mesh`, dazu `Meshes`, `Camera`, `Screenshot` |
-| `gfx.gl` | OpenGL-Implementierung: `GLDevice`, `GLShader`, `GLMesh` |
-| `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh` |
-| `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig` |
+| `gfx` | Die Grafik-Schnittstelle der Engine: `GraphicsDevice`, `Shader`, `ShaderLayout`, `Mesh`, `Texture`, dazu `MeshBuilder`, `Meshes`, `Textures`, `Camera`, `Screenshot` |
+| `gfx.gl` | OpenGL-Implementierung: `GLDevice`, `GLShader`, `GLMesh`, `GLTexture` |
+| `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh`, `D3D11Texture` |
+| `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
-| `demo` | `CubeDemo` |
+| `demo` | `PlazaDemo` (Ladebildschirm und Testplatz), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.
+
+### Ein Frame in zwei Phasen
+
+Die Szene wird in ein Bild in interner Auflösung gerendert (Fenstergröße mal `renderScale`),
+mit Tiefentest. `Game.render` zeichnet in dieses Bild. Danach streckt die Engine es auf die
+Fenstergröße, und `Game.renderOverlay` zeichnet in voller Auflösung darüber: Ladebildschirm,
+Menüs, Anzeigen. So bleibt Schrift scharf, während die Szene mit weniger Pixeln auskommt. Das
+ist der wichtigste Hebel, wenn ein Software-Renderer rechnet, denn dort kostet jeder Pixel
+CPU-Zeit.
+
+Der Testplatz zeigt die übrigen Sparmaßnahmen: alle Gebäude in einem einzigen Mesh, alle
+Bäume, Laternen und Besucher als Sprites in einem zweiten (das Ausrichten zur Kamera und die
+Bewegung rechnet der Vertex-Shader), der Himmel als drittes. Drei Zeichenaufrufe pro Frame,
+Beleuchtung in drei festen Stufen, Dunst statt Fernsicht, Sprites ausgestanzt statt
+transparent.
 
 ### Shader
 
@@ -145,6 +185,7 @@ public final class MyGame implements Game {
     @Override public void init(EngineContext context) { /* context.graphics(): Shader und Meshes anlegen */ }
     @Override public void update(EngineContext context, double deltaSeconds) { /* Logik, Eingabe */ }
     @Override public void render(EngineContext context) { /* graphics.clear(...), graphics.draw(mesh, shader) */ }
+    @Override public void renderOverlay(EngineContext context) { /* optional: 2D in voller Auflösung */ }
     @Override public void dispose() { /* GPU-Ressourcen freigeben */ }
 }
 ```
@@ -161,7 +202,7 @@ Kontext aktiv ist.
 
 `.github/workflows/build.yml` baut das JAR, prüft Manifest und Class-File-Versionen (Launcher
 ohne, FFM-Schicht mit Preview-Markierung), startet es auf einem virtuellen Display mit einem
-schlichten `java -jar` und veröffentlicht es anschließend unter dem festen Release-Tag `latest`.
+schlichten `java -jar` (einmal den Ladebildschirm, einmal den Testplatz) und veröffentlicht es anschließend unter dem festen Release-Tag `latest`.
 
 ## Teststand
 
@@ -170,12 +211,15 @@ schlichten `java -jar` und veröffentlicht es anschließend unter dem festen Rel
 | Linux x64, OpenGL (Mesa llvmpipe unter Xvfb) | getestet: Start über den Launcher, Rendering, Tastatur, Größenänderung, Schließen |
 | Windows-Codepfad mit Windows-JDK 21 unter Wine, Direct3D 11 | getestet: dieselben Punkte; das Bild ist pixelgleich mit dem OpenGL-Bild |
 | Windows-Codepfad unter Wine, OpenGL | getestet: dieselben Punkte |
-| Echtes Windows, Direct3D 11 | noch nicht getestet, ebenso wenig der Rückfall auf WARP |
+| Echtes Windows, Direct3D 11 auf WARP („Microsoft Basic Render Driver“) | Würfel-Demo läuft; der Testplatz ist dort noch nicht gelaufen |
+| Echtes Windows, Direct3D 11 mit Grafikkartentreiber | noch nicht getestet |
 | Echtes Windows ohne OpenGL-Treiber, OpenGL | scheitert erwartungsgemäß mit einer Diagnose („GDI Generic“) |
 
 ## Grenzen und nächste Schritte
 
-- Maus, Texturen, Text und Audio fehlen noch.
+- Text, Audio, Kollision und das Laden von Modelldateien fehlen noch.
+- Die Sprites des Testplatzes sind mit Java 2D gemalte Platzhalter (`SpriteAtlas`).
+- Texturen haben keine Mipmaps, weit entfernte Sprites flimmern deshalb leicht.
 - macOS wird nicht unterstützt (dort wäre Cocoa über `objc_msgSend` nötig).
 - Der Game-Loop hat einen variablen Zeitschritt und ohne VSync keine Bildratenbegrenzung.
 - Umstieg auf Java 22 oder neuer: Die FFM-API ist dort final. Alle Methoden, die sich

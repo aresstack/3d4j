@@ -13,7 +13,8 @@ public final class EngineContext {
     private final GraphicsDevice graphics;
     private double timeSeconds;
     private long frame;
-    private double framesPerSecond;
+    private final FrameStats frameStats = new FrameStats();
+    private FrameStats.Summary lastSecond = new FrameStats.Summary(0, 0, 0, 0, 0);
     private Path pendingScreenshot;
 
     EngineContext(Window window, GraphicsDevice graphics) {
@@ -49,9 +50,14 @@ public final class EngineContext {
         return frame;
     }
 
-    /** Average of the last second; 0 until the first second has passed. */
-    public double framesPerSecond() {
-        return framesPerSecond;
+    /** Frame times of this run; {@code frameStats().total()} gives average and percentiles. */
+    public FrameStats frameStats() {
+        return frameStats;
+    }
+
+    /** Frame time statistics of the last second, as shown in the window title. */
+    public FrameStats.Summary lastSecond() {
+        return lastSecond;
     }
 
     /** Saves the frame that is currently being produced as a PNG once it has been rendered. */
@@ -69,8 +75,8 @@ public final class EngineContext {
         this.frame++;
     }
 
-    void framesPerSecond(double value) {
-        this.framesPerSecond = value;
+    void lastSecond(FrameStats.Summary summary) {
+        this.lastSecond = summary;
     }
 
     Path takePendingScreenshot() {

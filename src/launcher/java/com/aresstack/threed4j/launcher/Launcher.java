@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
  * <p>System properties:</p>
  * <ul>
  *   <li>{@code threed4j.main} – fully qualified name of the class to start
- *       (default: the cube demo)</li>
+ *       (default: the plaza demo)</li>
  * </ul>
  */
 public final class Launcher {
@@ -33,7 +33,7 @@ public final class Launcher {
     private static final int REQUIRED_JAVA = 21;
 
     private static final String MAIN_PROPERTY = "threed4j.main";
-    private static final String DEFAULT_MAIN = "com.aresstack.threed4j.demo.CubeDemo";
+    private static final String DEFAULT_MAIN = "com.aresstack.threed4j.demo.PlazaDemo";
     private static final String RELAUNCHED_PROPERTY = "threed4j.relaunched";
     /** An engine class that uses the FFM API and therefore only loads with preview enabled. */
     private static final String PREVIEW_PROBE = "com.aresstack.threed4j.ffm.Native";

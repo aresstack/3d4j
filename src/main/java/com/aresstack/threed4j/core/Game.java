@@ -17,8 +17,18 @@ public interface Game {
      */
     void update(EngineContext context, double deltaSeconds);
 
-    /** Draws the current state: clear, then draw meshes. */
+    /**
+     * Draws the 3D scene: clear, then draw meshes. This is rendered at the scene
+     * resolution (window size times render scale) with depth test.
+     */
     void render(EngineContext context);
+
+    /**
+     * Draws what lies on top of the scene at full window resolution, without depth
+     * test: loading screen, menus, HUD.
+     */
+    default void renderOverlay(EngineContext context) {
+    }
 
     /** Called once after the last frame: release GPU resources. */
     default void dispose() {

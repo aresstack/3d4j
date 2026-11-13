@@ -73,8 +73,14 @@ jobs:
           # Plain "java -jar" without any flags: the launcher has to restart the JVM
           # with --enable-preview by itself.
           xvfb-run -a -s "-screen 0 1400x900x24" \
-            java -jar build/libs/3d4j.jar --frames=120 --no-vsync --screenshot=build/smoke-test.png
-          test -s build/smoke-test.png
+            java -jar build/libs/3d4j.jar --frames=60 --no-vsync --screenshot=build/smoke-test-title.png
+          test -s build/smoke-test-title.png
+
+          # The test plaza on its fixed camera path, at half internal resolution.
+          xvfb-run -a -s "-screen 0 1400x900x24" \
+            java -jar build/libs/3d4j.jar --benchmark --scale=0.5 --frames=300 --no-vsync \
+              --screenshot=build/smoke-test-scene.png
+          test -s build/smoke-test-scene.png
 
       - name: Upload JAR as workflow artifact
         uses: actions/upload-artifact@v4
@@ -82,7 +88,8 @@ jobs:
           name: 3d4j-jar
           path: |
             build/libs/3d4j.jar
-            build/smoke-test.png
+            build/smoke-test-title.png
+            build/smoke-test-scene.png
           if-no-files-found: error
           retention-days: 30
 

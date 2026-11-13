@@ -15,6 +15,12 @@ public interface Shader extends AutoCloseable {
 
     void setUniform(String name, float value);
 
+    /**
+     * Sets the texture the shader samples: {@code uniform sampler2D uTexture} in GLSL,
+     * {@code Texture2D uTexture : register(t0)} with {@code SamplerState uSampler : register(s0)} in HLSL.
+     */
+    void setTexture(Texture texture);
+
     @Override
     void close();
 }

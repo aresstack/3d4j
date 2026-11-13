@@ -76,6 +76,25 @@ public final class GL {
     public static final int GL_LINK_STATUS = 0x8B82;
     public static final int GL_INFO_LOG_LENGTH = 0x8B84;
 
+    public static final int GL_NEAREST = 0x2600;
+    public static final int GL_LINEAR = 0x2601;
+    public static final int GL_TEXTURE_2D = 0x0DE1;
+    public static final int GL_TEXTURE_MAG_FILTER = 0x2800;
+    public static final int GL_TEXTURE_MIN_FILTER = 0x2801;
+    public static final int GL_TEXTURE_WRAP_S = 0x2802;
+    public static final int GL_TEXTURE_WRAP_T = 0x2803;
+    public static final int GL_CLAMP_TO_EDGE = 0x812F;
+    public static final int GL_RGBA8 = 0x8058;
+    public static final int GL_TEXTURE0 = 0x84C0;
+    public static final int GL_DEPTH_COMPONENT24 = 0x81A6;
+    public static final int GL_READ_FRAMEBUFFER = 0x8CA8;
+    public static final int GL_DRAW_FRAMEBUFFER = 0x8CA9;
+    public static final int GL_FRAMEBUFFER_COMPLETE = 0x8CD5;
+    public static final int GL_COLOR_ATTACHMENT0 = 0x8CE0;
+    public static final int GL_DEPTH_ATTACHMENT = 0x8D00;
+    public static final int GL_FRAMEBUFFER = 0x8D40;
+    public static final int GL_RENDERBUFFER = 0x8D41;
+
     // ------------------------------------------------------------------ handles
 
     private static final MethodHandle glViewport = bindVoid("glViewport", JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT);
@@ -125,6 +144,28 @@ public final class GL {
 
     private static final MethodHandle glDrawArrays = bindVoid("glDrawArrays", JAVA_INT, JAVA_INT, JAVA_INT);
     private static final MethodHandle glDrawElements = bindVoid("glDrawElements", JAVA_INT, JAVA_INT, JAVA_INT, JAVA_LONG);
+
+    private static final MethodHandle glGenTextures = bindVoid("glGenTextures", JAVA_INT, ADDRESS);
+    private static final MethodHandle glDeleteTextures = bindVoid("glDeleteTextures", JAVA_INT, ADDRESS);
+    private static final MethodHandle glBindTexture = bindVoid("glBindTexture", JAVA_INT, JAVA_INT);
+    private static final MethodHandle glActiveTexture = bindVoid("glActiveTexture", JAVA_INT);
+    private static final MethodHandle glTexParameteri = bindVoid("glTexParameteri", JAVA_INT, JAVA_INT, JAVA_INT);
+    private static final MethodHandle glTexImage2D = bindVoid("glTexImage2D",
+            JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, ADDRESS);
+
+    private static final MethodHandle glGenFramebuffers = bindVoid("glGenFramebuffers", JAVA_INT, ADDRESS);
+    private static final MethodHandle glDeleteFramebuffers = bindVoid("glDeleteFramebuffers", JAVA_INT, ADDRESS);
+    private static final MethodHandle glBindFramebuffer = bindVoid("glBindFramebuffer", JAVA_INT, JAVA_INT);
+    private static final MethodHandle glCheckFramebufferStatus = bind("glCheckFramebufferStatus", JAVA_INT, JAVA_INT);
+    private static final MethodHandle glFramebufferRenderbuffer = bindVoid("glFramebufferRenderbuffer",
+            JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT);
+    private static final MethodHandle glBlitFramebuffer = bindVoid("glBlitFramebuffer",
+            JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT);
+    private static final MethodHandle glGenRenderbuffers = bindVoid("glGenRenderbuffers", JAVA_INT, ADDRESS);
+    private static final MethodHandle glDeleteRenderbuffers = bindVoid("glDeleteRenderbuffers", JAVA_INT, ADDRESS);
+    private static final MethodHandle glBindRenderbuffer = bindVoid("glBindRenderbuffer", JAVA_INT, JAVA_INT);
+    private static final MethodHandle glRenderbufferStorage = bindVoid("glRenderbufferStorage",
+            JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT);
 
     private static MethodHandle bind(String name, MemoryLayout result, MemoryLayout... parameters) {
         return GLLoader.bind(name, FunctionDescriptor.of(result, parameters));
@@ -493,6 +534,146 @@ public final class GL {
     public static void glDrawElements(int mode, int count, int type, long offset) {
         try {
             glDrawElements.invokeExact(mode, count, type, offset);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    // ----------------------------------------------------------------- textures
+
+    public static int glGenTexture() {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment id = arena.allocate(JAVA_INT);
+            glGenTextures.invokeExact(1, id);
+            return id.get(JAVA_INT, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glDeleteTexture(int id) {
+        try (Arena arena = Arena.ofConfined()) {
+            glDeleteTextures.invokeExact(1, Native.ints(arena, id));
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glBindTexture(int target, int texture) {
+        try {
+            glBindTexture.invokeExact(target, texture);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glActiveTexture(int unit) {
+        try {
+            glActiveTexture.invokeExact(unit);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glTexParameteri(int target, int parameter, int value) {
+        try {
+            glTexParameteri.invokeExact(target, parameter, value);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Uploads level 0 of a 2D texture; {@code pixels} holds tightly packed rows. */
+    public static void glTexImage2D(int target, int internalFormat, int width, int height, int format, int type,
+                                    MemorySegment pixels) {
+        try {
+            glTexImage2D.invokeExact(target, 0, internalFormat, width, height, 0, format, type, pixels);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    // ------------------------------------------------------------- framebuffers
+
+    public static int glGenFramebuffer() {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment id = arena.allocate(JAVA_INT);
+            glGenFramebuffers.invokeExact(1, id);
+            return id.get(JAVA_INT, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glDeleteFramebuffer(int id) {
+        try (Arena arena = Arena.ofConfined()) {
+            glDeleteFramebuffers.invokeExact(1, Native.ints(arena, id));
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glBindFramebuffer(int target, int framebuffer) {
+        try {
+            glBindFramebuffer.invokeExact(target, framebuffer);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static int glCheckFramebufferStatus(int target) {
+        try {
+            return (int) glCheckFramebufferStatus.invokeExact(target);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glFramebufferRenderbuffer(int target, int attachment, int renderbufferTarget, int renderbuffer) {
+        try {
+            glFramebufferRenderbuffer.invokeExact(target, attachment, renderbufferTarget, renderbuffer);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter) {
+        try {
+            glBlitFramebuffer.invokeExact(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static int glGenRenderbuffer() {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment id = arena.allocate(JAVA_INT);
+            glGenRenderbuffers.invokeExact(1, id);
+            return id.get(JAVA_INT, 0);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glDeleteRenderbuffer(int id) {
+        try (Arena arena = Arena.ofConfined()) {
+            glDeleteRenderbuffers.invokeExact(1, Native.ints(arena, id));
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glBindRenderbuffer(int target, int renderbuffer) {
+        try {
+            glBindRenderbuffer.invokeExact(target, renderbuffer);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    public static void glRenderbufferStorage(int target, int internalFormat, int width, int height) {
+        try {
+            glRenderbufferStorage.invokeExact(target, internalFormat, width, height);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

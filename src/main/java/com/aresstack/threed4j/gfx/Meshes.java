@@ -61,4 +61,18 @@ public final class Meshes {
         }
         return graphics.createMesh(vertices, indices, 3, 3, 3);
     }
+
+    /**
+     * A rectangle covering the whole screen in the overlay phase. Layout: position
+     * in clip space (-1 to 1), texture coordinate (0, 0 is the top left corner).
+     * Shaders scale and move it to where an image should appear.
+     */
+    public static Mesh screenQuad(GraphicsDevice graphics) {
+        float[] vertices = {
+                -1, -1, 0, 1,
+                1, -1, 1, 1,
+                1, 1, 1, 0,
+                -1, 1, 0, 0};
+        return graphics.createMesh(vertices, new int[]{0, 1, 2, 0, 2, 3}, 2, 2);
+    }
 }

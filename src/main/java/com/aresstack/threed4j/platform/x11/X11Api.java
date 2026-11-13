@@ -39,10 +39,16 @@ final class X11Api {
 
     static final long KEY_PRESS_MASK = 1L;
     static final long KEY_RELEASE_MASK = 1L << 1;
+    static final long BUTTON_PRESS_MASK = 1L << 2;
+    static final long BUTTON_RELEASE_MASK = 1L << 3;
+    static final long POINTER_MOTION_MASK = 1L << 6;
     static final long STRUCTURE_NOTIFY_MASK = 1L << 17;
 
     static final int KEY_PRESS = 2;
     static final int KEY_RELEASE = 3;
+    static final int BUTTON_PRESS = 4;
+    static final int BUTTON_RELEASE = 5;
+    static final int MOTION_NOTIFY = 6;
     static final int CONFIGURE_NOTIFY = 22;
     static final int CLIENT_MESSAGE = 33;
 
@@ -62,6 +68,10 @@ final class X11Api {
     /** {@code XConfigureEvent.width / .height}. */
     static final long CONFIGURE_WIDTH = 56;
     static final long CONFIGURE_HEIGHT = 60;
+    /** {@code XButtonEvent} and {@code XMotionEvent}: pointer position; button number (1 left, 2 middle, 3 right). */
+    static final long POINTER_X = 64;
+    static final long POINTER_Y = 68;
+    static final long BUTTON_NUMBER = 84;
     /** {@code XClientMessageEvent.data.l[0]}. */
     static final long CLIENT_MESSAGE_DATA = 56;
 

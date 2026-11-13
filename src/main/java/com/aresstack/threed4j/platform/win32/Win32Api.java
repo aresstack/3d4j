@@ -62,6 +62,13 @@ final class Win32Api {
     static final int WM_KEYUP = 0x0101;
     static final int WM_SYSKEYDOWN = 0x0104;
     static final int WM_SYSKEYUP = 0x0105;
+    static final int WM_MOUSEMOVE = 0x0200;
+    static final int WM_LBUTTONDOWN = 0x0201;
+    static final int WM_LBUTTONUP = 0x0202;
+    static final int WM_RBUTTONDOWN = 0x0204;
+    static final int WM_RBUTTONUP = 0x0205;
+    static final int WM_MBUTTONDOWN = 0x0207;
+    static final int WM_MBUTTONUP = 0x0208;
 
     static final int VK_TAB = 0x09;
     static final int VK_RETURN = 0x0D;
@@ -188,6 +195,10 @@ final class Win32Api {
             FunctionDescriptor.of(JAVA_INT, ADDRESS));
     private static final MethodHandle wglMakeCurrent = Native.downcall(OPENGL32, "wglMakeCurrent",
             FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS), CAPTURE_LAST_ERROR);
+    private static final MethodHandle SetCapture = Native.downcall(USER32, "SetCapture",
+            FunctionDescriptor.of(ADDRESS, ADDRESS));
+    private static final MethodHandle ReleaseCapture = Native.downcall(USER32, "ReleaseCapture",
+            FunctionDescriptor.of(JAVA_INT));
     private static final MethodHandle GetSystemMetrics = Native.downcall(USER32, "GetSystemMetrics",
             FunctionDescriptor.of(JAVA_INT, JAVA_INT));
     /** OpenGL 1.1 function, a plain export of opengl32.dll: usable before the GL class is. */
@@ -217,6 +228,23 @@ final class Win32Api {
     }
 
     // ----------------------------------------------------------- typed wrappers
+
+    /** Keeps mouse messages coming to the window while the pointer is outside of it. */
+    static void setCapture(MemorySegment window) {
+        try {
+            MemorySegment previous = (MemorySegment) SetCapture.invokeExact(window);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void releaseCapture() {
+        try {
+            int ignored = (int) ReleaseCapture.invokeExact();
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
 
     /** {@code true} if this process runs in a Remote Desktop session. */
     static boolean isRemoteSession() {

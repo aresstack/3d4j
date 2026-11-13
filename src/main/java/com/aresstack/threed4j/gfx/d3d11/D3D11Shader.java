@@ -4,6 +4,7 @@ import com.aresstack.threed4j.ffm.Native;
 import com.aresstack.threed4j.gfx.Shader;
 import com.aresstack.threed4j.gfx.ShaderLayout;
 import com.aresstack.threed4j.gfx.ShaderSource;
+import com.aresstack.threed4j.gfx.Texture;
 import com.aresstack.threed4j.math.Mat4;
 import com.aresstack.threed4j.math.Vec3;
 
@@ -40,6 +41,7 @@ final class D3D11Shader implements Shader {
     private final Map<String, ShaderLayout.UniformType> uniformTypes = new HashMap<>();
     private final float[] matrixValues = new float[16];
     private boolean dirty = true;
+    private D3D11Texture texture;
 
     D3D11Shader(ComObject device, ComObject context, String name, ShaderLayout layout) {
         this.context = context;
@@ -157,6 +159,15 @@ final class D3D11Shader implements Shader {
         psSetShader(context, pixelShader);
         vsSetConstantBuffer(context, constantBufferArray);
         psSetConstantBuffer(context, constantBufferArray);
+        if (texture != null) {
+            psSetShaderResource(context, texture.viewArray());
+            psSetSampler(context, texture.samplerArray());
+        }
+    }
+
+    @Override
+    public void setTexture(Texture texture) {
+        this.texture = (D3D11Texture) texture;
     }
 
     @Override

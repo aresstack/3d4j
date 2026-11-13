@@ -4,6 +4,7 @@ import com.aresstack.threed4j.ffm.Native;
 import com.aresstack.threed4j.gfx.Shader;
 import com.aresstack.threed4j.gfx.ShaderLayout;
 import com.aresstack.threed4j.gfx.ShaderSource;
+import com.aresstack.threed4j.gfx.Texture;
 import com.aresstack.threed4j.math.Mat4;
 import com.aresstack.threed4j.math.Vec3;
 
@@ -25,6 +26,7 @@ final class GLShader implements Shader {
     private final Arena arena = Arena.ofConfined();
     private final MemorySegment matrixBuffer = Native.array(arena, ValueLayout.JAVA_FLOAT, 16);
     private final float[] matrixValues = new float[16];
+    private GLTexture texture;
 
     GLShader(String name, ShaderLayout layout) {
         int vertexShader = compile(GL_VERTEX_SHADER, ShaderSource.read("/shaders/" + name + ".vert"));
@@ -62,6 +64,15 @@ final class GLShader implements Shader {
 
     void use() {
         glUseProgram(id);
+        if (texture != null) {
+            glActiveTexture(GL_TEXTURE0); // sampler uniforms default to unit 0
+            glBindTexture(GL_TEXTURE_2D, texture.id());
+        }
+    }
+
+    @Override
+    public void setTexture(Texture texture) {
+        this.texture = (GLTexture) texture;
     }
 
     @Override
