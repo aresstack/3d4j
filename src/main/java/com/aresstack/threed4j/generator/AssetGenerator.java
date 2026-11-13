@@ -80,18 +80,31 @@ public final class AssetGenerator {
         }
 
         String apiKey = apiKeyFromEnvironment;
+        java.net.URI baseUrl = config.baseUrl();
         if (apiKey == null || apiKey.isBlank()) {
             if (config.keePassEntry() == null) {
                 throw new IllegalArgumentException("No API key: pass the title of the KeePass entry once with "
                         + "--entry=TITLE, or set the environment variable " + API_KEY_VARIABLE + ".");
             }
-            System.out.println("Reading the API key from KeePass (pairs once if needed) ...");
-            apiKey = KeePassApiKey.read(config.keePassEntry(), config.home(), KeePassApiKey::codeFromConsole);
+            System.out.println("Reading the entry \"" + config.keePassEntry() + "\" from KeePass (pairs once if needed) ...");
+            KeePassEntry entry = KeePassApiKey.entries(config.home(), KeePassApiKey::codeFromConsole).stream()
+                    .filter(candidate -> candidate.title().equalsIgnoreCase(config.keePassEntry()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("KeePass has no entry titled \""
+                            + config.keePassEntry() + "\"."));
+            apiKey = entry.password();
+            if (baseUrl == null && entry.hasUrl()) {
+                baseUrl = java.net.URI.create(AiSetup.normalizeBaseUrl(entry.url()));
+            }
+        }
+        if (baseUrl == null) {
+            throw new IllegalArgumentException("The address of the AI service is unknown: put it into the URL "
+                    + "field of the KeePass entry, or pass it with --base-url=https://.../v1.");
         }
 
-        System.out.println("Asking " + config.model() + " at " + config.baseUrl() + " for " + wanted.size()
+        System.out.println("Asking " + config.model() + " at " + baseUrl + " for " + wanted.size()
                 + " asset(s), " + config.parallel() + " at a time");
-        ChatClient chat = new ChatClient(config.baseUrl(), config.model(), apiKey);
+        ChatClient chat = new ChatClient(baseUrl, config.model(), apiKey);
         ExecutorService executor = Executors.newFixedThreadPool(config.parallel());
         boolean allOk = true;
         try {

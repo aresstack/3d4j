@@ -1,6 +1,7 @@
 package com.aresstack.threed4j.demo;
 
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.generator.KeePassEntry;
 import com.aresstack.threed4j.gfx.Textures;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.MouseButton;
@@ -11,9 +12,11 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /** The menu without a window: painting and input handling are plain Java. */
@@ -55,6 +58,9 @@ class SetupScreenTest {
         screen.update(input, 1280, 720);
         assertFalse(screen.consumeDirty(), "nothing happened");
 
+        chooseManual(input);
+        screen.consumeDirty();
+        screen.paint(1280, 720);
         input.onText('h');
         screen.update(input, 1280, 720);
         assertTrue(screen.consumeDirty(), "a typed character changes the address field");
@@ -63,6 +69,7 @@ class SetupScreenTest {
     @Test
     void anInvalidAddressKeepsTheMenuOnItsFirstStepAndPlayingWithoutAiLeavesIt() {
         Input input = new Input();
+        chooseManual(input);
         screen.paint(1280, 720);
         for (char c : "not an address\r".toCharArray()) {
             input.onText(c);
@@ -77,5 +84,27 @@ class SetupScreenTest {
         input.onMouseButton(MouseButton.LEFT, true);
         screen.update(input, 1280, 720);
         assertTrue(screen.isFinished());
+    }
+
+    @Test
+    void suggestsTheEntryUsedLastTimeThenTheOnlyOneWithAnAddress() {
+        KeePassEntry wiki = new KeePassEntry("Wiki", "https://wiki.intern", "a");
+        KeePassEntry ai = new KeePassEntry("KI-Dienst", "https://ki.intern/v1", "b");
+        KeePassEntry note = new KeePassEntry("Notiz", "", "c");
+
+        assertEquals(ai, SetupScreen.suggestedEntry(List.of(wiki, ai, note), "ki-dienst"), "the title remembered last time");
+        assertEquals(ai, SetupScreen.suggestedEntry(List.of(ai, note), ""), "the only entry with an address");
+        assertNull(SetupScreen.suggestedEntry(List.of(wiki, ai, note), ""), "two candidates: the user picks");
+        assertNull(SetupScreen.suggestedEntry(List.of(wiki, ai), "Gelöscht"), "the remembered entry is gone");
+    }
+
+    /** Clicks "Manuell"; the menu opens with KeePass chosen. */
+    private void chooseManual(Input input) {
+        screen.paint(1280, 720);
+        input.onMouseMove(660, 322);
+        input.onMouseButton(MouseButton.LEFT, true);
+        screen.update(input, 1280, 720);
+        input.onMouseButton(MouseButton.LEFT, false);
+        input.beginFrame();
     }
 }

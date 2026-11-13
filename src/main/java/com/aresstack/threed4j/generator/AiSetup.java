@@ -16,8 +16,8 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 /**
- * What a setup screen needs from the generator, step by step: the settings, the API
- * key from KeePass, the models of the service, and the generation of one asset.
+ * What a setup screen needs from the generator, step by step: the settings, the
+ * entries of KeePass, the models of the service, and the generation of one asset.
  * All methods that talk to KeePass or the network block; call them off the game
  * thread. Messages of the exceptions are meant for the user.
  */
@@ -30,8 +30,10 @@ public final class AiSetup {
     }
 
     /**
-     * @param baseUrl      base of the OpenAI-compatible API, e.g. {@code https://ki.intern/v1}; may be empty
-     * @param keePassEntry title of the KeePass entry whose password is the API key; may be empty
+     * @param baseUrl      base of the OpenAI-compatible API, e.g. {@code https://ki.intern/v1}; empty if
+     *                     the address comes from the KeePass entry
+     * @param keePassEntry title of the KeePass entry of the service (its address is the base of the
+     *                     API, its password the API key); empty if access is typed in by hand
      */
     public record Settings(String baseUrl, String model, String keePassEntry) {
     }
@@ -66,12 +68,21 @@ public final class AiSetup {
 
     public static void save(Settings settings) throws IOException {
         Properties own = read(settingsFile());
-        own.setProperty("chat.baseUrl", settings.baseUrl());
-        own.setProperty("chat.model", settings.model());
-        own.setProperty("chat.apiKeyRef", settings.keePassEntry());
+        // An empty value is removed, so that the generator falls back as documented.
+        set(own, "chat.baseUrl", settings.baseUrl());
+        set(own, "chat.model", settings.model());
+        set(own, "chat.apiKeyRef", settings.keePassEntry());
         Files.createDirectories(home());
         try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
             own.store(out, "3d4j asset generator");
+        }
+    }
+
+    private static void set(Properties properties, String name, String value) {
+        if (value == null || value.isBlank()) {
+            properties.remove(name);
+        } else {
+            properties.setProperty(name, value);
         }
     }
 
@@ -108,14 +119,16 @@ public final class AiSetup {
     }
 
     /**
-     * Reads the API key from KeePass, pairing first if no pairing is stored.
+     * Lists the KeePass entries, pairing first if no pairing is stored. An AI service
+     * is an entry whose address is the base address of the API and whose password
+     * is the API key.
      *
      * @param pairingCode called while KeePass shows its one-time code; blocks until
      *                    the user has typed it and returns it
-     * @throws IllegalStateException if KeePass does not hand out the key
+     * @throws IllegalStateException if KeePass cannot be reached
      */
-    public static String readApiKey(String keePassEntry, Supplier<String> pairingCode) throws IOException {
-        return KeePassApiKey.read(keePassEntry, home(), pairingCode);
+    public static List<KeePassEntry> keePassEntries(Supplier<String> pairingCode) throws IOException {
+        return KeePassApiKey.entries(home(), pairingCode);
     }
 
     /** @return the ids of the models the service offers, sorted */

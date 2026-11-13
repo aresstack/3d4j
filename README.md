@@ -108,16 +108,21 @@ Ordner kommen.
 ### Das Menü „Die Welt erschaffen“
 
 Solange noch keine erzeugten Motive im Asset-Ordner liegen, öffnet sich nach dem Ladebildschirm
-ein Menü im Stil des Spiels. Es führt in vier Schritten zur erzeugten Welt, nach dem Vorbild der
+ein Menü im Stil des Spiels. Es führt in drei Schritten zur erzeugten Welt, nach dem Vorbild der
 Einrichtungsassistenten von Space Harvester und Enterprise AI Client:
 
-1. **KI-Dienst:** Adresse des Dienstes und Titel des KeePass-Eintrags mit dem API-Key. Beides
-   ist vorbelegt, wenn der Enterprise AI Client auf dem Rechner eingerichtet ist.
-2. **KeePass:** „Koppeln“ verbindet das Spiel mit KeePass. KeePass zeigt ein Einmal-Passwort,
-   das man im Menü eintippt. Danach liest das Spiel den API-Key.
-3. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `openai/gpt-oss-120b` vor,
+1. **Zugang:** oben wählt man **KeePass** oder **Manuell**.
+   - *KeePass* (vorgewählt): „Koppeln“ verbindet das Spiel mit KeePass. KeePass zeigt ein
+     Einmal-Passwort, das man im Menü eintippt; das ist nur beim ersten Mal nötig, danach
+     verbindet sich das Menü beim Öffnen selbst. Dann wählt man in der Auswahlliste den Eintrag
+     des KI-Dienstes. Die **URL des Eintrags ist die Adresse der API** (`https://…/v1`), sein
+     **Passwort der API-Key**. Tippen sucht in der Liste, die Pfeiltasten blättern. Der zuletzt
+     gewählte Eintrag ist beim nächsten Mal vorgewählt, ebenso der aus `chat.apiKeyRef` des
+     Enterprise AI Client.
+   - *Manuell:* Adresse und API-Key eintippen. Der Key wird nicht gespeichert.
+2. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `openai/gpt-oss-120b` vor,
    falls angeboten.
-4. **Welt:** „Zeichnen lassen“ fragt alle Motive gleichzeitig an und zeigt je Motiv den Stand.
+3. **Welt:** „Zeichnen lassen“ fragt alle Motive gleichzeitig an und zeigt je Motiv den Stand.
    „Spielen“ startet das Spiel mit dem, was gelungen ist.
 
 „Ohne KI spielen“ verlässt das Menü jederzeit. `--setup` öffnet es auch dann, wenn schon Motive
@@ -137,14 +142,15 @@ zeichnen lässt und ein freigestelltes Motiv zeigt, fragt bei Fehlern bis zu dre
 Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht kein Netz.
 
 - **Dienst und Modell:** eine OpenAI-kompatible API (`POST <Basis-URL>/chat/completions`).
-  Adresse, Modell und KeePass-Eintrag übernimmt der Generator aus der Konfiguration des
-  Enterprise AI Client, falls vorhanden (`chat.baseUrl`, `chat.model`, `chat.apiKeyRef`).
-  Sonst einmal angeben, die Werte werden in `.3d4j/generator.properties` gemerkt:
-  `--base-url=https://.../v1 --model=openai/gpt-oss-120b --entry=TITEL`.
-- **API-Key:** aus KeePass über das KeePassRPC-Plugin (`keepassrpc-java`). Beim ersten Lauf
-  zeigt KeePass einen Kopplungscode, den man in die Konsole tippt; die Kopplung liegt danach
-  in `.3d4j/keepass.properties`. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird
-  sie stattdessen verwendet.
+  Der Generator verwendet, was im Menü gewählt wurde (`.3d4j/generator.properties`), sonst die
+  Konfiguration des Enterprise AI Client (`chat.baseUrl`, `chat.model`, `chat.apiKeyRef`).
+  Oder einmal angeben, die Werte werden gemerkt: `--entry=TITEL --model=openai/gpt-oss-120b`.
+- **Adresse und API-Key:** aus dem KeePass-Eintrag über das KeePassRPC-Plugin
+  (`keepassrpc-java`): Passwort = API-Key, URL = Adresse. `--base-url=https://.../v1` hat
+  Vorrang vor der URL des Eintrags. Beim ersten Lauf zeigt KeePass einen Kopplungscode, den
+  man in die Konsole tippt; die Kopplung liegt danach in `.3d4j/keepass.properties` und gilt
+  auch für das Menü. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird sie statt
+  KeePass verwendet; dann muss die Adresse angegeben sein.
 - **Weitere Argumente:** `--parallel=N` (Standard 4), `--only=lamp,visitor-1`, `--force`
   (vorhandene Motive neu erzeugen).
 - **Zertifikate:** Unter Windows vertraut der Generator den Zertifikaten des Windows-Speichers,
@@ -211,7 +217,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
-| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `GeneratorConfig` |
+| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig` |
 | `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
@@ -289,7 +295,8 @@ schlichten `java -jar` (einmal den Ladebildschirm, einmal den Testplatz) und ver
 
 - Text, Audio, Kollision und das Laden von Modelldateien fehlen noch.
 - Menü und Generator sind nur gegen einen nachgebauten Dienst getestet, nicht gegen ein echtes
-  KeePass und nicht gegen den echten KI-Dienst. Einen Proxy unterstützen sie nicht.
+  KeePass und nicht gegen den echten KI-Dienst. Insbesondere ist die Auswahlliste der
+  KeePass-Einträge nur mit nachgestellten Einträgen geprüft. Einen Proxy unterstützen sie nicht.
 - Das Menü ist als ein Bild mit Java 2D gemalt; Textfelder kennen nur Anhängen, Löschen am
   Ende und Einfügen.
 - Ohne Dateien im Asset-Ordner sind die Sprites mit Java 2D gemalte Platzhalter (`SpriteAtlas`).

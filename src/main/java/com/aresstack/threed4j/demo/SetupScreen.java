@@ -4,6 +4,7 @@ import com.aresstack.threed4j.assets.AssetCatalog;
 import com.aresstack.threed4j.assets.AssetSpec;
 import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.generator.AiSetup;
+import com.aresstack.threed4j.generator.KeePassEntry;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
 import com.aresstack.threed4j.platform.MouseButton;
@@ -19,12 +20,14 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -32,8 +35,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * The "create the world" menu shown after the loading screen: address of the AI
- * service, pairing with KeePass, choice of the model, generation of the artwork.
+ * The "create the world" menu shown after the loading screen: access to the AI
+ * service, choice of the model, generation of the artwork. Access comes from
+ * KeePass (pair, then pick the entry of the service from a drop-down list; its
+ * address and password are the address and the API key) or is typed in by hand.
  * The steps follow the setup wizards of Space Harvester and the Enterprise AI
  * Client.
  *
@@ -62,16 +67,19 @@ final class SetupScreen implements AutoCloseable {
     /** Number of models visible at once in the list. */
     private static final int MODEL_ROWS = 7;
 
-    private static final String[] STEPS = {"KI-Dienst", "KeePass", "Modell", "Welt"};
-    private static final int SERVICE = 0;
-    private static final int KEEPASS = 1;
-    private static final int MODEL = 2;
-    private static final int WORLD = 3;
+    /** Number of KeePass entries visible at once in the open drop-down list. */
+    private static final int ENTRY_ROWS = 5;
+
+    private static final String[] STEPS = {"Zugang", "Modell", "Welt"};
+    private static final int ACCESS = 0;
+    private static final int MODEL = 1;
+    private static final int WORLD = 2;
+    private static final String HINT_KEEPASS = "Willkommen! Verbinde das Spiel mit KeePass und wähle den Eintrag des "
+            + "KI-Dienstes. Adresse und API-Key kommen aus dem Eintrag und bleiben in KeePass.";
+    private static final String HINT_MANUAL = "Willkommen! Trag ein, wo der KI-Dienst wohnt, und seinen API-Key. "
+            + "Der Schlüssel wird nicht gespeichert.";
     private static final String[] HINTS = {
-            "Willkommen! Sag mir, wo der KI-Dienst wohnt und unter welchem Titel sein API-Key in KeePass liegt. "
-                    + "Der Schlüssel selbst bleibt in KeePass.",
-            "Jetzt koppeln wir das Spiel mit KeePass. KeePass zeigt dabei ein Einmal-Passwort, das du hier eintippst. "
-                    + "Das ist nur beim ersten Mal nötig.",
+            HINT_KEEPASS,
             "Diese Modelle bietet der Dienst an. Ich habe eines vorgewählt, du kannst ein anderes anklicken.",
             "Das Modell zeichnet nun die Bewohner und Pflanzen der Stadt, alle gleichzeitig. "
                     + "Was gelingt, siehst du gleich im Spiel."
@@ -87,18 +95,31 @@ final class SetupScreen implements AutoCloseable {
     });
 
     // --- state; written by the game thread, and by background tasks through post() -----------------
-    private int step = SERVICE;
+    private int step = ACCESS;
+    private final String keyFromEnvironment = AiSetup.apiKeyFromEnvironment();
+    /** Where access comes from: KeePass, or typed in by hand. */
+    private boolean useKeePass = keyFromEnvironment == null;
     private final StringBuilder baseUrl = new StringBuilder();
-    private final StringBuilder keePassEntry = new StringBuilder();
+    private final StringBuilder manualKey = new StringBuilder();
     private final StringBuilder pairingCode = new StringBuilder();
-    private StringBuilder focus = baseUrl;
+    private final StringBuilder entryFilter = new StringBuilder();
+    private StringBuilder focus;
     private String message = "";
     private boolean messageIsError;
     private String busy;
-    private String apiKey = AiSetup.apiKeyFromEnvironment();
-    private final boolean keyFromEnvironment = apiKey != null;
+    private boolean connectOnOpen;
     private boolean awaitingCode;
     private CompletableFuture<String> codeAnswer;
+    /** The entries KeePass handed out; {@code null} until connected. */
+    private List<KeePassEntry> entries;
+    private KeePassEntry selectedEntry;
+    private String rememberedEntry;
+    private boolean entriesOpen;
+    private int entryCursor;
+    private int entryScroll;
+    /** Address and key in use, set when the access step is confirmed. */
+    private String serviceUrl;
+    private String apiKey;
     private List<String> models = List.of();
     private String selectedModel;
     private int modelScroll;
@@ -121,7 +142,10 @@ final class SetupScreen implements AutoCloseable {
         this.cover = cover;
         AiSetup.Settings settings = AiSetup.load();
         baseUrl.append(settings.baseUrl());
-        keePassEntry.append(settings.keePassEntry());
+        rememberedEntry = settings.keePassEntry();
+        focus = useKeePass ? null : baseUrl;
+        // Once paired, connecting needs nothing from the user: do it right away.
+        connectOnOpen = useKeePass && AiSetup.isPaired();
         selectedModel = settings.model();
         for (AssetSpec spec : AssetCatalog.ALL) {
             assetStates.put(spec, store.has(spec) ? "vorhanden" : "fehlt");
@@ -159,6 +183,12 @@ final class SetupScreen implements AutoCloseable {
             dirty = true;
         }
 
+        if (connectOnOpen) {
+            connectOnOpen = false;
+            connectKeePass();
+            dirty = true;
+        }
+
         String typed = input.typedText();
         for (int i = 0; i < typed.length(); i++) {
             type(typed.charAt(i));
@@ -170,6 +200,14 @@ final class SetupScreen implements AutoCloseable {
             }
             if (input.wasPressed(Key.UP) && index > 0) {
                 selectModel(index - 1);
+            }
+        }
+        if (entriesOpen) {
+            if (input.wasPressed(Key.DOWN)) {
+                moveEntryCursor(entryCursor + 1);
+            }
+            if (input.wasPressed(Key.UP)) {
+                moveEntryCursor(entryCursor - 1);
             }
         }
         if (input.wasPressed(MouseButton.LEFT)) {
@@ -201,6 +239,9 @@ final class SetupScreen implements AutoCloseable {
             }
             return;
         }
+        if (focus == null && step == ACCESS && useKeePass && entries != null && busy == null && character >= ' ') {
+            openEntries(); // typing with the list closed starts a search
+        }
         if (focus == null || busy != null && focus != pairingCode) {
             return;
         }
@@ -212,6 +253,10 @@ final class SetupScreen implements AutoCloseable {
             focus.append(clipboardText());
         } else if (focus.length() < 300) {
             focus.append(character);
+        }
+        if (focus == entryFilter) {
+            entryCursor = 0;
+            entryScroll = 0;
         }
         dirty = true;
     }
@@ -226,10 +271,73 @@ final class SetupScreen implements AutoCloseable {
     }
 
     private void nextField() {
-        if (step == SERVICE) {
-            focus = focus == baseUrl ? keePassEntry : baseUrl;
+        if (step == ACCESS && !useKeePass) {
+            focus = focus == baseUrl ? manualKey : baseUrl;
             dirty = true;
         }
+    }
+
+    // ------------------------------------------------------- KeePass entry list
+
+    /** The entries whose title or address contains what was typed into the open list. */
+    private List<KeePassEntry> visibleEntries() {
+        String wanted = entryFilter.toString().trim().toLowerCase(Locale.ROOT);
+        if (entries == null || wanted.isEmpty()) {
+            return entries == null ? List.of() : entries;
+        }
+        return entries.stream()
+                .filter(entry -> entry.title().toLowerCase(Locale.ROOT).contains(wanted)
+                        || entry.url().toLowerCase(Locale.ROOT).contains(wanted))
+                .toList();
+    }
+
+    private void openEntries() {
+        entriesOpen = true;
+        entryFilter.setLength(0);
+        focus = entryFilter;
+        say("", false);
+        entryScroll = 0;
+        moveEntryCursor(Math.max(0, entries.indexOf(selectedEntry)));
+    }
+
+    private void closeEntries() {
+        entriesOpen = false;
+        entryFilter.setLength(0);
+        focus = null;
+    }
+
+    private void moveEntryCursor(int index) {
+        int count = visibleEntries().size();
+        entryCursor = Math.max(0, Math.min(index, count - 1));
+        if (entryCursor < entryScroll) {
+            entryScroll = entryCursor;
+        } else if (entryCursor >= entryScroll + ENTRY_ROWS) {
+            entryScroll = entryCursor - ENTRY_ROWS + 1;
+        }
+        dirty = true;
+    }
+
+    private void pickEntry(KeePassEntry entry) {
+        selectedEntry = entry;
+        closeEntries();
+        say("", false);
+    }
+
+    private void pickEntryUnderCursor() {
+        List<KeePassEntry> visible = visibleEntries();
+        if (entryCursor < visible.size()) {
+            pickEntry(visible.get(entryCursor));
+        }
+    }
+
+    private void chooseAccess(boolean keePass) {
+        if (busy != null || useKeePass == keePass) {
+            return;
+        }
+        useKeePass = keePass;
+        closeEntries();
+        focus = keePass ? null : baseUrl;
+        say("", false);
     }
 
     private void selectModel(int index) {
@@ -282,73 +390,120 @@ final class SetupScreen implements AutoCloseable {
         }
     }
 
-    private void confirmService() {
-        String address = AiSetup.normalizeBaseUrl(baseUrl.toString());
-        if (address == null) {
-            say("Das ist keine Adresse wie https://ki.intern/v1.", true);
-            return;
+    /** Connects to KeePass, pairing first if needed, and fetches the entries for the drop-down list. */
+    private void connectKeePass() {
+        pairingCode.setLength(0);
+        codeAnswer = new CompletableFuture<>();
+        CompletableFuture<String> answer = codeAnswer;
+        inBackground(AiSetup.isPaired() ? "Verbinde mit KeePass …" : "Kopple mit KeePass …", () -> {
+            List<KeePassEntry> found;
+            try {
+                found = AiSetup.keePassEntries(() -> {
+                    // KeePass shows its one-time code now; wait until the user has typed it.
+                    post(() -> {
+                        awaitingCode = true;
+                        focus = pairingCode;
+                        busy = "KeePass zeigt jetzt ein Einmal-Passwort.";
+                    });
+                    return answer.join();
+                });
+            } catch (Exception e) {
+                throw new Exception("KeePass antwortet nicht. Läuft KeePass mit dem Plugin KeePassRPC, "
+                        + "und ist die Datenbank entsperrt?\n(" + firstLine(e) + ")");
+            }
+            return () -> {
+                entries = found;
+                focus = null;
+                selectedEntry = suggestedEntry(found, rememberedEntry);
+                if (found.isEmpty()) {
+                    say("KeePass hat keine Einträge herausgegeben.", true);
+                } else if (selectedEntry == null) {
+                    openEntries();
+                }
+            };
+        });
+    }
+
+    /**
+     * The entry to show before the user has chosen: the one used last time; otherwise
+     * the only one that has an address; otherwise none.
+     */
+    static KeePassEntry suggestedEntry(List<KeePassEntry> entries, String remembered) {
+        for (KeePassEntry entry : entries) {
+            if (entry.title().equalsIgnoreCase(remembered)) {
+                return entry;
+            }
         }
-        if (!keyFromEnvironment && keePassEntry.toString().isBlank()) {
-            say("Es fehlt der Titel des KeePass-Eintrags mit dem API-Key.", true);
-            return;
+        List<KeePassEntry> withAddress = entries.stream().filter(KeePassEntry::hasUrl).toList();
+        return withAddress.size() == 1 ? withAddress.get(0) : null;
+    }
+
+    private void confirmAccess() {
+        String address;
+        String key;
+        if (useKeePass) {
+            if (selectedEntry == null) {
+                say("Bitte den Eintrag des KI-Dienstes wählen.", true);
+                return;
+            }
+            address = AiSetup.normalizeBaseUrl(selectedEntry.url());
+            key = selectedEntry.password();
+            if (address == null) {
+                say("Der Eintrag „" + selectedEntry.title() + "“ hat keine Adresse. Trag in KeePass die URL des "
+                        + "Dienstes ein (https://…/v1) und verbinde neu, oder nimm „Manuell“.", true);
+                return;
+            }
+            if (key.isBlank()) {
+                say("Der Eintrag „" + selectedEntry.title() + "“ hat kein Passwort. Dort gehört der API-Key hin.", true);
+                return;
+            }
+            rememberedEntry = selectedEntry.title();
+        } else {
+            address = AiSetup.normalizeBaseUrl(baseUrl.toString());
+            key = manualKey.toString().isBlank() ? keyFromEnvironment : manualKey.toString().trim();
+            if (address == null) {
+                say("Das ist keine Adresse wie https://ki.intern/v1.", true);
+                return;
+            }
+            if (key == null) {
+                say("Es fehlt der API-Key.", true);
+                return;
+            }
+            baseUrl.setLength(0);
+            baseUrl.append(address);
         }
-        baseUrl.setLength(0);
-        baseUrl.append(address);
-        try {
-            AiSetup.save(new AiSetup.Settings(address, selectedModel == null ? AiSetup.PREFERRED_MODEL : selectedModel,
-                    keePassEntry.toString().trim()));
-        } catch (java.io.IOException e) {
-            say("Die Einstellungen lassen sich nicht speichern: " + e.getMessage(), true);
+        serviceUrl = address;
+        apiKey = key;
+        if (!saveSettings()) {
             return;
         }
         say("", false);
         focus = null;
-        if (keyFromEnvironment) {
-            step = MODEL;
-            loadModels();
-        } else {
-            step = KEEPASS;
-        }
+        step = MODEL;
+        loadModels();
     }
 
-    private void readKeyFromKeePass() {
-        String entry = keePassEntry.toString().trim();
-        pairingCode.setLength(0);
-        codeAnswer = new CompletableFuture<>();
-        CompletableFuture<String> answer = codeAnswer;
-        inBackground("Verbinde mit KeePass …", () -> {
-            String key;
-            try {
-                key = readKey(entry, answer);
-            } catch (Exception e) {
-                throw new Exception("KeePass hat den API-Key nicht herausgegeben. Läuft KeePass mit dem Plugin "
-                        + "KeePassRPC, und ist die Datenbank entsperrt?\n(" + firstLine(e) + ")");
-            }
-            return () -> {
-                apiKey = key;
-                focus = null;
-                step = MODEL;
-                loadModels();
-            };
-        });
+    /**
+     * Remembers the choices. With KeePass only the title of the entry is kept, so
+     * that a changed address in KeePass is followed; the API key is never written.
+     */
+    private boolean saveSettings() {
+        String model = selectedModel == null || selectedModel.isBlank() ? AiSetup.PREFERRED_MODEL : selectedModel;
+        try {
+            AiSetup.save(useKeePass
+                    ? new AiSetup.Settings("", model, rememberedEntry)
+                    : new AiSetup.Settings(serviceUrl, model, ""));
+            return true;
+        } catch (java.io.IOException e) {
+            say("Die Einstellungen lassen sich nicht speichern: " + e.getMessage(), true);
+            return false;
+        }
     }
 
     private static String firstLine(Exception e) {
         String text = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
         int end = text.indexOf('\n');
         return end < 0 ? text : text.substring(0, end);
-    }
-
-    private String readKey(String entry, CompletableFuture<String> answer) throws Exception {
-        return AiSetup.readApiKey(entry, () -> {
-                // KeePass shows its one-time code now; wait until the user has typed it.
-                post(() -> {
-                    awaitingCode = true;
-                    focus = pairingCode;
-                    busy = "KeePass zeigt jetzt ein Einmal-Passwort.";
-                });
-                return answer.join();
-            });
     }
 
     private void submitPairingCode() {
@@ -362,14 +517,17 @@ final class SetupScreen implements AutoCloseable {
     private void unpair() {
         try {
             AiSetup.unpair();
-            say("Kopplung gelöscht. Der Eintrag in KeePass bleibt.", false);
+            entries = null;
+            selectedEntry = null;
+            closeEntries();
+            say("Kopplung gelöscht. In KeePass bleibt sie eingetragen, bis du sie dort entfernst.", false);
         } catch (java.io.IOException e) {
             say("Die Kopplung lässt sich nicht löschen: " + e.getMessage(), true);
         }
     }
 
     private void loadModels() {
-        String address = baseUrl.toString();
+        String address = serviceUrl;
         String key = apiKey;
         String wanted = selectedModel == null || selectedModel.isBlank() ? AiSetup.PREFERRED_MODEL : selectedModel;
         inBackground("Lade die Modelle vom Dienst …", () -> {
@@ -398,10 +556,7 @@ final class SetupScreen implements AutoCloseable {
             say("Bitte ein Modell auswählen.", true);
             return;
         }
-        try {
-            AiSetup.save(new AiSetup.Settings(baseUrl.toString(), selectedModel, keePassEntry.toString().trim()));
-        } catch (java.io.IOException e) {
-            say("Die Einstellungen lassen sich nicht speichern: " + e.getMessage(), true);
+        if (!saveSettings()) {
             return;
         }
         say("", false);
@@ -424,7 +579,7 @@ final class SetupScreen implements AutoCloseable {
         generating = true;
         generatedOnce = true;
         say("", false);
-        AiSetup.Session session = new AiSetup.Session(baseUrl.toString(), selectedModel, apiKey);
+        AiSetup.Session session = new AiSetup.Session(serviceUrl, selectedModel, apiKey);
         AtomicInteger open = new AtomicInteger(wanted.size());
         for (AssetSpec spec : wanted) {
             background.submit(() -> {
@@ -505,8 +660,7 @@ final class SetupScreen implements AutoCloseable {
         paintPanel(g);
         paintHeader(g);
         switch (step) {
-            case SERVICE -> paintService(g);
-            case KEEPASS -> paintKeePass(g);
+            case ACCESS -> paintAccess(g);
             case MODEL -> paintModel(g);
             default -> paintWorld(g);
         }
@@ -586,38 +740,156 @@ final class SetupScreen implements AutoCloseable {
         g.fill(bubble);
         g.setColor(TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        wrapped(g, HINTS[step], 450, 222, 660, 23);
+        wrapped(g, step == ACCESS && !useKeePass ? HINT_MANUAL : HINTS[step], 450, 222, 660, 23);
     }
 
-    private void paintService(Graphics2D g) {
-        label(g, "Adresse des KI-Dienstes", 430, 328);
-        field(g, baseUrl, "https://…/v1", 430, 338, 700, false);
-        if (keyFromEnvironment) {
-            label(g, "API-Key", 430, 418);
-            note(g, "kommt aus der Umgebungsvariable THREED4J_API_KEY, ohne KeePass", 430, 446, GOOD);
+    private void paintAccess(Graphics2D g) {
+        choice(g, "KeePass", 430, useKeePass, () -> chooseAccess(true));
+        choice(g, "Manuell", 586, !useKeePass, () -> chooseAccess(false));
+        if (useKeePass) {
+            paintKeePass(g);
         } else {
-            label(g, "Titel des KeePass-Eintrags mit dem API-Key", 430, 418);
-            field(g, keePassEntry, "zum Beispiel: KI-Dienst", 430, 428, 700, false);
+            paintManual(g);
         }
-        primary(g, "Weiter", this::confirmService);
+    }
+
+    private void paintManual(Graphics2D g) {
+        label(g, "Adresse des KI-Dienstes", 430, 372);
+        field(g, baseUrl, "https://…/v1", 430, 382, 700, false);
+        label(g, "API-Key", 430, 456);
+        field(g, manualKey, keyFromEnvironment != null ? "aus der Umgebungsvariable THREED4J_API_KEY" : "", 430, 466, 700, true);
+        if (busy == null) {
+            primary(g, "Weiter", this::confirmAccess);
+        }
     }
 
     private void paintKeePass(Graphics2D g) {
-        label(g, "Kopplung", 430, 328);
         boolean paired = AiSetup.isPaired();
-        note(g, paired ? "Gekoppelt" : "Nicht gekoppelt", 430, 358, paired ? GOOD : TEXT);
-        note(g, "Eintrag: " + keePassEntry.toString().trim(), 430, 386, TEXT);
-        if (awaitingCode) {
-            label(g, "Einmal-Passwort aus KeePass", 430, 440);
-            field(g, pairingCode, "", 430, 450, 380, true);
-            primary(g, "Bestätigen", this::submitPairingCode);
-        } else if (busy == null) {
-            primary(g, paired ? "API-Key lesen" : "Koppeln", this::readKeyFromKeePass);
-            if (paired) {
-                secondary(g, "Entkoppeln", 880, this::unpair);
-            }
+        if (entries != null) {
+            note(g, "Verbunden mit KeePass", 430, 364, GOOD);
+        } else {
+            note(g, paired ? "Gekoppelt, noch nicht verbunden" : "Noch nicht mit KeePass gekoppelt", 430, 364, TEXT);
         }
-        back(g, SERVICE);
+
+        if (awaitingCode) {
+            label(g, "Einmal-Passwort aus KeePass", 430, 404);
+            field(g, pairingCode, "", 430, 414, 380, true);
+            primary(g, "Bestätigen", this::submitPairingCode);
+            return;
+        }
+        if (busy != null) {
+            return;
+        }
+        if (entries == null) {
+            primary(g, paired ? "Verbinden" : "Koppeln", this::connectKeePass);
+            if (paired) {
+                secondary(g, "Entkoppeln", 780, this::unpair);
+            }
+            return;
+        }
+
+        label(g, "Eintrag des KI-Dienstes", 430, 392);
+        paintEntryBox(g);
+        if (entriesOpen) {
+            paintEntryList(g);
+            primary(g, "Übernehmen", this::pickEntryUnderCursor);
+        } else {
+            if (selectedEntry != null) {
+                boolean hasAddress = AiSetup.normalizeBaseUrl(selectedEntry.url()) != null;
+                boolean hasKey = !selectedEntry.password().isBlank();
+                note(g, hasAddress ? "Adresse:  " + selectedEntry.url() : "Adresse:  fehlt im Eintrag (Feld URL)",
+                        430, 474, hasAddress ? TEXT : BAD);
+                note(g, hasKey ? "API-Key:  das Passwort des Eintrags" : "API-Key:  der Eintrag hat kein Passwort",
+                        430, 502, hasKey ? TEXT : BAD);
+            }
+            primary(g, "Weiter", this::confirmAccess);
+            secondary(g, "Entkoppeln", 780, this::unpair);
+        }
+    }
+
+    /** The closed drop-down list: the chosen entry; while open, the search text. */
+    private void paintEntryBox(Graphics2D g) {
+        Shape box = new RoundRectangle2D.Double(430, 400, 700, 44, 20, 20);
+        g.setColor(FIELD);
+        g.fill(box);
+        g.setStroke(new BasicStroke(entriesOpen ? 3.5f : 2f));
+        g.setColor(entriesOpen ? PINK_DARK : PINK);
+        g.draw(box);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
+        if (entriesOpen) {
+            String filter = fitted(g, entryFilter.toString(), 600);
+            if (filter.isEmpty()) {
+                g.setColor(new Color(0xB9A9C2));
+                g.drawString("Tippen zum Suchen, Pfeiltasten blättern", 456, 429);
+            } else {
+                g.setColor(INK);
+                g.drawString(filter, 448, 429);
+            }
+            int caret = 448 + g.getFontMetrics().stringWidth(filter) + 2;
+            g.setStroke(new BasicStroke(2f));
+            g.setColor(PINK_DARK);
+            g.drawLine(caret, 411, caret, 433);
+        } else if (selectedEntry != null) {
+            g.setColor(INK);
+            g.drawString(fitted(g, selectedEntry.title(), 600), 448, 429);
+        } else {
+            g.setColor(new Color(0xB9A9C2));
+            g.drawString("Eintrag wählen …", 448, 429);
+        }
+        // The arrow of a drop-down list, drawn so that it does not depend on the font.
+        Path2D arrow = new Path2D.Double();
+        double tip = entriesOpen ? 416 : 428;
+        double base = entriesOpen ? 428 : 416;
+        arrow.moveTo(1090, base);
+        arrow.lineTo(1110, base);
+        arrow.lineTo(1100, tip);
+        arrow.closePath();
+        g.setColor(PINK_DARK);
+        g.fill(arrow);
+        regions.add(new Region(box.getBounds2D(), () -> {
+            if (entriesOpen) {
+                closeEntries();
+            } else {
+                openEntries();
+            }
+        }));
+    }
+
+    private void paintEntryList(Graphics2D g) {
+        List<KeePassEntry> visible = visibleEntries();
+        int rowHeight = 28;
+        Shape box = new RoundRectangle2D.Double(430, 448, 700, ENTRY_ROWS * rowHeight + 8, 18, 18);
+        g.setColor(FIELD);
+        g.fill(box);
+        g.setStroke(new BasicStroke(2f));
+        g.setColor(PINK);
+        g.draw(box);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+        if (visible.isEmpty()) {
+            g.setColor(TEXT);
+            g.drawString("Kein Eintrag passt zu „" + fitted(g, entryFilter.toString(), 300) + "“.", 450, 474);
+        }
+        for (int row = 0; row < ENTRY_ROWS && row + entryScroll < visible.size(); row++) {
+            int index = row + entryScroll;
+            KeePassEntry entry = visible.get(index);
+            double y = 452 + row * rowHeight;
+            boolean marked = index == entryCursor;
+            if (marked) {
+                g.setColor(PINK);
+                g.fill(new RoundRectangle2D.Double(436, y + 1, 688, rowHeight - 2, 14, 14));
+            }
+            g.setColor(marked ? Color.WHITE : INK);
+            g.drawString(fitted(g, entry.title(), 300), 450, (int) y + 20);
+            g.setColor(marked ? Color.WHITE : new Color(0x9A88A6));
+            g.drawString(fitted(g, entry.url(), 350), 770, (int) y + 20);
+            regions.add(new Region(new Rectangle2D.Double(434, y, 692, rowHeight), () -> pickEntry(entry)));
+        }
+        if (visible.size() > ENTRY_ROWS) {
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+            String range = (entryScroll + 1) + "–" + Math.min(visible.size(), entryScroll + ENTRY_ROWS) + " von " + visible.size();
+            g.drawString(range, 1130 - g.getFontMetrics().stringWidth(range), 392);
+        }
     }
 
     private void paintModel(Graphics2D g) {
@@ -660,7 +932,7 @@ final class SetupScreen implements AutoCloseable {
                 primary(g, "Weiter", this::confirmModel);
             }
         }
-        back(g, keyFromEnvironment ? SERVICE : KEEPASS);
+        back(g, ACCESS);
     }
 
     private void paintWorld(Graphics2D g) {
@@ -708,7 +980,7 @@ final class SetupScreen implements AutoCloseable {
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
             g.setColor(messageIsError ? BAD : GOOD);
             // Where the step leaves room: below the fields, inside the empty model list, above the buttons.
-            int y = step == MODEL ? (models.isEmpty() ? 362 : 592) : step == WORLD ? 580 : 500;
+            int y = step == MODEL ? (models.isEmpty() ? 362 : 592) : step == WORLD ? 580 : 540;
             wrapped(g, message, step == MODEL && models.isEmpty() ? 450 : 430, y, 680, 21);
         }
         // Leaving is always possible: the game runs with the built-in pictures.
@@ -763,6 +1035,20 @@ final class SetupScreen implements AutoCloseable {
         regions.add(new Region(shape.getBounds2D(), () -> focus = value));
     }
 
+    /** One of two options side by side; the chosen one is filled. */
+    private void choice(Graphics2D g, String text, int x, boolean chosen, Runnable action) {
+        Shape shape = new RoundRectangle2D.Double(x, 304, 146, 36, 36, 36);
+        g.setColor(chosen ? PINK_DARK : PINK_LIGHT);
+        g.fill(shape);
+        g.setStroke(new BasicStroke(2.5f));
+        g.setColor(PINK_DARK);
+        g.draw(shape);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+        g.setColor(chosen ? Color.WHITE : INK);
+        g.drawString(text, x + (146 - g.getFontMetrics().stringWidth(text)) / 2, 328);
+        regions.add(new Region(shape.getBounds2D(), action));
+    }
+
     private void primary(Graphics2D g, String text, Runnable action) {
         primaryAction = action;
         button(g, text, 960, 600, 170, PINK_DARK, Color.WHITE, action);
@@ -777,7 +1063,7 @@ final class SetupScreen implements AutoCloseable {
             button(g, "Zurück", 430, 600, 110, PINK_LIGHT, INK, () -> {
                 step = target;
                 say("", false);
-                focus = target == SERVICE ? baseUrl : null;
+                focus = target == ACCESS && !useKeePass ? baseUrl : null;
             });
         }
     }

@@ -14,12 +14,17 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.function.Supplier;
 
 /**
- * Reads the API key from KeePass through the KeePassRPC plugin, using
- * {@code keepassrpc-java}.
+ * Reads entries (API key and address of the AI service) from KeePass through the
+ * KeePassRPC plugin, using {@code keepassrpc-java}.
  *
  * <p>The first call pairs this program with KeePass: KeePass shows a one-time code,
  * the user types it into this program. The result is stored in
@@ -31,6 +36,7 @@ final class KeePassApiKey {
     private static final String ORIGIN = "chrome-extension://3d4j";
     private static final String DEFAULT_HOST = "127.0.0.1";
     private static final int DEFAULT_PORT = 12546;
+    private static final Pattern HTTP_ADDRESS = Pattern.compile("https?://[^\\s\"'\\],]+");
 
     private KeePassApiKey() {
     }
@@ -62,11 +68,13 @@ final class KeePassApiKey {
     }
 
     /**
+     * Lists the entries KeePass hands out, pairing first if no pairing is stored.
+     *
      * @param codeProvider called if pairing is needed, while KeePass shows its one-time
      *                     code; returns what the user typed (may block until then)
-     * @throws IllegalStateException with a message for the user if KeePass does not hand out the key
+     * @throws IllegalStateException with a message for the user if KeePass cannot be reached
      */
-    static String read(String entryTitle, Path home, Supplier<String> codeProvider) throws IOException {
+    static List<KeePassEntry> entries(Path home, Supplier<String> codeProvider) throws IOException {
         Path file = pairingFile(home);
         Properties stored = new Properties();
         if (Files.isRegularFile(file)) {
@@ -95,19 +103,42 @@ final class KeePassApiKey {
         try (KeePassRpcCredentialClient client =
                      new DefaultKeePassRpcCredentialClient(host, port, CLIENT_ID, srpKey, ORIGIN)) {
             client.connect();
-            String password = client.getPassword(entryTitle);
-            if (password == null || password.isBlank()) {
-                throw new IllegalStateException("KeePass has no entry titled \"" + entryTitle
-                        + "\" with a password. Is the database unlocked?");
-            }
-            return password;
-        } catch (IllegalStateException e) {
-            throw e;
+            return parseListing(client.listEntries());
         } catch (Exception e) {
-            throw new IllegalStateException("KeePass did not hand out the API key (" + e.getMessage() + ").\n"
+            throw new IllegalStateException("KeePass did not hand out its entries (" + e.getMessage() + ").\n"
                     + "Check that KeePass is running with the KeePassRPC plugin and the database is unlocked.\n"
                     + "If the pairing was removed in KeePass, delete " + file + " and start again.", e);
         }
+    }
+
+    /**
+     * Reads the listing of {@code KeePassRpcCredentialClient.listEntries()}: one block
+     * of {@code Name: value} lines per entry, blocks separated by an empty line.
+     */
+    static List<KeePassEntry> parseListing(String listing) {
+        List<KeePassEntry> entries = new ArrayList<>();
+        String title = null;
+        String url = "";
+        String password = "";
+        for (String line : (listing + "\n\n").split("\n", -1)) {
+            if (line.startsWith("Title: ")) {
+                title = line.substring("Title: ".length()).trim();
+            } else if (line.startsWith("Password: ")) {
+                password = line.substring("Password: ".length());
+            } else if (line.startsWith("URL: ")) {
+                Matcher address = HTTP_ADDRESS.matcher(line);
+                url = address.find() ? address.group() : "";
+            } else if (line.isBlank() && title != null) {
+                if (!title.isEmpty()) {
+                    entries.add(new KeePassEntry(title, url, password));
+                }
+                title = null;
+                url = "";
+                password = "";
+            }
+        }
+        entries.sort(Comparator.comparing(KeePassEntry::title, String.CASE_INSENSITIVE_ORDER));
+        return entries;
     }
 
     private static KeePassRpcPairingResult pair(String host, int port, Supplier<String> codeProvider) {

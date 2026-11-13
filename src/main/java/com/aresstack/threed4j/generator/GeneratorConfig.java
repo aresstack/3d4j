@@ -21,7 +21,8 @@ import java.util.Properties;
  * on which the client is set up needs no further configuration. Values given on
  * the command line are remembered in the generator's own file.</p>
  *
- * @param baseUrl       base of the OpenAI-compatible API, e.g. {@code https://ki.intern/v1}
+ * @param baseUrl       base of the OpenAI-compatible API, e.g. {@code https://ki.intern/v1};
+ *                      {@code null} to take the address of the KeePass entry
  * @param keePassEntry  title of the KeePass entry whose password is the API key
  * @param parallel      number of requests sent at the same time
  * @param force         regenerate assets that already exist
@@ -83,18 +84,18 @@ record GeneratorConfig(URI baseUrl, String model, String keePassEntry, int paral
             entry = entry.substring("keepass:".length());
         }
 
-        if (baseUrl == null) {
+        if (baseUrl == null && entry == null) {
             throw new IllegalArgumentException("The address of the AI service is unknown. Pass it once with "
-                    + "--base-url=https://.../v1 (it is remembered in " + ownFile + ").");
+                    + "--base-url=https://.../v1, or name a KeePass entry that carries it with --entry=TITLE "
+                    + "(both are remembered in " + ownFile + ").");
         }
-        URI uri;
-        try {
-            uri = URI.create(baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Not a valid address: " + baseUrl);
-        }
-        if (uri.getScheme() == null || !uri.getScheme().startsWith("http")) {
-            throw new IllegalArgumentException("Not an http(s) address: " + baseUrl);
+        URI uri = null;
+        if (baseUrl != null) {
+            String normalized = AiSetup.normalizeBaseUrl(baseUrl);
+            if (normalized == null) {
+                throw new IllegalArgumentException("Not an http(s) address: " + baseUrl);
+            }
+            uri = URI.create(normalized);
         }
         return new GeneratorConfig(uri, model, entry, parallel, force, List.copyOf(only), home);
     }
