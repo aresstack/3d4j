@@ -27,7 +27,8 @@ final class SpriteAtlas {
     static final int LAMP = 2;
     static final int FIRST_VISITOR = 3;
     static final int VISITOR_COUNT = 3;
-    static final int CELLS = FIRST_VISITOR + VISITOR_COUNT;
+    static final int PEONY_BUSH = FIRST_VISITOR + VISITOR_COUNT;
+    static final int CELLS = PEONY_BUSH + 1;
 
     private static final Color OUTLINE = new Color(0x3B2A4A);
     private static final BasicStroke PEN = new BasicStroke(5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -38,7 +39,7 @@ final class SpriteAtlas {
     /** Which asset file replaces which cell. */
     private static final AssetSpec[] CELL_ASSETS = {
             AssetCatalog.BLOSSOM_TREE, AssetCatalog.GREEN_TREE, AssetCatalog.LAMP,
-            AssetCatalog.VISITOR_1, AssetCatalog.VISITOR_2, AssetCatalog.VISITOR_3};
+            AssetCatalog.VISITOR_1, AssetCatalog.VISITOR_2, AssetCatalog.VISITOR_3, AssetCatalog.PEONY_BUSH};
 
     /**
      * Paints the atlas. Every cell for which the asset folder holds a picture shows
@@ -88,6 +89,7 @@ final class SpriteAtlas {
         visitor(cell(g, FIRST_VISITOR), new Color(0x7B5EA7), new Color(0xB5532F));
         visitor(cell(g, FIRST_VISITOR + 1), new Color(0x3F8FC4), new Color(0x3A2C22));
         visitor(cell(g, FIRST_VISITOR + 2), new Color(0xE0A23A), new Color(0xD9B26A));
+        bush(cell(g, PEONY_BUSH));
         g.dispose();
         return image;
     }
@@ -116,6 +118,18 @@ final class SpriteAtlas {
         g.fill(new Ellipse2D.Float(40, 28, 26, 20));
         g.fill(new Ellipse2D.Float(28, 86, 18, 14));
         g.fill(new Ellipse2D.Float(78, 92, 18, 14));
+    }
+
+    /** A flowering bush in the lower half of the cell, as wide as the cell. */
+    private static void bush(Graphics2D g) {
+        outlined(g, new Ellipse2D.Float(10, 176, 108, 90), new Color(0x74C365));
+        outlined(g, new Ellipse2D.Float(40, 140, 50, 50), new Color(0xF7A8CF));
+        outlined(g, new Ellipse2D.Float(14, 176, 40, 40), new Color(0xF48FBF));
+        outlined(g, new Ellipse2D.Float(76, 172, 40, 40), new Color(0xF48FBF));
+        g.setColor(new Color(0xFFE08A));
+        g.fill(new Ellipse2D.Float(58, 158, 14, 14));
+        g.fill(new Ellipse2D.Float(28, 190, 12, 12));
+        g.fill(new Ellipse2D.Float(90, 186, 12, 12));
     }
 
     private static void lamp(Graphics2D g) {

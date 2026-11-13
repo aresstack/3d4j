@@ -84,6 +84,15 @@ public final class AssetStore {
      * @param model the model that drew it, or {@code null} if unknown
      */
     public void save(AssetSpec spec, String svg, BufferedImage image, String model) throws IOException {
+        save(spec, svg, image, model, null);
+    }
+
+    /**
+     * @param details further facts for the JSON file, e.g. the plan an assembled picture was built from;
+     *                may be {@code null}
+     */
+    public void save(AssetSpec spec, String svg, BufferedImage image, String model, JsonObject details)
+            throws IOException {
         Files.createDirectories(directory);
         archive(spec);
         Files.writeString(svgFile(spec), svg, StandardCharsets.UTF_8);
@@ -95,6 +104,9 @@ public final class AssetStore {
         info.addProperty("description", spec.description());
         info.addProperty("width", spec.width());
         info.addProperty("height", spec.height());
+        if (details != null) {
+            details.entrySet().forEach(entry -> info.add(entry.getKey(), entry.getValue()));
+        }
         Files.writeString(infoFile(spec), new GsonBuilder().setPrettyPrinting().create().toJson(info) + "\n",
                 StandardCharsets.UTF_8);
     }

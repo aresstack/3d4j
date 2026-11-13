@@ -51,6 +51,7 @@ final class PlazaScene implements AutoCloseable {
         SpriteBatch batch = new SpriteBatch();
         plants(batch, random);
         visitors(batch, random);
+        bushes(batch, random); // last, so that everything before keeps its place
         sprites = batch.build(graphics);
         spriteCount = batch.count;
 
@@ -157,6 +158,28 @@ final class PlazaScene implements AutoCloseable {
                 batch.add(SpriteAtlas.LAMP, offset * 0.8f, lampAt, 5f);
                 batch.add(SpriteAtlas.LAMP, lampAt, offset * 0.8f, 5f);
             }
+        }
+    }
+
+    /**
+     * Peony bushes: a ring around the fountain and one between the trees at the edge
+     * of the plaza. The picture fills the lower half of its cell, so a sprite of
+     * height h shows a bush about h / 2 high.
+     */
+    private static void bushes(SpriteBatch batch, Random random) {
+        for (int i = 0; i < 12; i++) {
+            double angle = 2 * Math.PI * i / 12;
+            batch.add(SpriteAtlas.PEONY_BUSH, (float) Math.cos(angle) * 6.1f, (float) Math.sin(angle) * 6.1f,
+                    2.6f + random.nextFloat() * 0.8f);
+        }
+        for (int i = 0; i < 32; i++) {
+            double angle = 2 * Math.PI * (i + 0.5) / 32;
+            float x = (float) Math.cos(angle) * (PLAZA_RADIUS - 1.2f);
+            float z = (float) Math.sin(angle) * (PLAZA_RADIUS - 1.2f);
+            if (Math.abs(x) < STREET_HALF_WIDTH + 1f || Math.abs(z) < STREET_HALF_WIDTH + 1f) {
+                continue;
+            }
+            batch.add(SpriteAtlas.PEONY_BUSH, x, z, 3.0f + random.nextFloat() * 1.2f);
         }
     }
 

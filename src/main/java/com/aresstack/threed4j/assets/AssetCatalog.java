@@ -2,7 +2,7 @@ package com.aresstack.threed4j.assets;
 
 import java.util.List;
 
-/** The artwork the test plaza uses. Sprites are upright and twice as tall as wide. */
+/** The artwork the test plaza uses. Figures and trees are upright and twice as tall as wide. */
 public final class AssetCatalog {
 
     public static final AssetSpec BLOSSOM_TREE = sprite("blossom-tree",
@@ -18,8 +18,12 @@ public final class AssetCatalog {
     public static final AssetSpec VISITOR_3 = sprite("visitor-3",
             "a friendly park visitor standing upright, seen from the front, yellow coat, blond hair");
 
+    /** Not drawn in one piece: assembled from a plan and parts (petals, centre, leaf). */
+    public static final AssetSpec PEONY_BUSH = new AssetSpec("peony-bush", 256, 256,
+            "a bush of pink peonies", AssetSpec.Recipe.FLOWER_BUSH);
+
     public static final List<AssetSpec> ALL =
-            List.of(BLOSSOM_TREE, GREEN_TREE, LAMP, VISITOR_1, VISITOR_2, VISITOR_3);
+            List.of(BLOSSOM_TREE, GREEN_TREE, LAMP, VISITOR_1, VISITOR_2, VISITOR_3, PEONY_BUSH);
 
     private AssetCatalog() {
     }

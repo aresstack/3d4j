@@ -671,6 +671,12 @@ final class SetupScreen implements AutoCloseable {
         if (problem.contains("background is not transparent")) {
             return "Das Motiv war nicht freigestellt.";
         }
+        if (problem.contains("the plan was unusable")) {
+            return "Der Bauplan war unbrauchbar.";
+        }
+        if (problem.startsWith("part ")) {
+            return "Ein Bauteil war unbrauchbar (" + problem.substring(5, Math.max(5, problem.indexOf(" was"))) + ").";
+        }
         if (problem.contains("cut off at max_tokens")) {
             return "Die Antwort wurde abgeschnitten (chat.maxTokens erhöhen).";
         }
@@ -1093,7 +1099,7 @@ final class SetupScreen implements AutoCloseable {
     private void paintWorld(Graphics2D g) {
         note(g, "Modell: " + selectedModel, 430, 322, TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        int y = 356;
+        int y = 352;
         for (Map.Entry<AssetSpec, String> entry : assetStates.entrySet()) {
             String state = entry.getValue();
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
@@ -1106,9 +1112,9 @@ final class SetupScreen implements AutoCloseable {
             if (!generating) {
                 // One motif alone, e.g. only the cherry tree.
                 AssetSpec spec = entry.getKey();
-                button(g, "neu", 1056, y - 22, 74, 30, PINK_LIGHT, INK, () -> generate(List.of(spec)));
+                button(g, "neu", 1056, y - 21, 74, 28, PINK_LIGHT, INK, () -> generate(List.of(spec)));
             }
-            y += 34;
+            y += 32;
         }
         if (!generating) {
             if (generatedOnce) {
@@ -1130,6 +1136,7 @@ final class SetupScreen implements AutoCloseable {
             case "visitor-1" -> "Besucherin 1";
             case "visitor-2" -> "Besucher 2";
             case "visitor-3" -> "Besucher 3";
+            case "peony-bush" -> "Pfingstrosen";
             default -> spec.id();
         };
     }

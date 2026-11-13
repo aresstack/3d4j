@@ -194,6 +194,23 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
 
 Abgelehnte Antworten des Modells landen zur Ansicht als `<name>.rejected.txt` im Asset-Ordner.
 
+**Motive aus Bauplan und Bauteilen.** Der Pfingstrosenbusch (`peony-bush`) wird nicht als
+eine Zeichnung angefragt. Das Modell liefert, was es kann: einen Bauplan als JSON (Blütenblätter
+je Ring, Größe, Versatz, Farben) und fünf kleine Bauteile als SVG-Fragment (drei Blütenblätter,
+Blütenmitte, Blatt), alle Bauteile gleichzeitig. Alles Räumliche macht Java (`FlowerComposer`):
+
+- Zahlen des Plans außerhalb ihres Bereichs werden hineingezogen, unbrauchbare Farben ersetzt.
+- Jedes Bauteil wird geprüft und neu aufgebaut: nur eine flache Gruppe aus Pfaden (Kreise nur in
+  der Blütenmitte), nur Geometrie und Füllfarben werden übernommen. Die Silhouette bekommt die
+  Farbe aus dem Plan, Schattierungen werden an der Silhouette abgeschnitten, die Kontur im Stil
+  des Spiels kommt zuletzt obendrauf. Ein Bauteil, das sein Feld verlässt oder viel zu klein
+  ist, wird mit Begründung neu angefragt (bis zu dreimal).
+- Montage: Blütenblätter nach Plan zur Blüte, fünf Blüten und ein Blätterfächer zum Busch;
+  jedes Bauteil steht einmal unter `<defs>` und wird mit `<use>` platziert.
+
+Der Plan steht danach in `peony-bush.json`. Im Spiel stehen die Büsche um den Brunnen und am
+Rand des Platzes.
+
 **Alte Motive bleiben erhalten.** Zu jedem erzeugten Motiv schreibt der Generator `<name>.json`
 (Modell, Zeitpunkt, Beschreibung, Größe). Wird ein Motiv neu gezeichnet, wandern SVG, PNG und
 JSON des bisherigen vorher nach `history/<name>/<JJJJMMTT-HHMMSS>.svg|.png|.json` im
@@ -259,7 +276,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
-| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
+| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
 | `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 

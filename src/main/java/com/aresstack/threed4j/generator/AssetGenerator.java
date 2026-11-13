@@ -141,6 +141,9 @@ public final class AssetGenerator {
      * @return {@code null} on success, otherwise why the last attempt failed
      */
     static String generate(ChatClient chat, AssetStore store, AssetSpec spec) {
+        if (spec.recipe() == AssetSpec.Recipe.FLOWER_BUSH) {
+            return FlowerComposer.generate(chat::ask, store, spec, chat.model());
+        }
         String problem = null;
         String lastAnswer = null;
         for (int attempt = 1; attempt <= ATTEMPTS; attempt++) {
