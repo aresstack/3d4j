@@ -81,7 +81,7 @@ final class KeePassApiKey {
     }
 
     private static KeePassRpcPairingResult pair(String host, int port) {
-        System.out.println("Pairing with KeePass (once). KeePass now shows a code.");
+        System.out.println("Pairing with KeePass (needed once) ...");
         KeePassRpcPairingRequest request = KeePassRpcPairingRequest.builder()
                 .host(host)
                 .port(port)
@@ -91,7 +91,7 @@ final class KeePassApiKey {
                 .build();
         try {
             return new DefaultKeePassRpcPairingService().pair(request, session -> {
-                System.out.print("Code from KeePass: ");
+                System.out.print("KeePass now shows a code. Type it here: ");
                 System.out.flush();
                 try {
                     String line = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)).readLine();

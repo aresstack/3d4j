@@ -2,9 +2,10 @@
 
 <img src="src/main/resources/images/cover.jpg" alt="Nur zur ZIHR – Cover" width="320">
 
-Grundgerüst für eine 3D-Engine in reinem Java 21 – ohne eine einzige zusätzliche Bibliothek.
-Fenster, Eingabe und Grafik werden über die Foreign Function & Memory API (FFM) direkt
-aus den Systembibliotheken angesprochen:
+Grundgerüst für eine 3D-Engine in reinem Java 21. Alles ist in Java geschrieben, auch die
+eingebundenen Bibliotheken; nativen Code bringt das Projekt nicht mit. Fenster, Eingabe und
+Grafik werden über die Foreign Function & Memory API (FFM) direkt aus den Systembibliotheken
+angesprochen:
 
 | Plattform | Fenster und Eingabe | Grafik |
 |---|---|---|
@@ -86,6 +87,50 @@ Beim Start gibt die Engine aus, womit sie rendert, zum Beispiel
 Die Grafik-API lässt sich mit `-Dthreed4j.backend=d3d11` oder `-Dthreed4j.backend=opengl`
 erzwingen (Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler OpenGL).
 
+## Grafiken aus Dateien und vom Chatmodell
+
+Bäume, Laternen und Besucher des Testplatzes sind eingebaute Platzhalter. Liegt im
+Asset-Ordner eine Datei mit passendem Namen, ersetzt sie den Platzhalter:
+
+| Datei | Motiv |
+|---|---|
+| `blossom-tree`, `green-tree` | Bäume |
+| `lamp` | Laterne |
+| `visitor-1`, `visitor-2`, `visitor-3` | Besucher |
+
+Jeweils als `.svg` oder `.png`, hochkant im Verhältnis 1:2 mit transparentem Hintergrund. Der
+Ordner ist `.3d4j/assets` im Benutzerverzeichnis (unter Windows `%USERPROFILE%\.3d4j\assets`),
+änderbar mit `-Dthreed4j.assets=ORDNER`. Eine SVG-Datei rechnet das Spiel beim Start mit Apache
+Batik in ein PNG um. Es genügt also, ein SVG in den Ordner zu legen, auch eines, das man aus
+einem Chat kopiert hat. Beim Laden der Szene meldet die Konsole, wie viele Sprites aus dem
+Ordner kommen.
+
+Der Generator lässt ein Chatmodell die Motive zeichnen:
+
+```
+java -jar 3d4j.jar generate
+```
+
+Er fragt jedes Motiv als SVG an (mehrere Anfragen gleichzeitig), prüft, ob sich die Antwort
+zeichnen lässt und ein freigestelltes Motiv zeigt, fragt bei Fehlern bis zu dreimal mit einem
+Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht kein Netz.
+
+- **Dienst und Modell:** eine OpenAI-kompatible API (`POST <Basis-URL>/chat/completions`).
+  Adresse, Modell und KeePass-Eintrag übernimmt der Generator aus der Konfiguration des
+  Enterprise AI Client, falls vorhanden (`chat.baseUrl`, `chat.model`, `chat.apiKeyRef`).
+  Sonst einmal angeben, die Werte werden in `.3d4j/generator.properties` gemerkt:
+  `--base-url=https://.../v1 --model=openai/gpt-oss-120b --entry=TITEL`.
+- **API-Key:** aus KeePass über das KeePassRPC-Plugin (`keepassrpc-java`). Beim ersten Lauf
+  zeigt KeePass einen Kopplungscode, den man in die Konsole tippt; die Kopplung liegt danach
+  in `.3d4j/keepass.properties`. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird
+  sie stattdessen verwendet.
+- **Weitere Argumente:** `--parallel=N` (Standard 4), `--only=lamp,visitor-1`, `--force`
+  (vorhandene Motive neu erzeugen).
+- **Zertifikate:** Unter Windows vertraut der Generator den Zertifikaten des Windows-Speichers,
+  damit ein Dienst mit hauseigener Zertifizierungsstelle erreichbar ist.
+
+Abgelehnte Antworten des Modells landen zur Ansicht als `<name>.rejected.txt` im Asset-Ordner.
+
 ## Der Launcher
 
 `java -jar` startet die JVM ohne `--enable-preview`, die Engine braucht das Flag aber.
@@ -144,6 +189,8 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh`, `D3D11Texture` |
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
+| `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
+| `generator` | `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `GeneratorConfig` |
 | `demo` | `PlazaDemo` (Ladebildschirm und Testplatz), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
@@ -220,7 +267,9 @@ schlichten `java -jar` (einmal den Ladebildschirm, einmal den Testplatz) und ver
 ## Grenzen und nächste Schritte
 
 - Text, Audio, Kollision und das Laden von Modelldateien fehlen noch.
-- Die Sprites des Testplatzes sind mit Java 2D gemalte Platzhalter (`SpriteAtlas`).
+- Der Generator ist nur gegen einen nachgebauten Dienst getestet, nicht gegen ein echtes
+  KeePass und nicht gegen den echten KI-Dienst. Einen Proxy unterstützt er nicht.
+- Ohne Dateien im Asset-Ordner sind die Sprites mit Java 2D gemalte Platzhalter (`SpriteAtlas`).
 - Texturen haben keine Mipmaps, weit entfernte Sprites flimmern deshalb leicht.
 - macOS wird nicht unterstützt (dort wäre Cocoa über `objc_msgSend` nötig).
 - Der Game-Loop hat einen variablen Zeitschritt und ohne VSync keine Bildratenbegrenzung.
