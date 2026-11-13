@@ -26,9 +26,8 @@ import java.util.Locale;
  * then a plaza with buildings, trees and visitors to measure what the renderer
  * can carry.
  *
- * <p>Keys: W A S D move, E / Q up and down, Shift faster. Click into the window (or
- * press Tab) to look around with the mouse, Escape gives the mouse back; dragging
- * with the right button and the arrow keys work as well. 1 to 5 choose the internal resolution
+ * <p>Keys: W A S D move, E / Q up and down, Shift faster, hold a mouse button and
+ * drag (or arrow keys) to look around. 1 to 5 choose the internal resolution
  * (100, 75, 50, 33, 25 percent), F toggles smooth and blocky upscaling, R resets
  * the frame statistics, P saves {@code screenshot.png}, Escape quits.</p>
  *
@@ -169,12 +168,7 @@ public final class PlazaDemo implements Game {
     public void update(EngineContext context, double deltaSeconds) {
         Input input = context.input();
         if (input.wasPressed(Key.ESCAPE)) {
-            // The first Escape gives the mouse back, the next one quits.
-            if (context.window().isMouseCaptured()) {
-                context.window().setMouseCaptured(false);
-            } else {
-                context.quit();
-            }
+            context.quit();
         }
         if (input.wasPressed(Key.P)) {
             context.requestScreenshot(Path.of("screenshot.png"));
@@ -193,10 +187,7 @@ public final class PlazaDemo implements Game {
         if (options.benchmark()) {
             flyCameraPath();
         } else {
-            if (input.wasPressed(MouseButton.LEFT) || input.wasPressed(Key.TAB)) {
-                context.window().setMouseCaptured(!context.window().isMouseCaptured());
-            }
-            moveCamera(input, context.window().isMouseCaptured(), (float) deltaSeconds);
+            moveCamera(input, (float) deltaSeconds);
         }
         camera.orient(position, yaw, pitch);
     }
@@ -241,9 +232,8 @@ public final class PlazaDemo implements Game {
         }
     }
 
-    private void moveCamera(Input input, boolean mouseCaptured, float step) {
-        // Captured: the mouse turns the view directly. Otherwise drag with the right button held.
-        if (mouseCaptured || input.isDown(MouseButton.RIGHT)) {
+    private void moveCamera(Input input, float step) {
+        if (input.isDown(MouseButton.LEFT) || input.isDown(MouseButton.RIGHT)) {
             yaw += input.mouseDeltaX() * LOOK_SPEED;
             pitch -= input.mouseDeltaY() * LOOK_SPEED;
         }

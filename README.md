@@ -51,17 +51,15 @@ und Besuchern.
 | W A S D | Gehen |
 | E / Q | Hoch / runter |
 | Umschalt | Schneller |
-| Ins Fenster klicken oder Tab | Maus einfangen: umsehen ohne gehaltene Taste |
-| Esc | Maus wieder freigeben, beim zweiten Mal beenden |
-| Rechte Maustaste halten und ziehen, oder Pfeiltasten | Umsehen ohne eingefangene Maus |
+| Maustaste halten und ziehen, oder Pfeiltasten | Umsehen |
 | 1 bis 5 | Interne Auflösung: 100, 75, 50, 33, 25 Prozent |
 | F | Hochskalieren weich oder pixelig |
 | R | Framezeit-Statistik zurücksetzen |
 | P | `screenshot.png` speichern |
+| Esc | Beenden |
 
-Das Fenster gibt die Maus von selbst frei, wenn es den Fokus verliert. In Remote-Sitzungen und
-virtuellen Maschinen kann das Einfangen ruckeln; dort helfen die rechte Maustaste oder die
-Pfeiltasten.
+Umgesehen wird mit gehaltener Maustaste statt mit eingefangenem Mauszeiger, weil das auch in
+Remote-Sitzungen und virtuellen Maschinen zuverlässig funktioniert.
 
 ### Messen
 

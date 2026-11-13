@@ -78,17 +78,6 @@ public final class Input {
         down[index] = isDown;
     }
 
-    /** Called by the platform window while the mouse is captured: raw movement, no position. */
-    public void onMouseDelta(int deltaX, int deltaY) {
-        mouseDeltaX += deltaX;
-        mouseDeltaY += deltaY;
-    }
-
-    /** Called by the platform window when capturing starts or ends: positions before and after do not connect. */
-    public void forgetMousePosition() {
-        mouseSeen = false;
-    }
-
     /** Called by the platform window when the pointer moves. */
     public void onMouseMove(int x, int y) {
         if (mouseSeen) {

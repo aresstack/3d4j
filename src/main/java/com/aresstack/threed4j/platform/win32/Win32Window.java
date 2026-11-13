@@ -43,9 +43,6 @@ public final class Win32Window implements GLWindow {
     private int height;
     private boolean closeRequested;
     private boolean closed;
-    private boolean mouseCaptured;
-    /** A {@code POINT}: scratch memory for pointer positions. */
-    private final MemorySegment point;
 
     /**
      * @param openGL {@code true} to create an OpenGL 3.3 core context for the window,
@@ -59,7 +56,6 @@ public final class Win32Window implements GLWindow {
         instance = getModuleHandle();
         className = Native.wideString(arena, CLASS_NAME);
         message = Native.bytes(arena, SIZEOF_MSG);
-        point = Native.bytes(arena, 8);
 
         // Windows calls back into Java for every window message.
         MemorySegment windowProcedure = Native.LINKER.upcallStub(windowProcedureHandle().bindTo(this), WNDPROC, arena);
@@ -229,14 +225,9 @@ public final class Win32Window implements GLWindow {
                     input.onKey(mapKey((int) wParam), false);
                     return 0;
                 }
-                case WM_KILLFOCUS -> setMouseCaptured(false); // e.g. Alt+Tab: give the pointer back
                 case WM_MOUSEMOVE -> {
-                    // While captured, pollEvents() measures the movement itself; these positions
-                    // would only reflect the pointer being put back to the center.
-                    if (!mouseCaptured) {
-                        // Two signed 16-bit values: negative while dragging outside the window.
-                        input.onMouseMove((short) (lParam & 0xFFFF), (short) ((lParam >>> 16) & 0xFFFF));
-                    }
+                    // The position is two signed 16-bit values: negative while dragging outside the window.
+                    input.onMouseMove((short) (lParam & 0xFFFF), (short) ((lParam >>> 16) & 0xFFFF));
                     return 0;
                 }
                 case WM_LBUTTONDOWN, WM_MBUTTONDOWN, WM_RBUTTONDOWN -> {
@@ -311,43 +302,6 @@ public final class Win32Window implements GLWindow {
             translateMessage(message);
             dispatchMessage(message);
         }
-        if (mouseCaptured) {
-            // Movement = how far the pointer got from the window center since it was put there.
-            int centerX = centerOnScreen(true);
-            int centerY = centerOnScreen(false);
-            getCursorPos(point);
-            int deltaX = point.get(JAVA_INT, 0) - centerX;
-            int deltaY = point.get(JAVA_INT, 4) - centerY;
-            if (deltaX != 0 || deltaY != 0) {
-                input.onMouseDelta(deltaX, deltaY);
-                setCursorPos(centerX, centerY);
-            }
-        }
-    }
-
-    private int centerOnScreen(boolean horizontal) {
-        point.set(JAVA_INT, 0, width / 2);
-        point.set(JAVA_INT, 4, height / 2);
-        clientToScreen(window, point);
-        return point.get(JAVA_INT, horizontal ? 0 : 4);
-    }
-
-    @Override
-    public void setMouseCaptured(boolean captured) {
-        if (captured == mouseCaptured) {
-            return;
-        }
-        mouseCaptured = captured;
-        input.forgetMousePosition();
-        showCursor(!captured);
-        if (captured) {
-            setCursorPos(centerOnScreen(true), centerOnScreen(false));
-        }
-    }
-
-    @Override
-    public boolean isMouseCaptured() {
-        return mouseCaptured;
     }
 
     /** The {@code HWND}. */
@@ -401,7 +355,6 @@ public final class Win32Window implements GLWindow {
             return;
         }
         closed = true;
-        setMouseCaptured(false);
         if (!Native.isNull(context)) {
             wglMakeCurrent(MemorySegment.NULL, MemorySegment.NULL);
             wglDeleteContext(context);
