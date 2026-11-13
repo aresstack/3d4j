@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +36,8 @@ public final class Launcher {
     private static final String MAIN_PROPERTY = "threed4j.main";
     private static final String DEFAULT_MAIN = "com.aresstack.threed4j.demo.PlazaDemo";
     private static final String RELAUNCHED_PROPERTY = "threed4j.relaunched";
+    private static final String GENERATE_COMMAND = "generate";
+    private static final String GENERATOR_MAIN = "com.aresstack.threed4j.generator.AssetGenerator";
     /** An engine class that uses the FFM API and therefore only loads with preview enabled. */
     private static final String PREVIEW_PROBE = "com.aresstack.threed4j.ffm.Native";
 
@@ -66,7 +69,12 @@ public final class Launcher {
             System.exit(relaunch(args));
         }
 
+        // "java -jar 3d4j.jar generate ..." starts the asset generator instead of the game.
         String mainName = System.getProperty(MAIN_PROPERTY, DEFAULT_MAIN);
+        if (args.length > 0 && args[0].equals(GENERATE_COMMAND)) {
+            mainName = GENERATOR_MAIN;
+            args = Arrays.copyOfRange(args, 1, args.length);
+        }
         Class<?> mainClass = Class.forName(mainName, true, Launcher.class.getClassLoader());
         Method main = mainClass.getMethod("main", String[].class);
         try {
