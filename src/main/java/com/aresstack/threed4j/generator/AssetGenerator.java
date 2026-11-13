@@ -87,11 +87,10 @@ public final class AssetGenerator {
                         + "--entry=TITLE, or set the environment variable " + API_KEY_VARIABLE + ".");
             }
             System.out.println("Reading the entry \"" + config.keePassEntry() + "\" from KeePass (pairs once if needed) ...");
-            KeePassEntry entry = KeePassApiKey.entries(config.home(), KeePassApiKey::codeFromConsole).stream()
-                    .filter(candidate -> candidate.title().equalsIgnoreCase(config.keePassEntry()))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("KeePass has no entry titled \""
-                            + config.keePassEntry() + "\"."));
+            KeePassEntry entry = KeePassApiKey.entry(config.home(), config.keePassEntry(), KeePassApiKey::codeFromConsole);
+            if (entry == null) {
+                throw new IllegalStateException("KeePass has no entry titled \"" + config.keePassEntry() + "\".");
+            }
             apiKey = entry.password();
             if (baseUrl == null && entry.hasUrl()) {
                 baseUrl = java.net.URI.create(AiSetup.normalizeBaseUrl(entry.url()));

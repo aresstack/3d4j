@@ -1,10 +1,7 @@
 package com.aresstack.threed4j.generator;
 
-import com.aresstack.keepassrpc.client.DefaultKeePassRpcCredentialClient;
-import com.aresstack.keepassrpc.client.KeePassRpcCredentialClient;
-import com.aresstack.keepassrpc.pairing.DefaultKeePassRpcPairingService;
-import com.aresstack.keepassrpc.pairing.KeePassRpcPairingRequest;
-import com.aresstack.keepassrpc.pairing.KeePassRpcPairingResult;
+import com.aresstack.enterpriseai.proasteion.platform.security.keepassrpc.KeePassRpcConfig;
+import com.aresstack.enterpriseai.proasteion.platform.security.keepassrpc.KeePassRpcLink;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,25 +15,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.function.Supplier;
 
 /**
  * Reads entries (API key and address of the AI service) from KeePass through the
- * KeePassRPC plugin, using {@code keepassrpc-java}.
+ * KeePassRPC plugin, with the KeePassRPC code of the Enterprise AI Client and Space
+ * Harvester (package {@code com.aresstack.enterpriseai...keepassrpc}).
  *
- * <p>The first call pairs this program with KeePass: KeePass shows a one-time code,
- * the user types it into this program. The result is stored in
- * {@code .3d4j/keepass.properties}; later calls connect without asking.</p>
+ * <p>The first call pairs this program with KeePass: KeePass shows a one-time
+ * password, the user types it into this program. The key is stored in
+ * {@code .3d4j/keepass.properties}; later calls connect without asking. If KeePass
+ * no longer accepts the stored key, the pairing is repeated once.</p>
  */
 final class KeePassApiKey {
 
     private static final String CLIENT_ID = "3d4j";
     private static final String ORIGIN = "chrome-extension://3d4j";
-    private static final String DEFAULT_HOST = "127.0.0.1";
-    private static final int DEFAULT_PORT = 12546;
-    private static final Pattern HTTP_ADDRESS = Pattern.compile("https?://[^\\s\"'\\],]+");
 
     private KeePassApiKey() {
     }
@@ -47,7 +41,17 @@ final class KeePassApiKey {
 
     /** {@code true} if an earlier pairing is stored. Whether KeePass still accepts it shows only when connecting. */
     static boolean isPaired(Path home) {
-        return Files.isRegularFile(pairingFile(home));
+        Path file = pairingFile(home);
+        if (!Files.isRegularFile(file)) {
+            return false;
+        }
+        Properties stored = new Properties();
+        try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+            stored.load(in);
+        } catch (IOException | IllegalArgumentException e) {
+            return false;
+        }
+        return !stored.getProperty("srpKey", "").isBlank();
     }
 
     /** Forgets the stored pairing; the entry in KeePass stays. */
@@ -68,13 +72,41 @@ final class KeePassApiKey {
     }
 
     /**
-     * Lists the entries KeePass hands out, pairing first if no pairing is stored.
+     * Lists the entries KeePass hands out (title and address, no passwords), sorted by
+     * title; pairs first if no pairing is stored.
      *
      * @param codeProvider called if pairing is needed, while KeePass shows its one-time
-     *                     code; returns what the user typed (may block until then)
-     * @throws IllegalStateException with a message for the user if KeePass cannot be reached
+     *                     password; returns what the user typed (may block until then)
+     * @throws IllegalStateException with a message for the user if KeePass cannot be used
      */
     static List<KeePassEntry> entries(Path home, Supplier<String> codeProvider) throws IOException {
+        return connected(home, codeProvider, (config, key) -> {
+            List<KeePassEntry> entries = new ArrayList<>();
+            for (KeePassRpcLink.Entry entry : KeePassRpcLink.entries(config, key)) {
+                entries.add(new KeePassEntry(entry.title(), entry.url(), ""));
+            }
+            entries.sort(Comparator.comparing(KeePassEntry::title, String.CASE_INSENSITIVE_ORDER));
+            return entries;
+        });
+    }
+
+    /**
+     * Reads the entry with exactly this title, including its password.
+     *
+     * @return the entry, or {@code null} if KeePass has none with this title
+     */
+    static KeePassEntry entry(Path home, String title, Supplier<String> codeProvider) throws IOException {
+        return connected(home, codeProvider, (config, key) -> {
+            KeePassRpcLink.Entry entry = KeePassRpcLink.entry(config, key, title);
+            return entry == null ? null : new KeePassEntry(entry.title(), entry.url(), entry.password());
+        });
+    }
+
+    private interface Call<T> {
+        T run(KeePassRpcConfig config, String key) throws KeePassRpcLink.Failure;
+    }
+
+    private static <T> T connected(Path home, Supplier<String> codeProvider, Call<T> call) throws IOException {
         Path file = pairingFile(home);
         Properties stored = new Properties();
         if (Files.isRegularFile(file)) {
@@ -82,78 +114,59 @@ final class KeePassApiKey {
                 stored.load(in);
             }
         }
-        String host = stored.getProperty("host", DEFAULT_HOST);
-        int port = Integer.parseInt(stored.getProperty("port", String.valueOf(DEFAULT_PORT)));
-        String srpKey = stored.getProperty("srpKey");
-
-        if (srpKey == null || srpKey.isBlank()) {
-            KeePassRpcPairingResult result = pair(host, port, codeProvider);
-            host = result.getEndpoint().getHost();
-            port = result.getEndpoint().getPort();
-            srpKey = result.getSrpKey();
-            stored.setProperty("host", host);
-            stored.setProperty("port", String.valueOf(port));
-            stored.setProperty("srpKey", srpKey);
-            Files.createDirectories(home);
-            try (Writer out = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
-                stored.store(out, "3d4j pairing with KeePassRPC");
-            }
-        }
-
-        try (KeePassRpcCredentialClient client =
-                     new DefaultKeePassRpcCredentialClient(host, port, CLIENT_ID, srpKey, ORIGIN)) {
-            client.connect();
-            return parseListing(client.listEntries());
-        } catch (Exception e) {
-            throw new IllegalStateException("KeePass did not hand out its entries (" + e.getMessage() + ").\n"
-                    + "Check that KeePass is running with the KeePassRPC plugin and the database is unlocked.\n"
-                    + "If the pairing was removed in KeePass, delete " + file + " and start again.", e);
-        }
-    }
-
-    /**
-     * Reads the listing of {@code KeePassRpcCredentialClient.listEntries()}: one block
-     * of {@code Name: value} lines per entry, blocks separated by an empty line.
-     */
-    static List<KeePassEntry> parseListing(String listing) {
-        List<KeePassEntry> entries = new ArrayList<>();
-        String title = null;
-        String url = "";
-        String password = "";
-        for (String line : (listing + "\n\n").split("\n", -1)) {
-            if (line.startsWith("Title: ")) {
-                title = line.substring("Title: ".length()).trim();
-            } else if (line.startsWith("Password: ")) {
-                password = line.substring("Password: ".length());
-            } else if (line.startsWith("URL: ")) {
-                Matcher address = HTTP_ADDRESS.matcher(line);
-                url = address.find() ? address.group() : "";
-            } else if (line.isBlank() && title != null) {
-                if (!title.isEmpty()) {
-                    entries.add(new KeePassEntry(title, url, password));
-                }
-                title = null;
-                url = "";
-                password = "";
-            }
-        }
-        entries.sort(Comparator.comparing(KeePassEntry::title, String.CASE_INSENSITIVE_ORDER));
-        return entries;
-    }
-
-    private static KeePassRpcPairingResult pair(String host, int port, Supplier<String> codeProvider) {
-        KeePassRpcPairingRequest request = KeePassRpcPairingRequest.builder()
-                .host(host)
-                .port(port)
+        KeePassRpcConfig config = KeePassRpcConfig.builder()
+                .host(stored.getProperty("host", KeePassRpcConfig.DEFAULT_HOST))
+                .port(Integer.parseInt(stored.getProperty("port", String.valueOf(KeePassRpcConfig.DEFAULT_PORT))))
                 .origin(ORIGIN)
                 .clientId(CLIENT_ID)
                 .clientDisplayName("3d4j")
                 .build();
+        String key = stored.getProperty("srpKey");
+        boolean fresh = key == null || key.isBlank();
         try {
-            return new DefaultKeePassRpcPairingService().pair(request, session -> codeProvider.get());
-        } catch (RuntimeException e) {
-            throw new IllegalStateException("Pairing with KeePass failed (" + e.getMessage() + ").\n"
+            if (fresh) {
+                key = pair(config, codeProvider, stored, home);
+            }
+            try {
+                return call.run(config, key);
+            } catch (KeePassRpcLink.Failure e) {
+                if (fresh || !e.rejected()) {
+                    throw e;
+                }
+                // The pairing was removed in KeePass: pair again, exactly once.
+                Files.deleteIfExists(file);
+                return call.run(config, pair(config, codeProvider, stored, home));
+            }
+        } catch (KeePassRpcLink.Failure e) {
+            throw new IllegalStateException("KeePass cannot be used (" + e.getMessage() + ").\n"
                     + "Check that KeePass is running with the KeePassRPC plugin and the database is unlocked.", e);
         }
+    }
+
+    private static String pair(KeePassRpcConfig config, Supplier<String> codeProvider, Properties stored, Path home)
+            throws KeePassRpcLink.Failure, IOException {
+        String key;
+        try {
+            key = KeePassRpcLink.pair(config, name -> {
+                String code = codeProvider.get();
+                return code == null || code.isBlank() ? null : code.trim().toCharArray();
+            });
+        } catch (KeePassRpcLink.Failure e) {
+            if (e.rejected()) {
+                throw new IllegalStateException("KeePass rejected the one-time password. Pair again.", e);
+            }
+            throw e;
+        }
+        if (key == null) {
+            throw new IllegalStateException("Pairing with KeePass was cancelled.");
+        }
+        stored.setProperty("host", config.host());
+        stored.setProperty("port", String.valueOf(config.port()));
+        stored.setProperty("srpKey", key);
+        Files.createDirectories(home);
+        try (Writer out = Files.newBufferedWriter(pairingFile(home), StandardCharsets.UTF_8)) {
+            stored.store(out, "3d4j pairing with KeePassRPC");
+        }
+        return key;
     }
 }

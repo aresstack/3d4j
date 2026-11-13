@@ -32,8 +32,8 @@ dependencies {
     // SVG to image, for artwork that arrives as SVG text
     implementation 'org.apache.xmlgraphics:batik-bridge:1.17'
     implementation 'org.apache.xmlgraphics:batik-anim:1.17'
-    // API key from KeePass (KeePassRPC plugin); brings Gson and Java-WebSocket
-    implementation 'com.aresstack:keepassrpc-java:0.1.0-beta.1'
+    // WebSocket for the KeePassRPC code copied from enterprise-ai-client (see its UPSTREAM.md)
+    implementation 'org.java-websocket:Java-WebSocket:1.5.2'
     implementation 'com.google.code.gson:gson:2.10.1'
     runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
 

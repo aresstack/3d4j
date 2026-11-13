@@ -145,8 +145,8 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
   Der Generator verwendet, was im Menü gewählt wurde (`.3d4j/generator.properties`), sonst die
   Konfiguration des Enterprise AI Client (`chat.baseUrl`, `chat.model`, `chat.apiKeyRef`).
   Oder einmal angeben, die Werte werden gemerkt: `--entry=TITEL --model=openai/gpt-oss-120b`.
-- **Adresse und API-Key:** aus dem KeePass-Eintrag über das KeePassRPC-Plugin
-  (`keepassrpc-java`): Passwort = API-Key, URL = Adresse. `--base-url=https://.../v1` hat
+- **Adresse und API-Key:** aus dem KeePass-Eintrag über das KeePassRPC-Plugin:
+  Passwort = API-Key, URL = Adresse. `--base-url=https://.../v1` hat
   Vorrang vor der URL des Eintrags. Beim ersten Lauf zeigt KeePass einen Kopplungscode, den
   man in die Konsole tippt; die Kopplung liegt danach in `.3d4j/keepass.properties` und gilt
   auch für das Menü. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird sie statt
@@ -218,6 +218,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `math` | `Vec3`, `Mat4` |
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
 | `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig` |
+| `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
 | `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
@@ -295,8 +296,9 @@ schlichten `java -jar` (einmal den Ladebildschirm, einmal den Testplatz) und ver
 
 - Text, Audio, Kollision und das Laden von Modelldateien fehlen noch.
 - Menü und Generator sind nur gegen einen nachgebauten Dienst getestet, nicht gegen ein echtes
-  KeePass und nicht gegen den echten KI-Dienst. Insbesondere ist die Auswahlliste der
-  KeePass-Einträge nur mit nachgestellten Einträgen geprüft. Einen Proxy unterstützen sie nicht.
+  KeePass und nicht gegen den echten KI-Dienst. Kopplung und Eintragsliste laufen gegen den
+  nachgebauten KeePassRPC-Server des Enterprise AI Client (`FakeKeePassRpcServer`). Einen Proxy
+  unterstützen sie nicht.
 - Das Menü ist als ein Bild mit Java 2D gemalt; Textfelder kennen nur Anhängen, Löschen am
   Ende und Einfügen.
 - Ohne Dateien im Asset-Ordner sind die Sprites mit Java 2D gemalte Platzhalter (`SpriteAtlas`).

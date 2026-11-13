@@ -398,18 +398,9 @@ final class SetupScreen implements AutoCloseable {
         inBackground(AiSetup.isPaired() ? "Verbinde mit KeePass …" : "Kopple mit KeePass …", () -> {
             List<KeePassEntry> found;
             try {
-                found = AiSetup.keePassEntries(() -> {
-                    // KeePass shows its one-time code now; wait until the user has typed it.
-                    post(() -> {
-                        awaitingCode = true;
-                        focus = pairingCode;
-                        busy = "KeePass zeigt jetzt ein Einmal-Passwort.";
-                    });
-                    return answer.join();
-                });
+                found = AiSetup.keePassEntries(() -> askForCode(answer));
             } catch (Exception e) {
-                throw new Exception("KeePass antwortet nicht. Läuft KeePass mit dem Plugin KeePassRPC, "
-                        + "und ist die Datenbank entsperrt?\n(" + firstLine(e) + ")");
+                throw new Exception(keePassProblem(e));
             }
             return () -> {
                 entries = found;
@@ -446,18 +437,13 @@ final class SetupScreen implements AutoCloseable {
                 say("Bitte den Eintrag des KI-Dienstes wählen.", true);
                 return;
             }
-            address = AiSetup.normalizeBaseUrl(selectedEntry.url());
-            key = selectedEntry.password();
-            if (address == null) {
+            if (AiSetup.normalizeBaseUrl(selectedEntry.url()) == null) {
                 say("Der Eintrag „" + selectedEntry.title() + "“ hat keine Adresse. Trag in KeePass die URL des "
                         + "Dienstes ein (https://…/v1) und verbinde neu, oder nimm „Manuell“.", true);
                 return;
             }
-            if (key.isBlank()) {
-                say("Der Eintrag „" + selectedEntry.title() + "“ hat kein Passwort. Dort gehört der API-Key hin.", true);
-                return;
-            }
-            rememberedEntry = selectedEntry.title();
+            readEntryAndContinue(selectedEntry.title());
+            return;
         } else {
             address = AiSetup.normalizeBaseUrl(baseUrl.toString());
             key = manualKey.toString().isBlank() ? keyFromEnvironment : manualKey.toString().trim();
@@ -472,6 +458,37 @@ final class SetupScreen implements AutoCloseable {
             baseUrl.setLength(0);
             baseUrl.append(address);
         }
+        useAccess(address, key);
+    }
+
+    /** The list carries no passwords: fetch the chosen entry with its password, then go on. */
+    private void readEntryAndContinue(String title) {
+        codeAnswer = new CompletableFuture<>();
+        CompletableFuture<String> answer = codeAnswer;
+        inBackground("Lese den Eintrag aus KeePass …", () -> {
+            KeePassEntry entry;
+            try {
+                entry = AiSetup.keePassEntry(title, () -> askForCode(answer));
+            } catch (Exception e) {
+                throw new Exception(keePassProblem(e));
+            }
+            return () -> {
+                String address = entry == null ? null : AiSetup.normalizeBaseUrl(entry.url());
+                if (entry == null) {
+                    say("KeePass hat keinen Eintrag „" + title + "“ mehr.", true);
+                } else if (address == null) {
+                    say("Der Eintrag „" + title + "“ hat keine Adresse.", true);
+                } else if (entry.password().isBlank()) {
+                    say("Der Eintrag „" + title + "“ hat kein Passwort. Dort gehört der API-Key hin.", true);
+                } else {
+                    rememberedEntry = entry.title();
+                    useAccess(address, entry.password());
+                }
+            };
+        });
+    }
+
+    private void useAccess(String address, String key) {
         serviceUrl = address;
         apiKey = key;
         if (!saveSettings()) {
@@ -481,6 +498,28 @@ final class SetupScreen implements AutoCloseable {
         focus = null;
         step = MODEL;
         loadModels();
+    }
+
+    /** Called off the game thread while KeePass shows its one-time password; waits for the user. */
+    private String askForCode(CompletableFuture<String> answer) {
+        post(() -> {
+            awaitingCode = true;
+            focus = pairingCode;
+            busy = "KeePass zeigt jetzt ein Einmal-Passwort.";
+        });
+        return answer.join();
+    }
+
+    private static String keePassProblem(Exception e) {
+        String reason = firstLine(e);
+        if (reason.contains("rejected the one-time password")) {
+            return "KeePass hat das Einmal-Passwort abgelehnt. Bitte noch einmal koppeln und den neuen Code eintippen.";
+        }
+        if (reason.contains("cancelled")) {
+            return "Kopplung abgebrochen.";
+        }
+        return "KeePass antwortet nicht. Läuft KeePass mit dem Plugin KeePassRPC, und ist die Datenbank entsperrt?\n("
+                + reason + ")";
     }
 
     /**
@@ -796,11 +835,9 @@ final class SetupScreen implements AutoCloseable {
         } else {
             if (selectedEntry != null) {
                 boolean hasAddress = AiSetup.normalizeBaseUrl(selectedEntry.url()) != null;
-                boolean hasKey = !selectedEntry.password().isBlank();
                 note(g, hasAddress ? "Adresse:  " + selectedEntry.url() : "Adresse:  fehlt im Eintrag (Feld URL)",
                         430, 474, hasAddress ? TEXT : BAD);
-                note(g, hasKey ? "API-Key:  das Passwort des Eintrags" : "API-Key:  der Eintrag hat kein Passwort",
-                        430, 502, hasKey ? TEXT : BAD);
+                note(g, "API-Key:  das Passwort des Eintrags", 430, 502, TEXT);
             }
             primary(g, "Weiter", this::confirmAccess);
             secondary(g, "Entkoppeln", 780, this::unpair);

@@ -119,9 +119,9 @@ public final class AiSetup {
     }
 
     /**
-     * Lists the KeePass entries, pairing first if no pairing is stored. An AI service
-     * is an entry whose address is the base address of the API and whose password
-     * is the API key.
+     * Lists the KeePass entries (title and address, without passwords), pairing first
+     * if no pairing is stored. An AI service is an entry whose address is the base
+     * address of the API and whose password is the API key.
      *
      * @param pairingCode called while KeePass shows its one-time code; blocks until
      *                    the user has typed it and returns it
@@ -129,6 +129,16 @@ public final class AiSetup {
      */
     public static List<KeePassEntry> keePassEntries(Supplier<String> pairingCode) throws IOException {
         return KeePassApiKey.entries(home(), pairingCode);
+    }
+
+    /**
+     * Reads one KeePass entry including its password.
+     *
+     * @return the entry, or {@code null} if KeePass has none with this title
+     * @throws IllegalStateException if KeePass cannot be reached
+     */
+    public static KeePassEntry keePassEntry(String title, Supplier<String> pairingCode) throws IOException {
+        return KeePassApiKey.entry(home(), title, pairingCode);
     }
 
     /** @return the ids of the models the service offers, sorted */

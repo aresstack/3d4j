@@ -1,53 +1,110 @@
 package com.aresstack.threed4j.generator;
 
+import com.aresstack.enterpriseai.proasteion.platform.security.keepassrpc.FakeKeePassRpcServer;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/** Pairing and reading against the stand-in KeePassRPC server of the Enterprise AI Client. */
 class KeePassApiKeyTest {
 
-    /** The format of {@code KeePassRpcCredentialClient.listEntries()} in keepassrpc-java 0.1.0-beta.1. */
-    private static final String LISTING = """
-            Title: Wiki
-            UserName: angelo
-            Password: geheim: mit Doppelpunkt
-            URL: https://wiki.intern/
-            UniqueID: 0123456789ABCDEF
-            MM_Priority: 0
+    @TempDir
+    Path home;
+    private FakeKeePassRpcServer keePass;
+    private final AtomicInteger asked = new AtomicInteger();
 
-            Title: KI-Dienst
-            UserName:\s
-            Password: sk-123
-            URL: https://ki.intern/v1
-            UniqueID: FEDCBA9876543210
+    @BeforeEach
+    void start() throws Exception {
+        keePass = new FakeKeePassRpcServer().startAndWait();
+        keePass.addEntry("Wiki", "angelo", "geheim", false);
+        keePass.addEntry("KI-Dienst", "", "sk-123", false);
+        setUrl("KI-Dienst", "https://ki.intern/v1");
+        Files.writeString(KeePassApiKey.pairingFile(home), "host=127.0.0.1\nport=" + keePass.boundPort() + "\n");
+    }
 
-            Title: Notiz
-            UserName:\s
-            Password:\s
-            URL:\s
-            UniqueID: 00
+    @AfterEach
+    void stop() throws Exception {
+        keePass.stop(1000);
+    }
 
-            OK: Operation completed successfully.
-            """;
-
-    @Test
-    void readsTitleAddressAndPasswordOfEveryEntrySortedByTitle() {
-        List<KeePassEntry> entries = KeePassApiKey.parseListing(LISTING);
-
-        assertEquals(List.of("KI-Dienst", "Notiz", "Wiki"), entries.stream().map(KeePassEntry::title).toList());
-        assertEquals(new KeePassEntry("KI-Dienst", "https://ki.intern/v1", "sk-123"), entries.get(0));
-        assertEquals("", entries.get(1).url());
-        assertEquals("", entries.get(1).password());
-        assertEquals("geheim: mit Doppelpunkt", entries.get(2).password());
-        assertEquals("https://wiki.intern/", entries.get(2).url());
+    private String code() {
+        asked.incrementAndGet();
+        return keePass.pairingPassword();
     }
 
     @Test
-    void anEmptyDatabaseHasNoEntries() {
-        assertTrue(KeePassApiKey.parseListing("OK: Operation completed successfully.\n").isEmpty());
-        assertTrue(KeePassApiKey.parseListing("").isEmpty());
+    void pairsWithTheCodeKeePassShowsThenListsEntriesWithoutAskingAgain() throws Exception {
+        List<KeePassEntry> entries = KeePassApiKey.entries(home, this::code);
+
+        assertEquals(List.of("KI-Dienst", "Wiki"), entries.stream().map(KeePassEntry::title).toList());
+        assertEquals("https://ki.intern/v1", entries.get(0).url());
+        assertEquals("", entries.get(0).password(), "listings carry no passwords");
+        assertEquals("", entries.get(1).url());
+        assertTrue(Files.readString(KeePassApiKey.pairingFile(home)).contains("srpKey="), "the pairing is stored");
+
+        KeePassEntry service = KeePassApiKey.entry(home, "ki-dienst", this::code);
+        assertEquals("sk-123", service.password());
+        assertEquals("https://ki.intern/v1", service.url());
+        assertNull(KeePassApiKey.entry(home, "Gibt es nicht", this::code));
+        assertEquals(1, asked.get(), "the code is needed once");
+    }
+
+    @Test
+    void aWrongCodeIsReportedAndNothingIsStored() {
+        IllegalStateException failure = assertThrows(IllegalStateException.class,
+                () -> KeePassApiKey.entries(home, () -> "falsch"));
+
+        assertTrue(failure.getMessage().contains("rejected the one-time password"), failure.getMessage());
+        assertFalse(Files.exists(KeePassApiKey.pairingFile(home))
+                && readPairing().contains("srpKey="), "no key without a pairing");
+    }
+
+    @Test
+    void pairsAgainOnceWhenKeePassNoLongerKnowsTheStoredKey() throws Exception {
+        KeePassApiKey.entries(home, this::code);
+        keePass.revokeAllPairings();
+
+        assertEquals(2, KeePassApiKey.entries(home, this::code).size());
+        assertEquals(2, asked.get());
+    }
+
+    private String readPairing() {
+        try {
+            return Files.readString(KeePassApiKey.pairingFile(home));
+        } catch (java.io.IOException e) {
+            return "";
+        }
+    }
+
+    /** The stand-in server creates entries without an address; add one the way KeePassRPC sends it. */
+    @SuppressWarnings("unchecked")
+    private void setUrl(String title, String url) throws Exception {
+        Field field = FakeKeePassRpcServer.class.getDeclaredField("entries");
+        field.setAccessible(true);
+        List<JsonObject> entries = (List<JsonObject>) field.get(keePass);
+        synchronized (entries) {
+            for (JsonObject entry : entries) {
+                if (entry.get("title").getAsString().equals(title)) {
+                    JsonArray urls = new JsonArray();
+                    urls.add(url);
+                    entry.add("uRLs", urls);
+                }
+            }
+        }
     }
 }
