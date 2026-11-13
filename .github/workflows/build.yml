@@ -127,6 +127,26 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      # Pull requests get their own pre-release, replaced on every push, so that a branch
+      # build can be downloaded and tried before it is merged.
+      - name: Publish snapshot of the pull request branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          tag="snapshot-${BRANCH//\//-}"
+          notes="Snapshot of branch $BRANCH at commit $HEAD_SHA, replaced on every push. Not the released version."
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --prerelease --target "$HEAD_SHA" --title "Snapshot $BRANCH" --notes "$notes"
+          else
+            gh release edit "$tag" --prerelease --title "Snapshot $BRANCH" --notes "$notes"
+          fi
+          gh release upload "$tag" build/libs/3d4j.jar --clobber
+
       - name: Publish fixed release asset
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         shell: bash
