@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 /**
- * "Nur zur ZIHR" – first walkable test scene: the title picture as loading screen,
+ * "Nur zur ZIHR" – first walkable test scene: the panorama picture as loading screen,
  * then a plaza with buildings, trees and visitors to measure what the renderer
  * can carry.
  *
@@ -122,7 +122,7 @@ public final class PlazaDemo implements Game {
                 .vec3("uOffset")
                 .vec3("uTint"));
         screenQuad = Meshes.screenQuad(graphics);
-        titleImage = Textures.fromResource(graphics, "/images/title.jpg", true);
+        titleImage = Textures.fromResource(graphics, "/images/loading.jpg", true);
         white = graphics.createTexture(1, 1, new int[]{0xFFFFFFFF}, false);
         if (!options.showTitle()) {
             loadScene(context);
@@ -340,7 +340,8 @@ public final class PlazaDemo implements Game {
         float windowAspect = context.aspectRatio();
         float imageAspect = (float) titleImage.width() / titleImage.height();
 
-        // Backdrop: the picture enlarged until it covers the window, darkened.
+        // The picture is never distorted. Where its shape differs from the window's, the
+        // free edges show the same picture enlarged and darkened instead of black bars.
         imageShader.setTexture(titleImage);
         float cover = Math.max(windowAspect / imageAspect, imageAspect / windowAspect);
         drawImage(graphics, fitX(windowAspect, imageAspect) * cover, fitY(windowAspect, imageAspect) * cover,

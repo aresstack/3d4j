@@ -12,7 +12,7 @@ public final class Textures {
     private Textures() {
     }
 
-    /** Loads a PNG or JPEG from the classpath, e.g. {@code "/images/title.jpg"}. */
+    /** Loads a PNG or JPEG from the classpath, e.g. {@code "/images/loading.jpg"}. */
     public static Texture fromResource(GraphicsDevice graphics, String path, boolean smooth) {
         try (InputStream in = Textures.class.getResourceAsStream(path)) {
             if (in == null) {

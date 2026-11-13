@@ -1,5 +1,7 @@
 # 3d4j
 
+<img src="src/main/resources/images/cover.jpg" alt="Nur zur ZIHR – Cover" width="320">
+
 Grundgerüst für eine 3D-Engine in reinem Java 21 – ohne eine einzige zusätzliche Bibliothek.
 Fenster, Eingabe und Grafik werden über die Foreign Function & Memory API (FFM) direkt
 aus den Systembibliotheken angesprochen:
@@ -40,7 +42,7 @@ JVM selbst noch einmal mit `--enable-preview` (siehe [Der Launcher](#der-launche
 Bei einem Doppelklick läuft das Programm auf `javaw` ohne Konsole; Fehler wie eine falsche
 Java-Version erscheinen dann in einem Dialog.
 
-Gestartet wird „Nur zur ZIHR“: erst das Titelbild als Ladebildschirm (Leertaste, Enter oder
+Gestartet wird „Nur zur ZIHR“: erst das Panoramabild als Ladebildschirm (Leertaste, Enter oder
 Mausklick überspringt ihn), dann ein begehbarer Testplatz mit 140 Gebäuden, Bäumen, Laternen
 und Besuchern.
 
