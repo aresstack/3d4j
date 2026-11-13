@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.aresstack'
+version = '0.1.0-SNAPSHOT'
+
+// The FFM API is a preview API in Java 21. Preview class files only run on the
+// exact Java version they were compiled for, so the toolchain is pinned to 21.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+sourceSets {
+    // The launcher is compiled WITHOUT --enable-preview so that a plain
+    // "java -jar 3d4j.jar" can load it. It then restarts the JVM with the flag.
+    launcher {
+        java {
+            srcDir 'src/launcher/java'
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+// Engine and demo (source set "main") use the FFM preview API.
+tasks.named('compileJava') {
+    options.compilerArgs += ['--enable-preview', '-Xlint:-preview']
+}
+
+def engineJvmArgs = ['--enable-preview', '--enable-native-access=ALL-UNNAMED']
+def launcherClass = 'com.aresstack.threed4j.launcher.Launcher'
+def demoClass = 'com.aresstack.threed4j.demo.CubeDemo'
+
+// One runnable JAR: launcher classes (no preview) + engine classes (preview).
+tasks.named('jar') {
+    archiveFileName = '3d4j.jar'
+    from sourceSets.launcher.output
+    manifest {
+        attributes(
+                'Main-Class': launcherClass,
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+    }
+}
+
+// Starts the demo directly with the preview flags. Use this (or an equivalent
+// IDE run configuration) for debugging, because no second JVM is involved.
+tasks.register('run', JavaExec) {
+    group = 'application'
+    description = 'Runs the cube demo directly with --enable-preview.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = demoClass
+    jvmArgs = engineJvmArgs
+    javaLauncher = javaToolchains.launcherFor(java.toolchain)
+}
+
+// Starts the launcher the same way "java -jar build/libs/3d4j.jar" does.
+tasks.register('runJar', JavaExec) {
+    group = 'application'
+    description = 'Runs the JAR through the self-relaunching launcher.'
+    dependsOn tasks.named('jar')
+    classpath = files(tasks.named('jar'))
+    mainClass = launcherClass
+    javaLauncher = javaToolchains.launcherFor(java.toolchain)
+}
