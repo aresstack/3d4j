@@ -53,6 +53,11 @@ final class ChatClient {
         this.apiKey = apiKey;
     }
 
+    /** The model this client asks. */
+    String model() {
+        return model;
+    }
+
     /**
      * On Windows, trust what Java trusts and what Windows trusts. An in-house service
      * usually has a certificate from an in-house authority that Java's own list does

@@ -165,7 +165,7 @@ public final class AssetGenerator {
                 } else if (coverage > 0.93) {
                     problem = "the background is not transparent";
                 } else {
-                    store.save(spec, svg, image);
+                    store.save(spec, svg, image, chat.model());
                     return null;
                 }
             } catch (SvgRasterizer.UnreadableSvgException e) {

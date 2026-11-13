@@ -194,6 +194,12 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
 
 Abgelehnte Antworten des Modells landen zur Ansicht als `<name>.rejected.txt` im Asset-Ordner.
 
+**Alte Motive bleiben erhalten.** Zu jedem erzeugten Motiv schreibt der Generator `<name>.json`
+(Modell, Zeitpunkt, Beschreibung, Größe). Wird ein Motiv neu gezeichnet, wandern SVG, PNG und
+JSON des bisherigen vorher nach `history/<name>/<JJJJMMTT-HHMMSS>.svg|.png|.json` im
+Asset-Ordner; der Zeitstempel ist der Zeitpunkt, zu dem das alte Motiv entstand. Das gilt auch
+für von Hand abgelegte Dateien. Das Spiel lädt nur die Dateien direkt im Asset-Ordner.
+
 ## Der Launcher
 
 `java -jar` startet die JVM ohne `--enable-preview`, die Engine braucht das Flag aber.
