@@ -46,7 +46,7 @@ public final class Launcher {
             run(args);
         } catch (Throwable t) {
             t.printStackTrace();
-            fail(t.toString());
+            fail(t.toString(), true);
         }
     }
 
@@ -55,7 +55,7 @@ public final class Launcher {
         if (java != REQUIRED_JAVA) {
             fail("3d4j needs exactly Java " + REQUIRED_JAVA + " (running on Java " + java + ").\n"
                     + "The FFM API is a preview API there, and preview class files only run on the\n"
-                    + "Java version they were compiled for.");
+                    + "Java version they were compiled for.", false);
         }
 
         if (!previewEnabled()) {
@@ -80,8 +80,10 @@ public final class Launcher {
      * Reports a fatal error and exits. A JAR started by double-click runs on
      * {@code javaw}, which has no console, so the message is also shown in a dialog there.
      */
-    private static void fail(String message) {
-        System.err.println(message);
+    private static void fail(String message, boolean alreadyPrinted) {
+        if (!alreadyPrinted) {
+            System.err.println(message);
+        }
         if (javaExecutable().toLowerCase(Locale.ROOT).matches(".*javaw(\\.exe)?")) {
             try {
                 JOptionPane.showMessageDialog(null, message, "3d4j", JOptionPane.ERROR_MESSAGE);

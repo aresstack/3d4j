@@ -46,6 +46,10 @@ final class Win32Api {
     static final int WS_OVERLAPPEDWINDOW = 0x00CF0000;
     static final int CW_USEDEFAULT = 0x80000000;
     static final int SW_SHOW = 5;
+    static final int SM_REMOTESESSION = 0x1000;
+    static final int GL_VENDOR = 0x1F00;
+    static final int GL_RENDERER = 0x1F01;
+    static final int GL_VERSION = 0x1F02;
     static final int PM_REMOVE = 0x0001;
     /** {@code MAKEINTRESOURCE(32512)}. */
     static final long IDC_ARROW = 32512;
@@ -184,6 +188,11 @@ final class Win32Api {
             FunctionDescriptor.of(JAVA_INT, ADDRESS));
     private static final MethodHandle wglMakeCurrent = Native.downcall(OPENGL32, "wglMakeCurrent",
             FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS), CAPTURE_LAST_ERROR);
+    private static final MethodHandle GetSystemMetrics = Native.downcall(USER32, "GetSystemMetrics",
+            FunctionDescriptor.of(JAVA_INT, JAVA_INT));
+    /** OpenGL 1.1 function, a plain export of opengl32.dll: usable before the GL class is. */
+    private static final MethodHandle glGetString = Native.downcall(OPENGL32, "glGetString",
+            FunctionDescriptor.of(ADDRESS, JAVA_INT));
     private static final MethodHandle wglGetProcAddress = Native.downcall(OPENGL32, "wglGetProcAddress",
             FunctionDescriptor.of(ADDRESS, ADDRESS));
 
@@ -208,6 +217,25 @@ final class Win32Api {
     }
 
     // ----------------------------------------------------------- typed wrappers
+
+    /** {@code true} if this process runs in a Remote Desktop session. */
+    static boolean isRemoteSession() {
+        try {
+            return (int) GetSystemMetrics.invokeExact(SM_REMOTESESSION) != 0;
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** {@code glGetString} of the current context; {@code "?"} if there is no answer. */
+    static String glString(int name) {
+        try {
+            String value = Native.readCString((MemorySegment) glGetString.invokeExact(name));
+            return value != null ? value : "?";
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
 
     static MemorySegment getModuleHandle() {
         try {

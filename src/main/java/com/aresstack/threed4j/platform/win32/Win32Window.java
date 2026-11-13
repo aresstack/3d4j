@@ -123,6 +123,10 @@ public final class Win32Window implements Window {
                 throw failure("wglMakeCurrent");
             }
 
+            // What Windows offers before any version is requested – the key to every failure below.
+            String legacyDriver = glString(GL_RENDERER) + " (" + glString(GL_VENDOR)
+                    + "), OpenGL " + glString(GL_VERSION);
+
             MemorySegment function = glFunction("wglCreateContextAttribsARB");
             MemorySegment core = MemorySegment.NULL;
             if (!Native.isNull(function)) {
@@ -141,13 +145,27 @@ public final class Win32Window implements Window {
             wglMakeCurrent(MemorySegment.NULL, MemorySegment.NULL);
             wglDeleteContext(legacy);
             if (Native.isNull(core)) {
-                throw new IllegalStateException("The graphics driver cannot create an OpenGL 3.3 core context");
+                throw new IllegalStateException(noCoreContextMessage(legacyDriver, !Native.isNull(function)));
             }
             if (!wglMakeCurrent(deviceContext, core)) {
                 throw failure("wglMakeCurrent");
             }
             return core;
         }
+    }
+
+    private static String noCoreContextMessage(String legacyDriver, boolean createContextAttribsAvailable) {
+        StringBuilder message = new StringBuilder("Cannot create an OpenGL 3.3 core context.\n")
+                .append("  OpenGL driver offered by Windows: ").append(legacyDriver).append('\n')
+                .append("  wglCreateContextAttribsARB: ")
+                .append(createContextAttribsAvailable ? "available, but refused version 3.3 core" : "not available").append('\n')
+                .append("  Remote Desktop session: ").append(isRemoteSession() ? "yes" : "no").append('\n');
+        if (legacyDriver.startsWith("GDI Generic")) {
+            message.append("  \"GDI Generic\" is the OpenGL 1.1 software renderer built into Windows. It is used when\n")
+                    .append("  no hardware OpenGL driver is active for this session (Remote Desktop, virtual machine,\n")
+                    .append("  missing or blocked graphics driver). It has no shaders, so the engine cannot run on it.");
+        }
+        return message.toString();
     }
 
     /** Vertical sync is the optional extension WGL_EXT_swap_control. */
