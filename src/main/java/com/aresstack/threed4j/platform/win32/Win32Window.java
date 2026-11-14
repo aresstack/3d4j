@@ -281,6 +281,12 @@ public final class Win32Window implements GLWindow {
                                 + rawMovement[5] + ", values " + rawMovement[0] + ", " + rawMovement[1]
                                 + ", captured " + mouseCaptured);
                     }
+                    if (!movement && rawMovement[3] == 0 && rawMovement[5] >= 0 && (rawMovement[5] & 1) != 0
+                            && !placesSeen) {
+                        placesSeen = true;
+                        note("the mouse reports places, not movement: looking follows the pointer and goes on "
+                                + "turning while it rests at an edge");
+                    }
                     if (mouseCaptured && movement) {
                         if (!rawMovementSeen) {
                             rawMovementSeen = true;
@@ -299,6 +305,17 @@ public final class Win32Window implements GLWindow {
                     int y = (short) ((lParam >>> 16) & 0xFFFF);
                     if (mouseCaptured && rawMovementSeen) {
                         return 0; // the mouse reports its movement itself; the pointer stands still
+                    }
+                    if (mouseCaptured && placesSeen) {
+                        // A mouse that reports places puts the pointer where it says, whatever the game
+                        // does: putting it back is of no use. Movement is the change of place.
+                        if (placeKnown && (x != placeX || y != placeY)) {
+                            input.onMouseDelta(x - placeX, y - placeY);
+                        }
+                        placeKnown = true;
+                        placeX = x;
+                        placeY = y;
+                        return 0;
                     }
                     if (mouseCaptured) {
                         // Only the movement counts; the pointer goes back to the middle when it has strayed far.
@@ -445,6 +462,7 @@ public final class Win32Window implements GLWindow {
             // Windows drops the fence and the hiding on its own now and then.
             clipCursor(captureRect);
             showCursor(hidden());
+            turnAtTheEdge();
             return;
         }
         if (!inFront) {
@@ -472,6 +490,7 @@ public final class Win32Window implements GLWindow {
             if (rawMovementSeen) {
                 holdPointer();
             }
+            placeKnown = false;
             relativeMouse.begin(width / 2, height / 2, width, height);
             relativeMouse.expectAtCenter();
             mouseCaptured = true;
@@ -487,6 +506,34 @@ public final class Win32Window implements GLWindow {
     }
 
     private boolean waitingNoted;
+    /** The mouse reports places on the screen (a virtual machine, remote control, a tablet), not movement. */
+    private boolean placesSeen;
+    private boolean placeKnown;
+    private int placeX;
+    private int placeY;
+    private long edgeTurnedAt;
+    /** How fast the view goes on turning at an edge, in pointer steps per second. */
+    private static final double EDGE_SPEED = 900;
+
+    /**
+     * A pointer that follows places stops at the edge of the screen, and the view with it. While it
+     * rests there, the view goes on turning that way, so that one can turn all the way round.
+     */
+    private void turnAtTheEdge() {
+        long now = System.nanoTime();
+        double seconds = Math.min(0.1, (now - edgeTurnedAt) / 1e9);
+        edgeTurnedAt = now;
+        if (!placesSeen || !placeKnown) {
+            return;
+        }
+        int steps = (int) Math.round(EDGE_SPEED * seconds);
+        int dx = placeX <= 1 ? -steps : placeX >= width - 2 ? steps : 0;
+        int dy = placeY <= 1 ? -steps : placeY >= height - 2 ? steps : 0;
+        if (dx != 0 || dy != 0) {
+            input.onMouseDelta(dx, dy);
+        }
+    }
+
     private int rawNotes;
     private boolean rawMovementNoted;
     /** A pointer nobody sees: one pixel, all but transparent. */

@@ -122,7 +122,11 @@ beliebig oft im Kreis drehen. Die Konsole meldet dann einmal `Mouse: raw input`.
 wird nur, solange das Fenster vorn ist; das wird mit jedem Bild bei Windows erfragt. Was das
 Einfangen getan hat, steht in `~/.3d4j/mouse.log` (bei jedem Start neu), weil ein per Doppelklick
 gestartetes Spiel keine Konsole hat. Eine
-Remote-Sitzung meldet statt Bewegung Positionen; dort und unter X11 gilt das Folgende.
+Remote-Sitzung, eine virtuelle Maschine oder ein KVM-Gerät meldet statt Bewegung Positionen
+(absolute Maus). Dort setzt die Quelle den Zeiger immer wieder an ihre Stelle, Zurücksetzen hilft
+nicht: Die Sicht folgt der Zeigerposition und dreht weiter, solange der Zeiger an einem Rand
+anliegt. Richtig gut wird es erst, wenn die Quelle auf relative Mausbewegung umgestellt wird.
+Unter X11 und wo es kein Raw Input gibt, gilt das Folgende.
 
 Sonst misst `RelativeMouse` die eingefangene Maus: Bewegung zählt immer von der vorigen Position aus,
 und der Zeiger wird nur in die Mitte zurückgesetzt, wenn er sich weit entfernt hat. Das
