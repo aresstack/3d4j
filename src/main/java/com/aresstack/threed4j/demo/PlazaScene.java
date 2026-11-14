@@ -5,7 +5,9 @@ import com.aresstack.threed4j.gfx.Mesh;
 import com.aresstack.threed4j.gfx.MeshBuilder;
 import com.aresstack.threed4j.math.Vec3;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,6 +35,11 @@ final class PlazaScene implements AutoCloseable {
 
     final Mesh city;
     final Mesh ground;
+    /** The walls of the houses with their windows and doors; replaced when the district gets new building parts. */
+    Mesh facades;
+    /** The houses of the town, for building {@link #facades}. */
+    final List<Facades.House> houses = new ArrayList<>();
+    int facadeTriangles;
     final Mesh sprites;
     final Mesh sky;
     final int cityTriangles;
@@ -40,8 +47,11 @@ final class PlazaScene implements AutoCloseable {
     final int spriteCount;
     final int buildingCount;
 
-    /** @param groundAtlas the ground textures; their average colours go into the ground mesh */
-    PlazaScene(GraphicsDevice graphics, GroundAtlas groundAtlas) {
+    /**
+     * @param groundAtlas the ground textures; their average colours go into the ground mesh
+     * @param facadeAtlas the building parts the houses choose from
+     */
+    PlazaScene(GraphicsDevice graphics, GroundAtlas groundAtlas, FacadeAtlas facadeAtlas) {
         Random random = new Random(21);
 
         ground = ground(graphics, groundAtlas);
@@ -51,6 +61,9 @@ final class PlazaScene implements AutoCloseable {
         westSide(builder);
         city = builder.build(graphics);
         cityTriangles = builder.triangleCount();
+        Facades.Built walls = Facades.build(graphics, houses, facadeAtlas);
+        facades = walls.mesh();
+        facadeTriangles = walls.triangles();
 
         SpriteBatch batch = new SpriteBatch();
         plants(batch, random);
@@ -176,7 +189,19 @@ final class PlazaScene implements AutoCloseable {
 
     // ---------------------------------------------------------------- buildings
 
-    private static int buildings(MeshBuilder builder, Random random) {
+    /** Builds the walls again, after the district got new building parts. */
+    void rebuildFacades(GraphicsDevice graphics, FacadeAtlas facadeAtlas) {
+        facades.close();
+        Facades.Built walls = Facades.build(graphics, houses, facadeAtlas);
+        facades = walls.mesh();
+        facadeTriangles = walls.triangles();
+    }
+
+    /**
+     * The houses: roofs and what stands on them go into the town's mesh, the walls
+     * are remembered in {@link #houses} and built by {@link Facades}.
+     */
+    private int buildings(MeshBuilder builder, Random random) {
         int count = 0;
         float spacing = 14f;
         for (int ix = -6; ix <= 6; ix++) {
@@ -194,17 +219,17 @@ final class PlazaScene implements AutoCloseable {
                 if (Math.hypot(x, z) < PLAZA_RADIUS + half + 2f) {
                     continue; // keeps the square free
                 }
-                builder.box(x - half, 0, z - half, x + half, height, z + half, wall, roof);
+                houses.add(new Facades.House(x, z, half, height, wall, 1000L * ix + iz));
+                builder.floor(x - half, z - half, x + half, z + half, height, roof);
                 if (style == 0) {
                     builder.pyramid(x, height, z, half + 0.4f, 3.5f, roof);
                 } else if (style == 1) {
                     float inner = half * 0.6f;
                     builder.box(x - inner, height, z - inner, x + inner, height + 4f, z + inner, wall, roof);
                 }
-                // A base in a darker tone, like a shop front.
-                Vec3 base = wall.scale(0.82f);
-                float out = half + 0.15f;
-                builder.box(x - out, 0, z - out, x + out, 2.6f, z + out, base, roof);
+                // The ledge on top of the ground floor, which stands a little proud of the wall above.
+                float out = half + Facades.PLINTH;
+                builder.floor(x - out, z - out, x + out, z + out, Facades.GROUND_FLOOR, roof);
                 count++;
             }
         }
@@ -412,6 +437,7 @@ final class PlazaScene implements AutoCloseable {
     @Override
     public void close() {
         sky.close();
+        facades.close();
         sprites.close();
         ground.close();
         city.close();

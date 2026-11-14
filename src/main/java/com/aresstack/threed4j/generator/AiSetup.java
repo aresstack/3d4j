@@ -2,6 +2,7 @@ package com.aresstack.threed4j.generator;
 
 import com.aresstack.threed4j.assets.AssetSpec;
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.PartLibrary;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -212,12 +213,21 @@ public final class AiSetup {
         return similar.size() == 1 ? similar.get(0) : models.get(0);
     }
 
-    /** A connection to the service for generating assets; safe to use from several threads. */
+    /** Access to the service for generating artwork; safe to use from several threads. */
     public static final class Session {
-        private final ChatClient chat;
+        private final String baseUrl;
+        private final String model;
+        private final String apiKey;
 
         public Session(String baseUrl, String model, String apiKey) {
-            this.chat = new ChatClient(URI.create(baseUrl), model, apiKey);
+            this.baseUrl = baseUrl;
+            this.model = model;
+            this.apiKey = apiKey;
+        }
+
+        /** A client per piece of work, so that changed request options (answer length, thinking) apply at once. */
+        private ChatClient chat() {
+            return new ChatClient(URI.create(baseUrl), model, apiKey);
         }
 
         /**
@@ -227,7 +237,73 @@ public final class AiSetup {
          * @return {@code null} on success, otherwise why it failed
          */
         public String generate(AssetStore store, AssetSpec spec) {
-            return AssetGenerator.generate(chat, store, spec);
+            return AssetGenerator.generate(chat(), store, spec);
+        }
+
+        /**
+         * Lets the model draw one building part for a district and adds it to the library.
+         *
+         * @return {@code null} on success, otherwise why it failed
+         */
+        public String drawPart(PartLibrary library, PartLibrary.Kind kind, int number, String districtStyle) {
+            ChatClient chat = chat();
+            return PartArtist.generate(chat::ask, library, kind, number, districtStyle, model);
+        }
+    }
+
+    private static volatile Session session;
+
+    /** The access that worked last in this run of the program, or {@code null}. Kept in memory only. */
+    public static Session session() {
+        return session;
+    }
+
+    /** Remembers the access chosen in the world menu for everything that draws later in this run. */
+    public static void rememberSession(Session chosen) {
+        session = chosen;
+    }
+
+    /**
+     * Fetches the access remembered from an earlier run without asking anybody: the
+     * environment variable with the remembered address, or the remembered KeePass
+     * entry if this program is paired. Blocks while it talks to KeePass.
+     *
+     * @return the access, also remembered as {@link #session()}; {@code null} if there is none
+     */
+    public static Session resumeSession() {
+        try {
+            Settings settings = load();
+            String key = apiKeyFromEnvironment();
+            String address = normalizeBaseUrl(settings.baseUrl());
+            if ((key == null || address == null) && isPaired() && !settings.keePassEntry().isBlank()) {
+                // An empty code cancels a pairing nobody asked for.
+                KeePassEntry entry = KeePassApiKey.entry(home(), settings.keePassEntry(), () -> "");
+                if (entry != null && !entry.password().isBlank()) {
+                    key = entry.password();
+                    address = address != null ? address : normalizeBaseUrl(entry.url());
+                }
+            }
+            if (key == null || address == null) {
+                return null;
+            }
+            session = new Session(address, settings.model(), key);
+            return session;
+        } catch (IOException | RuntimeException e) {
+            return null;
+        }
+    }
+
+    /** Whether building parts are drawn in the background while the game runs ({@code background.enabled}). */
+    public static boolean backgroundEnabled() {
+        return !"false".equalsIgnoreCase(read(settingsFile()).getProperty("background.enabled"));
+    }
+
+    public static void saveBackgroundEnabled(boolean enabled) throws IOException {
+        Properties own = read(settingsFile());
+        own.setProperty("background.enabled", String.valueOf(enabled));
+        Files.createDirectories(home());
+        try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
+            own.store(out, "3d4j asset generator");
         }
     }
 

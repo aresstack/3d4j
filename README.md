@@ -138,6 +138,37 @@ gemerkten Eintrag ohne Nachfrage aus KeePass). Ändern lässt sich beides über 
 vorhanden sind, `--no-setup` unterdrückt es. Bedient wird es mit der Maus; Tab wechselt das
 Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
 
+### Häuser: Stadtteile und ihre Bauteil-Sammlung
+
+Die Häuser haben Fenster, Türen und Läden. Sie stammen aus einer Sammlung je **Stadtteil**
+(`District`): Bilder mit durchsichtigem Rand unter `assets/library/<stadtteil>/` als
+`window-001.svg|.png|.json`, `door-…`, `shop-…`. Die JSON-Datei nennt Modell, Zeitpunkt und
+Auftrag. Bisher gibt es einen Stadtteil, das Blütenviertel um den Startplatz; `District.at(x, z)`
+ist die Stelle, an der weitere ihre Grenzen bekommen.
+
+- **Gleicher Stadtteil, gleicher Stil:** Jede Anfrage enthält den Stil des Stadtteils (ein
+  Satz, den alle Teile teilen) und eine Variante aus einer festen Liste (Rundbogen, Fensterläden,
+  Blumenkasten …), damit die Teile zusammenpassen und sich trotzdem unterscheiden.
+- **Im Hintergrund:** Beim Spielen zeichnet `BackgroundArtist` auf einem eigenen Thread ein
+  Teil nach dem anderen, bis die Sammlung 8 Fenster, 4 Türen und 4 Läden hat. Den Zugang nimmt
+  er aus dem Weltmenü dieses Programmlaufs, sonst holt er den gemerkten ohne Nachfrage
+  (KeePass-Eintrag oder Umgebungsvariable). Ohne Zugang wartet er. Abschalten: Pausenmenü,
+  Einstellungen, Reiter „Welt“; dort steht auch der Stand.
+- **Zuweisung:** Solange ein Stadtteil kein erzeugtes Teil einer Art hat, steht ein eingebautes
+  dafür, alle Häuser sehen dann gleich aus. Jedes Haus bewertet jedes Teil mit einer Zahl, die
+  nur von Haus und Teil abhängt, und nimmt das höchstbewertete. Kommt ein Teil dazu, übernimmt
+  es seinen Anteil der Häuser, die übrigen bleiben, wie sie waren; dieselbe Sammlung ergibt
+  immer dieselbe Stadt. Fensterabstand, Geschosshöhe, Läden ja oder nein und die Seite der Tür
+  sind ebenfalls Eigenschaften des Hauses.
+- **Im Renderer:** Die Wände sind ein eigenes Netz (fünfter Draw Call). Eine Wand ist ein
+  einziges Rechteck; der Shader wiederholt das Teil entlang der Wand und zeigt die Wandfarbe,
+  wo das Bild durchsichtig ist. Ein Haus kostet so ein Dutzend Rechtecke, egal wie viele
+  Fenster es hat, und kein Pixel wird doppelt gezeichnet. In der Ferne blendet die Wand in die
+  Mischfarbe aus Wand und Teil über.
+
+Ein Bild, das man unter passendem Namen in den Ordner legt, zählt genauso; das Spiel bemerkt
+neue Teile innerhalb einer Sekunde.
+
 ### Easter Egg: WEST.SIDE
 
 Vom Start geradeaus die Straße hinunter, hinter den letzten Häusern, steht das Büroensemble
@@ -159,19 +190,21 @@ Esc hält das Spiel an, legt einen Schleier darüber und zeigt eine Karte im Sti
 **Einstellungen**, **Spiel beenden**. Bedient wird sie mit der Maus oder mit Pfeiltasten und
 Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
 
-Die Einstellungen haben drei Reiter; alles, was sich im Spiel einstellen lässt, gehört dorthin:
+Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt, gehört dorthin:
 
 - **Bild:** Auflösung (100 bis 25 %, wie die Tasten 1 bis 5) und Hochskalieren (weich oder
   pixelig, wie F).
 - **Steuerung:** Geschwindigkeit der Maus beim Umsehen (langsam, normal, schnell).
 - **KI:** „Nachdenken vor dem Zeichnen“ (Standard, wenig, mittel, viel) wird als
   `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.
-  „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit. Darunter „Welt neu zeichnen
-  lassen …“: öffnet das Menü „Die Welt erschaffen“ aus dem laufenden Spiel.
+  „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit.
+- **Welt:** „Häuser im Hintergrund weiterzeichnen“ an oder aus, mit dem Stand der Sammlung.
+  Darunter „Welt neu zeichnen lassen …“: öffnet das Menü „Die Welt erschaffen“ aus dem
+  laufenden Spiel.
 
 Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
 `--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
-(`chat.reasoningEffort`, `chat.maxTokens`), wo sie auch für `generate` gelten. Das Modell wählt
+(`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`), wo sie auch für `generate` gelten. Das Modell wählt
 man im Menü „Die Welt erschaffen“.
 
 Dafür mischt der Renderer im Overlay (nach dem Hochskalieren der Szene) durchsichtige Pixel
@@ -313,10 +346,10 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh`, `D3D11Texture` |
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
-| `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
-| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
+| `assets` | `AssetStore` (Asset-Ordner), `PartLibrary` (Bauteil-Sammlung je Stadtteil), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
+| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `PartArtist` und `BackgroundArtist` (Bauteile der Häuser), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
-| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `WestSide` (Easter Egg), `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
+| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `District`, `Facades`, `FacadeAtlas`, `WestSide` (Easter Egg), `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.

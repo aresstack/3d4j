@@ -2,7 +2,9 @@ package com.aresstack.threed4j.demo;
 
 import com.aresstack.threed4j.assets.AssetCatalog;
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.PartLibrary;
 import com.aresstack.threed4j.generator.AiSetup;
+import com.aresstack.threed4j.generator.BackgroundArtist;
 import com.aresstack.threed4j.core.Engine;
 import com.aresstack.threed4j.core.EngineConfig;
 import com.aresstack.threed4j.core.EngineContext;
@@ -59,6 +61,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             (float) GroundAtlas.GUTTER / GroundAtlas.CELL, (float) GroundAtlas.TILE / GroundAtlas.CELL);
     /** Size of a ground tile in the world; from 30 to 75 units away its pattern fades to its average colour. */
     private static final Vec3 GROUND_DETAIL = new Vec3(PlazaScene.GROUND_TILE, 30f, 75f);
+    /** From 55 to 120 units away the windows and doors of a wall fade into its mixed colour. */
+    private static final Vec3 FACADE_DETAIL = new Vec3(0f, 55f, 120f);
     private static final float WALK_SPEED = 9f;
     private static final float LOOK_SPEED = 0.004f;
 
@@ -92,6 +96,14 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private Shader spriteShader;
     private Shader groundShader;
     private Texture groundTexture;
+    private Shader facadeShader;
+    private Texture facadeTexture;
+    private Vec3 facadeAtlasLayout;
+    private final District district = District.BLOSSOM_QUARTER;
+    private PartLibrary partLibrary;
+    private String partsShown;
+    private double partsCheckedAt;
+    private BackgroundArtist backgroundArtist;
     private Shader skyShader;
     private Texture spriteAtlas;
     private final Camera camera = new Camera().perspective((float) Math.toRadians(65), 0.1f, 400f);
@@ -227,9 +239,19 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 .vec3("uFogColor")
                 .scalar("uFogStart")
                 .scalar("uFogEnd"));
+        facadeShader = graphics.createShader("facade", ShaderLayout.attributes(3, 3, 3, 3, 3)
+                .mat4("uViewProjection")
+                .vec3("uCameraPosition")
+                .vec3("uAtlas")
+                .vec3("uDetail")
+                .vec3("uLightDirection")
+                .vec3("uFogColor")
+                .scalar("uFogStart")
+                .scalar("uFogEnd"));
         loadArtwork(graphics);
-        System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 4 draw calls%n",
-                scene.buildingCount, scene.cityTriangles + scene.groundTriangles, scene.spriteCount);
+        System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 5 draw calls%n",
+                scene.buildingCount, scene.cityTriangles + scene.groundTriangles + scene.facadeTriangles,
+                scene.spriteCount);
     }
 
     /**
@@ -243,7 +265,36 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         GroundAtlas ground = GroundAtlas.paint(store);
         groundTexture = Textures.fromImage(graphics, ground.image, true);
         groundShader.setTexture(groundTexture);
-        scene = new PlazaScene(graphics, ground);
+        partLibrary = new PartLibrary(store, district.id());
+        partsShown = partLibrary.signature();
+        FacadeAtlas facades = loadFacadeAtlas(graphics);
+        scene = new PlazaScene(graphics, ground, facades);
+    }
+
+    private FacadeAtlas loadFacadeAtlas(GraphicsDevice graphics) {
+        FacadeAtlas facades = FacadeAtlas.paint(partLibrary);
+        facadeTexture = Textures.fromImage(graphics, facades.image, true);
+        facadeShader.setTexture(facadeTexture);
+        facadeAtlasLayout = new Vec3(1f / facades.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,
+                (float) FacadeAtlas.TILE / FacadeAtlas.CELL);
+        return facades;
+    }
+
+    /**
+     * Once a second: has the district got new building parts (drawn in the background,
+     * or put into the folder by hand)? Then the houses choose again.
+     */
+    private void showNewParts(EngineContext context) {
+        if (context.timeSeconds() - partsCheckedAt < 1.0) {
+            return;
+        }
+        partsCheckedAt = context.timeSeconds();
+        String parts = partLibrary.signature();
+        if (!parts.equals(partsShown)) {
+            partsShown = parts;
+            facadeTexture.close();
+            scene.rebuildFacades(context.graphics(), loadFacadeAtlas(context.graphics()));
+        }
     }
 
     private void startPlaying(EngineContext context) {
@@ -253,10 +304,14 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             // Back from "draw the world again": show the new artwork.
             spriteAtlas.close();
             groundTexture.close();
+            facadeTexture.close();
             scene.close();
             loadArtwork(context.graphics());
         }
         playing = true;
+        if (backgroundArtist == null && !options.benchmark()) {
+            backgroundArtist = BackgroundArtist.start(AssetStore.standard(), district.id(), district.style());
+        }
         context.frameStats().reset(); // loading must not count as slow frames
     }
 
@@ -272,7 +327,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 context.quit();
             } else if (pause == null) {
                 pause = new PauseMenu(this, new PauseMenu.State(settings.renderScale(), settings.smoothUpscale(),
-                        settings.mouseSpeed(), AiSetup.reasoningEffort(), AiSetup.maxTokens()));
+                        settings.mouseSpeed(), AiSetup.reasoningEffort(), AiSetup.maxTokens(),
+                        AiSetup.backgroundEnabled()));
                 return;
             }
         }
@@ -306,6 +362,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             context.requestScreenshot(Path.of("screenshot.png"));
         }
 
+        showNewParts(context);
         sceneTime = options.frozenTime() != null ? options.frozenTime() : sceneTime + deltaSeconds;
         chooseResolution(context, input);
         if (options.benchmark() && options.view() != null) {
@@ -394,6 +451,21 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         } catch (java.io.IOException e) {
             System.err.println("Settings not saved: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void backgroundDrawing(boolean enabled) {
+        try {
+            AiSetup.saveBackgroundEnabled(enabled);
+        } catch (java.io.IOException e) {
+            System.err.println("Settings not saved: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public String[] backgroundStatus() {
+        return backgroundArtist == null ? new String[] {"", ""}
+                : new String[] {backgroundArtist.status(), backgroundArtist.progress()};
     }
 
     @Override
@@ -504,6 +576,16 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         sceneShader.setUniform("uFogStart", FOG_START);
         sceneShader.setUniform("uFogEnd", FOG_END);
         graphics.draw(scene.city, sceneShader);
+
+        facadeShader.setUniform("uViewProjection", viewProjection);
+        facadeShader.setUniform("uCameraPosition", position);
+        facadeShader.setUniform("uAtlas", facadeAtlasLayout);
+        facadeShader.setUniform("uDetail", FACADE_DETAIL);
+        facadeShader.setUniform("uLightDirection", LIGHT_DIRECTION);
+        facadeShader.setUniform("uFogColor", haze);
+        facadeShader.setUniform("uFogStart", FOG_START);
+        facadeShader.setUniform("uFogEnd", FOG_END);
+        graphics.draw(scene.facades, facadeShader);
 
         groundShader.setUniform("uViewProjection", viewProjection);
         groundShader.setUniform("uCameraPosition", position);
@@ -621,6 +703,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     @Override
     public void dispose() {
+        if (backgroundArtist != null) {
+            backgroundArtist.close();
+        }
         if (setup != null) {
             setup.close();
         }
@@ -635,6 +720,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             spriteAtlas.close();
             groundTexture.close();
             groundShader.close();
+            facadeTexture.close();
+            facadeShader.close();
             skyShader.close();
             spriteShader.close();
             sceneShader.close();

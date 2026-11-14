@@ -68,6 +68,12 @@ final class PauseMenu {
 
         /** Open the "create the world" menu to draw the artwork again. */
         void recreateWorld();
+
+        /** Whether building parts are drawn in the background while the game runs. */
+        void backgroundDrawing(boolean enabled);
+
+        /** Two short lines for the settings: what the background drawing does, and how far the collection is. */
+        String[] backgroundStatus();
     }
 
     /**
@@ -75,13 +81,14 @@ final class PauseMenu {
      *
      * @param reasoningEffort {@code low}, {@code medium}, {@code high}, or {@code null} for the model's default
      */
-    record State(float renderScale, boolean smoothUpscale, float mouseSpeed, String reasoningEffort, int maxTokens) {
+    record State(float renderScale, boolean smoothUpscale, float mouseSpeed, String reasoningEffort, int maxTokens,
+                 boolean backgroundDrawing) {
     }
 
     private record Region(Rectangle2D area, Runnable action) {
     }
 
-    private static final String[] TABS = {"Bild", "Steuerung", "KI"};
+    private static final String[] TABS = {"Bild", "Steuerung", "KI", "Welt"};
     private static final float[] MOUSE_SPEEDS = {0.5f, 1f, 2f};
     private static final String[] MOUSE_SPEED_LABELS = {"Langsam", "Normal", "Schnell"};
     private static final String[] EFFORTS = {null, "low", "medium", "high"};
@@ -94,6 +101,8 @@ final class PauseMenu {
     private float mouseSpeed;
     private String reasoningEffort;
     private int maxTokens;
+    private boolean backgroundDrawing;
+    private String[] shownStatus = {"", ""};
     private boolean settingsPage;
     private int tab;
     /** Index of the button under the mouse or chosen with the arrow keys; -1 for none. */
@@ -110,6 +119,7 @@ final class PauseMenu {
         this.mouseSpeed = state.mouseSpeed();
         this.reasoningEffort = state.reasoningEffort();
         this.maxTokens = state.maxTokens();
+        this.backgroundDrawing = state.backgroundDrawing();
     }
 
     /** {@code true} if the image has to be painted again; resets the flag. */
@@ -137,6 +147,9 @@ final class PauseMenu {
         }
         if (regions.isEmpty()) {
             return; // not painted yet
+        }
+        if (settingsPage && tab == 3 && !java.util.Arrays.equals(shownStatus, actions.backgroundStatus())) {
+            dirty = true; // the background drawing has moved on
         }
         double scale = scale(windowWidth, windowHeight);
         double x = (input.mouseX() - (windowWidth - CARD_WIDTH * scale) / 2) / scale;
@@ -245,7 +258,7 @@ final class PauseMenu {
         title(g, "Einstellungen");
         for (int i = 0; i < TABS.length; i++) {
             int index = i;
-            choice(g, TABS[i], 40 + i * 150, 126, 140, tab == i, () -> {
+            choice(g, TABS[i], 40 + i * 112, 126, 106, tab == i, () -> {
                 tab = index;
                 marked = -1;
             });
@@ -253,7 +266,8 @@ final class PauseMenu {
         switch (tab) {
             case 0 -> paintPictureTab(g);
             case 1 -> paintControlsTab(g);
-            default -> paintAiTab(g);
+            case 2 -> paintAiTab(g);
+            default -> paintWorldTab(g);
         }
         button(g, "Zurück", 40, 478, 150, 50, () -> showPage(false));
     }
@@ -313,8 +327,38 @@ final class PauseMenu {
             });
         }
         note(g, "Nachdenken zählt mit. Bei abgeschnittenen Antworten erhöhen.", 394);
+    }
 
-        button(g, "Welt neu zeichnen lassen …", 40, 414, 440, 46, actions::recreateWorld);
+    private void paintWorldTab(Graphics2D g) {
+        label(g, "Häuser im Hintergrund weiterzeichnen", 206);
+        choice(g, "An", 40, 218, 106, backgroundDrawing, () -> {
+            backgroundDrawing = true;
+            actions.backgroundDrawing(true);
+        });
+        choice(g, "Aus", 152, 218, 106, !backgroundDrawing, () -> {
+            backgroundDrawing = false;
+            actions.backgroundDrawing(false);
+        });
+        note(g, "Die KI zeichnet beim Spielen Fenster, Türen und Läden;", 284);
+        note(g, "die Häuser bekommen sie nach und nach.", 304);
+        shownStatus = actions.backgroundStatus();
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+        g.drawString(fitted(g, shownStatus[1], 440), 40, 340);
+        g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 362);
+
+        button(g, "Welt neu zeichnen lassen …", 40, 398, 440, 46, actions::recreateWorld);
+    }
+
+    private static String fitted(Graphics2D g, String text, int width) {
+        if (g.getFontMetrics().stringWidth(text) <= width) {
+            return text;
+        }
+        String shortened = text;
+        while (shortened.length() > 1 && g.getFontMetrics().stringWidth(shortened + "…") > width) {
+            shortened = shortened.substring(0, shortened.length() - 1);
+        }
+        return shortened + "…";
     }
 
     private void note(Graphics2D g, String text, int y) {

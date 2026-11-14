@@ -51,10 +51,20 @@ class PauseMenuTest {
         }
 
         @Override
+        public void backgroundDrawing(boolean enabled) {
+            asked.add("background " + enabled);
+        }
+
+        @Override
+        public String[] backgroundStatus() {
+            return new String[] {"wartet", "Fenster 0/8"};
+        }
+
+        @Override
         public void recreateWorld() {
             asked.add("world");
         }
-    }, new PauseMenu.State(1f, true, 1f, null, 8192));
+    }, new PauseMenu.State(1f, true, 1f, null, 8192, true));
     private final Input input = new Input();
 
     /** Clicks a point given in card units, in a 1280 x 720 window (card at 380, 80, scale 1). */
@@ -108,20 +118,22 @@ class PauseMenuTest {
         click(260, 291); // Einstellungen, tab "Bild"
         click(260, 238); // 50 %
         click(275, 362); // Pixelig
-        click(265, 146); // tab "Steuerung"
+        click(205, 146); // tab "Steuerung"
         click(410, 238); // Schnell
-        click(415, 146); // tab "KI"
+        click(317, 146); // tab "KI"
         click(430, 234); // Viel nachdenken
         click(200, 350); // 4096 Tokens
         click(95, 234);  // Standard: nothing is sent, the model decides
-        click(260, 437); // Welt neu zeichnen lassen
+        click(429, 146); // tab "Welt"
+        click(205, 238); // background drawing off
+        click(260, 421); // Welt neu zeichnen lassen
         assertEquals(List.of("scale 0.5", "smooth false", "mouse 2.0", "ai 8192 high", "ai 4096 high",
-                "ai 4096 null", "world"), asked);
+                "ai 4096 null", "background false", "world"), asked);
 
         press(Key.ESCAPE); // back to the first page, the game stays paused
-        assertEquals(7, asked.size());
+        assertEquals(8, asked.size());
         press(Key.ESCAPE);
-        assertEquals("resume", asked.get(7));
+        assertEquals("resume", asked.get(8));
     }
 
     @Test

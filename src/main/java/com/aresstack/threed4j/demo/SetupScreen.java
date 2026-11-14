@@ -612,6 +612,7 @@ final class SetupScreen implements AutoCloseable {
         }
         say("", false);
         lastAccess = new Access(serviceUrl, apiKey, selectedModel);
+        AiSetup.rememberSession(new AiSetup.Session(serviceUrl, selectedModel, apiKey));
         step = WORLD;
     }
 
@@ -727,6 +728,7 @@ final class SetupScreen implements AutoCloseable {
                     serviceUrl = address;
                     apiKey = entry.password();
                     lastAccess = new Access(serviceUrl, apiKey, selectedModel);
+        AiSetup.rememberSession(new AiSetup.Session(serviceUrl, selectedModel, apiKey));
                     step = WORLD;
                 };
             });
