@@ -28,7 +28,11 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          # Java 8 only starts the finished JAR, to prove that its launcher finds Java 21 by itself.
+          # The last version listed is the default one.
+          java-version: |
+            8
+            21
           cache: gradle
 
       - name: Test and build runnable JAR
@@ -46,8 +50,13 @@ jobs:
           unzip -p "$jar" META-INF/MANIFEST.MF
           unzip -p "$jar" META-INF/MANIFEST.MF | grep -q '^Main-Class: com.aresstack.threed4j.launcher.Launcher'
 
-          # The launcher must load without --enable-preview (minor version 0),
-          # the FFM layer must be a preview class file (minor version 65535).
+          # The launcher must load on Java 8 (major version 52) and without --enable-preview
+          # (minor version 0), the FFM layer must be a preview class file (minor version 65535).
+          for class in Launcher JavaRuntimeFinder; do
+            major="$(javap -v -cp "$jar" "com.aresstack.threed4j.launcher.$class" | awk '/major version/ {print $3}')"
+            echo "$class major version: $major"
+            test "$major" = "52"
+          done
           launcher_minor="$(javap -v -cp "$jar" com.aresstack.threed4j.launcher.Launcher | awk '/minor version/ {print $3}')"
           engine_minor="$(javap -v -cp "$jar" com.aresstack.threed4j.ffm.Native | awk '/minor version/ {print $3}')"
           echo "Launcher minor version: $launcher_minor, engine minor version: $engine_minor"
@@ -75,6 +84,14 @@ jobs:
           xvfb-run -a -s "-screen 0 1400x900x24" \
             java -jar build/libs/3d4j.jar --frames=60 --no-vsync --screenshot=build/smoke-test-title.png
           test -s build/smoke-test-title.png
+
+          # Started by Java 8, as a computer does whose JARs open with an old Java: the launcher has
+          # to find the Java 21 of this machine, start it with the flags, and remember where it is.
+          "$JAVA_HOME_8_X64/bin/java" -version
+          xvfb-run -a -s "-screen 0 1400x900x24" \
+            "$JAVA_HOME_8_X64/bin/java" -jar build/libs/3d4j.jar --frames=60 --no-vsync --screenshot=build/smoke-test-java8.png
+          test -s build/smoke-test-java8.png
+          grep -q '^java21=' "$HOME/.3d4j/launcher.properties"
 
           # The test plaza on its fixed camera path, at half internal resolution.
           xvfb-run -a -s "-screen 0 1400x900x24" \

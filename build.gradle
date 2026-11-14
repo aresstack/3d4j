@@ -18,8 +18,10 @@ repositories {
 }
 
 sourceSets {
-    // The launcher is compiled WITHOUT --enable-preview so that a plain
-    // "java -jar 3d4j.jar" can load it. It then restarts the JVM with the flag.
+    // The launcher is compiled for Java 8 and WITHOUT --enable-preview, so that a plain
+    // "java -jar 3d4j.jar" can load it with whatever Java the computer has. It then looks
+    // for a Java 21 and starts that one with the flag. A class file carries its own version,
+    // and a JVM only minds the version of the classes it loads, so both kinds share the JAR.
     launcher {
         java {
             srcDir 'src/launcher/java'
@@ -40,6 +42,7 @@ dependencies {
     implementation 'com.aresstack:win-proxy-java:0.2.0'
     runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
 
+    testImplementation sourceSets.launcher.output
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -48,6 +51,11 @@ dependencies {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 21
+}
+
+tasks.named('compileLauncherJava') {
+    options.release = 8
+    options.compilerArgs += ['-Xlint:-options'] // Java 8 as a target is deprecated, and meant here
 }
 
 // Engine and demo (source set "main") use the FFM preview API.

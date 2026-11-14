@@ -83,7 +83,9 @@ java -jar 3d4j.jar
 ```
 
 Mehr ist nicht nötig: Das Manifest nennt den `Launcher` als Hauptklasse, und der startet die
-JVM selbst noch einmal mit `--enable-preview` (siehe [Der Launcher](#der-launcher)).
+JVM selbst noch einmal mit `--enable-preview` (siehe [Der Launcher](#der-launcher)). Das `java`
+der Kommandozeile oder des Doppelklicks muss nicht Java 21 sein: Der Launcher läuft ab Java 8
+und sucht sich ein installiertes Java 21 selbst.
 Bei einem Doppelklick läuft das Programm auf `javaw` ohne Konsole; Fehler wie eine falsche
 Java-Version erscheinen dann in einem Dialog.
 
@@ -455,14 +457,29 @@ Wird ein Bild mit `generate` neu gezeichnet, wandert das bisherige vorher nach
 
 ## Der Launcher
 
-`java -jar` startet die JVM ohne `--enable-preview`, die Engine braucht das Flag aber.
-`Launcher` löst das so:
+`java -jar` startet die JVM ohne `--enable-preview`, die Engine braucht das Flag aber, und zwar
+auf genau Java 21. Ein Rechner öffnet JARs aber oft mit einem anderen Java. `Launcher` löst
+beides:
 
-1. Er ist **ohne** Preview kompiliert (eigenes Source-Set `src/launcher/java`) und kennt die
-   Engine nur dem Namen nach.
-2. Er versucht, die Engine-Klasse `ffm.Native` zu laden. Scheitert das mit
+1. Er ist **für Java 8 und ohne** Preview kompiliert (eigenes Source-Set `src/launcher/java`)
+   und kennt die Engine nur dem Namen nach. Das geht in einem einzigen JAR: Jede Klassendatei
+   trägt ihre eigene Version, und eine JVM stört sich nur an Klassen, die sie tatsächlich lädt.
+   Entpackt wird nichts, das zweite Java bekommt dasselbe JAR als Klassenpfad.
+2. Läuft er nicht auf Java 21, sucht `JavaRuntimeFinder` ein Java 21 und startet es mit den
+   Flags. Gesucht wird in dieser Reihenfolge, der erste Treffer zählt: `-Dthreed4j.java` oder
+   die Umgebungsvariable `THREED4J_JAVA` (Ordner oder `java`-Datei), `JAVA_HOME`, jedes `java`
+   im `PATH` (das, was `where.exe java` auflistet), dann die üblichen Installationsordner
+   (unter Windows `Program Files` mit Eclipse Adoptium, Microsoft, Zulu, Corretto, BellSoft,
+   JetBrains und anderen, `~/.jdks`, Scoop; sonst `/usr/lib/jvm`, SDKMAN,
+   `/Library/Java/JavaVirtualMachines`). Die Version nennt die Datei `release` der Installation;
+   passt sie oder fehlt sie, wird das Java mit `-XshowSettings:properties -version` gefragt
+   (höchstens zehn Sekunden). Der Fund steht danach in `~/.3d4j/launcher.properties` und wird
+   beim nächsten Start nur noch geprüft. Die Suche stammt aus dem Enterprise AI Client (dort
+   bis 0.1.43 für den Sidecar), mit dem Unterschied, dass nur genau Java 21 zählt. Findet sich
+   keins, sagt das eine Meldung, bei einem Doppelklick als Dialog.
+3. Auf Java 21 versucht er, die Engine-Klasse `ffm.Native` zu laden. Scheitert das mit
    `UnsupportedClassVersionError`, ist Preview nicht aktiv.
-3. Dann startet er dieselbe JVM erneut mit `--enable-preview --enable-native-access=ALL-UNNAMED`,
+4. Dann startet er dieselbe JVM erneut mit `--enable-preview --enable-native-access=ALL-UNNAMED`,
    reicht alle JVM-Optionen und Argumente durch und gibt den Exit-Code des Kindprozesses zurück.
 
 Zwei Details dazu:
@@ -472,9 +489,13 @@ Zwei Details dazu:
   Engine-Klasse statt der Hauptklasse.
 - Ein Debug-Agent (`-agentlib:jdwp`) wird nicht an den zweiten Prozess weitergereicht, weil
   dieser sonst denselben Port belegen wollte.
+- An ein anderes Java gehen nur die System-Properties (`-D...`) weiter: Optionen von Java 8
+  kennt Java 21 zum Teil nicht mehr.
+- Läuft der Launcher ohne Konsole (Doppelklick), nimmt er auch vom gefundenen Java `javaw.exe`,
+  damit kein Konsolenfenster aufgeht.
 
 Welche Klasse gestartet wird, bestimmt die System-Property `threed4j.main`
-(Standard: `com.aresstack.threed4j.demo.CubeDemo`):
+(Standard: `com.aresstack.threed4j.demo.PlazaDemo`):
 
 ```
 java -Dthreed4j.main=mein.spiel.Main -jar build/libs/3d4j.jar
@@ -500,7 +521,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 
 | Paket | Inhalt |
 |---|---|
-| `launcher` | Selbststart mit `--enable-preview` (eigenes Source-Set, ohne Preview kompiliert) |
+| `launcher` | Sucht Java 21 und startet es mit `--enable-preview` (eigenes Source-Set, für Java 8 und ohne Preview kompiliert) |
 | `ffm` | `Native`: Hilfsschicht über der FFM-API (Bibliotheken laden, Strings, Speicher) |
 | `gl` | `GL`: handgeschriebene OpenGL-Bindings; `GLLoader`: Auflösung der Funktionsadressen |
 | `platform` | `Window`, `GLWindow`, `Input`, `Key`, `MouseButton` |
