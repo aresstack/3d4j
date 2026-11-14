@@ -100,9 +100,14 @@ final class SpriteAtlas {
         return paint(List.of(District.BLOSSOM_QUARTER), district -> library, library);
     }
 
-    /** Paints the atlas of the whole town: every district's figures, and the people they share. */
+    /** Paints the atlas of the two districts that come with the game, and the people the town shares. */
     static SpriteAtlas paint(TownLibrary town) {
         return paint(District.ALL, town::district, town.shared());
+    }
+
+    /** Paints the atlas of one planned district: its figures, and the people the town shares. */
+    static SpriteAtlas paint(TownLibrary town, District district) {
+        return paint(List.of(district), town::district, town.shared());
     }
 
     /** Placeholders stand in for every kind a collection has nothing of. */
@@ -170,7 +175,8 @@ final class SpriteAtlas {
             atlas.cells.get(keys.get(index)).add(new Cell(column, row, numbers.get(index)));
         }
         g.dispose();
-        System.out.println("Sprites: " + collected + " pictures from " + shared.directory().getParent()
+        System.out.println("Sprites" + (districts.get(0).builtIn() ? "" : " of " + districts.get(0).name()) + ": "
+                + collected + " pictures from " + shared.directory().getParent()
                 + (collected == 0 ? ", using the built-in ones" : ""));
         return atlas;
     }
@@ -185,7 +191,9 @@ final class SpriteAtlas {
         boolean works = district == District.WORKS_QUARTER;
         switch (kind) {
             case BLOSSOM_TREE -> {
-                if (works) {
+                if (!district.builtIn()) {
+                    tree(g, new Color(0x8A5A3C), new Color(0x8CC97A), new Color(0xB4E2A2));
+                } else if (works) {
                     tree(g, new Color(0xEDEDE6), new Color(0xB7DD7C), new Color(0xD3EDA6));
                 } else {
                     tree(g, new Color(0x8A5A3C), new Color(0xF7A8CF), new Color(0xFFD3E6));
@@ -195,7 +203,7 @@ final class SpriteAtlas {
                     works ? new Color(0x5E9E63) : new Color(0x74C365), works ? new Color(0x86BE86) : new Color(0xA5E08C));
             case LAMP -> lamp(g, works ? new Color(0x6F7480) : new Color(0x4A4458));
             case BUSH -> {
-                if (works) {
+                if (!district.flowerBushes()) {
                     weeds(g);
                 } else {
                     bush(g);

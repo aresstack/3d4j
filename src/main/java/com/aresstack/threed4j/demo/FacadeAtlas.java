@@ -77,9 +77,14 @@ final class FacadeAtlas {
         return paint(List.of(District.BLOSSOM_QUARTER), district -> library);
     }
 
-    /** Paints the atlas of the whole town. */
+    /** Paints the atlas of the two districts that come with the game. */
     static FacadeAtlas paint(TownLibrary town) {
         return paint(District.ALL, town::district);
+    }
+
+    /** Paints the atlas of one planned district. */
+    static FacadeAtlas paint(TownLibrary town, District district) {
+        return paint(List.of(district), town::district);
     }
 
     /** A built-in part for every kind a district's library has none of. */
@@ -126,7 +131,8 @@ final class FacadeAtlas {
             atlas.cells.get(keys.get(index)).add(measure(index, numbers.get(index), tile));
         }
         g.dispose();
-        System.out.println("Facades: " + generated + " building parts from "
+        System.out.println("Facades" + (districts.get(0).builtIn() ? "" : " of " + districts.get(0).name()) + ": "
+                + generated + " building parts from "
                 + libraries.apply(districts.get(0)).directory().getParent()
                 + (generated == 0 ? ", using the built-in ones" : ""));
         return atlas;

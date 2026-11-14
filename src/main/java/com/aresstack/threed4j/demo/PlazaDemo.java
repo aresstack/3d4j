@@ -5,6 +5,7 @@ import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.TownLibrary;
 import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.generator.BackgroundArtist;
+import com.aresstack.threed4j.generator.TownPlanner;
 import com.aresstack.threed4j.core.Engine;
 import com.aresstack.threed4j.core.EngineConfig;
 import com.aresstack.threed4j.core.EngineContext;
@@ -99,6 +100,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private Vec3 facadeAtlasLayout;
     private Vec3 groundAtlasLayout;
     private TownLibrary town;
+    /** The planned districts as pieces of the world, by the district's id. */
+    private final java.util.Map<String, DistrictScene> pieces = new java.util.LinkedHashMap<>();
+    private TownPlanner townPlanner;
     private String partsShown;
     private double partsCheckedAt;
     private BackgroundArtist backgroundArtist;
@@ -201,7 +205,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         // The game draws its pictures by itself while it runs. The menu is only for the access to the
         // AI service: it opens the first time, when no access is known and nothing has been collected yet.
         boolean firstTime = !AiSetup.accessKnown()
-                && new TownLibrary(AssetStore.standard()).signature().replace("|", "").replaceAll("lamp=\\S* ", "").isBlank();
+                && new TownLibrary(AssetStore.standard()).empty();
         boolean wanted = options.showSetup() != null ? options.showSetup() : firstTime;
         if (wanted) {
             setup = new SetupScreen(Textures.readResource("/images/loading.jpg"),
@@ -280,7 +284,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         if (moved > 0) {
             System.out.println("Library: moved " + moved + " picture(s) to " + town.shared().directory());
         }
-        partsShown = town.signature();
+        partsShown = startSignature(town);
 
         SpriteAtlas sprites = SpriteAtlas.paint(town);
         spriteAtlas = Textures.fromImage(graphics, sprites.image, true);
@@ -296,6 +300,49 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         facadeAtlasLayout = new Vec3(1f / facades.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,
                 (float) FacadeAtlas.TILE / FacadeAtlas.CELL);
         scene = new PlazaScene(graphics, ground, facades, sprites);
+        showPlannedDistricts(graphics);
+    }
+
+    /** What the two districts that come with the game are built from: their collections and the shared one. */
+    private static String startSignature(TownLibrary town) {
+        StringBuilder signature = new StringBuilder();
+        for (District district : District.ALL) {
+            signature.append(town.district(district).signature()).append('|');
+        }
+        return signature.append(town.shared().signature()).toString();
+    }
+
+    /**
+     * Brings the pieces of the world in line with the town on disk: builds every
+     * planned district that is new or whose plan or pictures changed, and removes
+     * those that were torn down.
+     */
+    private void showPlannedDistricts(GraphicsDevice graphics) {
+        String people = town.shared().signature();
+        java.util.Set<String> standing = new java.util.HashSet<>();
+        for (District district : town.planned()) {
+            standing.add(district.id());
+            String signature = town.signature(district) + "|" + people;
+            DistrictScene piece = pieces.get(district.id());
+            if (piece != null && piece.signature.equals(signature)) {
+                continue;
+            }
+            if (piece != null) {
+                piece.close();
+            }
+            piece = new DistrictScene(graphics, town, district, signature);
+            pieces.put(district.id(), piece);
+            System.out.printf(Locale.ROOT, "District %s: %d houses, %d triangles, landmark: %s%n", district.name(),
+                    piece.houseCount, piece.triangles,
+                    district.layout().landmark() == null ? "none" : district.layout().landmark().name());
+        }
+        pieces.entrySet().removeIf(entry -> {
+            if (standing.contains(entry.getKey())) {
+                return false;
+            }
+            entry.getValue().close();
+            return true;
+        });
     }
 
     private void unloadArtwork() {
@@ -315,9 +362,13 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             return;
         }
         partsCheckedAt = context.timeSeconds();
-        if (!town.signature().equals(partsShown)) {
+        TownLibrary now = new TownLibrary(AssetStore.standard());
+        if (!startSignature(now).equals(partsShown)) {
             unloadArtwork();
-            loadArtwork(context.graphics());
+            loadArtwork(context.graphics()); // reads the town anew and looks at the planned districts too
+        } else {
+            town = now;
+            showPlannedDistricts(context.graphics());
         }
     }
 
@@ -328,6 +379,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         playing = true;
         if (backgroundArtist == null && !options.benchmark()) {
             backgroundArtist = BackgroundArtist.start(AssetStore.standard());
+        }
+        if (townPlanner == null && !options.benchmark()) {
+            townPlanner = TownPlanner.start(AssetStore.standard());
         }
         context.frameStats().reset(); // loading must not count as slow frames
     }
@@ -345,7 +399,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             } else if (pause == null) {
                 pause = new PauseMenu(this, new PauseMenu.State(settings.renderScale(), settings.smoothUpscale(),
                         settings.mouseSpeed(), AiSetup.reasoningEffort(), AiSetup.maxTokens(),
-                        AiSetup.backgroundEnabled()), town, District.at(position.x(), position.z()));
+                        AiSetup.backgroundEnabled()), new TownLibrary(AssetStore.standard()),
+                        town.districtAt(position.x(), position.z()));
                 return;
             }
         }
@@ -480,6 +535,25 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     @Override
+    public void planDistrict() {
+        if (townPlanner != null) {
+            townPlanner.planDistrict();
+        }
+    }
+
+    @Override
+    public void planLandmark(District district) {
+        if (townPlanner != null) {
+            townPlanner.planLandmark(district);
+        }
+    }
+
+    @Override
+    public String plannerStatus() {
+        return townPlanner == null ? "" : townPlanner.status();
+    }
+
+    @Override
     public String[] backgroundStatus() {
         return backgroundArtist == null ? new String[] {"", ""}
                 : new String[] {backgroundArtist.status(), backgroundArtist.progress()};
@@ -554,7 +628,14 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         float speed = WALK_SPEED * (input.isDown(Key.SHIFT) ? 3f : 1f);
         Vec3 wanted = position.add(move.normalize().scale(speed * step));
         wanted = new Vec3(wanted.x(), Math.max(Obstacles.EYE_ABOVE, wanted.y()), wanted.z());
-        position = scene == null ? wanted : scene.obstacles.move(position, wanted, 0.7f);
+        if (scene != null) {
+            Vec3 from = position;
+            wanted = scene.obstacles.move(from, wanted, 0.7f);
+            for (DistrictScene piece : pieces.values()) {
+                wanted = piece.obstacles.move(from, wanted, 0.7f);
+            }
+        }
+        position = wanted;
     }
 
     /**
@@ -593,26 +674,21 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         sceneShader.setUniform("uFogColor", haze);
         sceneShader.setUniform("uFogStart", FOG_START);
         sceneShader.setUniform("uFogEnd", FOG_END);
-        graphics.draw(scene.city, sceneShader);
 
         facadeShader.setUniform("uViewProjection", viewProjection);
         facadeShader.setUniform("uCameraPosition", position);
-        facadeShader.setUniform("uAtlas", facadeAtlasLayout);
         facadeShader.setUniform("uDetail", FACADE_DETAIL);
         facadeShader.setUniform("uLightDirection", LIGHT_DIRECTION);
         facadeShader.setUniform("uFogColor", haze);
         facadeShader.setUniform("uFogStart", FOG_START);
         facadeShader.setUniform("uFogEnd", FOG_END);
-        graphics.draw(scene.facades, facadeShader);
 
         groundShader.setUniform("uViewProjection", viewProjection);
         groundShader.setUniform("uCameraPosition", position);
-        groundShader.setUniform("uAtlas", groundAtlasLayout);
         groundShader.setUniform("uDetail", GROUND_DETAIL);
         groundShader.setUniform("uFogColor", haze);
         groundShader.setUniform("uFogStart", FOG_START);
         groundShader.setUniform("uFogEnd", FOG_END);
-        graphics.draw(scene.ground, groundShader);
 
         spriteShader.setUniform("uViewProjection", viewProjection);
         spriteShader.setUniform("uCameraPosition", position);
@@ -621,7 +697,22 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         spriteShader.setUniform("uFogStart", FOG_START);
         spriteShader.setUniform("uFogEnd", FOG_END);
         spriteShader.setUniform("uTime", (float) sceneTime);
-        graphics.draw(scene.sprites, spriteShader);
+
+        // The two districts that come with the game are one piece of the world, every planned district
+        // another. A piece is drawn only if it is nearer than the haze reaches.
+        float reach = FOG_END + 10f;
+        boolean startNear = Math.hypot(Math.max(0f, Math.abs(position.x()) - 100f),
+                Math.max(0f, Math.max(position.z() - 100f, -300f - position.z()))) < reach;
+        if (startNear) {
+            drawPiece(graphics, scene.city, scene.facades, scene.ground, scene.sprites, facadeTexture,
+                    facadeAtlasLayout, groundTexture, groundAtlasLayout, spriteAtlas);
+        }
+        for (DistrictScene piece : pieces.values()) {
+            if (piece.distance(position.x(), position.z()) < reach) {
+                drawPiece(graphics, piece.city, piece.facades, piece.ground, piece.sprites, piece.facadeTexture,
+                        piece.facadeAtlasLayout, piece.groundTexture, piece.groundAtlasLayout, piece.spriteTexture);
+            }
+        }
 
         waterShader.setUniform("uViewProjection", viewProjection);
         waterShader.setUniform("uCameraPosition", position);
@@ -634,6 +725,21 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
         skyShader.setUniform("uViewProjection", projection.multiply(camera.viewRotationMatrix()));
         graphics.draw(scene.sky, skyShader);
+    }
+
+    /** One piece of the world: its solid things, house fronts, ground and figures, with its own textures. */
+    private void drawPiece(GraphicsDevice graphics, Mesh city, Mesh facades, Mesh ground, Mesh sprites,
+                           Texture facadeParts, Vec3 facadeLayout, Texture groundTiles, Vec3 groundLayout,
+                           Texture figures) {
+        graphics.draw(city, sceneShader);
+        facadeShader.setTexture(facadeParts);
+        facadeShader.setUniform("uAtlas", facadeLayout);
+        graphics.draw(facades, facadeShader);
+        groundShader.setTexture(groundTiles);
+        groundShader.setUniform("uAtlas", groundLayout);
+        graphics.draw(ground, groundShader);
+        spriteShader.setTexture(figures);
+        graphics.draw(sprites, spriteShader);
     }
 
     /** The loading screen: the title picture in full window resolution with a progress bar. */
@@ -733,6 +839,10 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         if (backgroundArtist != null) {
             backgroundArtist.close();
         }
+        if (townPlanner != null) {
+            townPlanner.close();
+        }
+        pieces.values().forEach(DistrictScene::close);
         if (setup != null) {
             setup.close();
         }

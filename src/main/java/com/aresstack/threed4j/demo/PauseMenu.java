@@ -83,6 +83,19 @@ final class PauseMenu {
 
         /** Two short lines for the settings: what the background drawing does, and how far the collection is. */
         String[] backgroundStatus();
+
+        /** Have a further district planned now. */
+        default void planDistrict() {
+        }
+
+        /** Have another landmark planned for a planned district. */
+        default void planLandmark(District district) {
+        }
+
+        /** What the planning of districts is doing, in German. */
+        default String plannerStatus() {
+            return "";
+        }
     }
 
     /**
@@ -123,6 +136,14 @@ final class PauseMenu {
     private record Shelf(String name, PartLibrary library, District district, List<PartLibrary.Kind> kinds) {
     }
 
+    /** The town on disk; {@code null} if the menu was given a single collection. */
+    private TownLibrary town;
+    // The page of the town hall: the districts, and how the town grows.
+    private boolean townHallPage;
+    private int districtsFrom;
+    private String demolishAsked;
+    private String shownTown = "";
+    private String shownPlanner = "";
     private final List<Shelf> shelves = new ArrayList<>();
     private int shelf;
     private boolean shelfList;
@@ -160,11 +181,36 @@ final class PauseMenu {
      */
     PauseMenu(Actions actions, State state, TownLibrary town, District current) {
         this(actions, state);
-        for (District district : District.ALL) {
+        this.town = town;
+        fillShelves();
+        showShelf(Math.max(0, town.districts().indexOf(current)));
+    }
+
+    /** The collections of the town as it is now: one per district, and the shared one. */
+    private void fillShelves() {
+        shelves.clear();
+        for (District district : town.districts()) {
             shelves.add(new Shelf(district.name(), town.district(district), district, TownLibrary.districtKinds()));
         }
         shelves.add(new Shelf(TownLibrary.SHARED_NAME, town.shared(), District.ALL.get(0), TownLibrary.sharedKinds()));
-        showShelf(District.ALL.indexOf(current));
+    }
+
+    /** Reads the town anew, after a district was planned or torn down; the shown collection stays if it still exists. */
+    private void reloadTown() {
+        String shownName = shelves.get(shelf).name();
+        PartLibrary.Kind kind = shownKind;
+        town = town.reload();
+        fillShelves();
+        int index = 0;
+        for (int i = 0; i < shelves.size(); i++) {
+            if (shelves.get(i).name().equals(shownName)) {
+                index = i;
+            }
+        }
+        showShelf(index);
+        if (shelves.get(index).name().equals(shownName)) {
+            shownKind = kind;
+        }
     }
 
     private void showShelf(int index) {
@@ -198,11 +244,11 @@ final class PauseMenu {
 
     /** The card's size in card units; the page with the collection needs more room than the others. */
     int cardWidth() {
-        return collectionPage ? COLLECTION_WIDTH : CARD_WIDTH;
+        return collectionPage || townHallPage ? COLLECTION_WIDTH : CARD_WIDTH;
     }
 
     int cardHeight() {
-        return collectionPage ? COLLECTION_HEIGHT : CARD_HEIGHT;
+        return collectionPage || townHallPage ? COLLECTION_HEIGHT : CARD_HEIGHT;
     }
 
     /** Window pixels per card unit: the card keeps its share of a 1280 x 720 window at any window size. */
@@ -222,6 +268,8 @@ final class PauseMenu {
                 modelList = false;
                 shelfList = false;
                 dirty = true;
+            } else if (townHallPage) {
+                showTownHall(false);
             } else if (collectionPage) {
                 showCollection(false);
             } else if (settingsPage) {
@@ -235,6 +283,14 @@ final class PauseMenu {
             signatureCheckedAt = System.nanoTime();
             if (!library().signature().equals(shownSignature)) {
                 dirty = true; // a picture arrived or left while the page is open
+            }
+        }
+        if (townHallPage && System.nanoTime() - signatureCheckedAt > 1_000_000_000L) {
+            signatureCheckedAt = System.nanoTime();
+            // A district was planned, got a landmark or pictures, or the planning has moved on.
+            if (!town.reload().signature().equals(shownTown) || !actions.plannerStatus().equals(shownPlanner)) {
+                reloadTown();
+                dirty = true;
             }
         }
         if (regions.isEmpty()) {
@@ -258,7 +314,7 @@ final class PauseMenu {
             lastMouseY = input.mouseY();
             mark(under);
         }
-        if (!settingsPage && !collectionPage) {
+        if (!settingsPage && !collectionPage && !townHallPage) {
             // The three buttons of the first page can be reached without the mouse.
             if (input.wasPressed(Key.DOWN)) {
                 mark(Math.min(regions.size() - 1, marked + 1));
@@ -295,6 +351,18 @@ final class PauseMenu {
         marked = -1;
         regions.clear();
         dirty = true;
+    }
+
+    private void showTownHall(boolean show) {
+        townHallPage = show;
+        modelList = false;
+        demolishAsked = null;
+        marked = -1;
+        regions.clear();
+        dirty = true;
+        if (show) {
+            reloadTown();
+        }
     }
 
     private void showPage(boolean settings) {
@@ -337,7 +405,9 @@ final class PauseMenu {
         SetupScreen.blossom(g, 42, cardHeight - 40, 19);
 
         regions.clear();
-        if (collectionPage) {
+        if (townHallPage) {
+            paintTownHall(g);
+        } else if (collectionPage) {
             paintCollection(g);
         } else if (settingsPage) {
             paintSettings(g);
@@ -452,8 +522,152 @@ final class PauseMenu {
         g.drawString(fitted(g, shownStatus[1], 440), 40, 340);
         g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 362);
 
-        button(g, "Sammlung ansehen …", 40, 380, 440, 42, () -> showCollection(true));
+        if (town == null) {
+            button(g, "Sammlung ansehen …", 40, 380, 440, 42, () -> showCollection(true));
+        } else {
+            button(g, "Sammlung ansehen …", 40, 380, 228, 42, () -> showCollection(true));
+            button(g, "Stadtverwaltung …", 276, 380, 204, 42, () -> showTownHall(true));
+        }
         button(g, "KI-Zugang …", 40, 428, 440, 42, actions::openAccessMenu);
+    }
+
+    // ------------------------------------------------------------ the town hall
+
+    private static final int DISTRICTS_PER_PAGE = 7;
+
+    /**
+     * The town hall: the districts of the town, each with its landmark and how far
+     * its collection is, and how the town grows. A planned district can get another
+     * landmark or be torn down; the two that come with the game stay.
+     */
+    private void paintTownHall(Graphics2D g) {
+        shownTown = town.signature();
+        shownPlanner = actions.plannerStatus();
+        g.setColor(INK);
+        g.setFont(new Font(Font.SERIF, Font.BOLD | Font.ITALIC, 34));
+        g.drawString("Stadtverwaltung", 84, 72);
+
+        List<District> districts = town.districts();
+        districtsFrom = Math.max(0, Math.min(districtsFrom, (districts.size() - 1) / DISTRICTS_PER_PAGE * DISTRICTS_PER_PAGE));
+        for (int i = 0; i < DISTRICTS_PER_PAGE && districtsFrom + i < districts.size(); i++) {
+            District district = districts.get(districtsFrom + i);
+            int top = 96 + i * 50;
+            g.setColor(PINK_LIGHT);
+            g.fill(new RoundRectangle2D.Double(40, top, 880, 44, 18, 18));
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+            g.drawString(fitted(g, district.name(), 200), 56, top + 20);
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            String planner = district.builtIn() ? "gehört zum Spiel" : "geplant von "
+                    + (district.layout().plannedBy().isBlank() ? "Hand" : shortName(district.layout().plannedBy()));
+            g.drawString(fitted(g, planner, 200), 56, top + 37);
+            District.Landmark landmark = district.builtIn() ? null : district.layout().landmark();
+            String landmarkName = district == District.BLOSSOM_QUARTER ? "Brunnen" : district == District.WORKS_QUARTER
+                    ? "Schornstein, Wasserturm, Gasometer" : landmark == null ? "noch keines" : landmark.name();
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+            g.drawString(fitted(g, "Wahrzeichen: " + landmarkName, 250), 270, top + 20);
+            int[] progress = town.progress(district);
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            g.drawString("Sammlung: " + progress[0] + " von " + progress[1] + " Bildern", 270, top + 37);
+
+            int index = districtsFrom + i;
+            choice(g, "Sammlung", 534, top + 8, 100, 28, false, 13, () -> {
+                showTownHall(false);
+                showCollection(true);
+                showShelf(index);
+            });
+            if (!district.builtIn()) {
+                choice(g, "Wahrzeichen neu", 640, top + 8, 144, 28, false, 13, () -> {
+                    demolishAsked = null;
+                    actions.planLandmark(district);
+                });
+                // Tearing down asks once more: the second click on the same button does it.
+                boolean asked = district.id().equals(demolishAsked);
+                choice(g, asked ? "Wirklich?" : "Abreißen", 790, top + 8, 118, 28, asked, 13, () -> {
+                    if (asked) {
+                        demolish(district);
+                    } else {
+                        demolishAsked = district.id();
+                    }
+                });
+            }
+        }
+        int pages = Math.max(1, (districts.size() + DISTRICTS_PER_PAGE - 1) / DISTRICTS_PER_PAGE);
+        if (pages > 1) {
+            choice(g, "‹", 790, 448, 40, 30, false, 16, () -> districtsFrom = Math.max(0, districtsFrom - DISTRICTS_PER_PAGE));
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+            String text = (districtsFrom / DISTRICTS_PER_PAGE + 1) + "/" + pages;
+            g.drawString(text, 855 - g.getFontMetrics().stringWidth(text) / 2, 469);
+            choice(g, "›", 880, 448, 40, 30, false, 16, () -> {
+                if (districtsFrom + DISTRICTS_PER_PAGE < districts.size()) {
+                    districtsFrom += DISTRICTS_PER_PAGE;
+                }
+            });
+        }
+
+        // How the town grows.
+        boolean grows = AiSetup.worldEnabled();
+        int most = AiSetup.worldMaxDistricts();
+        String planning = AiSetup.worldModel();
+        label(g, "Die Stadt wächst von selbst", 40, 506, 16);
+        choice(g, "An", 262, 484, 70, 34, grows, 15, () -> saveWorld(true, planning, most));
+        choice(g, "Aus", 338, 484, 70, 34, !grows, 15, () -> saveWorld(false, planning, most));
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+        g.setColor(TEXT);
+        g.drawString("bis", 432, 506);
+        choice(g, "–", 462, 484, 38, 34, false, 17, () -> saveWorld(grows, planning, most - 1));
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+        String number = String.valueOf(most);
+        g.drawString(number, 524 - g.getFontMetrics().stringWidth(number) / 2, 507);
+        choice(g, "+", 548, 484, 38, 34, false, 17, () -> saveWorld(grows, planning, most + 1));
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+        g.setColor(TEXT);
+        g.drawString("Viertel", 596, 506);
+        int modelX = 700;
+        int modelWidth = 220;
+        choice(g, "", modelX, 485, modelWidth, 32, modelList, 13, () -> openModelList(!modelList));
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+        g.setColor(modelList ? Color.WHITE : INK);
+        String shownModel = fitted(g, "Planung: " + shortName(planning), modelWidth - 44) + "  ▾";
+        g.drawString(shownModel, modelX + (modelWidth - g.getFontMetrics().stringWidth(shownModel)) / 2, 506);
+        g.setColor(TEXT);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+        g.drawString("Ein neues Viertel wird geplant, sobald das jüngste alle Bilder seiner Sammlung hat.", 40, 540);
+
+        button(g, "Zurück", 40, 568, 150, 46, () -> showTownHall(false));
+        button(g, "Neues Viertel planen", 206, 568, 250, 46, actions::planDistrict);
+        g.setColor(TEXT);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+        g.drawString(fitted(g, "Planung: " + (shownPlanner.isBlank() ? "ruht" : shownPlanner), 450), 472, 597);
+
+        if (modelList) {
+            // Above the button, so that the list stays on the card.
+            paintModelList(g, modelX - 40, 150, planning, model -> saveWorld(grows, model, most));
+        }
+    }
+
+    private void saveWorld(boolean grows, String model, int most) {
+        try {
+            AiSetup.saveWorld(grows, model, most);
+        } catch (java.io.IOException e) {
+            System.err.println("Settings not saved: " + e.getMessage());
+        }
+    }
+
+    /** Tears the district down: its plan and pictures move to the folder "demolished". */
+    private void demolish(District district) {
+        try {
+            town.demolish(district);
+        } catch (java.io.IOException | RuntimeException e) {
+            System.err.println("District not torn down: " + e.getMessage());
+        }
+        demolishAsked = null;
+        reloadTown();
     }
 
     // ---------------------------------------------------------- the collection
@@ -595,7 +809,7 @@ final class PauseMenu {
         g.drawString(fitted(g, "Im Hintergrund: " + shownStatus[0], 420), 330, 598);
 
         if (modelList) {
-            paintModelList(g, modelX, kindModel);
+            paintModelList(g, modelX, 130, kindModel, this::chooseModel);
         }
         if (shelfList) {
             paintShelfList(g, titleEnd, shelfWidth);
@@ -631,7 +845,8 @@ final class PauseMenu {
     private static final int MODELS_PER_PAGE = 9;
 
     /** The list below the model's button: the models of the service, a page at a time. Painted last, it lies on top. */
-    private void paintModelList(Graphics2D g, int x, String current) {
+    private void paintModelList(Graphics2D g, int x, int panelTop, String current,
+                                java.util.function.Consumer<String> choose) {
         // A click beside the list closes it and does nothing else.
         regions.add(new Region(new Rectangle2D.Double(0, 0, COLLECTION_WIDTH, COLLECTION_HEIGHT), () -> modelList = false));
         List<String> offered = offeredModels;
@@ -649,16 +864,16 @@ final class PauseMenu {
         int width = 300;
         int left = x - (width - 190) / 2;
         int height = 12 + shown * 32 + (pages || waiting ? 34 : 0);
-        Shape panel = new RoundRectangle2D.Double(left, 130, width, height, 22, 22);
+        Shape panel = new RoundRectangle2D.Double(left, panelTop, width, height, 22, 22);
         g.setColor(CARD);
         g.fill(panel);
         g.setStroke(new BasicStroke(2.5f));
         g.setColor(PINK_DARK);
         g.draw(panel);
-        regions.add(new Region(new Rectangle2D.Double(left, 130, width, height), () -> { }));
+        regions.add(new Region(new Rectangle2D.Double(left, panelTop, width, height), () -> { }));
         for (int i = 0; i < shown; i++) {
             String model = models.get(modelsFrom + i);
-            int top = 137 + i * 32;
+            int top = panelTop + 7 + i * 32;
             boolean chosen = model.equals(current);
             if (chosen) {
                 g.setColor(PINK_LIGHT);
@@ -667,9 +882,12 @@ final class PauseMenu {
             g.setColor(INK);
             g.setFont(new Font(Font.SANS_SERIF, chosen ? Font.BOLD : Font.PLAIN, 13));
             g.drawString(fitted(g, model, width - 36), left + 18, top + 19);
-            regions.add(new Region(new Rectangle2D.Double(left + 6, top, width - 12, 28), () -> chooseModel(model)));
+            regions.add(new Region(new Rectangle2D.Double(left + 6, top, width - 12, 28), () -> {
+                choose.accept(model);
+                modelList = false;
+            }));
         }
-        int foot = 137 + shown * 32;
+        int foot = panelTop + 7 + shown * 32;
         if (pages) {
             choice(g, "‹", left + 10, foot, 36, 26, false, 14, () -> modelsFrom = Math.max(0, modelsFrom - MODELS_PER_PAGE));
             choice(g, "›", left + width - 46, foot, 36, 26, false, 14, () -> {

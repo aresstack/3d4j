@@ -25,13 +25,13 @@ public final class BackgroundArtist implements AutoCloseable {
     record Job(District district, PartLibrary.Kind kind) {
     }
 
-    private final TownLibrary town;
+    private final AssetStore store;
     private final Thread thread;
     private volatile boolean closed;
     private volatile String status = "wartet";
 
-    private BackgroundArtist(TownLibrary town) {
-        this.town = town;
+    private BackgroundArtist(AssetStore store) {
+        this.store = store;
         this.thread = new Thread(this::work, "3d4j-background-artist");
         this.thread.setDaemon(true);
         this.thread.setPriority(Thread.MIN_PRIORITY); // the game comes first
@@ -39,7 +39,7 @@ public final class BackgroundArtist implements AutoCloseable {
 
     /** Starts drawing for all districts of the town and for what they share. */
     public static BackgroundArtist start(AssetStore store) {
-        BackgroundArtist artist = new BackgroundArtist(new TownLibrary(store));
+        BackgroundArtist artist = new BackgroundArtist(store);
         artist.thread.start();
         return artist;
     }
@@ -51,9 +51,10 @@ public final class BackgroundArtist implements AutoCloseable {
 
     /** How far the collection is, e.g. "34 von 60 Bildern". */
     public String progress() {
+        TownLibrary town = new TownLibrary(store);
         int have = 0;
         int want = 0;
-        for (Job job : jobs()) {
+        for (Job job : jobs(town)) {
             PartLibrary library = town.of(job.district(), job.kind());
             int target = library.target(job.kind());
             have += Math.min(library.parts(job.kind()).size(), target);
@@ -63,9 +64,9 @@ public final class BackgroundArtist implements AutoCloseable {
     }
 
     /** Everything there is to collect: the kinds of every district, and the shared kinds once. */
-    private static List<Job> jobs() {
+    private static List<Job> jobs(TownLibrary town) {
         List<Job> jobs = new ArrayList<>();
-        for (District district : District.ALL) {
+        for (District district : town.districts()) {
             for (PartLibrary.Kind kind : TownLibrary.districtKinds()) {
                 jobs.add(new Job(district, kind));
             }
@@ -86,7 +87,7 @@ public final class BackgroundArtist implements AutoCloseable {
     static Job next(TownLibrary town) {
         Job choice = null;
         double least = 1.0;
-        for (Job job : jobs()) {
+        for (Job job : jobs(town)) {
             PartLibrary library = town.of(job.district(), job.kind());
             int target = library.target(job.kind());
             double filled = target == 0 ? 1.0 : library.parts(job.kind()).size() / (double) target;
@@ -148,6 +149,7 @@ public final class BackgroundArtist implements AutoCloseable {
                     Thread.sleep(2000);
                     continue;
                 }
+                TownLibrary town = new TownLibrary(store); // read anew: districts come and go
                 Job job = next(town);
                 if (job == null) {
                     status = "fertig: die Sammlungen sind vollständig";

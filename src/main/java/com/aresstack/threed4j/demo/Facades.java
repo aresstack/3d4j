@@ -57,9 +57,14 @@ final class Facades {
     }
 
     static Built build(GraphicsDevice graphics, List<House> houses, FacadeAtlas atlas) {
+        return build(graphics, houses, atlas, null);
+    }
+
+    /** @param district the district all houses belong to; {@code null}: the one each stands in, of the two built by hand */
+    static Built build(GraphicsDevice graphics, List<House> houses, FacadeAtlas atlas, District district) {
         Facades facades = new Facades();
         for (House house : houses) {
-            facades.add(house, atlas);
+            facades.add(house, atlas, district != null ? district : District.at(house.x(), house.z()));
         }
         int[] indices = new int[facades.quads * 6];
         for (int quad = 0; quad < facades.quads; quad++) {
@@ -107,9 +112,8 @@ final class Facades {
         return value ^ (value >>> 33);
     }
 
-    private void add(House house, FacadeAtlas atlas) {
+    private void add(House house, FacadeAtlas atlas, District district) {
         Random random = new Random(house.seed());
-        District district = District.at(house.x(), house.z());
         FacadeAtlas.Cell window = choose(atlas.cells(district, PartLibrary.Kind.WINDOW), house.seed(), 1);
         FacadeAtlas.Cell door = choose(atlas.cells(district, PartLibrary.Kind.DOOR), house.seed(), 2);
         FacadeAtlas.Cell shop = choose(atlas.cells(district, PartLibrary.Kind.SHOP), house.seed(), 3);
@@ -118,8 +122,11 @@ final class Facades {
         float floorHeight = 2.9f + random.nextFloat() * 0.5f;
         boolean shops = random.nextInt(10) < 7;
         // A door on each side that looks towards one of the two main streets, which cross in the middle of the town.
-        int doorSideX = doorSideTowardsX0(house);
-        int doorSideZ = doorSideTowardsZ0(house);
+        // In a planned district they cross in the middle of its plot.
+        float streetX = district.builtIn() ? 0f : district.centerX();
+        float streetZ = district.builtIn() ? 0f : district.centerZ();
+        int doorSideX = house.x() > streetX ? 0 : 1;
+        int doorSideZ = house.z() > streetZ ? 2 : 3;
 
         Vec3 plinth = house.wall().scale(0.82f);
         float upper = house.height() - GROUND_FLOOR;

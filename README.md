@@ -145,14 +145,54 @@ Bilder. Die Sammlungen liegen als Ordner unter dem Asset-Ordner (`TownLibrary`):
 .3d4j/assets/library/stadt/visitor-<nummer>.svg|.png|.json
 ```
 
-Es gibt zwei Stadtteile; `District.at(x, z)` zieht die Grenze:
+Zwei Stadtteile bringt das Spiel mit; `District.at(x, z)` zieht ihre Grenze:
 
 | Stadtteil | Ordner | Was die Arten dort sind |
 |---|---|---|
 | **Blütenviertel** um den Startplatz | `bluetenviertel` | Kirschbäume, Parkbäume, Laterne, Pfingstrosen, Rasen, Pflaster, Fenster, Türen, Läden |
 | **Werksviertel** um das WEST.SIDE-Ensemble, ein altes Industriegebiet | `werksviertel` | Birken, Bäume, Werkslaterne, Wildwuchs, Schotter, Werkspflaster, Werksfenster, Werkstüren, Tore |
 
-Beide sammeln dieselben Arten (Dateinamen wie unten), aber jede Art bedeutet im Stadtteil
+### Die Stadt wächst: geplante Viertel
+
+Weitere Viertel plant ein Modell selbst (`DistrictPlanner`), von oben nach unten wie ein
+Stadtplaner und Architekt. Jeder Schritt ist eine Frage mit einer kleinen JSON-Antwort, die das
+Spiel prüft und bei Fehlern mit Begründung noch einmal stellt:
+
+1. **Thema:** Name, Stil, Farbpalette (Wände, Dächer, Boden), Maße und Dachformen der Häuser,
+   Idee für das Wahrzeichen. Die vorhandenen Viertel stehen in der Frage, damit das neue anders wird.
+2. **Motive:** was Baum, Laterne, Fenster, Tür, Laden usw. in diesem Viertel sind, mit Varianten.
+   Danach zeichnet das Zeichnen im Hintergrund sie wie in jedem Viertel.
+3. **Wahrzeichen als Bauplan:** zwei bis sieben Bauteile vom Boden nach oben, je mit Lage, Maßen
+   und Farbe.
+4. **Jedes Bauteil einzeln:** sein Umriss als wenige Punkte.
+
+Das Modell liefert nie 3D-Geometrie. Ein Bauteil ist eine flache Zeichnung plus Regel
+(`Landmarks`): **gedreht** (`lathe`: der halbe Umriss von der Seite, um die Achse gedreht –
+Schaft, Tank, Kuppel, Scheibe) oder **hochgezogen** (`extrude`: der Umriss von oben, auf Höhe
+gezogen, wahlweise mit spitzem Dach). Misslingt ein Umriss dreimal, steht dort ein schlichter
+Zylinder oder Quader.
+
+Ein geplantes Viertel ist ein Ordner `library/<id>` mit `district.json` (lesbar und von Hand
+änderbar) und seiner Sammlung. Es belegt ein Feld von 200 × 200 m neben den vorhandenen
+(`District.plotOrder`); zwei Straßen kreuzen sich in seiner Mitte und laufen in die
+Nachbarfelder weiter, das Wahrzeichen steht auf dem Platz an der Kreuzung, die Häuser in einem
+Raster dazwischen (`DistrictScene`). Jedes geplante Viertel ist ein eigenes Stück Welt mit
+eigenen Texturen: Gezeichnet wird es nur, wenn es näher ist, als der Dunst reicht, und neu
+gebaut nur das Viertel, dessen Plan oder Bilder sich geändert haben.
+
+`TownPlanner` plant im Hintergrund das nächste Viertel, sobald das jüngste alle Bilder seiner
+Sammlung hat, bis zur eingestellten Höchstzahl (Vorgabe 4 Viertel, die zwei mitgelieferten
+eingerechnet). Einstellungen in `.3d4j/generator.properties`: `world.enabled`, `world.model`
+(Vorgabe `openai/gpt-oss-120b`), `world.maxDistricts`.
+
+**Stadtverwaltung** (Pausenmenü → Einstellungen → Welt → „Stadtverwaltung …“): die Liste der
+Viertel mit Wahrzeichen und Stand der Sammlung. „Neues Viertel planen“ plant sofort eines.
+Bei geplanten Vierteln: „Wahrzeichen neu“ lässt ein anderes Wahrzeichen ausdenken und bauen,
+„Abreißen“ (mit Nachfrage) verschiebt das Viertel samt Bildern in den Ordner `demolished`
+und gibt sein Feld frei. Dort stehen auch An/Aus für das Wachsen, die Höchstzahl und das Modell
+für die Planung.
+
+Beide mitgelieferten Viertel sammeln dieselben Arten (Dateinamen wie unten), aber jede Art bedeutet im Stadtteil
 etwas Eigenes: Der Auftrag an das Modell nennt das Motiv des Stadtteils (`District.Motif`) und
 dessen Stil. Besucher, die ältere Versionen im Ordner des Blütenviertels abgelegt haben, zieht
 das Spiel beim Start in die gemeinsame Sammlung um.

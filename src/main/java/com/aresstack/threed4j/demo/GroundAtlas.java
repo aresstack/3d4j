@@ -93,9 +93,14 @@ final class GroundAtlas {
         return paint(List.of(District.BLOSSOM_QUARTER), district -> library);
     }
 
-    /** Paints the atlas of the whole town. */
+    /** Paints the atlas of the two districts that come with the game. */
     static GroundAtlas paint(TownLibrary town) {
         return paint(District.ALL, town::district);
+    }
+
+    /** Paints the atlas of one planned district. */
+    static GroundAtlas paint(TownLibrary town, District district) {
+        return paint(List.of(district), town::district);
     }
 
     /** Tiles from the collections where there are any, built-in ones otherwise. */
@@ -154,10 +159,31 @@ final class GroundAtlas {
             atlas.cells.get(keys.get(cell)).add(new Cell(cell, numbers.get(cell), average(tile)));
         }
         g.dispose();
-        System.out.println("Ground: " + collected + " textures from "
+        System.out.println("Ground" + (districts.get(0).builtIn() ? "" : " of " + districts.get(0).name()) + ": "
+                + collected + " textures from "
                 + libraries.apply(districts.get(0)).directory().getParent()
                 + (collected == 0 ? ", using the built-in ones" : ""));
         return atlas;
+    }
+
+    /** The built-in ground of a planned district: the colour its plan names, with a few lighter and darker specks. */
+    private static BufferedImage builtInPlain(int rgb, int seed) {
+        BufferedImage tile = new BufferedImage(TILE, TILE, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = tile.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        Color base = new Color(rgb);
+        g.setColor(base);
+        g.fillRect(0, 0, TILE, TILE);
+        Random random = new Random(300 + seed);
+        for (int i = 0; i < 40; i++) {
+            double x = 14 + random.nextDouble() * (TILE - 42);
+            double y = 14 + random.nextDouble() * (TILE - 38);
+            g.setColor(i % 2 == 0 ? base.brighter() : base.darker());
+            g.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 0.22f));
+            g.fill(new Ellipse2D.Double(x, y, 8 + random.nextInt(10), 5 + random.nextInt(6)));
+        }
+        g.dispose();
+        return tile;
     }
 
     /** The built-in ground of the Werksviertel: gravel instead of lawn, dark cobbles as street and yard. */
@@ -211,6 +237,11 @@ final class GroundAtlas {
     private static BufferedImage builtIn(District district, Surface surface) {
         if (district == District.WORKS_QUARTER) {
             return builtInWorks(surface);
+        }
+        if (!district.builtIn()) {
+            District.Layout layout = district.layout();
+            return builtInPlain(surface == Surface.LAWN ? layout.lawn() : surface == Surface.STREET ? layout.street()
+                    : layout.plaza(), surface.ordinal());
         }
         BufferedImage tile = new BufferedImage(TILE, TILE, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = tile.createGraphics();

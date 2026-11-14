@@ -261,6 +261,11 @@ public final class AiSetup {
             return Artist.draw(chat, library, district, kind, number);
         }
 
+        /** Asks a model of the service a question, e.g. the one that plans districts. */
+        public String ask(String chosenModel, String system, String user) throws IOException {
+            return new ChatClient(URI.create(baseUrl), chosenModel, apiKey).ask(system, user);
+        }
+
         /** The model that draws when a kind has none of its own. */
         public String model() {
             return model;
@@ -348,6 +353,42 @@ public final class AiSetup {
     public static void saveModelFor(PartLibrary.Kind kind, String model) throws IOException {
         Properties own = read(settingsFile());
         set(own, "chat.model." + kind.fileName(), model);
+        Files.createDirectories(home());
+        try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
+            own.store(out, "3d4j asset generator");
+        }
+    }
+
+    // ------------------------------------------------------- the town grows
+
+    /** The model that plans districts unless another is set: planning is structured text, not drawing. */
+    public static final String PLANNING_MODEL = "openai/gpt-oss-120b";
+
+    /** Whether the town plans a further district by itself when the youngest is complete ({@code world.enabled}). */
+    public static boolean worldEnabled() {
+        return !"false".equalsIgnoreCase(read(settingsFile()).getProperty("world.enabled"));
+    }
+
+    /** The model that plans districts ({@code world.model}). */
+    public static String worldModel() {
+        String value = read(settingsFile()).getProperty("world.model", "").trim();
+        return value.isEmpty() ? PLANNING_MODEL : value;
+    }
+
+    /** How many districts the town grows to by itself, the two that come with the game included ({@code world.maxDistricts}). */
+    public static int worldMaxDistricts() {
+        try {
+            return Math.max(2, Math.min(24, Integer.parseInt(read(settingsFile()).getProperty("world.maxDistricts", "4").trim())));
+        } catch (NumberFormatException e) {
+            return 4;
+        }
+    }
+
+    public static void saveWorld(boolean enabled, String model, int maxDistricts) throws IOException {
+        Properties own = read(settingsFile());
+        own.setProperty("world.enabled", String.valueOf(enabled));
+        set(own, "world.model", model == null || model.equals(PLANNING_MODEL) ? null : model);
+        own.setProperty("world.maxDistricts", String.valueOf(Math.max(2, Math.min(24, maxDistricts))));
         Files.createDirectories(home());
         try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
             own.store(out, "3d4j asset generator");
