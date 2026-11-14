@@ -51,6 +51,15 @@ public final class Win32Window implements GLWindow {
     private boolean focused = true;
     private boolean mouseCaptured;
     private final com.aresstack.threed4j.platform.RelativeMouse relativeMouse = new com.aresstack.threed4j.platform.RelativeMouse();
+    /** Windows sends what the mouse itself reports (raw input). */
+    private boolean rawMouse;
+    /** The mouse has reported movement of its own: from then on the pointer's place does not count. */
+    private boolean rawMovementSeen;
+    private final MemorySegment rawBuffer = Arena.ofAuto().allocate(RAW_INPUT_BYTES, 8);
+    private final MemorySegment rawSize = Arena.ofAuto().allocate(4, 4);
+    private final int[] rawMovement = new int[2];
+    /** Where the captured pointer is kept, in screen coordinates. */
+    private final MemorySegment captureRect = Arena.ofAuto().allocate(SIZEOF_RECT, 4);
     /** The middle of the drawable area on the screen, where the captured pointer is put back. */
     private int centerScreenX;
     private int centerScreenY;
@@ -262,10 +271,27 @@ public final class Win32Window implements GLWindow {
                     input.onKey(mapKey((int) wParam), false);
                     return 0;
                 }
+                case WM_INPUT -> {
+                    // What the mouse itself reports: it keeps coming when the pointer cannot move on,
+                    // so the view turns round and round. Windows still wants the message afterwards.
+                    if (mouseCaptured && rawMouseMovement(lParam, rawBuffer, rawSize, rawMovement)) {
+                        if (!rawMovementSeen) {
+                            rawMovementSeen = true;
+                            holdPointer();
+                            System.out.println("Mouse: raw input (the mouse reports its own movement)");
+                        }
+                        if (rawMovement[0] != 0 || rawMovement[1] != 0) {
+                            input.onMouseDelta(rawMovement[0], rawMovement[1]);
+                        }
+                    }
+                }
                 case WM_MOUSEMOVE -> {
                     // The position is two signed 16-bit values: negative while dragging outside the window.
                     int x = (short) (lParam & 0xFFFF);
                     int y = (short) ((lParam >>> 16) & 0xFFFF);
+                    if (mouseCaptured && rawMovementSeen) {
+                        return 0; // the mouse reports its movement itself; the pointer stands still
+                    }
                     if (mouseCaptured) {
                         // Only the movement counts; the pointer goes back to the middle when it has strayed far.
                         if (relativeMouse.move(x, y, input)) {
@@ -400,8 +426,23 @@ public final class Win32Window implements GLWindow {
             releaseMouse();
             return;
         }
-        if (mouseCaptured || !focused) {
+        if (mouseCaptured) {
+            // Asked for with every frame: Windows drops the fence and the hiding on its own now
+            // and then (another window in front for a moment, a change of screen).
+            if (focused) {
+                clipCursor(captureRect);
+                showCursor(MemorySegment.NULL);
+            }
             return;
+        }
+        if (!focused) {
+            return;
+        }
+        if (!rawMouse) {
+            rawMouse = registerRawMouse(window);
+            if (!rawMouse) {
+                System.out.println("Mouse: no raw input here; looking follows the pointer");
+            }
         }
         try (Arena temp = Arena.ofConfined()) {
             // The drawable area in screen coordinates: its two corners, turned one after the other.
@@ -411,14 +452,27 @@ public final class Win32Window implements GLWindow {
             clientToScreen(window, rect.asSlice(RECT_RIGHT));
             centerScreenX = rect.get(JAVA_INT, RECT_LEFT) + width / 2;
             centerScreenY = rect.get(JAVA_INT, RECT_TOP) + height / 2;
-            clipCursor(rect);
+            captureRect.copyFrom(rect);
+            clipCursor(captureRect);
             setCursorPos(centerScreenX, centerScreenY);
+            if (rawMovementSeen) {
+                holdPointer();
+            }
             relativeMouse.begin(width / 2, height / 2, width, height);
             relativeMouse.expectAtCenter();
             mouseCaptured = true;
             showCursor(MemorySegment.NULL);
             pointerVisible(false);
         }
+    }
+
+    /** Keeps the pointer on the one spot in the middle; the mouse reports its movement itself. */
+    private void holdPointer() {
+        captureRect.set(JAVA_INT, RECT_LEFT, centerScreenX);
+        captureRect.set(JAVA_INT, RECT_TOP, centerScreenY);
+        captureRect.set(JAVA_INT, RECT_RIGHT, centerScreenX + 1);
+        captureRect.set(JAVA_INT, RECT_BOTTOM, centerScreenY + 1);
+        clipCursor(captureRect);
     }
 
     private void releaseMouse() {

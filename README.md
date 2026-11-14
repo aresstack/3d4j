@@ -115,7 +115,13 @@ deren Enden dünn auslaufen und sich wie ein gezwirbelter Bart nach oben wenden;
 wird wie bisher mit gehaltener Maustaste umgesehen, was auch in Remote-Sitzungen und
 virtuellen Maschinen zuverlässig funktioniert.
 
-Die eingefangene Maus misst `RelativeMouse`: Bewegung zählt immer von der vorigen Position aus,
+Unter Windows meldet die eingefangene Maus ihre Bewegung selbst (Raw Input, `WM_INPUT`, der
+Nachfolger von DirectInput für Mäuse): in ihren eigenen Schritten und unabhängig davon, wo der
+Zeiger steht. Der Zeiger wird dabei auf einem Punkt in der Mitte festgehalten, und man kann sich
+beliebig oft im Kreis drehen. Die Konsole meldet dann einmal `Mouse: raw input`. Eine
+Remote-Sitzung meldet statt Bewegung Positionen; dort und unter X11 gilt das Folgende.
+
+Sonst misst `RelativeMouse` die eingefangene Maus: Bewegung zählt immer von der vorigen Position aus,
 und der Zeiger wird nur in die Mitte zurückgesetzt, wenn er sich weit entfernt hat. Das
 Zurücksetzen wirkt verzögert, vor allem in einer Remote-Sitzung; Positionen von vor dem Sprung,
 die danach noch eintreffen, werden daran erkannt, dass sie weit weg von der Mitte und von der

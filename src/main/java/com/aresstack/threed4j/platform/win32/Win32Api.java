@@ -78,6 +78,7 @@ final class Win32Api {
     static final int WM_CHAR = 0x0102;
     static final int WM_SYSKEYDOWN = 0x0104;
     static final int WM_SYSKEYUP = 0x0105;
+    static final int WM_INPUT = 0x00FF;
     static final int WM_MOUSEMOVE = 0x0200;
     static final int WM_LBUTTONDOWN = 0x0201;
     static final int WM_LBUTTONUP = 0x0202;
@@ -232,6 +233,10 @@ final class Win32Api {
             FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
     private static final MethodHandle SetCursorPos = Native.downcall(USER32, "SetCursorPos",
             FunctionDescriptor.of(JAVA_INT, JAVA_INT, JAVA_INT));
+    private static final MethodHandle RegisterRawInputDevices = Native.downcall(USER32, "RegisterRawInputDevices",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_INT, JAVA_INT));
+    private static final MethodHandle GetRawInputData = Native.downcall(USER32, "GetRawInputData",
+            FunctionDescriptor.of(JAVA_INT, JAVA_LONG, JAVA_INT, ADDRESS, ADDRESS, JAVA_INT));
     private static final MethodHandle ClipCursor = Native.downcall(USER32, "ClipCursor",
             FunctionDescriptor.of(JAVA_INT, ADDRESS));
     private static final MethodHandle ShowCursor = Native.downcall(USER32, "ShowCursor",
@@ -337,6 +342,60 @@ final class Win32Api {
     static void setCursorPos(int x, int y) {
         try {
             int ignored = (int) SetCursorPos.invokeExact(x, y);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Room for one RAWINPUT of a mouse (48 bytes on 64-bit Windows), with some to spare. */
+    static final int RAW_INPUT_BYTES = 64;
+
+    /**
+     * Asks Windows to send this window what the mouse itself reports (WM_INPUT, "raw input", the
+     * successor of DirectInput for mice): movement in the mouse's own steps, wherever the pointer is
+     * and whether it can move at all.
+     *
+     * @return whether Windows agreed
+     */
+    static boolean registerRawMouse(MemorySegment window) {
+        try (Arena temp = Arena.ofConfined()) {
+            // RAWINPUTDEVICE { USHORT usagePage; USHORT usage; DWORD flags; HWND target; }
+            MemorySegment device = Native.bytes(temp, 16);
+            device.set(JAVA_SHORT, 0, (short) 1); // generic desktop controls
+            device.set(JAVA_SHORT, 2, (short) 2); // mouse
+            device.set(JAVA_INT, 4, 0);
+            device.set(ADDRESS, 8, window);
+            return (int) RegisterRawInputDevices.invokeExact(device, 1, 16) != 0;
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * Reads the movement of a WM_INPUT message.
+     *
+     * @param handle the message's lParam
+     * @param buffer {@link #RAW_INPUT_BYTES} bytes to read into
+     * @param size   four bytes for the size
+     * @param into   receives the movement in x and y
+     * @return whether it was a mouse reporting movement relative to where it was; a remote session
+     *         or a tablet reports places instead, and those are left to the pointer
+     */
+    static boolean rawMouseMovement(long handle, MemorySegment buffer, MemorySegment size, int[] into) {
+        try {
+            size.set(JAVA_INT, 0, RAW_INPUT_BYTES);
+            // RID_INPUT; the header is 24 bytes: type, size, device, wParam
+            int read = (int) GetRawInputData.invokeExact(handle, 0x10000003, buffer, size, 24);
+            if (read < 48 || buffer.get(JAVA_INT, 0) != 0) {
+                return false; // nothing read, or not a mouse
+            }
+            // RAWMOUSE after the header: flags at 24, lLastX at 36, lLastY at 40
+            if ((buffer.get(JAVA_SHORT, 24) & 1) != 0) {
+                return false; // MOUSE_MOVE_ABSOLUTE
+            }
+            into[0] = buffer.get(JAVA_INT, 36);
+            into[1] = buffer.get(JAVA_INT, 40);
+            return true;
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }
