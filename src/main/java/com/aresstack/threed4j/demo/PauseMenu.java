@@ -374,8 +374,8 @@ final class PauseMenu {
             if (speedText != null && !SPEED_BOX.contains(x, y)) {
                 applySpeedText(); // a click elsewhere takes what was typed
             }
+            draggingSpeed = onSlider; // a press elsewhere ends a drag whose release was missed
             if (onSlider) {
-                draggingSpeed = true;
                 dirty = true;
             } else if (SPEED_BOX.contains(x, y) && speedText == null) {
                 speedText = new StringBuilder();
