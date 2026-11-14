@@ -125,7 +125,7 @@ class PauseMenuTest {
         click(260, 238); // 50 %
         click(275, 362); // Pixelig
         click(205, 146); // tab "Steuerung"
-        click(410, 238); // Schnell
+        click(249, 240); // the slider, two thirds along: 2.00
         click(317, 146); // tab "KI"
         click(430, 234); // Viel nachdenken
         click(200, 350); // 4096 Tokens
