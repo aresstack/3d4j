@@ -49,7 +49,20 @@ final class DistrictScene implements AutoCloseable {
     final int triangles;
     final int houseCount;
 
+    /** The three pictures a district scene is built from: painting them takes long and needs no graphics. */
+    record Painted(SpriteAtlas sprites, GroundAtlas ground, FacadeAtlas facades) {
+        static Painted of(TownLibrary town, District district) {
+            return new Painted(SpriteAtlas.paint(town, district), GroundAtlas.paint(town, district),
+                    FacadeAtlas.paint(town, district));
+        }
+    }
+
     DistrictScene(GraphicsDevice graphics, TownLibrary town, District district, String signature) {
+        this(graphics, Painted.of(town, district), district, signature);
+    }
+
+    /** Builds the scene from pictures painted before, e.g. on another thread. */
+    DistrictScene(GraphicsDevice graphics, Painted painted, District district, String signature) {
         this.district = district;
         this.signature = signature;
         District.Layout layout = district.layout();
@@ -57,9 +70,9 @@ final class DistrictScene implements AutoCloseable {
         float centerZ = district.centerZ();
         Random random = new Random(district.id().hashCode());
 
-        SpriteAtlas spriteAtlas = SpriteAtlas.paint(town, district);
-        GroundAtlas groundAtlas = GroundAtlas.paint(town, district);
-        FacadeAtlas facadeAtlas = FacadeAtlas.paint(town, district);
+        SpriteAtlas spriteAtlas = painted.sprites();
+        GroundAtlas groundAtlas = painted.ground();
+        FacadeAtlas facadeAtlas = painted.facades();
         spriteTexture = Textures.fromImage(graphics, spriteAtlas.image, true);
         groundTexture = Textures.fromImage(graphics, groundAtlas.image, true);
         facadeTexture = Textures.fromImage(graphics, facadeAtlas.image, true);

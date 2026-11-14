@@ -115,8 +115,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private boolean holdToLook = GameSettings.holdToLook(GameSettings.file());
     private Sea sea;
     private Alps alps;
-    private String partsShown;
-    private double partsCheckedAt;
+    private volatile String partsShown;
     private BackgroundArtist backgroundArtist;
     private Shader skyShader;
     private Texture spriteAtlas;
@@ -318,23 +317,29 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         if (moved > 0) {
             System.out.println("Library: moved " + moved + " picture(s) to " + town.shared().directory());
         }
-        partsShown = startSignature(town);
+        showStart(graphics, new PreparedStart(town, startSignature(town), SpriteAtlas.paint(town),
+                GroundAtlas.paint(town), FacadeAtlas.paint(town)));
+        showPlannedDistricts(graphics);
+    }
 
-        SpriteAtlas sprites = SpriteAtlas.paint(town);
+    /** Builds the start of the town from atlases painted before: textures and meshes only. */
+    private void showStart(GraphicsDevice graphics, PreparedStart start) {
+        town = start.town();
+        partsShown = start.signature();
+        SpriteAtlas sprites = start.sprites();
+        GroundAtlas ground = start.ground();
+        FacadeAtlas facades = start.facades();
         spriteAtlas = Textures.fromImage(graphics, sprites.image, true);
         spriteShader.setTexture(spriteAtlas);
-        GroundAtlas ground = GroundAtlas.paint(town);
         groundTexture = Textures.fromImage(graphics, ground.image, true);
         groundShader.setTexture(groundTexture);
         groundAtlasLayout = new Vec3(1f / ground.cellCount, (float) GroundAtlas.GUTTER / GroundAtlas.CELL,
                 (float) GroundAtlas.TILE / GroundAtlas.CELL);
-        FacadeAtlas facades = FacadeAtlas.paint(town);
         facadeTexture = Textures.fromImage(graphics, facades.image, true);
         facadeShader.setTexture(facadeTexture);
         facadeAtlasLayout = new Vec3(1f / facades.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,
                 (float) FacadeAtlas.TILE / FacadeAtlas.CELL);
         scene = new PlazaScene(graphics, ground, facades, sprites);
-        showPlannedDistricts(graphics);
     }
 
     /** What the two districts that come with the game are built from: their collections and the shared one. */
@@ -366,6 +371,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             }
             piece = new DistrictScene(graphics, town, district, signature);
             pieces.put(district.id(), piece);
+            piecesWanted.put(district.id(), signature);
             System.out.printf(Locale.ROOT, "District %s: %d houses, %d triangles, landmark: %s%n", district.name(),
                     piece.houseCount, piece.triangles,
                     district.layout().landmark() == null ? "none" : district.layout().landmark().name());
@@ -386,23 +392,125 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         scene.close();
     }
 
+    /** The start of the town, painted by the watcher and waiting for the render thread. */
+    private record PreparedStart(TownLibrary town, String signature, SpriteAtlas sprites, GroundAtlas ground,
+                                 FacadeAtlas facades) {
+    }
+
+    /** A planned district, painted by the watcher and waiting for the render thread. */
+    private record PreparedPiece(District district, String signature, DistrictScene.Painted painted) {
+    }
+
+    /** At least this long between two rebuilds of the same piece: pictures that arrive in a rush share one. */
+    private static final long REBUILD_INTERVAL_MILLIS = 8000;
+
+    private volatile TownLibrary latestTown;
+    private volatile PreparedStart preparedStart;
+    private final java.util.Queue<PreparedPiece> preparedPieces = new java.util.concurrent.ConcurrentLinkedQueue<>();
+    /** The signature each planned district is shown with or is being painted for, by its id. */
+    private final java.util.Map<String, String> piecesWanted = new java.util.concurrent.ConcurrentHashMap<>();
+    private Thread artworkWatcher;
+    private volatile boolean watching;
+
     /**
-     * Once a second: has the district's collection changed (a picture drawn in the
-     * background, removed in the menu, or put into the folder by hand)? Then the
-     * scene is built again with what there is now.
+     * Watches the collections beside the game: once a second it reads the town from disk, and when
+     * pictures were added or removed (drawn in the background, deleted in the menu, put into the
+     * folder by hand) it paints the atlases anew. Reading and painting take long, up to half a
+     * second and more, and must not hold up a frame; the render thread only takes what is ready.
      */
+    private void watchArtwork() {
+        long startPaintedAt = 0;
+        java.util.Map<String, Long> piecePaintedAt = new java.util.HashMap<>();
+        try {
+            while (watching) {
+                Thread.sleep(1000);
+                try {
+                    AssetStore store = AssetStore.standard();
+                    TownLibrary now = new TownLibrary(store);
+                    int taken = now.district(District.BLOSSOM_QUARTER).importSingleAssets(store);
+                    int moved = now.gatherSharedKinds();
+                    if (taken + moved > 0) {
+                        System.out.println("Library: took " + taken + " and moved " + moved + " picture(s)");
+                        now = new TownLibrary(store);
+                    }
+                    latestTown = now;
+                    long time = System.currentTimeMillis();
+                    String start = startSignature(now);
+                    if (!start.equals(partsShown) && preparedStart == null
+                            && time - startPaintedAt >= REBUILD_INTERVAL_MILLIS) {
+                        preparedStart = new PreparedStart(now, start, SpriteAtlas.paint(now), GroundAtlas.paint(now),
+                                FacadeAtlas.paint(now));
+                        startPaintedAt = System.currentTimeMillis();
+                    }
+                    String people = now.shared().signature();
+                    for (District district : now.planned()) {
+                        String signature = now.signature(district) + "|" + people;
+                        if (!signature.equals(piecesWanted.get(district.id()))
+                                && time - piecePaintedAt.getOrDefault(district.id(), 0L) >= REBUILD_INTERVAL_MILLIS) {
+                            piecesWanted.put(district.id(), signature);
+                            preparedPieces.add(new PreparedPiece(district, signature,
+                                    DistrictScene.Painted.of(now, district)));
+                            piecePaintedAt.put(district.id(), System.currentTimeMillis());
+                        }
+                    }
+                } catch (RuntimeException e) {
+                    // A file half written or just removed: the next look sees it whole.
+                    System.out.println("Artwork watcher: " + e);
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /** Takes what the watcher has ready, one piece per frame, and drops districts that were torn down. */
     private void showNewParts(EngineContext context) {
-        if (context.timeSeconds() - partsCheckedAt < 1.0) {
+        if (artworkWatcher == null) {
+            watching = true;
+            artworkWatcher = new Thread(this::watchArtwork, "3d4j-artwork-watcher");
+            artworkWatcher.setDaemon(true);
+            artworkWatcher.setPriority(Thread.MIN_PRIORITY);
+            artworkWatcher.start();
+        }
+        TownLibrary latest = latestTown;
+        if (latest != null && latest != town) {
+            town = latest;
+            java.util.Set<String> standing = new java.util.HashSet<>();
+            for (District district : town.planned()) {
+                standing.add(district.id());
+            }
+            piecesWanted.keySet().retainAll(standing);
+            pieces.entrySet().removeIf(entry -> {
+                if (standing.contains(entry.getKey())) {
+                    return false;
+                }
+                entry.getValue().close();
+                return true;
+            });
+        }
+        PreparedStart start = preparedStart;
+        if (start != null) {
+            preparedStart = null;
+            long began = System.nanoTime();
+            unloadArtwork();
+            showStart(context.graphics(), start);
+            if (System.getProperty("threed4j.timing") != null) {
+                System.out.printf("TIMING start shown in %.1f ms%n", (System.nanoTime() - began) / 1e6);
+            }
             return;
         }
-        partsCheckedAt = context.timeSeconds();
-        TownLibrary now = new TownLibrary(AssetStore.standard());
-        if (!startSignature(now).equals(partsShown)) {
-            unloadArtwork();
-            loadArtwork(context.graphics()); // reads the town anew and looks at the planned districts too
-        } else {
-            town = now;
-            showPlannedDistricts(context.graphics());
+        PreparedPiece ready = preparedPieces.poll();
+        if (ready != null && piecesWanted.containsKey(ready.district().id())) {
+            DistrictScene old = pieces.get(ready.district().id());
+            if (old != null) {
+                old.close();
+            }
+            long began = System.nanoTime();
+            pieces.put(ready.district().id(),
+                    new DistrictScene(context.graphics(), ready.painted(), ready.district(), ready.signature()));
+            if (System.getProperty("threed4j.timing") != null) {
+                System.out.printf("TIMING district shown in %.1f ms%n", (System.nanoTime() - began) / 1e6);
+            }
         }
     }
 
@@ -963,6 +1071,10 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         }
         if (townPlanner != null) {
             townPlanner.close();
+        }
+        watching = false;
+        if (artworkWatcher != null) {
+            artworkWatcher.interrupt();
         }
         pieces.values().forEach(DistrictScene::close);
         if (sea != null) {

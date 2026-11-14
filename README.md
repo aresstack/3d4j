@@ -420,6 +420,13 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
 Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
 `--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
 (`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`, `chat.parallel`), wo sie auch für `generate` gelten.
+Neue Bilder holt ein eigener Thread ins Spiel: Er liest einmal pro Sekunde die Sammlungen von
+der Platte und malt die Atlanten neu, wenn sich etwas geändert hat, jedes Teil der Welt höchstens
+alle acht Sekunden. Der Render-Thread lädt nur noch die fertigen Atlanten als Texturen hoch und
+baut die Meshes, ein Teil pro Bild. Vorher geschah alles im Render-Thread und hielt bei jedem
+neuen Bild das Spiel an. Mit `-Dthreed4j.timing=1` meldet die Konsole, wie lange das Zeigen
+dauert.
+
 Die Antwortlänge hat unter „KI“ neben den üblichen Werten ein Feld für jede andere Zahl
 (mindestens 256). Wie viele Anfragen gleichzeitig bei der KI sein dürfen, steht unter „KI“ („Anfragen
 gleichzeitig“: 1, 2, 4 … 64 zur Auswahl oder eine eigene Zahl im Feld daneben, Vorgabe 1) und gilt für alles, was die KI fragt: das Zeichnen im
