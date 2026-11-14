@@ -182,6 +182,28 @@ class PauseMenuTest {
     }
 
     @Test
+    void ofTheLampsOneIsInUseAndAnotherCanBeChosen() throws Exception {
+        BufferedImage picture = new BufferedImage(64, 128, BufferedImage.TYPE_INT_ARGB);
+        for (PartLibrary.Part old : library.parts()) {
+            library.remove(old);
+        }
+        PartLibrary.Part first = library.add(PartLibrary.Kind.LAMP, null, picture, null);
+        PartLibrary.Part second = library.add(PartLibrary.Kind.LAMP, null, picture, null);
+        assertEquals(first, library.chosen(PartLibrary.Kind.LAMP));
+
+        click(260, 291); // Einstellungen
+        click(429, 146); // tab "Welt"
+        click(260, 401); // Sammlung ansehen
+        menu.paint(1280, 720);
+        clickCollection(165, 201); // third kind on the left: Laternen
+        clickCollection(515, 321); // "Verwenden" below the second picture
+        assertEquals(second, library.chosen(PartLibrary.Kind.LAMP));
+
+        clickCollection(585, 321); // "Löschen" below the second picture
+        assertEquals(List.of(first), library.parts(PartLibrary.Kind.LAMP));
+    }
+
+    @Test
     void repaintsOnlyAfterSomethingChanged() {
         assertTrue(menu.consumeDirty(), "the first picture is due");
         menu.paint(1280, 720);

@@ -31,7 +31,7 @@ import java.util.Properties;
 record GeneratorConfig(URI baseUrl, String model, String keePassEntry, int parallel, boolean force,
                        List<String> only, Path home) {
 
-    static final String DEFAULT_MODEL = "openai/gpt-oss-120b";
+    static final String DEFAULT_MODEL = "google/gemma-4-31B-it";
 
     /** @throws IllegalArgumentException with a message for the user if something is missing or malformed */
     static GeneratorConfig load(String[] args) throws IOException {

@@ -18,16 +18,16 @@ class AiSetupTest {
     @Test
     void preselectsTheWantedModelThenASimilarOneThenTheFirst() {
         assertEquals("openai/gpt-oss-120b",
-                AiSetup.preselect(List.of("a/b", "openai/gpt-oss-120b", "openai/gpt-oss-20b"), AiSetup.PREFERRED_MODEL));
+                AiSetup.preselect(List.of("a/b", "openai/gpt-oss-120b", "openai/gpt-oss-20b"), "openai/gpt-oss-120b"));
         assertEquals("OpenAI/GPT-OSS-120B",
-                AiSetup.preselect(List.of("a/b", "OpenAI/GPT-OSS-120B"), AiSetup.PREFERRED_MODEL), "case does not matter");
+                AiSetup.preselect(List.of("a/b", "OpenAI/GPT-OSS-120B"), "openai/gpt-oss-120b"), "case does not matter");
         assertEquals("local/gpt-oss-120b-q4",
-                AiSetup.preselect(List.of("a/b", "local/gpt-oss-120b-q4"), AiSetup.PREFERRED_MODEL),
+                AiSetup.preselect(List.of("a/b", "local/gpt-oss-120b-q4"), "openai/gpt-oss-120b"),
                 "the only model that contains the name");
         assertEquals("a/b",
-                AiSetup.preselect(List.of("a/b", "x/gpt-oss-120b-q4", "y/gpt-oss-120b-q8"), AiSetup.PREFERRED_MODEL),
+                AiSetup.preselect(List.of("a/b", "x/gpt-oss-120b-q4", "y/gpt-oss-120b-q8"), "openai/gpt-oss-120b"),
                 "two similar ones: no guess, the first offered");
-        assertNull(AiSetup.preselect(List.of(), AiSetup.PREFERRED_MODEL));
+        assertNull(AiSetup.preselect(List.of(), "openai/gpt-oss-120b"));
     }
 
     @Test

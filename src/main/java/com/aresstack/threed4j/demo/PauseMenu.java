@@ -429,6 +429,11 @@ final class PauseMenu {
         // The limit of the chosen kind
         int limit = library.target(shownKind);
         label(g, BackgroundArtist.plural(shownKind), 330, 116, 20);
+        if (shownKind.uniform()) {
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+            g.setColor(TEXT);
+            g.drawString("überall steht die gewählte", 330 + 112, 116);
+        }
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
         g.setColor(TEXT);
         g.drawString("höchstens", 690, 116);
@@ -441,6 +446,7 @@ final class PauseMenu {
 
         // Pictures
         java.util.List<PartLibrary.Part> parts = library.parts(shownKind);
+        PartLibrary.Part inUse = shownKind.uniform() ? library.chosen(shownKind) : null;
         if (shownFrom >= parts.size()) {
             shownFrom = Math.max(0, (parts.size() - 1) / PICTURES_PER_PAGE * PICTURES_PER_PAGE);
         }
@@ -474,7 +480,14 @@ final class PauseMenu {
                     ? info.get("model").getAsString() : "von Hand";
             g.drawString(fitted(g, "Nr. " + part.number() + " · " + model.substring(model.lastIndexOf('/') + 1), 134),
                     x, top + 166);
-            choice(g, "Löschen", x, top + 172, 134, 26, false, 13, () -> delete(part));
+            if (shownKind.uniform()) {
+                // One of them is the district's; another can be put in its place.
+                boolean used = part.equals(inUse);
+                choice(g, used ? "In Gebrauch" : "Verwenden", x, top + 172, 78, 26, used, 11, () -> use(part));
+                choice(g, "Löschen", x + 82, top + 172, 52, 26, false, 11, () -> delete(part));
+            } else {
+                choice(g, "Löschen", x, top + 172, 134, 26, false, 13, () -> delete(part));
+            }
         }
 
         // Pages, the way back, and what the background drawing is doing
@@ -508,6 +521,15 @@ final class PauseMenu {
             library.setTarget(shownKind, limit);
         } catch (java.io.IOException e) {
             System.err.println("Limit not saved: " + e.getMessage());
+        }
+    }
+
+    /** Makes this picture the one the district uses for its kind, e.g. its street lamp. */
+    private void use(PartLibrary.Part part) {
+        try {
+            library.setChosen(part);
+        } catch (java.io.IOException e) {
+            System.err.println("Choice not saved: " + e.getMessage());
         }
     }
 

@@ -59,6 +59,30 @@ class PartLibraryTest {
     }
 
     @Test
+    void aDistrictUsesOneLampTheOldestUntilAnotherIsChosen() throws Exception {
+        PartLibrary library = new PartLibrary(new AssetStore(directory), "altstadt");
+        assertTrue(PartLibrary.Kind.LAMP.uniform());
+        assertEquals(1, library.target(PartLibrary.Kind.LAMP), "one lamp is drawn unless more are asked for");
+        assertTrue(library.chosen(PartLibrary.Kind.LAMP) == null);
+
+        PartLibrary.Part first = library.add(PartLibrary.Kind.LAMP, null, picture(), null);
+        PartLibrary.Part second = library.add(PartLibrary.Kind.LAMP, null, picture(), null);
+        assertEquals(first, library.chosen(PartLibrary.Kind.LAMP));
+
+        String before = library.signature();
+        library.setChosen(second);
+        assertEquals(second, library.chosen(PartLibrary.Kind.LAMP));
+        assertNotEquals(before, library.signature(), "the town has to notice the choice");
+
+        library.setTarget(PartLibrary.Kind.LAMP, 3);
+        assertEquals(second, library.chosen(PartLibrary.Kind.LAMP), "limit and choice share a file without disturbing each other");
+        assertEquals(3, library.target(PartLibrary.Kind.LAMP));
+
+        library.remove(second);
+        assertEquals(first, library.chosen(PartLibrary.Kind.LAMP), "the chosen one is gone: the oldest again");
+    }
+
+    @Test
     void limitsCanBeChangedPerKindAndRemovedPicturesAreKeptAside() throws Exception {
         PartLibrary library = new PartLibrary(new AssetStore(directory), "altstadt");
         assertEquals(PartLibrary.Kind.BLOSSOM_TREE.defaultTarget(), library.target(PartLibrary.Kind.BLOSSOM_TREE));

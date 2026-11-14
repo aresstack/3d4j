@@ -35,14 +35,14 @@ import java.util.stream.Stream;
  * The JSON file says which model drew the picture, when, and with which
  * instruction. A picture put there by hand under such a name counts as well; an
  * SVG without a PNG is turned into one. {@code limits.properties} holds the
- * limits that differ from the defaults; removed pictures move to
+ * limits that differ from the defaults and which lamp is in use; removed pictures move to
  * {@code deleted/}.</p>
  */
 public final class PartLibrary {
 
     /** What a picture shows, how large it is, and how many of the kind a district collects by default. */
     public enum Kind {
-        BLOSSOM_TREE(10, 256, 512), GREEN_TREE(6, 256, 512), LAMP(4, 256, 512), VISITOR(12, 256, 512),
+        BLOSSOM_TREE(10, 256, 512), GREEN_TREE(6, 256, 512), LAMP(1, 256, 512), VISITOR(12, 256, 512),
         BUSH(6, 256, 256), LAWN(3, 256, 256), STREET(3, 256, 256),
         WINDOW(8, 128, 128), DOOR(4, 128, 128), SHOP(4, 128, 128);
 
@@ -58,6 +58,15 @@ public final class PartLibrary {
 
         public int defaultTarget() {
             return defaultTarget;
+        }
+
+        /**
+         * Whether a district shows one and the same picture of this kind everywhere:
+         * its street lamps are all of one make. The collection may hold several; the
+         * one in use is chosen (see {@link PartLibrary#chosen}).
+         */
+        public boolean uniform() {
+            return this == LAMP;
         }
 
         /** Pixel size a picture of this kind is rendered at. */
@@ -166,8 +175,16 @@ public final class PartLibrary {
     /** Changes whenever a picture is added or removed; cheap enough to ask once a second. */
     public String signature() {
         StringBuilder signature = new StringBuilder();
-        for (Part part : parts()) {
+        List<Part> parts = parts();
+        for (Part part : parts) {
             signature.append(part.kind().fileName()).append(part.number()).append(' ');
+        }
+        Properties settings = settings();
+        for (Kind kind : Kind.values()) {
+            if (kind.uniform()) {
+                signature.append(kind.fileName()).append('=').append(settings.getProperty(kind.fileName() + ".chosen", ""))
+                        .append(' ');
+            }
         }
         return signature.toString();
     }
@@ -251,37 +268,67 @@ public final class PartLibrary {
         return directory.resolve("limits.properties");
     }
 
-    /** How many pictures of this kind the district collects before nothing more is drawn. */
-    public int target(Kind kind) {
+    /** What {@code limits.properties} holds; empty if there is no such file or it cannot be read. */
+    private Properties settings() {
+        Properties settings = new Properties();
         Path file = limitsFile();
         if (Files.isRegularFile(file)) {
-            Properties limits = new Properties();
             try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-                limits.load(in);
-                return Math.max(0, Math.min(MAX_TARGET,
-                        Integer.parseInt(limits.getProperty(kind.fileName(), String.valueOf(kind.defaultTarget())).trim())));
+                settings.load(in);
             } catch (IOException | IllegalArgumentException e) {
-                return kind.defaultTarget();
+                settings.clear();
             }
         }
-        return kind.defaultTarget();
+        return settings;
+    }
+
+    private void set(String name, String value) throws IOException {
+        Properties settings = settings();
+        settings.setProperty(name, value);
+        Files.createDirectories(directory);
+        try (Writer out = Files.newBufferedWriter(limitsFile(), StandardCharsets.UTF_8)) {
+            settings.store(out, "How many pictures of each kind this district collects, and which one it uses");
+        }
+    }
+
+    /** How many pictures of this kind the district collects before nothing more is drawn. */
+    public int target(Kind kind) {
+        try {
+            return Math.max(0, Math.min(MAX_TARGET, Integer.parseInt(
+                    settings().getProperty(kind.fileName(), String.valueOf(kind.defaultTarget())).trim())));
+        } catch (NumberFormatException e) {
+            return kind.defaultTarget();
+        }
     }
 
     public synchronized void setTarget(Kind kind, int target) throws IOException {
-        Properties limits = new Properties();
-        Path file = limitsFile();
-        if (Files.isRegularFile(file)) {
-            try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-                limits.load(in);
-            } catch (IllegalArgumentException e) {
-                limits.clear();
+        set(kind.fileName(), String.valueOf(Math.max(0, Math.min(MAX_TARGET, target))));
+    }
+
+    /**
+     * The one picture of a {@linkplain Kind#uniform() uniform} kind the district
+     * uses: the one set with {@link #setChosen}, or the oldest as long as none is
+     * set or the set one is gone.
+     *
+     * @return the picture, or {@code null} if the collection has none of this kind
+     */
+    public Part chosen(Kind kind) {
+        List<Part> candidates = parts(kind);
+        if (candidates.isEmpty()) {
+            return null;
+        }
+        String number = settings().getProperty(kind.fileName() + ".chosen", "").trim();
+        for (Part candidate : candidates) {
+            if (String.valueOf(candidate.number()).equals(number)) {
+                return candidate;
             }
         }
-        limits.setProperty(kind.fileName(), String.valueOf(Math.max(0, Math.min(MAX_TARGET, target))));
-        Files.createDirectories(directory);
-        try (Writer out = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
-            limits.store(out, "How many pictures of each kind this district collects");
-        }
+        return candidates.get(0);
+    }
+
+    /** Makes this picture the one its district uses for its kind. */
+    public synchronized void setChosen(Part part) throws IOException {
+        set(part.kind().fileName() + ".chosen", String.valueOf(part.number()));
     }
 
     // --------------------------------------------------- artwork of earlier versions

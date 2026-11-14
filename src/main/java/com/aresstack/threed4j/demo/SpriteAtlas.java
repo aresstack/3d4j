@@ -85,7 +85,12 @@ final class SpriteAtlas {
         int collected = 0;
         for (PartLibrary.Kind kind : KINDS) {
             int before = pictures.size();
-            for (PartLibrary.Part part : library.parts(kind)) {
+            // Of a uniform kind (street lamps) the district shows only the one in use.
+            List<PartLibrary.Part> shown = library.parts(kind);
+            if (kind.uniform() && !shown.isEmpty()) {
+                shown = List.of(library.chosen(kind));
+            }
+            for (PartLibrary.Part part : shown) {
                 BufferedImage picture = library.load(part);
                 if (picture != null) {
                     kinds.add(kind);

@@ -159,9 +159,12 @@ Grenzen bekommen.
   trotzdem unterscheiden. Den Zugang nimmt er aus dem Zugangsmenü dieses Programmlaufs, sonst
   holt er den gemerkten ohne Nachfrage (KeePass-Eintrag oder Umgebungsvariable). Ohne Zugang
   wartet er.
-- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 4 Laternen, 12 Besucher, 6 Büsche,
+- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 1 Laterne, 12 Besucher, 6 Büsche,
   je 3 Rasen- und Pflasterkacheln, 8 Fenster, 4 Türen, 4 Läden; je Stadtteil änderbar (0 bis 30),
   gespeichert in `limits.properties` im Ordner der Sammlung.
+- **Eine Laterne je Stadtteil:** In einem Stadtteil stehen überall dieselben Laternen. Die
+  Sammlung darf mehrere enthalten; in Gebrauch ist die älteste, bis man im Pausenmenü unter
+  „Sammlung ansehen“ bei einer anderen „Verwenden“ wählt (`lamp.chosen` in `limits.properties`).
 - **Zuweisung:** Jeder Baum, jeder Besucher, jedes Haus und jedes Stück Boden bewertet jedes Bild
   seiner Art mit einer Zahl, die nur von ihm und dem Bild abhängt, und nimmt das höchstbewertete.
   Kommt ein Bild dazu, übernimmt es seinen Anteil, alles Übrige bleibt, wie es war; dieselbe
@@ -188,7 +191,7 @@ Space Harvester und Enterprise AI Client:
      API** (`https://…/v1`), sein **Passwort der API-Key**. Tippen sucht in der Liste, die
      Pfeiltasten blättern.
    - *Manuell:* Adresse und API-Key eintippen. Der Key wird nicht gespeichert.
-2. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `openai/gpt-oss-120b` vor, falls
+2. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `google/gemma-4-31B-it` vor, falls
    angeboten. „Weiter“ startet das Spiel; gezeichnet wird ab dann im Hintergrund.
 
 Die Schritte oben sind anklickbar, sobald sie möglich sind. „Ohne KI spielen“ verlässt das Menü
@@ -286,7 +289,7 @@ selbst zuständig. Die folgenden Einstellungen gelten für beide.
 - **Dienst und Modell:** eine OpenAI-kompatible API (`POST <Basis-URL>/chat/completions`).
   Der Generator verwendet, was im Menü gewählt wurde (`.3d4j/generator.properties`), sonst die
   Konfiguration des Enterprise AI Client (`chat.baseUrl`, `chat.model`, `chat.apiKeyRef`).
-  Oder einmal angeben, die Werte werden gemerkt: `--entry=TITEL --model=openai/gpt-oss-120b`.
+  Oder einmal angeben, die Werte werden gemerkt: `--entry=TITEL --model=google/gemma-4-31B-it`.
 - **Adresse und API-Key:** aus dem KeePass-Eintrag über das KeePassRPC-Plugin:
   Passwort = API-Key, URL = Adresse. `--base-url=https://.../v1` hat
   Vorrang vor der URL des Eintrags. Beim ersten Lauf zeigt KeePass einen Kopplungscode, den
