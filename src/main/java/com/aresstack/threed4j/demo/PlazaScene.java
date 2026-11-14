@@ -36,7 +36,7 @@ final class PlazaScene implements AutoCloseable {
     final Mesh sprites;
     final Mesh sky;
     final int cityTriangles;
-    final int groundTriangles = 50 * 50 * 2;
+    final int groundTriangles = 50 * (50 + WEST_SIDE_ROWS) * 2;
     final int spriteCount;
     final int buildingCount;
 
@@ -47,14 +47,16 @@ final class PlazaScene implements AutoCloseable {
         ground = ground(graphics, groundAtlas);
         MeshBuilder builder = new MeshBuilder();
         fountain(builder);
-        buildingCount = buildings(builder, random);
+        buildingCount = buildings(builder, random) + 3;
+        westSide(builder);
         city = builder.build(graphics);
         cityTriangles = builder.triangleCount();
 
         SpriteBatch batch = new SpriteBatch();
         plants(batch, random);
         visitors(batch, random);
-        bushes(batch, random); // last, so that everything before keeps its place
+        bushes(batch, random); // after the rest, so that everything before keeps its place
+        westSideSprites(batch, random);
         sprites = batch.build(graphics);
         spriteCount = batch.count;
 
@@ -62,6 +64,40 @@ final class PlazaScene implements AutoCloseable {
     }
 
     // ------------------------------------------------------------------- ground
+
+    /** World z of the open side of the WEST.SIDE ensemble: straight down the street from the start, past the last houses. */
+    static final float WEST_SIDE_FRONT = -116f;
+    /** Rows of ground squares added beyond the town for the ensemble. */
+    private static final int WEST_SIDE_ROWS = 28;
+
+    /**
+     * The Easter egg at the end of the street and a hint of its neighborhood in
+     * Bonn: the old building at the open side, a dark hall to the left, housing
+     * blocks with red-brown roofs to the right.
+     */
+    private static void westSide(MeshBuilder builder) {
+        WestSide.build(builder, WEST_SIDE_FRONT);
+
+        Vec3 oldWall = new Vec3(0.86f, 0.80f, 0.68f);
+        Vec3 oldRoof = new Vec3(0.52f, 0.40f, 0.36f);
+        builder.box(9f, 0f, WEST_SIDE_FRONT + 3f, 21f, 6.5f, WEST_SIDE_FRONT + 12f, oldWall, oldRoof);
+        builder.pyramid(15f, 6.5f, WEST_SIDE_FRONT + 7.5f, 6.6f, 3.2f, oldRoof);
+
+        Vec3 hall = new Vec3(0.40f, 0.41f, 0.46f);
+        builder.box(-86f, 0f, WEST_SIDE_FRONT - 52f, -58f, 8f, WEST_SIDE_FRONT - 8f, hall, hall.scale(0.8f));
+
+        Vec3 housing = new Vec3(0.93f, 0.90f, 0.86f);
+        Vec3 housingRoof = new Vec3(0.66f, 0.42f, 0.38f);
+        float[][] blocks = {{54f, -6f, 18f, 13f}, {76f, -22f, 13f, 18f}, {56f, -40f, 18f, 13f}, {78f, -58f, 13f, 18f},
+                {57f, -74f, 18f, 13f}};
+        for (float[] block : blocks) {
+            float z = WEST_SIDE_FRONT + block[1];
+            builder.box(block[0] - block[2] / 2, 0f, z - block[3] / 2, block[0] + block[2] / 2, 12f, z + block[3] / 2,
+                    housing, housingRoof);
+            builder.box(block[0] - block[2] / 2 + 1.5f, 12f, z - block[3] / 2 + 1.5f, block[0] + block[2] / 2 - 1.5f,
+                    14.6f, z + block[3] / 2 - 1.5f, housing, housingRoof);
+        }
+    }
 
     /** Edge length of one ground texture tile in the world. */
     static final float GROUND_TILE = 4f;
@@ -74,19 +110,25 @@ final class PlazaScene implements AutoCloseable {
      * brightness, as the flat-coloured ground did.
      */
     private static Mesh ground(GraphicsDevice graphics, GroundAtlas atlas) {
-        int perSide = 50; // groundTriangles follows from this
-        float[] vertices = new float[perSide * perSide * 4 * 9];
-        int[] indices = new int[perSide * perSide * 6];
+        int perSide = 50; // groundTriangles follows from this and WEST_SIDE_ROWS
+        int rows = perSide + WEST_SIDE_ROWS;
+        float[] vertices = new float[perSide * rows * 4 * 9];
+        int[] indices = new int[perSide * rows * 6];
         int v = 0;
         int i = 0;
         for (int ix = -perSide / 2; ix < perSide / 2; ix++) {
-            for (int iz = -perSide / 2; iz < perSide / 2; iz++) {
+            // The town, and beyond its far edge the ground of the WEST.SIDE ensemble.
+            for (int iz = -perSide / 2 - WEST_SIDE_ROWS; iz < perSide / 2; iz++) {
                 float x = ix * GROUND_TILE;
                 float z = iz * GROUND_TILE;
                 float centerX = x + GROUND_TILE / 2;
                 float centerZ = z + GROUND_TILE / 2;
                 int cell;
-                if (Math.hypot(centerX, centerZ) < PLAZA_RADIUS) {
+                if (centerZ < -100f) {
+                    // Paved under and around the ensemble and where the street arrives, lawn beside it.
+                    boolean site = Math.abs(centerX) < WestSide.HALF_WIDTH + 6f && centerZ < WEST_SIDE_FRONT + 10f;
+                    cell = site || Math.abs(centerX) < STREET_HALF_WIDTH ? GroundAtlas.STREET : GroundAtlas.LAWN;
+                } else if (Math.hypot(centerX, centerZ) < PLAZA_RADIUS) {
                     cell = GroundAtlas.PLAZA;
                 } else if (Math.abs(centerX) < STREET_HALF_WIDTH || Math.abs(centerZ) < STREET_HALF_WIDTH) {
                     cell = GroundAtlas.STREET;
@@ -216,6 +258,31 @@ final class PlazaScene implements AutoCloseable {
                 continue;
             }
             batch.add(SpriteAtlas.PEONY_BUSH, x, z, 3.0f + random.nextFloat() * 1.2f);
+        }
+    }
+
+    /** Life around the WEST.SIDE ensemble: trees and lamps along the yard, bushes at the entrances, people. */
+    private static void westSideSprites(SpriteBatch batch, Random random) {
+        float front = WEST_SIDE_FRONT;
+        for (int i = 0; i < 6; i++) {
+            float z = front - 6f - i * 10f;
+            batch.add(i % 2 == 0 ? SpriteAtlas.BLOSSOM_TREE : SpriteAtlas.LAMP, -9.5f, z, i % 2 == 0 ? 8f : 5f);
+            batch.add(i % 2 == 0 ? SpriteAtlas.LAMP : SpriteAtlas.BLOSSOM_TREE, 9.5f, z, i % 2 == 0 ? 5f : 8f);
+        }
+        for (int side = -1; side <= 1; side += 2) { // beside the two entrances in the middle of the yard
+            batch.add(SpriteAtlas.PEONY_BUSH, side * 10.6f, front - 26.2f, 3.2f);
+            batch.add(SpriteAtlas.PEONY_BUSH, side * 10.6f, front - 35.8f, 3.2f);
+        }
+        for (int i = 0; i < 4; i++) {
+            batch.add(SpriteAtlas.GREEN_TREE, -44f + i * 4f * (i % 2), front + 4f + i * 3f, 7f + i * 0.6f);
+            batch.add(SpriteAtlas.GREEN_TREE, 34f + i * 3f, front + 6f - i * 14f, 7.5f);
+        }
+        for (int i = 0; i < 18; i++) {
+            float x = (random.nextFloat() * 2 - 1) * 8f;
+            float z = front + 8f - random.nextFloat() * 62f;
+            batch.add(SpriteAtlas.FIRST_VISITOR + random.nextInt(SpriteAtlas.VISITOR_COUNT), x, z,
+                    1.9f + random.nextFloat() * 0.3f, 0.6f + random.nextFloat() * 1.6f,
+                    (random.nextBoolean() ? 1 : -1) * (0.15f + random.nextFloat() * 0.3f), random.nextFloat() * 6.28f);
         }
     }
 

@@ -39,6 +39,8 @@ import java.util.Locale;
  * {@code --scale=0.5} sets the internal resolution, {@code --frames=N} stops after
  * N frames, {@code --screenshot=FILE} saves the last of those frames,
  * {@code --time=SECONDS} freezes the scene at that moment (comparable pictures),
+ * {@code --view=x,y,z,yaw,pitch} looks from a fixed place instead (with
+ * {@code --benchmark}; angles in degrees, yaw 0 looks down the street from the start),
  * {@code --no-title} skips the loading screen, {@code --setup} / {@code --no-setup}
  * force or suppress the "create the world" menu (by default it opens while no
  * generated artwork exists), {@code --no-vsync} runs uncapped.</p>
@@ -105,7 +107,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     /** @param showSetup {@code null} decides by whether generated artwork exists already */
     private record Options(boolean benchmark, boolean showTitle, Boolean showSetup, Float renderScale,
-                           Double frozenTime, Path finalScreenshot, long finalFrame) {
+                           Double frozenTime, Path finalScreenshot, long finalFrame, float[] view) {
     }
 
     public static void main(String[] args) {
@@ -116,6 +118,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         Float scale = null; // not given: what the player chose in the settings
         Double time = null;
         Path screenshot = null;
+        float[] view = null;
         for (String arg : args) {
             if (arg.startsWith("--frames=")) {
                 config = config.withMaxFrames(Long.parseLong(arg.substring("--frames=".length())));
@@ -125,6 +128,15 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 scale = Float.parseFloat(arg.substring("--scale=".length()));
             } else if (arg.startsWith("--time=")) {
                 time = Double.parseDouble(arg.substring("--time=".length()));
+            } else if (arg.startsWith("--view=")) {
+                String[] parts = arg.substring("--view=".length()).split(",");
+                if (parts.length != 5) {
+                    throw new IllegalArgumentException("--view needs x,y,z,yaw,pitch (angles in degrees)");
+                }
+                view = new float[5];
+                for (int i = 0; i < 5; i++) {
+                    view[i] = Float.parseFloat(parts[i]);
+                }
             } else if (arg.equals("--benchmark")) {
                 benchmark = true;
                 showTitle = false;
@@ -142,7 +154,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             }
         }
         Engine.run(config, new PlazaDemo(
-                new Options(benchmark, showTitle, showSetup, scale, time, screenshot, config.maxFrames())));
+                new Options(benchmark, showTitle, showSetup, scale, time, screenshot, config.maxFrames(), view)));
     }
 
     // --------------------------------------------------------------------- init
@@ -296,7 +308,12 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
         sceneTime = options.frozenTime() != null ? options.frozenTime() : sceneTime + deltaSeconds;
         chooseResolution(context, input);
-        if (options.benchmark()) {
+        if (options.benchmark() && options.view() != null) {
+            float[] view = options.view();
+            position = new Vec3(view[0], view[1], view[2]);
+            yaw = (float) Math.toRadians(view[3]);
+            pitch = (float) Math.toRadians(view[4]);
+        } else if (options.benchmark()) {
             flyCameraPath();
         } else {
             moveCamera(input, (float) deltaSeconds);

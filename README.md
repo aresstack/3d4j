@@ -76,7 +76,8 @@ java -jar 3d4j.jar --benchmark --no-vsync --frames=3000 --scale=0.5
 Argumente: `--benchmark` (kein Ladebildschirm, feste Kamerafahrt), `--scale=0.5` (interne
 Auflösung), `--frames=N` (nach N Frames beenden), `--screenshot=DATEI` (den letzten dieser
 Frames speichern), `--time=SEKUNDEN` (Szene an diesem Zeitpunkt einfrieren, für vergleichbare
-Bilder), `--no-title`, `--no-vsync`.
+Bilder), `--view=x,y,z,gier,nick` (mit `--benchmark`: fester Standpunkt statt Rundflug, Winkel
+in Grad; z. B. `--view=0,2.2,-100,0,8` vor dem WEST.SIDE-Hof), `--no-title`, `--no-vsync`.
 
 Der drehende Würfel ist als Minimalbeispiel weiter enthalten:
 `java -Dthreed4j.main=com.aresstack.threed4j.demo.CubeDemo -jar 3d4j.jar`.
@@ -136,6 +137,21 @@ gemerkten Eintrag ohne Nachfrage aus KeePass). Ändern lässt sich beides über 
 „Ohne KI spielen“ verlässt das Menü jederzeit. `--setup` öffnet es auch dann, wenn schon Motive
 vorhanden sind, `--no-setup` unterdrückt es. Bedient wird es mit der Maus; Tab wechselt das
 Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
+
+### Easter Egg: WEST.SIDE
+
+Vom Start geradeaus die Straße hinunter, hinter den letzten Häusern, steht das Büroensemble
+WEST.SIDE aus Bonn: Gebäude B (Generalzolldirektion) links, Gebäude A (Ministerium) rechts,
+dahinter das Parkhaus, davor rechts der Altbau; die Straße führt in den Hof. Links eine dunkle
+Halle, rechts Wohnblöcke mit rotbraunen Dächern, wie im Luftbild. Es taucht erst beim
+Hinlaufen aus dem Dunst auf.
+
+Maße und Aufbau stammen aus dem Skizzenmodell (`generate_assets.py`: 62 m lang, 18 m tief,
+vier Geschosse, Stützenraster 6,9 m, Parkhaus 20 × 64 m). Dessen GLB-Dateien lädt das Spiel
+nicht: Sie haben rund 23.000 texturierte Dreiecke, das Dreifache der ganzen Stadt, und die
+Engine kann noch keine Modelldateien laden. `WestSide` baut dasselbe Gebäude aus etwa 3.000
+einfarbigen Dreiecken nach, im Stil der übrigen Stadt: das rote Raster aus Stützen und Riegeln
+als Quader, jedes Fenster als dunkler Rahmen mit Scheibe davor.
 
 ### Das Pausenmenü
 
@@ -300,7 +316,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
 | `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
-| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
+| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `WestSide` (Easter Egg), `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.
