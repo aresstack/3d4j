@@ -1,6 +1,8 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.PartLibrary;
+import com.aresstack.threed4j.assets.TownLibrary;
 import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.generator.BackgroundArtist;
 import com.aresstack.threed4j.platform.Input;
@@ -113,8 +115,17 @@ final class PauseMenu {
     private boolean settingsPage;
     private int tab;
     // The page that shows the district's collection of pictures.
-    private final PartLibrary library;
-    private final String districtName;
+    /**
+     * One collection the page can show.
+     *
+     * @param district whose names the kinds carry; the shared collection borrows those of the first district
+     */
+    private record Shelf(String name, PartLibrary library, District district, List<PartLibrary.Kind> kinds) {
+    }
+
+    private final List<Shelf> shelves = new ArrayList<>();
+    private int shelf;
+    private boolean shelfList;
     private boolean collectionPage;
     private PartLibrary.Kind shownKind = PartLibrary.Kind.BLOSSOM_TREE;
     private int shownFrom;
@@ -139,9 +150,37 @@ final class PauseMenu {
      * @param districtName what the player reads as the district's name
      */
     PauseMenu(Actions actions, State state, PartLibrary library, String districtName) {
+        this(actions, state);
+        shelves.add(new Shelf(districtName, library, District.BLOSSOM_QUARTER, List.of(PartLibrary.Kind.values())));
+    }
+
+    /**
+     * @param town    the collections of all districts and the one they share
+     * @param current the district the player is in; its collection is shown first
+     */
+    PauseMenu(Actions actions, State state, TownLibrary town, District current) {
+        this(actions, state);
+        for (District district : District.ALL) {
+            shelves.add(new Shelf(district.name(), town.district(district), district, TownLibrary.districtKinds()));
+        }
+        shelves.add(new Shelf(TownLibrary.SHARED_NAME, town.shared(), District.ALL.get(0), TownLibrary.sharedKinds()));
+        showShelf(District.ALL.indexOf(current));
+    }
+
+    private void showShelf(int index) {
+        shelf = index;
+        shownKind = shelves.get(index).kinds().get(0);
+        shownFrom = 0;
+        shelfList = false;
+        modelList = false;
+    }
+
+    private PartLibrary library() {
+        return shelves.get(shelf).library();
+    }
+
+    private PauseMenu(Actions actions, State state) {
         this.actions = actions;
-        this.library = library;
-        this.districtName = districtName;
         this.renderScale = state.renderScale();
         this.smoothUpscale = state.smoothUpscale();
         this.mouseSpeed = state.mouseSpeed();
@@ -179,8 +218,9 @@ final class PauseMenu {
             dirty = true;
         }
         if (input.wasPressed(Key.ESCAPE)) {
-            if (modelList) {
+            if (modelList || shelfList) {
                 modelList = false;
+                shelfList = false;
                 dirty = true;
             } else if (collectionPage) {
                 showCollection(false);
@@ -193,7 +233,7 @@ final class PauseMenu {
         }
         if (collectionPage && System.nanoTime() - signatureCheckedAt > 1_000_000_000L) {
             signatureCheckedAt = System.nanoTime();
-            if (!library.signature().equals(shownSignature)) {
+            if (!library().signature().equals(shownSignature)) {
                 dirty = true; // a picture arrived or left while the page is open
             }
         }
@@ -251,6 +291,7 @@ final class PauseMenu {
     private void showCollection(boolean show) {
         collectionPage = show;
         modelList = false;
+        shelfList = false;
         marked = -1;
         regions.clear();
         dirty = true;
@@ -423,16 +464,31 @@ final class PauseMenu {
      * out, the limit of a kind raised or lowered.
      */
     private void paintCollection(Graphics2D g) {
-        shownSignature = library.signature();
+        shownSignature = library().signature();
         g.setColor(INK);
         g.setFont(new Font(Font.SERIF, Font.BOLD | Font.ITALIC, 34));
-        g.drawString("Sammlung · " + districtName, 84, 72);
+        g.drawString("Sammlung ·", 84, 72);
+        int titleEnd = 84 + g.getFontMetrics().stringWidth("Sammlung · ");
+        Shelf shown = shelves.get(shelf);
+        PartLibrary library = shown.library();
+        // Which collection: a district's, or the one of the whole town. A button if there is a choice.
+        int shelfWidth = 0;
+        if (shelves.size() > 1) {
+            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+            shelfWidth = g.getFontMetrics().stringWidth(shown.name() + "  ▾") + 44;
+            choice(g, shown.name() + "  ▾", titleEnd, 42, shelfWidth, 40, shelfList, 20, () -> {
+                shelfList = !shelfList;
+                modelList = false;
+            });
+        } else {
+            g.drawString(shown.name(), titleEnd, 72);
+        }
 
         // Kinds
         int y = 96;
-        for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
+        for (PartLibrary.Kind kind : shown.kinds()) {
             int have = library.parts(kind).size();
-            String text = BackgroundArtist.plural(kind) + "  " + have + "/" + library.target(kind);
+            String text = BackgroundArtist.plural(shown.district(), kind) + "  " + have + "/" + library.target(kind);
             PartLibrary.Kind chosen = kind;
             choice(g, text, 40, y, 250, 38, kind == shownKind, 15, () -> {
                 shownKind = chosen;
@@ -444,9 +500,9 @@ final class PauseMenu {
 
         // The limit of the chosen kind
         int limit = library.target(shownKind);
-        label(g, BackgroundArtist.plural(shownKind), 330, 116, 20);
+        label(g, BackgroundArtist.plural(shown.district(), shownKind), 330, 116, 20);
         g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-        int labelEnd = 330 + g.getFontMetrics().stringWidth(BackgroundArtist.plural(shownKind));
+        int labelEnd = 330 + g.getFontMetrics().stringWidth(BackgroundArtist.plural(shown.district(), shownKind));
         if (shownKind.uniform()) {
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
             g.setColor(TEXT);
@@ -540,6 +596,35 @@ final class PauseMenu {
 
         if (modelList) {
             paintModelList(g, modelX, kindModel);
+        }
+        if (shelfList) {
+            paintShelfList(g, titleEnd, shelfWidth);
+        }
+    }
+
+    /** The list below the collection's name: the districts and the whole town. Painted last, it lies on top. */
+    private void paintShelfList(Graphics2D g, int left, int buttonWidth) {
+        regions.add(new Region(new Rectangle2D.Double(0, 0, COLLECTION_WIDTH, COLLECTION_HEIGHT), () -> shelfList = false));
+        int width = Math.max(buttonWidth, 230);
+        int height = 12 + shelves.size() * 36;
+        Shape panel = new RoundRectangle2D.Double(left, 86, width, height, 22, 22);
+        g.setColor(CARD);
+        g.fill(panel);
+        g.setStroke(new BasicStroke(2.5f));
+        g.setColor(PINK_DARK);
+        g.draw(panel);
+        regions.add(new Region(new Rectangle2D.Double(left, 86, width, height), () -> { }));
+        for (int i = 0; i < shelves.size(); i++) {
+            int top = 93 + i * 36;
+            if (i == shelf) {
+                g.setColor(PINK_LIGHT);
+                g.fill(new RoundRectangle2D.Double(left + 6, top, width - 12, 32, 32, 32));
+            }
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, i == shelf ? Font.BOLD : Font.PLAIN, 16));
+            g.drawString(shelves.get(i).name(), left + 20, top + 22);
+            int index = i;
+            regions.add(new Region(new Rectangle2D.Double(left + 6, top, width - 12, 32), () -> showShelf(index)));
         }
     }
 
@@ -649,12 +734,12 @@ final class PauseMenu {
     }
 
     private BufferedImage thumbnail(PartLibrary.Part part) {
-        return thumbnails.computeIfAbsent(part.png(), file -> library.load(part));
+        return thumbnails.computeIfAbsent(part.png(), file -> library().load(part));
     }
 
     private void setLimit(int limit) {
         try {
-            library.setTarget(shownKind, limit);
+            library().setTarget(shownKind, limit);
         } catch (java.io.IOException e) {
             System.err.println("Limit not saved: " + e.getMessage());
         }
@@ -663,7 +748,7 @@ final class PauseMenu {
     /** Makes this picture the one the district uses for its kind, e.g. its street lamp. */
     private void use(PartLibrary.Part part) {
         try {
-            library.setChosen(part);
+            library().setChosen(part);
         } catch (java.io.IOException e) {
             System.err.println("Choice not saved: " + e.getMessage());
         }
@@ -672,7 +757,7 @@ final class PauseMenu {
     /** Takes the picture out of the collection; its files move to the folder "deleted". */
     private void delete(PartLibrary.Part part) {
         try {
-            library.remove(part);
+            library().remove(part);
             thumbnails.remove(part.png());
         } catch (java.io.IOException e) {
             System.err.println("Picture not removed: " + e.getMessage());

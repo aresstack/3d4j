@@ -1,6 +1,8 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.PartLibrary;
+import com.aresstack.threed4j.assets.TownLibrary;
 import com.aresstack.threed4j.math.Vec3;
 
 import java.awt.Color;
@@ -10,7 +12,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.function.Function;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -54,7 +57,11 @@ final class GroundAtlas {
 
     final BufferedImage image;
     final int cellCount;
-    private final Map<Surface, List<Cell>> cells = new EnumMap<>(Surface.class);
+    private final Map<String, List<Cell>> cells = new HashMap<>();
+
+    private static String key(District district, Surface surface) {
+        return district.id() + "/" + surface;
+    }
 
     private GroundAtlas(BufferedImage image, int cellCount) {
         this.image = image;
@@ -63,7 +70,12 @@ final class GroundAtlas {
 
     /** The tile a square of ground takes: the one it rates highest, as figures and houses choose. */
     Cell choose(Surface surface, long seed) {
-        List<Cell> candidates = cells.get(surface);
+        return choose(District.BLOSSOM_QUARTER, surface, seed);
+    }
+
+    /** As {@link #choose(Surface, long)}, among the tiles of the district the square lies in. */
+    Cell choose(District district, Surface surface, long seed) {
+        List<Cell> candidates = cells.get(key(district, surface));
         Cell best = candidates.get(0);
         long bestRating = Long.MIN_VALUE;
         for (Cell candidate : candidates) {
@@ -76,35 +88,48 @@ final class GroundAtlas {
         return best;
     }
 
-    /** Paints the atlas; tiles from the collection where there are any, built-in ones otherwise. */
+    /** Paints the atlas from one collection, as the Blütenviertel. */
     static GroundAtlas paint(PartLibrary library) {
-        List<Surface> surfaces = new ArrayList<>();
+        return paint(List.of(District.BLOSSOM_QUARTER), district -> library);
+    }
+
+    /** Paints the atlas of the whole town. */
+    static GroundAtlas paint(TownLibrary town) {
+        return paint(District.ALL, town::district);
+    }
+
+    /** Tiles from the collections where there are any, built-in ones otherwise. */
+    private static GroundAtlas paint(List<District> districts, Function<District, PartLibrary> libraries) {
+        List<String> keys = new ArrayList<>();
         List<Integer> numbers = new ArrayList<>();
         List<BufferedImage> tiles = new ArrayList<>();
         int collected = 0;
-        for (Surface surface : Surface.values()) {
-            int before = tiles.size();
-            if (surface.kind != null) {
-                for (PartLibrary.Part part : library.parts(surface.kind)) {
-                    BufferedImage tile = library.load(part);
-                    if (tile != null) {
-                        surfaces.add(surface);
-                        numbers.add(part.number());
-                        tiles.add(tile);
-                        collected++;
+        for (District district : districts) {
+            PartLibrary library = libraries.apply(district);
+            for (Surface surface : Surface.values()) {
+                int before = tiles.size();
+                if (surface.kind != null) {
+                    for (PartLibrary.Part part : library.parts(surface.kind)) {
+                        BufferedImage tile = library.load(part);
+                        if (tile != null) {
+                            keys.add(key(district, surface));
+                            numbers.add(part.number());
+                            tiles.add(tile);
+                            collected++;
+                        }
                     }
                 }
-            }
-            if (tiles.size() == before) {
-                surfaces.add(surface);
-                numbers.add(0);
-                tiles.add(builtIn(surface));
+                if (tiles.size() == before) {
+                    keys.add(key(district, surface));
+                    numbers.add(0);
+                    tiles.add(builtIn(district, surface));
+                }
             }
         }
         BufferedImage image = new BufferedImage(tiles.size() * CELL, CELL, BufferedImage.TYPE_INT_ARGB);
         GroundAtlas atlas = new GroundAtlas(image, tiles.size());
-        for (Surface surface : Surface.values()) {
-            atlas.cells.put(surface, new ArrayList<>());
+        for (String key : keys) {
+            atlas.cells.putIfAbsent(key, new ArrayList<>());
         }
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -126,12 +151,44 @@ final class GroundAtlas {
                 }
             }
             clipped.dispose();
-            atlas.cells.get(surfaces.get(cell)).add(new Cell(cell, numbers.get(cell), average(tile)));
+            atlas.cells.get(keys.get(cell)).add(new Cell(cell, numbers.get(cell), average(tile)));
         }
         g.dispose();
-        System.out.println("Ground: " + collected + " textures from " + library.directory()
+        System.out.println("Ground: " + collected + " textures from "
+                + libraries.apply(districts.get(0)).directory().getParent()
                 + (collected == 0 ? ", using the built-in ones" : ""));
         return atlas;
+    }
+
+    /** The built-in ground of the Werksviertel: gravel instead of lawn, dark cobbles as street and yard. */
+    private static BufferedImage builtInWorks(Surface surface) {
+        BufferedImage tile = new BufferedImage(TILE, TILE, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = tile.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        Random random = new Random(70 + surface.ordinal());
+        if (surface == Surface.LAWN) {
+            g.setColor(new Color(0xBDB7B0));
+            g.fillRect(0, 0, TILE, TILE);
+            Color[] pebbles = {new Color(0xCAC4BC), new Color(0xAFA9A3), new Color(0xC2B7A8)};
+            for (int i = 0; i < 70; i++) { // pebbles, away from the edges so that the tile repeats without a seam
+                double x = 14 + random.nextDouble() * (TILE - 38);
+                double y = 14 + random.nextDouble() * (TILE - 36);
+                g.setColor(pebbles[i % 3]);
+                g.fill(new Ellipse2D.Double(x, y, 6 + random.nextInt(6), 5 + random.nextInt(4)));
+            }
+        } else {
+            g.setColor(new Color(0xA8A3AD));
+            g.fillRect(0, 0, TILE, TILE);
+            for (int row = 0; row < 6; row++) { // cobbles in rows, shifted like bricks
+                for (int column = 0; column < 5; column++) {
+                    double x = 10 + column * 48 + (row % 2) * 8;
+                    g.setColor(random.nextBoolean() ? new Color(0x9D98A3) : new Color(0xB3AEB8));
+                    g.fill(new RoundRectangle2D.Double(x, 10 + row * 40, 36, 30, 12, 12));
+                }
+            }
+        }
+        g.dispose();
+        return tile;
     }
 
     private static Vec3 average(BufferedImage tile) {
@@ -151,7 +208,10 @@ final class GroundAtlas {
     }
 
     /** The built-in tiles: the flat colours of the first version with a little texture. */
-    private static BufferedImage builtIn(Surface surface) {
+    private static BufferedImage builtIn(District district, Surface surface) {
+        if (district == District.WORKS_QUARTER) {
+            return builtInWorks(surface);
+        }
         BufferedImage tile = new BufferedImage(TILE, TILE, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = tile.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

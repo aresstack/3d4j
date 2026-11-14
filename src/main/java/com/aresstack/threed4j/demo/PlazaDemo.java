@@ -2,7 +2,7 @@ package com.aresstack.threed4j.demo;
 
 import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.assets.District;
-import com.aresstack.threed4j.assets.PartLibrary;
+import com.aresstack.threed4j.assets.TownLibrary;
 import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.generator.BackgroundArtist;
 import com.aresstack.threed4j.core.Engine;
@@ -98,8 +98,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private Texture facadeTexture;
     private Vec3 facadeAtlasLayout;
     private Vec3 groundAtlasLayout;
-    private final District district = District.BLOSSOM_QUARTER;
-    private PartLibrary partLibrary;
+    private TownLibrary town;
     private String partsShown;
     private double partsCheckedAt;
     private BackgroundArtist backgroundArtist;
@@ -202,7 +201,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         // The game draws its pictures by itself while it runs. The menu is only for the access to the
         // AI service: it opens the first time, when no access is known and nothing has been collected yet.
         boolean firstTime = !AiSetup.accessKnown()
-                && new PartLibrary(AssetStore.standard(), district.id()).parts().isEmpty();
+                && new TownLibrary(AssetStore.standard()).signature().replace("|", "").replaceAll("lamp=\\S* ", "").isBlank();
         boolean wanted = options.showSetup() != null ? options.showSetup() : firstTime;
         if (wanted) {
             setup = new SetupScreen(Textures.readResource("/images/loading.jpg"),
@@ -270,23 +269,28 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
      */
     private void loadArtwork(GraphicsDevice graphics) {
         AssetStore store = AssetStore.standard();
-        partLibrary = new PartLibrary(store, district.id());
+        town = new TownLibrary(store);
         // Single pictures in the asset folder (earlier versions, the command "generate", a hand) join the collection.
-        int taken = partLibrary.importSingleAssets(store);
+        int taken = town.district(District.BLOSSOM_QUARTER).importSingleAssets(store);
         if (taken > 0) {
             System.out.println("Library: took " + taken + " picture(s) from " + store.directory());
         }
-        partsShown = partLibrary.signature();
+        // The people once lived in a district's collection; now they belong to the whole town.
+        int moved = town.gatherSharedKinds();
+        if (moved > 0) {
+            System.out.println("Library: moved " + moved + " picture(s) to " + town.shared().directory());
+        }
+        partsShown = town.signature();
 
-        SpriteAtlas sprites = SpriteAtlas.paint(partLibrary);
+        SpriteAtlas sprites = SpriteAtlas.paint(town);
         spriteAtlas = Textures.fromImage(graphics, sprites.image, true);
         spriteShader.setTexture(spriteAtlas);
-        GroundAtlas ground = GroundAtlas.paint(partLibrary);
+        GroundAtlas ground = GroundAtlas.paint(town);
         groundTexture = Textures.fromImage(graphics, ground.image, true);
         groundShader.setTexture(groundTexture);
         groundAtlasLayout = new Vec3(1f / ground.cellCount, (float) GroundAtlas.GUTTER / GroundAtlas.CELL,
                 (float) GroundAtlas.TILE / GroundAtlas.CELL);
-        FacadeAtlas facades = FacadeAtlas.paint(partLibrary);
+        FacadeAtlas facades = FacadeAtlas.paint(town);
         facadeTexture = Textures.fromImage(graphics, facades.image, true);
         facadeShader.setTexture(facadeTexture);
         facadeAtlasLayout = new Vec3(1f / facades.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,
@@ -311,7 +315,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             return;
         }
         partsCheckedAt = context.timeSeconds();
-        if (!partLibrary.signature().equals(partsShown)) {
+        if (!town.signature().equals(partsShown)) {
             unloadArtwork();
             loadArtwork(context.graphics());
         }
@@ -323,7 +327,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         }
         playing = true;
         if (backgroundArtist == null && !options.benchmark()) {
-            backgroundArtist = BackgroundArtist.start(AssetStore.standard(), district.id(), district.style());
+            backgroundArtist = BackgroundArtist.start(AssetStore.standard());
         }
         context.frameStats().reset(); // loading must not count as slow frames
     }
@@ -341,7 +345,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             } else if (pause == null) {
                 pause = new PauseMenu(this, new PauseMenu.State(settings.renderScale(), settings.smoothUpscale(),
                         settings.mouseSpeed(), AiSetup.reasoningEffort(), AiSetup.maxTokens(),
-                        AiSetup.backgroundEnabled()), partLibrary, district.name());
+                        AiSetup.backgroundEnabled()), town, District.at(position.x(), position.z()));
                 return;
             }
         }

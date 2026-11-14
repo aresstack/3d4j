@@ -132,23 +132,35 @@ Beim Start gibt die Engine aus, womit sie rendert, zum Beispiel
 Die Grafik-API lässt sich mit `-Dthreed4j.backend=d3d11` oder `-Dthreed4j.backend=opengl`
 erzwingen (Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler OpenGL).
 
-## Grafiken: die Sammlung des Stadtteils
+## Grafiken: die Sammlungen der Stadtteile
 
 Alles Gezeichnete im Spiel stammt aus einer Sammlung je **Stadtteil** (`District`), der
-Bilddatenbank des Spiels: Bäume, Laternen, Besucher, Pfingstrosenbüsche, Bodentexturen und die
-Teile der Hausfassaden. Von jeder Art gibt es mehrere Bilder. Sie liegt als Ordner unter dem
-Asset-Ordner:
+Bilddatenbank des Spiels: Bäume, Laternen, Büsche, Bodentexturen und die Teile der
+Hausfassaden. Die **Besucher** gehören keinem Stadtteil: Sie liegen in einer gemeinsamen
+Sammlung der ganzen Stadt (`stadt`) und laufen überall herum. Von jeder Art gibt es mehrere
+Bilder. Die Sammlungen liegen als Ordner unter dem Asset-Ordner (`TownLibrary`):
 
 ```
 .3d4j/assets/library/<stadtteil>/<art>-<nummer>.svg|.png|.json
+.3d4j/assets/library/stadt/visitor-<nummer>.svg|.png|.json
 ```
+
+Es gibt zwei Stadtteile; `District.at(x, z)` zieht die Grenze:
+
+| Stadtteil | Ordner | Was die Arten dort sind |
+|---|---|---|
+| **Blütenviertel** um den Startplatz | `bluetenviertel` | Kirschbäume, Parkbäume, Laterne, Pfingstrosen, Rasen, Pflaster, Fenster, Türen, Läden |
+| **Werksviertel** um das WEST.SIDE-Ensemble, ein altes Industriegebiet | `werksviertel` | Birken, Bäume, Werkslaterne, Wildwuchs, Schotter, Werkspflaster, Werksfenster, Werkstüren, Tore |
+
+Beide sammeln dieselben Arten (Dateinamen wie unten), aber jede Art bedeutet im Stadtteil
+etwas Eigenes: Der Auftrag an das Modell nennt das Motiv des Stadtteils (`District.Motif`) und
+dessen Stil. Besucher, die ältere Versionen im Ordner des Blütenviertels abgelegt haben, zieht
+das Spiel beim Start in die gemeinsame Sammlung um.
 
 Arten: `blossom-tree`, `green-tree`, `lamp`, `visitor`, `bush`, `lawn`, `street`, `window`,
 `door`, `shop`. Die JSON-Datei nennt Modell, Zeitpunkt und Auftrag. Der Asset-Ordner ist
 `.3d4j/assets` im Benutzerverzeichnis (unter Windows `%USERPROFILE%\.3d4j\assets`), änderbar
-mit `-Dthreed4j.assets=ORDNER`. Bisher gibt es einen Stadtteil, das Blütenviertel
-(`bluetenviertel`) um den Startplatz; `District.at(x, z)` ist die Stelle, an der weitere ihre
-Grenzen bekommen.
+mit `-Dthreed4j.assets=ORDNER`.
 
 - **Sofort spielen:** Das Spiel wartet auf nichts. Solange die Sammlung von einer Art kein Bild
   hat, steht ein eingebautes dafür; alle Bäume, Leute und Häuser sehen dann gleich aus.
@@ -238,9 +250,14 @@ Zusammen mit Stadt und Himmel sind das fünf Draw Calls.
 
 Vom Start geradeaus die Straße hinunter, hinter den letzten Häusern, steht das Büroensemble
 WEST.SIDE aus Bonn: Gebäude B (Generalzolldirektion) links, Gebäude A (Ministerium) rechts,
-dahinter das Parkhaus, davor rechts der Altbau; die Straße führt in den Hof. Links eine dunkle
-Halle, rechts Wohnblöcke mit rotbraunen Dächern, wie im Luftbild. Es taucht erst beim
-Hinlaufen aus dem Dunst auf.
+dahinter das Parkhaus; die Straße führt in den Hof. Es taucht erst beim Hinlaufen aus dem
+Dunst auf.
+
+Darum herum liegt das **Werksviertel**, ein altes Industriegebiet im Umbau: Die Straße führt
+durch das alte Werkstor und über ein Gleisstück hinein. Backsteinhallen mit Flach- oder
+Sheddach, niedriger und breiter als die Häuser des Blütenviertels, stehen, wo das Ensemble
+Platz lässt; Schornstein, Wasserturm und Gasometer ragen darüber. Schotter statt Rasen,
+Birken und Wildwuchs statt Kirschbäumen und Pfingstrosen.
 
 Maße und Aufbau stammen aus dem Skizzenmodell (`generate_assets.py`: 62 m lang, 18 m tief,
 vier Geschosse, Stützenraster 6,9 m, Parkhaus 20 × 64 m). Dessen GLB-Dateien lädt das Spiel
@@ -264,7 +281,8 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
   `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.
   „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit.
 - **Welt:** „Im Hintergrund weiterzeichnen“ an oder aus, mit dem Stand. „Sammlung ansehen …“
-  zeigt die Bilder des Stadtteils: links die Arten mit Anzahl und Höchstzahl, rechts die Bilder
+  zeigt die Bilder des Stadtteils, in dem man steht; über den Namen oben wechselt man zum anderen
+  Stadtteil oder zu „Ganze Stadt“ (die Besucher). Links die Arten mit Anzahl und Höchstzahl, rechts die Bilder
   der gewählten Art mit Nummer und Modell. „Löschen“ nimmt ein Bild heraus, „–“ und „+“ ändern
   die Höchstzahl. „KI-Zugang …“ öffnet das Zugangsmenü.
 
@@ -380,7 +398,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh`, `D3D11Texture` |
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
-| `assets` | `AssetStore` (Asset-Ordner), `PartLibrary` (Sammlung je Stadtteil), `District`, `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
+| `assets` | `AssetStore` (Asset-Ordner), `PartLibrary` (eine Sammlung), `TownLibrary` (alle Sammlungen der Stadt), `District`, `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
 | `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `Artist`, `PartArtist` und `BackgroundArtist` (Bilder für die Sammlung), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
 | `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `Facades`, `FacadeAtlas`, `WestSide` (Easter Egg), `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
@@ -408,7 +426,7 @@ eine Fontäne in die kleine Schale, die läuft in die große über und diese in 
 Beckenrand steigen kleine Strahlen zur Mitte, und wo Wasser auftrifft, laufen Ringe über die
 Oberfläche. 
 
-Häuser, das WEST.SIDE-Ensemble, der Brunnen, Baumstämme und Laternen sind fest (`Obstacles`):
+Häuser, Hallen, das WEST.SIDE-Ensemble, das Werkstor, Schornstein, Gasometer, der Brunnen, Baumstämme und Laternen sind fest (`Obstacles`):
 Wer dagegenläuft, gleitet an der Wand entlang. Darüber hinwegfliegen geht, und wer von oben
 kommt, landet auf dem Dach. Die Besucher drehen ihre Runden außerhalb des Brunnens.
 

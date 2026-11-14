@@ -1,5 +1,6 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.PartLibrary.Kind;
 import com.aresstack.threed4j.gfx.GraphicsDevice;
 import com.aresstack.threed4j.gfx.Mesh;
@@ -48,9 +49,9 @@ final class PlazaScene implements AutoCloseable {
     final Mesh sprites;
     final Mesh sky;
     final int cityTriangles;
-    final int groundTriangles = 50 * (50 + WEST_SIDE_ROWS) * 2;
+    final int groundTriangles = 50 * (50 + WORKS_ROWS) * 2;
     final int spriteCount;
-    final int buildingCount;
+    int buildingCount;
 
     /**
      * @param groundAtlas the ground textures; their average colours go into the ground mesh
@@ -66,6 +67,8 @@ final class PlazaScene implements AutoCloseable {
         obstacles.post(0f, 0f, FOUNTAIN_RADIUS, 5.4f);
         buildingCount = buildings(builder, random) + 3;
         westSide(builder);
+        List<float[]> worksPlants = new ArrayList<>();
+        buildingCount += works(builder, worksPlants);
         city = builder.build(graphics);
         cityTriangles = builder.triangleCount();
         Facades.Built walls = Facades.build(graphics, houses, facadeAtlas);
@@ -77,6 +80,9 @@ final class PlazaScene implements AutoCloseable {
         visitors(batch, random);
         bushes(batch, random); // after the rest, so that everything before keeps its place
         westSideSprites(batch, random);
+        for (float[] plant : worksPlants) { // last, so that everything before keeps its picture
+            batch.add(Kind.values()[(int) plant[0]], plant[1], plant[2], plant[3]);
+        }
         sprites = batch.build(graphics);
         spriteCount = batch.count;
 
@@ -88,39 +94,169 @@ final class PlazaScene implements AutoCloseable {
 
     /** World z of the open side of the WEST.SIDE ensemble: straight down the street from the start, past the last houses. */
     static final float WEST_SIDE_FRONT = -116f;
-    /** Rows of ground squares added beyond the town for the ensemble. */
-    private static final int WEST_SIDE_ROWS = 28;
+    /** Rows of ground squares added beyond the Blütenviertel for the Werksviertel with the ensemble in it. */
+    private static final int WORKS_ROWS = 37;
 
     /**
-     * The Easter egg at the end of the street and a hint of its neighborhood in
-     * Bonn: the old building at the open side, a dark hall to the left, housing
-     * blocks with red-brown roofs to the right.
+     * The Easter egg at the end of the street: the WEST.SIDE office ensemble. What
+     * surrounds it is the Werksviertel (see {@link #works}).
      */
     private void westSide(MeshBuilder builder) {
         WestSide.build(builder, WEST_SIDE_FRONT);
         WestSide.obstacles(obstacles, WEST_SIDE_FRONT);
 
-        Vec3 oldWall = new Vec3(0.86f, 0.80f, 0.68f);
-        Vec3 oldRoof = new Vec3(0.52f, 0.40f, 0.36f);
-        builder.box(9f, 0f, WEST_SIDE_FRONT + 3f, 21f, 6.5f, WEST_SIDE_FRONT + 12f, oldWall, oldRoof);
-        obstacles.box(9f, WEST_SIDE_FRONT + 3f, 21f, WEST_SIDE_FRONT + 12f, 6.5f);
-        builder.pyramid(15f, 6.5f, WEST_SIDE_FRONT + 7.5f, 6.6f, 3.2f, oldRoof);
+    }
 
-        Vec3 hall = new Vec3(0.40f, 0.41f, 0.46f);
-        builder.box(-86f, 0f, WEST_SIDE_FRONT - 52f, -58f, 8f, WEST_SIDE_FRONT - 8f, hall, hall.scale(0.8f));
-        obstacles.box(-86f, WEST_SIDE_FRONT - 52f, -58f, WEST_SIDE_FRONT - 8f, 8f);
+    // ------------------------------------------------------------ Werksviertel
 
-        Vec3 housing = new Vec3(0.93f, 0.90f, 0.86f);
-        Vec3 housingRoof = new Vec3(0.66f, 0.42f, 0.38f);
-        float[][] blocks = {{54f, -6f, 18f, 13f}, {76f, -22f, 13f, 18f}, {56f, -40f, 18f, 13f}, {78f, -58f, 13f, 18f},
-                {57f, -74f, 18f, 13f}};
-        for (float[] block : blocks) {
-            float z = WEST_SIDE_FRONT + block[1];
-            builder.box(block[0] - block[2] / 2, 0f, z - block[3] / 2, block[0] + block[2] / 2, 12f, z + block[3] / 2,
-                    housing, housingRoof);
-            obstacles.box(block[0] - block[2] / 2, z - block[3] / 2, block[0] + block[2] / 2, z + block[3] / 2, 12f);
-            builder.box(block[0] - block[2] / 2 + 1.5f, 12f, z - block[3] / 2 + 1.5f, block[0] + block[2] / 2 - 1.5f,
-                    14.6f, z + block[3] / 2 - 1.5f, housing, housingRoof);
+    private static final Vec3[] BRICKS = {
+            new Vec3(0.72f, 0.38f, 0.33f), new Vec3(0.62f, 0.34f, 0.31f), new Vec3(0.78f, 0.50f, 0.39f),
+            new Vec3(0.58f, 0.41f, 0.37f), new Vec3(0.82f, 0.71f, 0.57f)};
+    private static final Vec3 TAR = new Vec3(0.36f, 0.34f, 0.39f);
+    private static final Vec3 SHED_GLASS = new Vec3(0.56f, 0.74f, 0.80f);
+
+    /**
+     * The Werksviertel around the WEST.SIDE ensemble: an old industrial quarter.
+     * Brick halls, lower and wider than the houses of the Blütenviertel, with flat or
+     * sawtooth roofs, stand wherever the ensemble and its neighbors leave room;
+     * a chimney, a water tower and a gasometer rise above them, and the street from
+     * the plaza enters through the old works gate on a track.
+     *
+     * @param plants what grows between the halls, to be added to the sprites: kind, x, z, height
+     * @return how many halls were built
+     */
+    private int works(MeshBuilder builder, List<float[]> plants) {
+        Random random = new Random(77); // its own, so that the Blütenviertel stays as it was
+        float border = District.WORKS_BORDER_Z;
+
+        // The gate where the street crosses into the quarter, and the track that runs through it.
+        Vec3 gateBrick = BRICKS[1];
+        for (int side = -1; side <= 1; side += 2) {
+            builder.box(side * 7f - 1f, 0f, border - 1f, side * 7f + 1f, 8f, border + 1f, gateBrick, TAR);
+            obstacles.box(side * 7f - 1f, border - 1f, side * 7f + 1f, border + 1f, 8f);
+        }
+        builder.box(-8f, 6.6f, border - 0.6f, 8f, 8.2f, border + 0.6f, TAR, TAR);
+        builder.quad(new Vec3(-6f, 6.6f, border - 0.6f), new Vec3(6f, 6.6f, border - 0.6f),
+                new Vec3(6f, 6.6f, border + 0.6f), new Vec3(-6f, 6.6f, border + 0.6f), TAR.scale(0.8f));
+        Vec3 rail = new Vec3(0.30f, 0.29f, 0.33f);
+        Vec3 sleeper = new Vec3(0.47f, 0.36f, 0.30f);
+        for (float z = border + 9f; z > WEST_SIDE_FRONT; z -= 1.3f) {
+            builder.box(-1.25f, 0f, z - 0.3f, 1.25f, 0.04f, z, sleeper, sleeper);
+        }
+        builder.box(-0.82f, 0f, WEST_SIDE_FRONT, -0.70f, 0.09f, border + 9.5f, rail, rail);
+        builder.box(0.70f, 0f, WEST_SIDE_FRONT, 0.82f, 0.09f, border + 9.5f, rail, rail);
+
+        // Landmarks.
+        float[] chimney = {-47f, -146f};
+        builder.box(chimney[0] - 2.2f, 0f, chimney[1] - 2.2f, chimney[0] + 2.2f, 4f, chimney[1] + 2.2f, BRICKS[0], TAR);
+        builder.prism(chimney[0], 4f, 36f, chimney[1], 1.5f, 10, BRICKS[0], TAR);
+        builder.prism(chimney[0], 33.5f, 34.5f, chimney[1], 1.75f, 10, BRICKS[3], BRICKS[3]);
+        obstacles.box(chimney[0] - 2.2f, chimney[1] - 2.2f, chimney[0] + 2.2f, chimney[1] + 2.2f, 36f);
+
+        float[] tower = {44f, -216f};
+        Vec3 steel = new Vec3(0.42f, 0.45f, 0.50f);
+        Vec3 tank = new Vec3(0.56f, 0.66f, 0.62f);
+        for (int corner = 0; corner < 4; corner++) {
+            float x = tower[0] + (corner % 2 == 0 ? -3f : 3f);
+            float z = tower[1] + (corner < 2 ? -3f : 3f);
+            builder.box(x - 0.3f, 0f, z - 0.3f, x + 0.3f, 14f, z + 0.3f, steel, steel);
+            obstacles.post(x, z, 0.4f, 14f);
+        }
+        disc(builder, tower[0], 14f, tower[1], 5f, 12, tank.scale(0.75f));
+        builder.prism(tower[0], 14f, 20f, tower[1], 5f, 12, tank, tank);
+        builder.prism(tower[0], 20f, 20.6f, tower[1], 5.4f, 12, steel, steel);
+        builder.prism(tower[0], 20.6f, 22f, tower[1], 1.2f, 8, steel, steel);
+
+        float[] gasometer = {-72f, -212f};
+        Vec3 plate = new Vec3(0.55f, 0.63f, 0.61f);
+        builder.prism(gasometer[0], 0f, 15f, gasometer[1], 10f, 18, plate, plate.scale(0.9f));
+        for (float ring : new float[] {5f, 10f, 14.6f}) {
+            builder.prism(gasometer[0], ring, ring + 0.4f, gasometer[1], 10.3f, 18, steel, steel);
+        }
+        builder.prism(gasometer[0], 15f, 16.2f, gasometer[1], 7f, 18, plate.scale(0.95f), plate);
+        obstacles.post(gasometer[0], gasometer[1], 10.3f, 15f);
+
+        // Where no hall may stand: the street, the ensemble, its neighbors, the trees beside it, the landmarks.
+        float[][] taken = {{-9f, -1000f, 9f, border}, {-34f, -200f, 34f, -114f}, {30f, -156f, 46f, -104f},
+                {-48f, -116f, -28f, border}, {chimney[0] - 4f, chimney[1] - 4f, chimney[0] + 4f, chimney[1] + 4f},
+                {tower[0] - 6f, tower[1] - 6f, tower[0] + 6f, tower[1] + 6f},
+                {gasometer[0] - 11f, gasometer[1] - 11f, gasometer[0] + 11f, gasometer[1] + 11f}};
+        int count = 0;
+        for (int ix = 0; ix < 11; ix++) {
+            for (int iz = 0; iz < 8; iz++) {
+                float half = 5.5f + random.nextFloat() * 2f;
+                float x = -90f + ix * 18f + (random.nextFloat() - 0.5f) * 2.5f;
+                float z = border - 10.5f - iz * 17.5f + (random.nextFloat() - 0.5f) * 2f;
+                float height = 6f + random.nextFloat() * 4.5f;
+                Vec3 wall = BRICKS[random.nextInt(BRICKS.length)];
+                int roof = random.nextInt(3);
+                boolean weeds = random.nextInt(10) < 6;
+                int tree = random.nextInt(10);
+                float treeHeight = 6.5f + random.nextFloat() * 2.5f;
+                boolean free = Math.abs(x) + half < 99.5f && z - half > -247f;
+                for (float[] box : taken) {
+                    free &= x + half + 1f < box[0] || x - half - 1f > box[2] || z + half + 1f < box[1] || z - half - 1f > box[3];
+                }
+                if (!free) {
+                    continue;
+                }
+                houses.add(new Facades.House(x, z, half, height, wall, 500_000L + 1000L * ix + iz));
+                float foot = half + Facades.PLINTH;
+                obstacles.box(x - foot, z - foot, x + foot, z + foot, height);
+                builder.floor(x - foot, z - foot, x + foot, z + foot, Facades.GROUND_FLOOR, wall.scale(0.7f));
+                if (roof == 0) {
+                    sawtoothRoof(builder, x - half, z - half, x + half, z + half, height);
+                } else {
+                    builder.floor(x - half, z - half, x + half, z + half, height, TAR);
+                    if (roof == 1) { // a roof light
+                        builder.box(x - half * 0.5f, height, z - half * 0.3f, x + half * 0.5f, height + 1.1f,
+                                z + half * 0.3f, SHED_GLASS, TAR);
+                    }
+                }
+                if (weeds) {
+                    plants.add(new float[] {Kind.BUSH.ordinal(), x + half + 1.3f, z + half * 0.4f, 2.8f});
+                }
+                if (tree < 4) {
+                    plants.add(new float[] {(tree < 2 ? Kind.BLOSSOM_TREE : Kind.GREEN_TREE).ordinal(),
+                            x - half - 2.6f, z - half - 2.6f, treeHeight});
+                }
+                count++;
+            }
+        }
+        // Light at the gate, growth along the track.
+        plants.add(new float[] {Kind.LAMP.ordinal(), -7.6f, border - 4f, 5.5f});
+        plants.add(new float[] {Kind.LAMP.ordinal(), 7.6f, border - 12f, 5.5f});
+        plants.add(new float[] {Kind.BUSH.ordinal(), -6.2f, border - 9f, 2.6f});
+        plants.add(new float[] {Kind.BUSH.ordinal(), 6.4f, border - 5f, 3f});
+        plants.add(new float[] {Kind.BLOSSOM_TREE.ordinal(), -12f, border - 6f, 8f});
+        return count;
+    }
+
+    /** A sawtooth roof: three ridges, each with an upright glazed face and a slope down to the next. */
+    private static void sawtoothRoof(MeshBuilder builder, float x0, float z0, float x1, float z1, float y) {
+        int teeth = 3;
+        float width = (x1 - x0) / teeth;
+        float rise = 1.9f;
+        for (int tooth = 0; tooth < teeth; tooth++) {
+            float a = x0 + tooth * width;
+            float c = a + width;
+            builder.quad(new Vec3(a, y, z0), new Vec3(a, y, z1), new Vec3(a, y + rise, z1), new Vec3(a, y + rise, z0),
+                    SHED_GLASS);
+            builder.quad(new Vec3(a, y + rise, z1), new Vec3(c, y, z1), new Vec3(c, y, z0), new Vec3(a, y + rise, z0), TAR);
+            builder.triangle(new Vec3(a, y, z1), new Vec3(c, y, z1), new Vec3(a, y + rise, z1), TAR.scale(0.85f));
+            builder.triangle(new Vec3(c, y, z0), new Vec3(a, y, z0), new Vec3(a, y + rise, z0), TAR.scale(0.85f));
+        }
+    }
+
+    /** A round plate seen from below, e.g. the bottom of a tank. */
+    private static void disc(MeshBuilder builder, float x, float y, float z, float radius, int sides, Vec3 color) {
+        Vec3 center = new Vec3(x, y, z);
+        for (int i = 0; i < sides; i++) {
+            double angle0 = 2 * Math.PI * i / sides;
+            double angle1 = 2 * Math.PI * (i + 1) / sides;
+            builder.triangle(center,
+                    new Vec3(x + radius * (float) Math.cos(angle0), y, z + radius * (float) Math.sin(angle0)),
+                    new Vec3(x + radius * (float) Math.cos(angle1), y, z + radius * (float) Math.sin(angle1)), color);
         }
     }
 
@@ -247,22 +383,23 @@ final class PlazaScene implements AutoCloseable {
      * brightness, as the flat-coloured ground did.
      */
     private static Mesh ground(GraphicsDevice graphics, GroundAtlas atlas) {
-        int perSide = 50; // groundTriangles follows from this and WEST_SIDE_ROWS
-        int rows = perSide + WEST_SIDE_ROWS;
+        int perSide = 50; // groundTriangles follows from this and WORKS_ROWS
+        int rows = perSide + WORKS_ROWS;
         float[] vertices = new float[perSide * rows * 4 * 9];
         int[] indices = new int[perSide * rows * 6];
         int v = 0;
         int i = 0;
         for (int ix = -perSide / 2; ix < perSide / 2; ix++) {
-            // The town, and beyond its far edge the ground of the WEST.SIDE ensemble.
-            for (int iz = -perSide / 2 - WEST_SIDE_ROWS; iz < perSide / 2; iz++) {
+            // The Blütenviertel, and beyond its far edge the Werksviertel.
+            for (int iz = -perSide / 2 - WORKS_ROWS; iz < perSide / 2; iz++) {
                 float x = ix * GROUND_TILE;
                 float z = iz * GROUND_TILE;
                 float centerX = x + GROUND_TILE / 2;
                 float centerZ = z + GROUND_TILE / 2;
                 GroundAtlas.Surface surface;
-                if (centerZ < -100f) {
-                    // Paved under and around the ensemble and where the street arrives, lawn beside it.
+                District district = District.at(centerX, centerZ);
+                if (district == District.WORKS_QUARTER) {
+                    // Paved under and around the ensemble and where the street arrives, gravel beside it.
                     boolean site = Math.abs(centerX) < WestSide.HALF_WIDTH + 6f && centerZ < WEST_SIDE_FRONT + 10f;
                     surface = site || Math.abs(centerX) < STREET_HALF_WIDTH
                             ? GroundAtlas.Surface.STREET : GroundAtlas.Surface.LAWN;
@@ -275,7 +412,7 @@ final class PlazaScene implements AutoCloseable {
                 }
                 float brightness = ((ix + iz) & 1) == 0 ? 1f : 0.96f;
                 // Larger patches than a square share a tile, so that the ground does not look like a quilt.
-                GroundAtlas.Cell tile = atlas.choose(surface, 1000L * Math.floorDiv(ix, 3) + Math.floorDiv(iz, 3));
+                GroundAtlas.Cell tile = atlas.choose(district, surface, 1000L * Math.floorDiv(ix, 3) + Math.floorDiv(iz, 3));
                 int cell = tile.index();
                 Vec3 average = tile.average();
                 int first = v / 9;
@@ -541,7 +678,11 @@ final class PlazaScene implements AutoCloseable {
             } else if (kind == Kind.LAMP) {
                 obstacles.post(x, z, 0.15f, height);
             }
-            SpriteAtlas.Cell cell = atlas.choose(kind, count);
+            District district = District.at(x, z);
+            if (kind == Kind.BUSH && !district.flowerBushes()) {
+                height *= 0.7f; // a flower bush fills the lower half of its picture, wild growth all of it
+            }
+            SpriteAtlas.Cell cell = atlas.choose(district, kind, count);
             float half = height * SpriteAtlas.CELL_WIDTH / SpriteAtlas.CELL_HEIGHT / 2f;
             float u0 = (float) cell.column() / atlas.columns;
             float u1 = (float) (cell.column() + 1) / atlas.columns;

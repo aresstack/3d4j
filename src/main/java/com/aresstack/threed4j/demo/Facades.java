@@ -1,5 +1,6 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.PartLibrary;
 import com.aresstack.threed4j.gfx.GraphicsDevice;
 import com.aresstack.threed4j.gfx.Mesh;
@@ -108,9 +109,10 @@ final class Facades {
 
     private void add(House house, FacadeAtlas atlas) {
         Random random = new Random(house.seed());
-        FacadeAtlas.Cell window = choose(atlas.cells(PartLibrary.Kind.WINDOW), house.seed(), 1);
-        FacadeAtlas.Cell door = choose(atlas.cells(PartLibrary.Kind.DOOR), house.seed(), 2);
-        FacadeAtlas.Cell shop = choose(atlas.cells(PartLibrary.Kind.SHOP), house.seed(), 3);
+        District district = District.at(house.x(), house.z());
+        FacadeAtlas.Cell window = choose(atlas.cells(district, PartLibrary.Kind.WINDOW), house.seed(), 1);
+        FacadeAtlas.Cell door = choose(atlas.cells(district, PartLibrary.Kind.DOOR), house.seed(), 2);
+        FacadeAtlas.Cell shop = choose(atlas.cells(district, PartLibrary.Kind.SHOP), house.seed(), 3);
         // The house's own proportions: how close its windows stand, how high its floors are, whether it has shops.
         float windowSpacing = 2.5f + random.nextFloat() * 0.9f;
         float floorHeight = 2.9f + random.nextFloat() * 0.5f;

@@ -50,4 +50,38 @@ class ArtistTest {
         library.setTarget(PartLibrary.Kind.DOOR, 0);
         assertNull(BackgroundArtist.next(library), "a limit of zero means: none of this kind");
     }
+
+    @Test
+    void whatAKindIsDependsOnTheDistrictAndPeopleBelongToNone() {
+        String birch = Artist.description(PartLibrary.Kind.BLOSSOM_TREE, 1, com.aresstack.threed4j.assets.District.WORKS_QUARTER);
+        assertTrue(birch.contains("birch") && birch.contains("brick"), birch);
+        String gate = PartArtist.task(PartLibrary.Kind.SHOP, 1, com.aresstack.threed4j.assets.District.WORKS_QUARTER);
+        assertTrue(gate.contains("gate") && gate.contains("brick"), gate);
+        String person = Artist.description(PartLibrary.Kind.VISITOR, 1, com.aresstack.threed4j.assets.District.WORKS_QUARTER);
+        assertTrue(person.contains("person") && !person.contains("brick"), person);
+    }
+
+    @Test
+    void theBackgroundDrawsForEveryDistrictAndForTheWholeTown(@TempDir Path directory) throws Exception {
+        com.aresstack.threed4j.assets.TownLibrary town = new com.aresstack.threed4j.assets.TownLibrary(new AssetStore(directory));
+        BufferedImage picture = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+        for (com.aresstack.threed4j.assets.District district : com.aresstack.threed4j.assets.District.ALL) {
+            for (PartLibrary.Kind kind : com.aresstack.threed4j.assets.TownLibrary.districtKinds()) {
+                town.district(district).setTarget(kind, 1);
+                town.district(district).add(kind, null, picture, null);
+            }
+        }
+        town.shared().setTarget(PartLibrary.Kind.VISITOR, 2);
+        BackgroundArtist.Job people = BackgroundArtist.next(town);
+        assertEquals(PartLibrary.Kind.VISITOR, people.kind());
+
+        town.shared().add(PartLibrary.Kind.VISITOR, null, picture, null);
+        town.shared().add(PartLibrary.Kind.VISITOR, null, picture, null);
+        assertNull(BackgroundArtist.next(town), "everything has reached its limit");
+
+        town.district(com.aresstack.threed4j.assets.District.WORKS_QUARTER).setTarget(PartLibrary.Kind.DOOR, 3);
+        BackgroundArtist.Job door = BackgroundArtist.next(town);
+        assertEquals(PartLibrary.Kind.DOOR, door.kind());
+        assertEquals(com.aresstack.threed4j.assets.District.WORKS_QUARTER, door.district());
+    }
 }

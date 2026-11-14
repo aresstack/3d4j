@@ -2,6 +2,7 @@ package com.aresstack.threed4j.generator;
 
 import com.aresstack.threed4j.assets.AssetSpec;
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.PartLibrary;
 
 import java.io.IOException;
@@ -246,9 +247,18 @@ public final class AiSetup {
          * @return {@code null} on success, otherwise why it failed
          */
         public String draw(PartLibrary library, PartLibrary.Kind kind, int number, String districtStyle) {
+            return draw(library, new District("district", "district", districtStyle), kind, number);
+        }
+
+        /**
+         * Lets the model draw one picture of what this kind is in the district and adds it to the collection.
+         *
+         * @return {@code null} on success, otherwise why it failed
+         */
+        public String draw(PartLibrary library, District district, PartLibrary.Kind kind, int number) {
             String chosen = modelFor(kind);
             ChatClient chat = new ChatClient(URI.create(baseUrl), chosen != null ? chosen : model, apiKey);
-            return Artist.draw(chat, library, kind, number, districtStyle);
+            return Artist.draw(chat, library, district, kind, number);
         }
 
         /** The model that draws when a kind has none of its own. */

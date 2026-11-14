@@ -69,6 +69,14 @@ public final class PartLibrary {
             return this == LAMP;
         }
 
+        /**
+         * Whether pictures of this kind belong to the whole town instead of a district:
+         * its people are at home everywhere (see {@link TownLibrary}).
+         */
+        public boolean shared() {
+            return this == VISITOR;
+        }
+
         /** Pixel size a picture of this kind is rendered at. */
         public int width() {
             return width;
@@ -299,6 +307,11 @@ public final class PartLibrary {
         } catch (NumberFormatException e) {
             return kind.defaultTarget();
         }
+    }
+
+    /** Whether a limit for this kind was set here, as opposed to the default applying. */
+    public boolean hasOwnTarget(Kind kind) {
+        return settings().getProperty(kind.fileName()) != null;
     }
 
     public synchronized void setTarget(Kind kind, int target) throws IOException {
