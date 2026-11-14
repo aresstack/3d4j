@@ -346,11 +346,17 @@ Menüs, Anzeigen. So bleibt Schrift scharf, während die Szene mit weniger Pixel
 ist der wichtigste Hebel, wenn ein Software-Renderer rechnet, denn dort kostet jeder Pixel
 CPU-Zeit.
 
-Der Testplatz zeigt die übrigen Sparmaßnahmen: alle Gebäude in einem einzigen Mesh, alle
-Bäume, Laternen und Besucher als Sprites in einem zweiten (das Ausrichten zur Kamera und die
-Bewegung rechnet der Vertex-Shader), der Himmel als drittes. Drei Zeichenaufrufe pro Frame,
-Beleuchtung in drei festen Stufen, Dunst statt Fernsicht, Sprites ausgestanzt statt
-transparent.
+Der Testplatz zeigt die übrigen Sparmaßnahmen: Jede Art von Fläche liegt in einem einzigen
+Mesh – Gebäudekörper, Fassaden, Boden, Sprites (Bäume, Laternen, Besucher; das Ausrichten zur
+Kamera und die Bewegung rechnet der Vertex-Shader), das Wasser des Brunnens und der Himmel.
+Sechs Zeichenaufrufe pro Frame, Beleuchtung in drei festen Stufen, Dunst statt Fernsicht,
+Sprites ausgestanzt statt transparent.
+
+Der Brunnen spuckt Wasser: Vom Würfelturm fällt ein Kranz aus Strahlen in das Becken, vom
+Beckenrand steigen kleinere Strahlen zur Mitte, und wo Wasser auftrifft, laufen Ringe über
+die Oberfläche. Jeder Tropfen ist ein Viereck mit Startpunkt, Startgeschwindigkeit und Takt;
+wo er gerade ist, rechnet der Vertex-Shader (`water`) allein aus der Zeit. Pro Frame fällt
+dafür auf der CPU nichts an, und Texturen braucht das Wasser nicht.
 
 ### Shader
 

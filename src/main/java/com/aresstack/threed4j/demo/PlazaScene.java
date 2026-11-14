@@ -36,6 +36,8 @@ final class PlazaScene implements AutoCloseable {
 
     final Mesh city;
     final Mesh ground;
+    /** The moving water of the fountain: drops and rings. */
+    final Mesh water;
     /** The walls of the houses with their windows and doors. */
     final Mesh facades;
     /** The houses of the town, for building {@link #facades}. */
@@ -76,6 +78,7 @@ final class PlazaScene implements AutoCloseable {
         spriteCount = batch.count;
 
         sky = sky(graphics);
+        water = fountainWater(graphics);
     }
 
     // ------------------------------------------------------------------- ground
@@ -112,6 +115,96 @@ final class PlazaScene implements AutoCloseable {
             builder.box(block[0] - block[2] / 2 + 1.5f, 12f, z - block[3] / 2 + 1.5f, block[0] + block[2] / 2 - 1.5f,
                     14.6f, z + block[3] / 2 - 1.5f, housing, housingRoof);
         }
+    }
+
+    /**
+     * The water the fountain throws: from the top of the glowing cubes a crown of
+     * jets falls in arcs into the basin, a ring of lower jets rises from the basin's
+     * rim towards the middle, and where water lands, rings spread on the surface.
+     *
+     * <p>One quad per drop and per ring. Layout: start point (3), corner of the quad
+     * (2), speed at the start (3), timing as phase, duration of a flight and size
+     * (3), style as kind and brightness (3). The vertex shader computes where a drop
+     * is from the time; a jet is a row of drops that follow each other.</p>
+     */
+    private static Mesh fountainWater(GraphicsDevice graphics) {
+        List<float[]> quads = new ArrayList<>();
+        Random random = new Random(5);
+        float gravity = 9.8f;
+        float surface = 1.0f;
+
+        // The crown: from the top of the cubes outward and down into the basin.
+        float top = 6.0f;
+        int jets = 14;
+        for (int jet = 0; jet < jets; jet++) {
+            double angle = 2 * Math.PI * jet / jets;
+            float up = 5.2f;
+            float flight = (float) ((up + Math.sqrt(up * up + 2 * gravity * (top - surface))) / gravity);
+            float out = 3.6f / flight; // lands 3.6 from the middle, inside the basin
+            for (int drop = 0; drop < 7; drop++) {
+                quads.add(new float[] {0f, top, 0f, (float) Math.cos(angle) * out, up, (float) Math.sin(angle) * out,
+                        (drop + random.nextFloat() * 0.3f) / 7f, flight, 0.15f + random.nextFloat() * 0.06f,
+                        0f, 0.94f + random.nextFloat() * 0.06f});
+            }
+            // Where the jet lands, a ring spreads, again and again.
+            quads.add(new float[] {(float) Math.cos(angle) * 3.6f, surface + 0.03f, (float) Math.sin(angle) * 3.6f,
+                    0f, 0f, 0f, random.nextFloat(), 1.1f + random.nextFloat() * 0.5f, 0.55f, 1f, 1f});
+        }
+        // Small jets from the rim of the basin towards the middle, between the big ones.
+        for (int jet = 0; jet < jets; jet++) {
+            double angle = 2 * Math.PI * (jet + 0.5) / jets;
+            float up = 3.4f;
+            float flight = 2 * up / gravity;
+            float inward = -1.9f / flight;
+            for (int drop = 0; drop < 4; drop++) {
+                quads.add(new float[] {(float) Math.cos(angle) * 4.3f, surface, (float) Math.sin(angle) * 4.3f,
+                        (float) Math.cos(angle) * inward, up, (float) Math.sin(angle) * inward,
+                        (drop + random.nextFloat() * 0.3f) / 4f, flight, 0.10f + random.nextFloat() * 0.04f,
+                        0f, 1f});
+            }
+        }
+        // A bubbling top.
+        for (int drop = 0; drop < 10; drop++) {
+            double angle = random.nextDouble() * 2 * Math.PI;
+            float up = 2.2f + random.nextFloat() * 1.2f;
+            quads.add(new float[] {0f, top, 0f, (float) Math.cos(angle) * 0.35f, up, (float) Math.sin(angle) * 0.35f,
+                    random.nextFloat(), 2 * up / gravity, 0.14f, 0f, 1f});
+        }
+
+        float[][] corners = {{-1f, -1f}, {1f, -1f}, {1f, 1f}, {-1f, 1f}};
+        // A ring lies flat; seen from above its corners have to run the other way round.
+        float[][] flatCorners = {{-1f, 1f}, {1f, 1f}, {1f, -1f}, {-1f, -1f}};
+        float[] vertices = new float[quads.size() * 4 * 14];
+        int[] indices = new int[quads.size() * 6];
+        int v = 0;
+        for (int quad = 0; quad < quads.size(); quad++) {
+            float[] q = quads.get(quad);
+            for (float[] corner : q[9] > 0.5f ? flatCorners : corners) {
+                vertices[v++] = q[0];
+                vertices[v++] = q[1];
+                vertices[v++] = q[2];
+                vertices[v++] = corner[0];
+                vertices[v++] = corner[1];
+                vertices[v++] = q[3];
+                vertices[v++] = q[4];
+                vertices[v++] = q[5];
+                vertices[v++] = q[6];
+                vertices[v++] = q[7];
+                vertices[v++] = q[8];
+                vertices[v++] = q[9];
+                vertices[v++] = q[10];
+                vertices[v++] = 0f;
+            }
+            int first = quad * 4;
+            int at = quad * 6;
+            indices[at] = first;
+            indices[at + 1] = first + 1;
+            indices[at + 2] = first + 2;
+            indices[at + 3] = first;
+            indices[at + 4] = first + 2;
+            indices[at + 5] = first + 3;
+        }
+        return graphics.createMesh(vertices, indices, 3, 2, 3, 3, 3);
     }
 
     /** Edge length of one ground texture tile in the world. */
@@ -454,6 +547,7 @@ final class PlazaScene implements AutoCloseable {
     @Override
     public void close() {
         sky.close();
+        water.close();
         facades.close();
         sprites.close();
         ground.close();

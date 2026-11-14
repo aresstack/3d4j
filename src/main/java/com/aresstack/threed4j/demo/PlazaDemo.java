@@ -93,6 +93,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private Shader spriteShader;
     private Shader groundShader;
     private Texture groundTexture;
+    private Shader waterShader;
     private Shader facadeShader;
     private Texture facadeTexture;
     private Vec3 facadeAtlasLayout;
@@ -248,8 +249,16 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 .vec3("uFogColor")
                 .scalar("uFogStart")
                 .scalar("uFogEnd"));
+        waterShader = graphics.createShader("water", ShaderLayout.attributes(3, 2, 3, 3, 3)
+                .mat4("uViewProjection")
+                .vec3("uCameraPosition")
+                .vec3("uCameraRight")
+                .vec3("uFogColor")
+                .scalar("uFogStart")
+                .scalar("uFogEnd")
+                .scalar("uTime"));
         loadArtwork(graphics);
-        System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 5 draw calls%n",
+        System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 6 draw calls%n",
                 scene.buildingCount, scene.cityTriangles + scene.groundTriangles + scene.facadeTriangles,
                 scene.spriteCount);
     }
@@ -609,6 +618,15 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         spriteShader.setUniform("uTime", (float) sceneTime);
         graphics.draw(scene.sprites, spriteShader);
 
+        waterShader.setUniform("uViewProjection", viewProjection);
+        waterShader.setUniform("uCameraPosition", position);
+        waterShader.setUniform("uCameraRight", camera.right());
+        waterShader.setUniform("uFogColor", haze);
+        waterShader.setUniform("uFogStart", FOG_START);
+        waterShader.setUniform("uFogEnd", FOG_END);
+        waterShader.setUniform("uTime", (float) sceneTime);
+        graphics.draw(scene.water, waterShader);
+
         skyShader.setUniform("uViewProjection", projection.multiply(camera.viewRotationMatrix()));
         graphics.draw(scene.sky, skyShader);
     }
@@ -726,6 +744,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             groundShader.close();
             facadeTexture.close();
             facadeShader.close();
+            waterShader.close();
             skyShader.close();
             spriteShader.close();
             sceneShader.close();
