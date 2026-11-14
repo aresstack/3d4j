@@ -159,9 +159,13 @@ Grenzen bekommen.
   trotzdem unterscheiden. Den Zugang nimmt er aus dem Zugangsmenü dieses Programmlaufs, sonst
   holt er den gemerkten ohne Nachfrage (KeePass-Eintrag oder Umgebungsvariable). Ohne Zugang
   wartet er.
-- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 1 Laterne, 12 Besucher, 6 Büsche,
+- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 1 Laterne, 30 Besucher, 6 Büsche,
   je 3 Rasen- und Pflasterkacheln, 8 Fenster, 4 Türen, 4 Läden; je Stadtteil änderbar (0 bis 30),
   gespeichert in `limits.properties` im Ordner der Sammlung.
+- **Modell je Art:** In der Sammlung steht oben neben dem Namen der Art, welches Modell sie
+  zeichnet; ein Klick öffnet die Liste der Modelle des Dienstes. Ohne eigene Wahl zeichnet das
+  allgemeine Modell (Vorgabe `google/gemma-4-31B-it`). Gespeichert als `chat.model.<art>` in
+  `.3d4j/generator.properties`, z. B. `chat.model.visitor`.
 - **Eine Laterne je Stadtteil:** In einem Stadtteil stehen überall dieselben Laternen. Die
   Sammlung darf mehrere enthalten; in Gebrauch ist die älteste, bis man im Pausenmenü unter
   „Sammlung ansehen“ bei einer anderen „Verwenden“ wählt (`lamp.chosen` in `limits.properties`).

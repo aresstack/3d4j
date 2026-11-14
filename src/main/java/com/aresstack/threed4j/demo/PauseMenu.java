@@ -1,6 +1,7 @@
 package com.aresstack.threed4j.demo;
 
 import com.aresstack.threed4j.assets.PartLibrary;
+import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.generator.BackgroundArtist;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
@@ -120,6 +121,12 @@ final class PauseMenu {
     private String shownSignature = "";
     private long signatureCheckedAt;
     private final java.util.Map<java.nio.file.Path, BufferedImage> thumbnails = new java.util.HashMap<>();
+    // The list to choose the model that draws the shown kind.
+    private boolean modelList;
+    private int modelsFrom;
+    /** The models the service offers; {@code null} until asked, empty while the answer is on its way. */
+    private volatile List<String> offeredModels;
+    private volatile boolean modelsArrived;
     /** Index of the button under the mouse or chosen with the arrow keys; -1 for none. */
     private int marked = -1;
     private int lastMouseX = -1;
@@ -167,8 +174,15 @@ final class PauseMenu {
     // ------------------------------------------------------------------- input
 
     void update(Input input, int windowWidth, int windowHeight) {
+        if (modelsArrived) {
+            modelsArrived = false;
+            dirty = true;
+        }
         if (input.wasPressed(Key.ESCAPE)) {
-            if (collectionPage) {
+            if (modelList) {
+                modelList = false;
+                dirty = true;
+            } else if (collectionPage) {
                 showCollection(false);
             } else if (settingsPage) {
                 showPage(false);
@@ -236,6 +250,7 @@ final class PauseMenu {
 
     private void showCollection(boolean show) {
         collectionPage = show;
+        modelList = false;
         marked = -1;
         regions.clear();
         dirty = true;
@@ -422,6 +437,7 @@ final class PauseMenu {
             choice(g, text, 40, y, 250, 38, kind == shownKind, 15, () -> {
                 shownKind = chosen;
                 shownFrom = 0;
+                modelList = false;
             });
             y += 43;
         }
@@ -429,11 +445,22 @@ final class PauseMenu {
         // The limit of the chosen kind
         int limit = library.target(shownKind);
         label(g, BackgroundArtist.plural(shownKind), 330, 116, 20);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+        int labelEnd = 330 + g.getFontMetrics().stringWidth(BackgroundArtist.plural(shownKind));
         if (shownKind.uniform()) {
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
             g.setColor(TEXT);
-            g.drawString("überall steht die gewählte", 330 + 112, 116);
+            g.drawString("Im Stadtteil steht überall dieselbe: die gewählte.", 330, 566);
         }
+        // Which model draws this kind, in the middle between the name and the limit.
+        String kindModel = modelOf(shownKind);
+        int modelWidth = 190;
+        int modelX = (labelEnd + 690 - modelWidth) / 2;
+        choice(g, "", modelX, 94, modelWidth, 32, modelList, 13, () -> openModelList(!modelList));
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+        g.setColor(modelList ? Color.WHITE : INK);
+        String shownModel = fitted(g, "KI: " + shortName(kindModel), modelWidth - 44);
+        g.drawString(shownModel + "  ▾", modelX + (modelWidth - g.getFontMetrics().stringWidth(shownModel + "  ▾")) / 2, 115);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
         g.setColor(TEXT);
         g.drawString("höchstens", 690, 116);
@@ -510,6 +537,115 @@ final class PauseMenu {
         g.setColor(TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
         g.drawString(fitted(g, "Im Hintergrund: " + shownStatus[0], 420), 330, 598);
+
+        if (modelList) {
+            paintModelList(g, modelX, kindModel);
+        }
+    }
+
+    private static final int MODELS_PER_PAGE = 9;
+
+    /** The list below the model's button: the models of the service, a page at a time. Painted last, it lies on top. */
+    private void paintModelList(Graphics2D g, int x, String current) {
+        // A click beside the list closes it and does nothing else.
+        regions.add(new Region(new Rectangle2D.Double(0, 0, COLLECTION_WIDTH, COLLECTION_HEIGHT), () -> modelList = false));
+        List<String> offered = offeredModels;
+        List<String> models = new ArrayList<>();
+        if (offered != null) {
+            models.addAll(offered);
+        }
+        if (!models.contains(current)) {
+            models.add(0, current);
+        }
+        modelsFrom = Math.max(0, Math.min(modelsFrom, (models.size() - 1) / MODELS_PER_PAGE * MODELS_PER_PAGE));
+        int shown = Math.min(MODELS_PER_PAGE, models.size() - modelsFrom);
+        boolean pages = models.size() > MODELS_PER_PAGE;
+        boolean waiting = offered != null && offered.isEmpty();
+        int width = 300;
+        int left = x - (width - 190) / 2;
+        int height = 12 + shown * 32 + (pages || waiting ? 34 : 0);
+        Shape panel = new RoundRectangle2D.Double(left, 130, width, height, 22, 22);
+        g.setColor(CARD);
+        g.fill(panel);
+        g.setStroke(new BasicStroke(2.5f));
+        g.setColor(PINK_DARK);
+        g.draw(panel);
+        regions.add(new Region(new Rectangle2D.Double(left, 130, width, height), () -> { }));
+        for (int i = 0; i < shown; i++) {
+            String model = models.get(modelsFrom + i);
+            int top = 137 + i * 32;
+            boolean chosen = model.equals(current);
+            if (chosen) {
+                g.setColor(PINK_LIGHT);
+                g.fill(new RoundRectangle2D.Double(left + 6, top, width - 12, 28, 28, 28));
+            }
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, chosen ? Font.BOLD : Font.PLAIN, 13));
+            g.drawString(fitted(g, model, width - 36), left + 18, top + 19);
+            regions.add(new Region(new Rectangle2D.Double(left + 6, top, width - 12, 28), () -> chooseModel(model)));
+        }
+        int foot = 137 + shown * 32;
+        if (pages) {
+            choice(g, "‹", left + 10, foot, 36, 26, false, 14, () -> modelsFrom = Math.max(0, modelsFrom - MODELS_PER_PAGE));
+            choice(g, "›", left + width - 46, foot, 36, 26, false, 14, () -> {
+                if (modelsFrom + MODELS_PER_PAGE < models.size()) {
+                    modelsFrom += MODELS_PER_PAGE;
+                }
+            });
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+            String text = (modelsFrom / MODELS_PER_PAGE + 1) + "/" + ((models.size() + MODELS_PER_PAGE - 1) / MODELS_PER_PAGE);
+            g.drawString(text, left + (width - g.getFontMetrics().stringWidth(text)) / 2, foot + 18);
+        } else if (waiting) {
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+            g.drawString("Die Modelle des Dienstes werden geladen …", left + 18, foot + 18);
+        }
+    }
+
+    /** The model that draws this kind: its own, else the general one. */
+    private static String modelOf(PartLibrary.Kind kind) {
+        String own = AiSetup.modelFor(kind);
+        return own != null ? own : AiSetup.generalModel();
+    }
+
+    private static String shortName(String model) {
+        return model.substring(model.lastIndexOf('/') + 1);
+    }
+
+    /** Opens the list of models; the first time, the service is asked for its models on another thread. */
+    private void openModelList(boolean open) {
+        modelList = open;
+        modelsFrom = 0;
+        AiSetup.Session session = AiSetup.session();
+        if (!open || offeredModels != null || session == null) {
+            return; // without access the list shows what is set; the access menu knows more
+        }
+        offeredModels = List.of();
+        Thread asking = new Thread(() -> {
+            List<String> answer;
+            try {
+                answer = session.models();
+            } catch (java.io.IOException | RuntimeException e) {
+                answer = null; // asked again the next time the list opens
+                System.err.println("Models not listed: " + e.getMessage());
+            }
+            offeredModels = answer;
+            modelsArrived = true;
+        }, "model list");
+        asking.setDaemon(true);
+        asking.start();
+    }
+
+    private void chooseModel(String model) {
+        try {
+            // The general model is not written down for the kind, so that the kind follows it when it changes.
+            AiSetup.saveModelFor(shownKind,
+                    model.equals(AiSetup.generalModel()) ? null : model);
+        } catch (java.io.IOException e) {
+            System.err.println("Model not saved: " + e.getMessage());
+        }
+        modelList = false;
     }
 
     private BufferedImage thumbnail(PartLibrary.Part part) {

@@ -246,7 +246,19 @@ public final class AiSetup {
          * @return {@code null} on success, otherwise why it failed
          */
         public String draw(PartLibrary library, PartLibrary.Kind kind, int number, String districtStyle) {
-            return Artist.draw(chat(), library, kind, number, districtStyle);
+            String chosen = modelFor(kind);
+            ChatClient chat = new ChatClient(URI.create(baseUrl), chosen != null ? chosen : model, apiKey);
+            return Artist.draw(chat, library, kind, number, districtStyle);
+        }
+
+        /** The model that draws when a kind has none of its own. */
+        public String model() {
+            return model;
+        }
+
+        /** @return the ids of the models the service offers, sorted; talks to the service */
+        public List<String> models() throws IOException {
+            return listModels(baseUrl, apiKey);
         }
     }
 
@@ -303,6 +315,33 @@ public final class AiSetup {
         Settings settings = load();
         return apiKeyFromEnvironment() != null && normalizeBaseUrl(settings.baseUrl()) != null
                 || isPaired() && !settings.keePassEntry().isBlank();
+    }
+
+    /**
+     * The model that draws pictures of this kind: {@code chat.model.<kind>} in
+     * {@code .3d4j/generator.properties}, e.g. {@code chat.model.visitor}.
+     *
+     * @return the model's id, or {@code null} if the kind has none of its own and the general model draws it
+     */
+    public static String modelFor(PartLibrary.Kind kind) {
+        String value = read(settingsFile()).getProperty("chat.model." + kind.fileName(), "").trim();
+        return value.isEmpty() ? null : value;
+    }
+
+    /** The model that draws when a kind has none of its own: the one last chosen, else {@link #PREFERRED_MODEL}. */
+    public static String generalModel() {
+        Session current = session;
+        return current != null ? current.model() : load().model();
+    }
+
+    /** @param model the model's id, or {@code null} to let the general model draw this kind again */
+    public static void saveModelFor(PartLibrary.Kind kind, String model) throws IOException {
+        Properties own = read(settingsFile());
+        set(own, "chat.model." + kind.fileName(), model);
+        Files.createDirectories(home());
+        try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
+            own.store(out, "3d4j asset generator");
+        }
     }
 
     /** Whether pictures are drawn in the background while the game runs ({@code background.enabled}). */

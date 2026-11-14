@@ -170,6 +170,7 @@ class PauseMenuTest {
         clickCollection(397, 321); // "Löschen" below the first picture
         assertEquals(List.of(2), library.parts(PartLibrary.Kind.VISITOR).stream().map(PartLibrary.Part::number).toList());
 
+        library.setTarget(PartLibrary.Kind.VISITOR, 12);
         int before = library.target(PartLibrary.Kind.VISITOR);
         clickCollection(886, 110); // +
         clickCollection(886, 110);
