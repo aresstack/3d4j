@@ -14,10 +14,23 @@ import java.util.Properties;
  *
  * @param renderScale   internal resolution as a fraction of the window, 0.25 to 1
  * @param smoothUpscale blend neighboring pixels when the scene is stretched to the window
+ * @param mouseSpeed    factor on how far the view turns per pixel of mouse movement, 0.25 to 4
  */
-record GameSettings(float renderScale, boolean smoothUpscale) {
+record GameSettings(float renderScale, boolean smoothUpscale, float mouseSpeed) {
 
-    static final GameSettings DEFAULTS = new GameSettings(1f, true);
+    static final GameSettings DEFAULTS = new GameSettings(1f, true, 1f);
+
+    GameSettings withRenderScale(float scale) {
+        return new GameSettings(scale, smoothUpscale, mouseSpeed);
+    }
+
+    GameSettings withSmoothUpscale(boolean smooth) {
+        return new GameSettings(renderScale, smooth, mouseSpeed);
+    }
+
+    GameSettings withMouseSpeed(float speed) {
+        return new GameSettings(renderScale, smoothUpscale, speed);
+    }
 
     static Path file() {
         return Path.of(System.getProperty("user.home"), ".3d4j", "game.properties");
@@ -42,7 +55,16 @@ record GameSettings(float renderScale, boolean smoothUpscale) {
         if (!(scale >= 0.25f && scale <= 1f)) {
             scale = DEFAULTS.renderScale();
         }
-        return new GameSettings(scale, !"false".equalsIgnoreCase(properties.getProperty("render.smooth")));
+        float mouse = DEFAULTS.mouseSpeed();
+        try {
+            mouse = Float.parseFloat(properties.getProperty("mouse.speed", "1"));
+        } catch (NumberFormatException e) {
+            // keep the default
+        }
+        if (!(mouse >= 0.25f && mouse <= 4f)) {
+            mouse = DEFAULTS.mouseSpeed();
+        }
+        return new GameSettings(scale, !"false".equalsIgnoreCase(properties.getProperty("render.smooth")), mouse);
     }
 
     /** Remembers the settings; a failure only means they are asked for again next time. */
@@ -50,6 +72,7 @@ record GameSettings(float renderScale, boolean smoothUpscale) {
         Properties properties = new Properties();
         properties.setProperty("render.scale", String.format(Locale.ROOT, "%.4f", renderScale));
         properties.setProperty("render.smooth", String.valueOf(smoothUpscale));
+        properties.setProperty("mouse.speed", String.format(Locale.ROOT, "%.2f", mouseSpeed));
         try {
             Files.createDirectories(file.getParent());
             try (Writer out = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {

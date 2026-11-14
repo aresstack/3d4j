@@ -45,6 +45,7 @@ final class ChatClient {
     private final String model;
     private final String apiKey;
     private final int maxTokens = AiSetup.maxTokens();
+    private final String reasoningEffort = AiSetup.reasoningEffort();
 
     ChatClient(URI baseUrl, String model, String apiKey) {
         this.endpoint = URI.create(baseUrl + "/chat/completions");
@@ -188,6 +189,10 @@ final class ChatClient {
         body.addProperty("stream", false);
         // Without a limit of its own the service may cut a long drawing short.
         body.addProperty("max_tokens", maxTokens);
+        if (reasoningEffort != null) {
+            // Only when chosen in the settings, as the Enterprise AI Client does; otherwise the model's default.
+            body.addProperty("reasoning_effort", reasoningEffort);
+        }
 
         String response = exchange(endpoint, body.toString(), 5 * 60_000);
         try {
@@ -200,7 +205,7 @@ final class ChatClient {
             JsonElement finish = json.getAsJsonArray("choices").get(0).getAsJsonObject().get("finish_reason");
             if (finish != null && !finish.isJsonNull() && finish.getAsString().equals("length")) {
                 throw new IOException("the answer was cut off at max_tokens=" + maxTokens
-                        + "; raise chat.maxTokens in .3d4j/generator.properties");
+                        + "; raise the answer length in the settings (chat.maxTokens)");
             }
             return content.getAsString();
         } catch (RuntimeException e) {

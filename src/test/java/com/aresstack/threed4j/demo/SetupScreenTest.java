@@ -129,6 +129,20 @@ class SetupScreenTest {
     }
 
     @Test
+    void requestOptionsFromTheSettingsAreRemembered() throws Exception {
+        assertEquals(8192, com.aresstack.threed4j.generator.AiSetup.maxTokens());
+        assertNull(com.aresstack.threed4j.generator.AiSetup.reasoningEffort(), "nothing chosen: the model decides");
+
+        com.aresstack.threed4j.generator.AiSetup.saveRequestOptions(4096, "high");
+        assertEquals(4096, com.aresstack.threed4j.generator.AiSetup.maxTokens());
+        assertEquals("high", com.aresstack.threed4j.generator.AiSetup.reasoningEffort());
+
+        com.aresstack.threed4j.generator.AiSetup.saveRequestOptions(16384, null);
+        assertEquals(16384, com.aresstack.threed4j.generator.AiSetup.maxTokens());
+        assertNull(com.aresstack.threed4j.generator.AiSetup.reasoningEffort());
+    }
+
+    @Test
     void suggestsTheEntryUsedLastTimeThenTheOnlyOneWithAnAddress() {
         KeePassEntry wiki = new KeePassEntry("Wiki", "https://wiki.intern", "a");
         KeePassEntry ai = new KeePassEntry("KI-Dienst", "https://ki.intern/v1", "b");

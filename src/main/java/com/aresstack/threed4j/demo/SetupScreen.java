@@ -678,7 +678,7 @@ final class SetupScreen implements AutoCloseable {
             return "Ein Bauteil war unbrauchbar (" + problem.substring(5, Math.max(5, problem.indexOf(" was"))) + ").";
         }
         if (problem.contains("cut off at max_tokens")) {
-            return "Die Antwort wurde abgeschnitten (chat.maxTokens erhöhen).";
+            return "Die Antwort wurde abgeschnitten (Antwortlänge in den Einstellungen erhöhen).";
         }
         if (problem.contains("proxy route")) {
             return "Kein Weg zum Dienst (Proxy).";

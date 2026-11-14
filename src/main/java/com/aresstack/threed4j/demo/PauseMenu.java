@@ -18,7 +18,8 @@ import java.util.List;
 
 /**
  * The pause menu (Escape while playing): continue, settings, quit. It is a card in
- * the look of the "create the world" menu, drawn over the paused game.
+ * the look of the "create the world" menu, drawn over the paused game. Whatever can
+ * be adjusted in the game belongs on one of the tabs of its settings page.
  *
  * <p>Like that menu it is painted with Java 2D into an image; the game shows the
  * image as one texture in the middle of the window. The card is laid out on a fixed
@@ -55,17 +56,46 @@ final class PauseMenu {
 
         void smoothUpscale(boolean smooth);
 
+        /** @param speed factor on the turning of the view per pixel of mouse movement */
+        void mouseSpeed(float speed);
+
+        /**
+         * How the artwork is requested from the model from now on.
+         *
+         * @param reasoningEffort {@code low}, {@code medium}, {@code high}, or {@code null} for the model's default
+         */
+        void requestOptions(int maxTokens, String reasoningEffort);
+
         /** Open the "create the world" menu to draw the artwork again. */
         void recreateWorld();
+    }
+
+    /**
+     * Everything the settings show, as it is when the menu opens.
+     *
+     * @param reasoningEffort {@code low}, {@code medium}, {@code high}, or {@code null} for the model's default
+     */
+    record State(float renderScale, boolean smoothUpscale, float mouseSpeed, String reasoningEffort, int maxTokens) {
     }
 
     private record Region(Rectangle2D area, Runnable action) {
     }
 
+    private static final String[] TABS = {"Bild", "Steuerung", "KI"};
+    private static final float[] MOUSE_SPEEDS = {0.5f, 1f, 2f};
+    private static final String[] MOUSE_SPEED_LABELS = {"Langsam", "Normal", "Schnell"};
+    private static final String[] EFFORTS = {null, "low", "medium", "high"};
+    private static final String[] EFFORT_LABELS = {"Standard", "Wenig", "Mittel", "Viel"};
+    private static final int[] TOKEN_LIMITS = {2048, 4096, 8192, 16384};
+
     private final Actions actions;
     private float renderScale;
     private boolean smoothUpscale;
+    private float mouseSpeed;
+    private String reasoningEffort;
+    private int maxTokens;
     private boolean settingsPage;
+    private int tab;
     /** Index of the button under the mouse or chosen with the arrow keys; -1 for none. */
     private int marked = -1;
     private int lastMouseX = -1;
@@ -73,10 +103,13 @@ final class PauseMenu {
     private final List<Region> regions = new ArrayList<>();
     private boolean dirty = true;
 
-    PauseMenu(Actions actions, GameSettings settings) {
+    PauseMenu(Actions actions, State state) {
         this.actions = actions;
-        this.renderScale = settings.renderScale();
-        this.smoothUpscale = settings.smoothUpscale();
+        this.renderScale = state.renderScale();
+        this.smoothUpscale = state.smoothUpscale();
+        this.mouseSpeed = state.mouseSpeed();
+        this.reasoningEffort = state.reasoningEffort();
+        this.maxTokens = state.maxTokens();
     }
 
     /** {@code true} if the image has to be painted again; resets the flag. */
@@ -207,33 +240,87 @@ final class PauseMenu {
         centered(g, "Esc: weiterspielen", 470);
     }
 
+    /** The settings: one tab per subject, so that new settings find room. */
     private void paintSettings(Graphics2D g) {
         title(g, "Einstellungen");
-        label(g, "Auflösung", 150);
+        for (int i = 0; i < TABS.length; i++) {
+            int index = i;
+            choice(g, TABS[i], 40 + i * 150, 126, 140, tab == i, () -> {
+                tab = index;
+                marked = -1;
+            });
+        }
+        switch (tab) {
+            case 0 -> paintPictureTab(g);
+            case 1 -> paintControlsTab(g);
+            default -> paintAiTab(g);
+        }
+        button(g, "Zurück", 40, 478, 150, 50, () -> showPage(false));
+    }
+
+    private void paintPictureTab(Graphics2D g) {
+        label(g, "Auflösung", 206);
         for (int i = 0; i < RENDER_SCALES.length; i++) {
             float scale = RENDER_SCALES[i];
-            choice(g, RENDER_SCALE_LABELS[i], 40 + i * 89, 162, 84, Math.abs(scale - renderScale) < 0.01f, () -> {
+            choice(g, RENDER_SCALE_LABELS[i], 40 + i * 89, 218, 84, Math.abs(scale - renderScale) < 0.01f, () -> {
                 renderScale = scale;
                 actions.renderScale(scale);
             });
         }
-        g.setColor(TEXT);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
-        g.drawString("Weniger Prozent: unschärfer, aber mehr Bilder pro Sekunde.", 40, 228);
+        note(g, "Weniger Prozent: unschärfer, aber mehr Bilder pro Sekunde.", 284);
 
-        label(g, "Hochskalieren", 274);
-        choice(g, "Weich", 40, 286, 150, smoothUpscale, () -> {
+        label(g, "Hochskalieren", 330);
+        choice(g, "Weich", 40, 342, 150, smoothUpscale, () -> {
             smoothUpscale = true;
             actions.smoothUpscale(true);
         });
-        choice(g, "Pixelig", 200, 286, 150, !smoothUpscale, () -> {
+        choice(g, "Pixelig", 200, 342, 150, !smoothUpscale, () -> {
             smoothUpscale = false;
             actions.smoothUpscale(false);
         });
+    }
 
-        label(g, "Welt", 370);
-        button(g, "Welt neu zeichnen lassen …", 40, 382, 440, 50, actions::recreateWorld);
-        button(g, "Zurück", 40, 468, 150, 50, () -> showPage(false));
+    private void paintControlsTab(Graphics2D g) {
+        label(g, "Maus beim Umsehen", 206);
+        for (int i = 0; i < MOUSE_SPEEDS.length; i++) {
+            float speed = MOUSE_SPEEDS[i];
+            choice(g, MOUSE_SPEED_LABELS[i], 40 + i * 150, 218, 140, Math.abs(speed - mouseSpeed) < 0.01f, () -> {
+                mouseSpeed = speed;
+                actions.mouseSpeed(speed);
+            });
+        }
+        note(g, "Umsehen: Maustaste halten und ziehen, oder Pfeiltasten.", 284);
+        note(g, "Gehen: W A S D, schneller mit Umschalt, E und Q hoch und runter.", 308);
+    }
+
+    private void paintAiTab(Graphics2D g) {
+        label(g, "Nachdenken vor dem Zeichnen", 202);
+        for (int i = 0; i < EFFORTS.length; i++) {
+            String effort = EFFORTS[i];
+            choice(g, EFFORT_LABELS[i], 40 + i * 112, 214, 106, java.util.Objects.equals(effort, reasoningEffort), () -> {
+                reasoningEffort = effort;
+                actions.requestOptions(maxTokens, reasoningEffort);
+            });
+        }
+        note(g, "Mehr Nachdenken dauert länger. Standard: Modell entscheidet.", 278);
+
+        label(g, "Antwortlänge in Tokens", 318);
+        for (int i = 0; i < TOKEN_LIMITS.length; i++) {
+            int limit = TOKEN_LIMITS[i];
+            choice(g, String.valueOf(limit), 40 + i * 112, 330, 106, limit == maxTokens, () -> {
+                maxTokens = limit;
+                actions.requestOptions(maxTokens, reasoningEffort);
+            });
+        }
+        note(g, "Nachdenken zählt mit. Bei abgeschnittenen Antworten erhöhen.", 394);
+
+        button(g, "Welt neu zeichnen lassen …", 40, 414, 440, 46, actions::recreateWorld);
+    }
+
+    private void note(Graphics2D g, String text, int y) {
+        g.setColor(TEXT);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+        g.drawString(text, 40, y);
     }
 
     // ------------------------------------------------------------------ widgets

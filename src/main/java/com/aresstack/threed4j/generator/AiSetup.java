@@ -83,6 +83,33 @@ public final class AiSetup {
         }
     }
 
+    /**
+     * How much the model thinks before it answers, sent as {@code reasoning_effort}:
+     * {@code low}, {@code medium} or {@code high} from {@code chat.reasoningEffort} in
+     * {@code .3d4j/generator.properties}.
+     *
+     * @return the level, or {@code null} to send nothing and leave it to the model's default
+     */
+    public static String reasoningEffort() {
+        String value = read(settingsFile()).getProperty("chat.reasoningEffort", "").trim().toLowerCase(Locale.ROOT);
+        return value.equals("low") || value.equals("medium") || value.equals("high") ? value : null;
+    }
+
+    /**
+     * Remembers how answers are requested from now on.
+     *
+     * @param reasoningEffort {@code low}, {@code medium}, {@code high}, or {@code null} for the model's default
+     */
+    public static void saveRequestOptions(int maxTokens, String reasoningEffort) throws IOException {
+        Properties own = read(settingsFile());
+        own.setProperty("chat.maxTokens", String.valueOf(Math.max(256, maxTokens)));
+        set(own, "chat.reasoningEffort", reasoningEffort);
+        Files.createDirectories(home());
+        try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
+            own.store(out, "3d4j asset generator");
+        }
+    }
+
     public static void save(Settings settings) throws IOException {
         Properties own = read(settingsFile());
         // An empty value is removed, so that the generator falls back as documented.

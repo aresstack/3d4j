@@ -41,10 +41,20 @@ class PauseMenuTest {
         }
 
         @Override
+        public void mouseSpeed(float speed) {
+            asked.add("mouse " + speed);
+        }
+
+        @Override
+        public void requestOptions(int maxTokens, String reasoningEffort) {
+            asked.add("ai " + maxTokens + " " + reasoningEffort);
+        }
+
+        @Override
         public void recreateWorld() {
             asked.add("world");
         }
-    }, GameSettings.DEFAULTS);
+    }, new PauseMenu.State(1f, true, 1f, null, 8192));
     private final Input input = new Input();
 
     /** Clicks a point given in card units, in a 1280 x 720 window (card at 380, 80, scale 1). */
@@ -94,17 +104,24 @@ class PauseMenuTest {
     }
 
     @Test
-    void settingsChangeResolutionAndUpscalingAndEscapeLeadsBackFirst() {
-        click(260, 291); // Einstellungen
-        click(260, 182); // 50 %
-        click(275, 306); // Pixelig
-        click(260, 407); // Welt neu zeichnen lassen
-        assertEquals(List.of("scale 0.5", "smooth false", "world"), asked);
+    void settingsChangePictureControlsAndRequestsAndEscapeLeadsBackFirst() {
+        click(260, 291); // Einstellungen, tab "Bild"
+        click(260, 238); // 50 %
+        click(275, 362); // Pixelig
+        click(265, 146); // tab "Steuerung"
+        click(410, 238); // Schnell
+        click(415, 146); // tab "KI"
+        click(430, 234); // Viel nachdenken
+        click(200, 350); // 4096 Tokens
+        click(95, 234);  // Standard: nothing is sent, the model decides
+        click(260, 437); // Welt neu zeichnen lassen
+        assertEquals(List.of("scale 0.5", "smooth false", "mouse 2.0", "ai 8192 high", "ai 4096 high",
+                "ai 4096 null", "world"), asked);
 
         press(Key.ESCAPE); // back to the first page, the game stays paused
-        assertEquals(3, asked.size());
+        assertEquals(7, asked.size());
         press(Key.ESCAPE);
-        assertEquals("resume", asked.get(3));
+        assertEquals("resume", asked.get(7));
     }
 
     @Test
@@ -125,11 +142,12 @@ class PauseMenuTest {
     void settingsAreRememberedAndBrokenFilesGiveDefaults(@TempDir Path directory) throws Exception {
         Path file = directory.resolve("sub").resolve("game.properties");
         assertEquals(GameSettings.DEFAULTS, GameSettings.load(file));
-        new GameSettings(1f / 3f, false).save(file);
+        new GameSettings(1f / 3f, false, 2f).save(file);
         GameSettings loaded = GameSettings.load(file);
         assertEquals(1f / 3f, loaded.renderScale(), 0.001f);
         assertFalse(loaded.smoothUpscale());
-        java.nio.file.Files.writeString(file, "render.scale=17\nrender.smooth=vielleicht\n");
+        assertEquals(2f, loaded.mouseSpeed(), 0.001f);
+        java.nio.file.Files.writeString(file, "render.scale=17\nrender.smooth=vielleicht\nmouse.speed=-3\n");
         assertEquals(GameSettings.DEFAULTS, GameSettings.load(file));
     }
 }

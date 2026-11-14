@@ -143,11 +143,20 @@ Esc hält das Spiel an, legt einen Schleier darüber und zeigt eine Karte im Sti
 **Einstellungen**, **Spiel beenden**. Bedient wird sie mit der Maus oder mit Pfeiltasten und
 Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
 
-Die Einstellungen enthalten die Auflösung (100 bis 25 %, wie die Tasten 1 bis 5), das
-Hochskalieren (weich oder pixelig, wie F) und „Welt neu zeichnen lassen …“. Das öffnet das Menü
-„Die Welt erschaffen“ aus dem laufenden Spiel; dort ersetzt „Alles neu zeichnen“ auch Motive,
-die schon vorhanden sind. Auflösung und Hochskalieren merkt sich das Spiel in
-`.3d4j/game.properties`; `--scale=` hat Vorrang, `--benchmark` ignoriert die Datei.
+Die Einstellungen haben drei Reiter; alles, was sich im Spiel einstellen lässt, gehört dorthin:
+
+- **Bild:** Auflösung (100 bis 25 %, wie die Tasten 1 bis 5) und Hochskalieren (weich oder
+  pixelig, wie F).
+- **Steuerung:** Geschwindigkeit der Maus beim Umsehen (langsam, normal, schnell).
+- **KI:** „Nachdenken vor dem Zeichnen“ (Standard, wenig, mittel, viel) wird als
+  `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.
+  „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit. Darunter „Welt neu zeichnen
+  lassen …“: öffnet das Menü „Die Welt erschaffen“ aus dem laufenden Spiel.
+
+Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
+`--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
+(`chat.reasoningEffort`, `chat.maxTokens`), wo sie auch für `generate` gelten. Das Modell wählt
+man im Menü „Die Welt erschaffen“.
 
 Dafür mischt der Renderer im Overlay (nach dem Hochskalieren der Szene) durchsichtige Pixel
 mit dem, was darunter liegt, in OpenGL wie in Direct3D 11. Die Szene selbst bleibt deckend

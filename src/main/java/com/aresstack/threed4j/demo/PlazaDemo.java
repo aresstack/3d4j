@@ -2,6 +2,7 @@ package com.aresstack.threed4j.demo;
 
 import com.aresstack.threed4j.assets.AssetCatalog;
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.core.Engine;
 import com.aresstack.threed4j.core.EngineConfig;
 import com.aresstack.threed4j.core.EngineContext;
@@ -149,7 +150,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             settings = GameSettings.load(GameSettings.file());
         }
         if (options.renderScale() != null) {
-            settings = new GameSettings(options.renderScale(), settings.smoothUpscale());
+            settings = settings.withRenderScale(options.renderScale());
         }
         graphics.setRenderScale(settings.renderScale());
         graphics.setSmoothUpscale(settings.smoothUpscale());
@@ -230,7 +231,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             } else if (!playing || options.benchmark()) {
                 context.quit();
             } else if (pause == null) {
-                pause = new PauseMenu(this, settings);
+                pause = new PauseMenu(this, new PauseMenu.State(settings.renderScale(), settings.smoothUpscale(),
+                        settings.mouseSpeed(), AiSetup.reasoningEffort(), AiSetup.maxTokens()));
                 return;
             }
         }
@@ -325,14 +327,28 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     public void renderScale(float scale) {
         engine.graphics().setRenderScale(scale);
         engine.frameStats().reset();
-        remember(new GameSettings(scale, smoothUpscale));
+        remember(settings.withRenderScale(scale));
     }
 
     @Override
     public void smoothUpscale(boolean smooth) {
         smoothUpscale = smooth;
         engine.graphics().setSmoothUpscale(smooth);
-        remember(new GameSettings(settings.renderScale(), smooth));
+        remember(settings.withSmoothUpscale(smooth));
+    }
+
+    @Override
+    public void mouseSpeed(float speed) {
+        remember(settings.withMouseSpeed(speed));
+    }
+
+    @Override
+    public void requestOptions(int maxTokens, String reasoningEffort) {
+        try {
+            AiSetup.saveRequestOptions(maxTokens, reasoningEffort);
+        } catch (java.io.IOException e) {
+            System.err.println("Settings not saved: " + e.getMessage());
+        }
     }
 
     @Override
@@ -361,8 +377,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     private void moveCamera(Input input, float step) {
         if (input.isDown(MouseButton.LEFT) || input.isDown(MouseButton.RIGHT)) {
-            yaw += input.mouseDeltaX() * LOOK_SPEED;
-            pitch -= input.mouseDeltaY() * LOOK_SPEED;
+            yaw += input.mouseDeltaX() * LOOK_SPEED * settings.mouseSpeed();
+            pitch -= input.mouseDeltaY() * LOOK_SPEED * settings.mouseSpeed();
         }
         float turn = 1.6f * step;
         if (input.isDown(Key.LEFT)) {
