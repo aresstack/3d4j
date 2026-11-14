@@ -31,6 +31,6 @@ class TownPlanTest {
         int works = plan.indexOf("| Werksviertel");
         int blossom = plan.indexOf("| Blütenviertel");
         assertTrue(works > 0 && works < blossom, plan);
-        assertTrue(plan.indexOf("NEW") > works && plan.indexOf("NEW") < blossom, plan);
+        assertTrue(plan.indexOf("| NEW") > works && plan.indexOf("| NEW") < blossom, plan);
     }
 }
