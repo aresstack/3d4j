@@ -128,13 +128,13 @@ class PauseMenuTest {
         click(249, 240); // the slider, two thirds along: 2.00
         click(317, 146); // tab "KI"
         click(430, 234); // Viel nachdenken
-        click(200, 350); // 4096 Tokens
+        click(74, 336);  // 2048 Tokens
         click(95, 234);  // Standard: nothing is sent, the model decides
         click(429, 146); // tab "Welt"
         click(205, 238); // background drawing off
         click(260, 449); // KI-Zugang
-        assertEquals(List.of("scale 0.5", "smooth false", "mouse 2.0", "ai 8192 high", "ai 4096 high",
-                "ai 4096 null", "background false", "access"), asked);
+        assertEquals(List.of("scale 0.5", "smooth false", "mouse 2.0", "ai 8192 high", "ai 2048 high",
+                "ai 2048 null", "background false", "access"), asked);
 
         press(Key.ESCAPE); // back to the first page, the game stays paused
         assertEquals(8, asked.size());

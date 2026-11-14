@@ -70,7 +70,7 @@ public final class AiSetup {
 
     /**
      * Upper limit of tokens per answer, sent as {@code max_tokens}: {@code chat.maxTokens}
-     * from {@code .3d4j/generator.properties}, else from the Enterprise AI Client, else 8192.
+     * from {@code .3d4j/generator.properties}, else from the Enterprise AI Client, else 16384.
      */
     public static int maxTokens() {
         Properties own = read(settingsFile());
@@ -79,9 +79,9 @@ public final class AiSetup {
                 ".enterprise-ai-client", "enterprise-ai-client.properties"));
         try {
             return Math.max(256, Integer.parseInt(first(own.getProperty("chat.maxTokens"),
-                    client.getProperty("chat.maxTokens"), "8192")));
+                    client.getProperty("chat.maxTokens"), "16384")));
         } catch (NumberFormatException e) {
-            return 8192;
+            return 16384;
         }
     }
 

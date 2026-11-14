@@ -129,7 +129,7 @@ class SetupScreenTest {
 
     @Test
     void requestOptionsFromTheSettingsAreRemembered() throws Exception {
-        assertEquals(8192, com.aresstack.threed4j.generator.AiSetup.maxTokens());
+        assertEquals(16384, com.aresstack.threed4j.generator.AiSetup.maxTokens());
         assertNull(com.aresstack.threed4j.generator.AiSetup.reasoningEffort(), "nothing chosen: the model decides");
 
         com.aresstack.threed4j.generator.AiSetup.saveRequestOptions(4096, "high");

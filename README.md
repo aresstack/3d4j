@@ -443,8 +443,8 @@ die Meshes. Vorher geschah alles im Render-Thread und hielt bei jedem
 neuen Bild das Spiel an. Mit `-Dthreed4j.timing=1` meldet die Konsole, wie lange das Zeigen
 dauert.
 
-Die Antwortlänge hat unter „KI“ neben den üblichen Werten ein Feld für jede andere Zahl
-(mindestens 256). Wie viele Anfragen gleichzeitig bei der KI sein dürfen, steht unter „KI“ („Anfragen
+Die Antwortlänge hat unter „KI“ die Werte 2048, 8192, 16384 (Vorgabe), 32768 und 65536 und ein
+Feld für jede andere Zahl (mindestens 256). Wie viele Anfragen gleichzeitig bei der KI sein dürfen, steht unter „KI“ („Anfragen
 gleichzeitig“: 1, 2, 4 … 64 zur Auswahl oder eine eigene Zahl im Feld daneben, Vorgabe 1) und gilt für alles, was die KI fragt: das Zeichnen im
 Hintergrund, die Planung neuer Viertel und `generate`. Bei 1 kommt alles nacheinander dran, wie
 es ein lokales Modell auf einer Grafikkarte braucht. Lehnt der Dienst eine Anfrage ab oder ist er nicht
@@ -480,7 +480,7 @@ selbst zuständig. Die folgenden Einstellungen gelten für beide.
   man in die Konsole tippt; die Kopplung liegt danach in `.3d4j/keepass.properties` und gilt
   auch für das Menü. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird sie statt
   KeePass verwendet; dann muss die Adresse angegeben sein.
-- **Antwortlänge:** Jede Anfrage sendet `max_tokens` (Standard 8192, sonst `chat.maxTokens` aus
+- **Antwortlänge:** Jede Anfrage sendet `max_tokens` (Standard 16384, sonst `chat.maxTokens` aus
   `.3d4j/generator.properties` oder dem Enterprise AI Client). Meldet der Dienst
   `finish_reason=length`, gilt die Antwort als abgeschnitten und wird nicht verwendet.
 - **Weitere Argumente:** `--parallel=N` (Standard 4), `--only=lamp,visitor-1`, `--force`

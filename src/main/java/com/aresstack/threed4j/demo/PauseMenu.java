@@ -173,7 +173,7 @@ final class PauseMenu {
     private static final int[] PARALLEL_CHOICES = {1, 2, 4, 8, 16, 32, 64};
     private static final String[] EFFORTS = {null, "low", "medium", "high"};
     private static final String[] EFFORT_LABELS = {"Standard", "Wenig", "Mittel", "Viel"};
-    private static final int[] TOKEN_LIMITS = {2048, 4096, 8192, 16384};
+    private static final int[] TOKEN_LIMITS = {2048, 8192, 16384, 32768, 65536};
 
     private final Actions actions;
     private float renderScale;
@@ -761,7 +761,7 @@ final class PauseMenu {
         label(g, "Antwortlänge in Tokens", 304);
         for (int i = 0; i < TOKEN_LIMITS.length; i++) {
             int limit = TOKEN_LIMITS[i];
-            choice(g, String.valueOf(limit), 40 + i * 90, 316, 84, 40, limit == maxTokens, 15, () -> {
+            choice(g, String.valueOf(limit), 40 + i * 72, 316, 68, 40, limit == maxTokens, 14, () -> {
                 maxTokens = limit;
                 actions.requestOptions(maxTokens, reasoningEffort);
             });
@@ -804,10 +804,26 @@ final class PauseMenu {
                 ? progress.length() : progress.indexOf(", zuletzt ")), 440), 40, 284);
         int drawing = shownStatus.length - 2;
         if (progress.contains(", zuletzt ")) {
+            // Why the last one failed: on two lines below the state, or on one above the buttons
+            // when the list of pictures in work needs the room.
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
             g.setColor(TEXT);
-            g.drawString(fitted(g, "Zuletzt misslungen: " + progress.substring(progress.indexOf(", zuletzt ") + 10), 440),
-                    40, 376);
+            String reason = "Zuletzt misslungen: " + progress.substring(progress.indexOf(", zuletzt ") + 10);
+            if (drawing < 2) {
+                java.awt.FontMetrics metrics = g.getFontMetrics();
+                int cut = reason.length();
+                while (cut > 0 && metrics.stringWidth(reason.substring(0, cut)) > 440) {
+                    cut = reason.lastIndexOf(' ', cut - 1);
+                }
+                if (cut <= 0 || cut == reason.length()) {
+                    g.drawString(fitted(g, reason, 440), 40, 332);
+                } else {
+                    g.drawString(reason.substring(0, cut), 40, 332);
+                    g.drawString(fitted(g, reason.substring(cut + 1), 440), 40, 349);
+                }
+            } else {
+                g.drawString(fitted(g, reason, 440), 40, 376);
+            }
             g.setColor(INK);
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
         }
