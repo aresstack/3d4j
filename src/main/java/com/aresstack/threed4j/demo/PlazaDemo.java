@@ -663,7 +663,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         // The line, the progress, and then every picture being drawn, for a list.
         java.util.List<String> all = new java.util.ArrayList<>();
         all.add(backgroundArtist.status());
-        all.add(backgroundArtist.progress());
+        String failures = backgroundArtist.failures();
+        all.add(backgroundArtist.progress() + (failures.isEmpty() ? "" : " · " + failures));
         all.addAll(backgroundArtist.drawing());
         return all.toArray(new String[0]);
     }

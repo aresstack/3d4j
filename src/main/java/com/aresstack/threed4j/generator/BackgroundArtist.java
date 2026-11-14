@@ -296,19 +296,41 @@ public final class BackgroundArtist implements AutoCloseable {
                 }
                 if (problem == null) {
                     statuses.put(worker, what + " ist fertig");
-                    Thread.sleep(3000);
+                    Thread.sleep(200);
                 } else {
-                    // Not again at once: a service that refuses or a model that fails should not be hammered.
                     statuses.put(worker, what + " misslang: " + problem);
                     System.out.println("Background artist: " + what + " failed: " + problem);
-                    pauseUntil = System.currentTimeMillis() + 45_000;
-                    Thread.sleep(45_000);
+                    failures.incrementAndGet();
+                    // Without the address: the line in the settings is short, and the reason comes after it.
+                    lastFailure = what + ": " + problem.replaceAll("https?://\\S+\\s*", "");
+                    if (serviceRefuses(problem)) {
+                        // The service itself says no or cannot be reached: nobody hammers it.
+                        pauseUntil = System.currentTimeMillis() + 45_000;
+                        Thread.sleep(45_000);
+                    } else {
+                        // The model drew something unusable: only this worker waits a little.
+                        Thread.sleep(5000);
+                    }
                 }
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
+
+    /** Whether a failure came from the service (no answer, an error status) and not from an unusable drawing. */
+    static boolean serviceRefuses(String problem) {
+        return problem.contains("answered HTTP") || problem.contains("cannot reach") || problem.contains("Ollama:");
+    }
+
+    /** How many pictures failed in this run and why the last one did, in German; empty if none failed. */
+    public String failures() {
+        int count = failures.get();
+        return count == 0 ? "" : count + " misslungen, zuletzt " + lastFailure;
+    }
+
+    private final java.util.concurrent.atomic.AtomicInteger failures = new java.util.concurrent.atomic.AtomicInteger();
+    private volatile String lastFailure = "";
 
     private synchronized int inWorkCount() {
         return inWork.size();

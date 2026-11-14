@@ -785,8 +785,20 @@ final class PauseMenu {
         shownStatus = actions.backgroundStatus();
         g.setColor(INK);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
-        g.drawString(fitted(g, shownStatus[1], 440), 40, 284);
+        // The progress, and behind it how many failed and why the last one did: on two lines if need be.
+        String progress = shownStatus[1];
+        int failed = progress.indexOf(" · ");
+        g.drawString(fitted(g, failed < 0 ? progress : progress.substring(0, progress.indexOf(", zuletzt ") < 0
+                ? progress.length() : progress.indexOf(", zuletzt ")), 440), 40, 284);
         int drawing = shownStatus.length - 2;
+        if (progress.contains(", zuletzt ")) {
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            g.setColor(TEXT);
+            g.drawString(fitted(g, "Zuletzt misslungen: " + progress.substring(progress.indexOf(", zuletzt ") + 10), 440),
+                    40, 376);
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+        }
         if (drawing < 2) {
             g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 306);
         } else {
@@ -812,7 +824,7 @@ final class PauseMenu {
                 if (line == 2 && next < shownStatus.length) {
                     text.append("… und ").append(shownStatus.length - next).append(" weitere");
                 }
-                g.drawString(fitted(g, text.toString(), 440), 40, 326 + line * 18);
+                g.drawString(fitted(g, text.toString(), 440), 40, 324 + line * 17);
             }
         }
 
