@@ -18,4 +18,6 @@ Thumbs.db
 
 # Engine output
 *.png
+!docs/images/*.png
+!src/main/resources/defaults/**/*.png
 hs_err_pid*.log
