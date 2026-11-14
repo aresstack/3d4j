@@ -37,6 +37,13 @@ public final class Textures {
     }
 
     /** Uploads an image, e.g. one painted with Java 2D. */
+    /** As {@link #fromImage}, with the slow part done here, on whatever thread calls; see {@code prepareTexture}. */
+    public static GraphicsDevice.PendingTexture prepare(GraphicsDevice graphics, BufferedImage image, boolean smooth) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        return graphics.prepareTexture(width, height, image.getRGB(0, 0, width, height, null, 0, width), smooth);
+    }
+
     public static Texture fromImage(GraphicsDevice graphics, BufferedImage image, boolean smooth) {
         int width = image.getWidth();
         int height = image.getHeight();

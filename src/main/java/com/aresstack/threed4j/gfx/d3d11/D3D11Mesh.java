@@ -14,7 +14,8 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
 final class D3D11Mesh implements Mesh {
 
     private final ComObject context;
-    private final Arena arena = Arena.ofConfined();
+    /** Shared: a mesh may be made on one thread and drawn and closed on the render thread. */
+    private final Arena arena = Arena.ofShared();
 
     private final MemorySegment vertexBuffer;
     private final MemorySegment indexBuffer;

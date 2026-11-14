@@ -13,7 +13,8 @@ import static java.lang.foreign.ValueLayout.ADDRESS;
  */
 final class D3D11Texture implements Texture {
 
-    private final Arena arena = Arena.ofConfined();
+    /** Shared: a texture may be made on one thread and used and closed on the render thread. */
+    private final Arena arena = Arena.ofShared();
     private final int width;
     private final int height;
     /** The texture itself; NULL if someone else owns it (the scene image). */

@@ -16,6 +16,15 @@ final class GLTexture implements Texture {
     private final int height;
 
     GLTexture(int width, int height, int[] argb, boolean smooth) {
+        this(width, height, null, argb, smooth);
+    }
+
+    /** From pixels already in the order OpenGL wants; see {@link #pixels}. */
+    GLTexture(int width, int height, MemorySegment pixels, boolean smooth) {
+        this(width, height, pixels, null, smooth);
+    }
+
+    private GLTexture(int width, int height, MemorySegment ready, int[] argb, boolean smooth) {
         this.width = width;
         this.height = height;
         id = glGenTexture();
@@ -25,19 +34,27 @@ final class GLTexture implements Texture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        try (Arena arena = Arena.ofConfined()) {
-            // The first row uploaded is the row texture coordinate v = 0 addresses.
-            MemorySegment pixels = Native.bytes(arena, (long) width * height * 4);
-            for (int i = 0; i < argb.length; i++) {
-                int color = argb[i];
-                long offset = i * 4L;
-                pixels.set(ValueLayout.JAVA_BYTE, offset, (byte) (color >> 16));
-                pixels.set(ValueLayout.JAVA_BYTE, offset + 1, (byte) (color >> 8));
-                pixels.set(ValueLayout.JAVA_BYTE, offset + 2, (byte) color);
-                pixels.set(ValueLayout.JAVA_BYTE, offset + 3, (byte) (color >>> 24));
-            }
-            glTexImage2D(GL_TEXTURE_2D, GL_RGBA8, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+        if (ready != null) {
+            glTexImage2D(GL_TEXTURE_2D, GL_RGBA8, width, height, GL_RGBA, GL_UNSIGNED_BYTE, ready);
+            return;
         }
+        try (Arena arena = Arena.ofConfined()) {
+            glTexImage2D(GL_TEXTURE_2D, GL_RGBA8, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels(arena, argb));
+        }
+    }
+
+    /** The pixels as red, green, blue, alpha bytes; the first row is the row texture coordinate v = 0 addresses. */
+    static MemorySegment pixels(Arena arena, int[] argb) {
+        MemorySegment pixels = Native.bytes(arena, argb.length * 4L);
+        for (int i = 0; i < argb.length; i++) {
+            int color = argb[i];
+            long offset = i * 4L;
+            pixels.set(ValueLayout.JAVA_BYTE, offset, (byte) (color >> 16));
+            pixels.set(ValueLayout.JAVA_BYTE, offset + 1, (byte) (color >> 8));
+            pixels.set(ValueLayout.JAVA_BYTE, offset + 2, (byte) color);
+            pixels.set(ValueLayout.JAVA_BYTE, offset + 3, (byte) (color >>> 24));
+        }
+        return pixels;
     }
 
     int id() {

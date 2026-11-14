@@ -422,8 +422,12 @@ Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` h
 (`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`, `chat.parallel`), wo sie auch für `generate` gelten.
 Neue Bilder holt ein eigener Thread ins Spiel: Er liest einmal pro Sekunde die Sammlungen von
 der Platte und malt die Atlanten neu, wenn sich etwas geändert hat, jedes Teil der Welt höchstens
-alle acht Sekunden. Der Render-Thread lädt nur noch die fertigen Atlanten als Texturen hoch und
-baut die Meshes, ein Teil pro Bild. Vorher geschah alles im Render-Thread und hielt bei jedem
+alle acht Sekunden. Unter Direct3D baut er auch die Texturen und Meshes selbst (das Device darf,
+anders als sein Context, von jedem Thread benutzt werden; `GraphicsDevice.createsOffThread()`),
+und der Render-Thread tauscht nur noch das fertige Teil ein, eines pro Bild. Unter OpenGL
+gehören Texturen und Meshes dem Render-Thread; dort bringt der Hintergrund-Thread die Pixel
+schon in die passende Reihenfolge (`prepareTexture`), und der Render-Thread lädt hoch und baut
+die Meshes. Vorher geschah alles im Render-Thread und hielt bei jedem
 neuen Bild das Spiel an. Mit `-Dthreed4j.timing=1` meldet die Konsole, wie lange das Zeigen
 dauert.
 

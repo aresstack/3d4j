@@ -76,6 +76,32 @@ public interface GraphicsDevice extends AutoCloseable {
      */
     Texture createTexture(int width, int height, int[] argb, boolean smooth);
 
+    /**
+     * Whether meshes and textures may be created on a thread other than the render thread while
+     * that one draws. Then whole pieces of a world can be built beside the game and only handed
+     * over. Direct3D allows it (its device, unlike its context, is free for all threads); OpenGL
+     * does not.
+     */
+    default boolean createsOffThread() {
+        return false;
+    }
+
+    /** A texture whose slow part is done; see {@link #prepareTexture}. */
+    interface PendingTexture {
+        /** Makes the texture usable. Call on the render thread, once. */
+        Texture finish();
+    }
+
+    /**
+     * Does as much of creating a texture as may be done on a thread other than the render thread,
+     * so that a large picture does not hold up a frame: Direct3D creates the whole texture there,
+     * OpenGL at least puts the pixels into the order it wants. May be called from any thread while
+     * the device is open.
+     */
+    default PendingTexture prepareTexture(int width, int height, int[] argb, boolean smooth) {
+        return () -> createTexture(width, height, argb, smooth);
+    }
+
     /** Draws the mesh with the shader and the uniform values and texture set on it. */
     void draw(Mesh mesh, Shader shader);
 

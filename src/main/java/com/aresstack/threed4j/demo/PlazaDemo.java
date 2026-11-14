@@ -318,7 +318,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             System.out.println("Library: moved " + moved + " picture(s) to " + town.shared().directory());
         }
         showStart(graphics, new PreparedStart(town, startSignature(town), SpriteAtlas.paint(town),
-                GroundAtlas.paint(town), FacadeAtlas.paint(town)));
+                GroundAtlas.paint(town), FacadeAtlas.paint(town), null, null, null, null));
         showPlannedDistricts(graphics);
     }
 
@@ -329,17 +329,20 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         SpriteAtlas sprites = start.sprites();
         GroundAtlas ground = start.ground();
         FacadeAtlas facades = start.facades();
-        spriteAtlas = Textures.fromImage(graphics, sprites.image, true);
+        spriteAtlas = start.spriteTexture() != null ? start.spriteTexture().finish()
+                : Textures.fromImage(graphics, sprites.image, true);
         spriteShader.setTexture(spriteAtlas);
-        groundTexture = Textures.fromImage(graphics, ground.image, true);
+        groundTexture = start.groundTexture() != null ? start.groundTexture().finish()
+                : Textures.fromImage(graphics, ground.image, true);
         groundShader.setTexture(groundTexture);
         groundAtlasLayout = new Vec3(1f / ground.cellCount, (float) GroundAtlas.GUTTER / GroundAtlas.CELL,
                 (float) GroundAtlas.TILE / GroundAtlas.CELL);
-        facadeTexture = Textures.fromImage(graphics, facades.image, true);
+        facadeTexture = start.facadeTexture() != null ? start.facadeTexture().finish()
+                : Textures.fromImage(graphics, facades.image, true);
         facadeShader.setTexture(facadeTexture);
         facadeAtlasLayout = new Vec3(1f / facades.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,
                 (float) FacadeAtlas.TILE / FacadeAtlas.CELL);
-        scene = new PlazaScene(graphics, ground, facades, sprites);
+        scene = start.scene() != null ? start.scene() : new PlazaScene(graphics, ground, facades, sprites);
     }
 
     /** What the two districts that come with the game are built from: their collections and the shared one. */
@@ -394,11 +397,17 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     /** The start of the town, painted by the watcher and waiting for the render thread. */
     private record PreparedStart(TownLibrary town, String signature, SpriteAtlas sprites, GroundAtlas ground,
-                                 FacadeAtlas facades) {
+                                 FacadeAtlas facades, GraphicsDevice.PendingTexture spriteTexture,
+                                 GraphicsDevice.PendingTexture groundTexture,
+                                 GraphicsDevice.PendingTexture facadeTexture, PlazaScene scene) {
     }
 
+    /** The device, for the watcher to prepare textures with. */
+    private volatile GraphicsDevice watcherGraphics;
+
     /** A planned district, painted by the watcher and waiting for the render thread. */
-    private record PreparedPiece(District district, String signature, DistrictScene.Painted painted) {
+    private record PreparedPiece(District district, String signature, DistrictScene.Painted painted,
+                                 DistrictScene scene) {
     }
 
     /** At least this long between two rebuilds of the same piece: pictures that arrive in a rush share one. */
@@ -438,8 +447,17 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                     String start = startSignature(now);
                     if (!start.equals(partsShown) && preparedStart == null
                             && time - startPaintedAt >= REBUILD_INTERVAL_MILLIS) {
-                        preparedStart = new PreparedStart(now, start, SpriteAtlas.paint(now), GroundAtlas.paint(now),
-                                FacadeAtlas.paint(now));
+                        GraphicsDevice graphics = watcherGraphics;
+                        SpriteAtlas sprites = SpriteAtlas.paint(now);
+                        GroundAtlas ground = GroundAtlas.paint(now);
+                        FacadeAtlas facades = FacadeAtlas.paint(now);
+                        // Where the device allows it, the whole scene is built here, beside the game.
+                        preparedStart = new PreparedStart(now, start, sprites, ground, facades,
+                                Textures.prepare(graphics, sprites.image, true),
+                                Textures.prepare(graphics, ground.image, true),
+                                Textures.prepare(graphics, facades.image, true),
+                                graphics.createsOffThread() ? new PlazaScene(graphics, ground, facades, sprites)
+                                        : null);
                         startPaintedAt = System.currentTimeMillis();
                     }
                     String people = now.shared().signature();
@@ -448,8 +466,11 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                         if (!signature.equals(piecesWanted.get(district.id()))
                                 && time - piecePaintedAt.getOrDefault(district.id(), 0L) >= REBUILD_INTERVAL_MILLIS) {
                             piecesWanted.put(district.id(), signature);
-                            preparedPieces.add(new PreparedPiece(district, signature,
-                                    DistrictScene.Painted.of(now, district)));
+                            GraphicsDevice graphics = watcherGraphics;
+                            DistrictScene.Painted painted = DistrictScene.Painted.prepared(graphics, now, district);
+                            preparedPieces.add(new PreparedPiece(district, signature, painted,
+                                    graphics.createsOffThread()
+                                            ? new DistrictScene(graphics, painted, district, signature) : null));
                             piecePaintedAt.put(district.id(), System.currentTimeMillis());
                         }
                     }
@@ -466,6 +487,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     /** Takes what the watcher has ready, one piece per frame, and drops districts that were torn down. */
     private void showNewParts(EngineContext context) {
         if (artworkWatcher == null) {
+            watcherGraphics = context.graphics();
             watching = true;
             artworkWatcher = new Thread(this::watchArtwork, "3d4j-artwork-watcher");
             artworkWatcher.setDaemon(true);
@@ -500,14 +522,23 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             return;
         }
         PreparedPiece ready = preparedPieces.poll();
-        if (ready != null && piecesWanted.containsKey(ready.district().id())) {
+        if (ready != null && !piecesWanted.containsKey(ready.district().id())) {
+            // Torn down meanwhile: what was prepared is given back.
+            if (ready.scene() != null) {
+                ready.scene().close();
+            } else {
+                ready.painted().spriteTexture().finish().close();
+                ready.painted().groundTexture().finish().close();
+                ready.painted().facadeTexture().finish().close();
+            }
+        } else if (ready != null) {
             DistrictScene old = pieces.get(ready.district().id());
             if (old != null) {
                 old.close();
             }
             long began = System.nanoTime();
-            pieces.put(ready.district().id(),
-                    new DistrictScene(context.graphics(), ready.painted(), ready.district(), ready.signature()));
+            pieces.put(ready.district().id(), ready.scene() != null ? ready.scene()
+                    : new DistrictScene(context.graphics(), ready.painted(), ready.district(), ready.signature()));
             if (System.getProperty("threed4j.timing") != null) {
                 System.out.printf("TIMING district shown in %.1f ms%n", (System.nanoTime() - began) / 1e6);
             }
@@ -1075,6 +1106,11 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         watching = false;
         if (artworkWatcher != null) {
             artworkWatcher.interrupt();
+            try {
+                artworkWatcher.join(5000); // it may be using the device, which is closed after this
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
         pieces.values().forEach(DistrictScene::close);
         if (sea != null) {

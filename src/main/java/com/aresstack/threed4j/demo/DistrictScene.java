@@ -50,10 +50,21 @@ final class DistrictScene implements AutoCloseable {
     final int houseCount;
 
     /** The three pictures a district scene is built from: painting them takes long and needs no graphics. */
-    record Painted(SpriteAtlas sprites, GroundAtlas ground, FacadeAtlas facades) {
+    record Painted(SpriteAtlas sprites, GroundAtlas ground, FacadeAtlas facades,
+                   GraphicsDevice.PendingTexture spriteTexture, GraphicsDevice.PendingTexture groundTexture,
+                   GraphicsDevice.PendingTexture facadeTexture) {
         static Painted of(TownLibrary town, District district) {
             return new Painted(SpriteAtlas.paint(town, district), GroundAtlas.paint(town, district),
-                    FacadeAtlas.paint(town, district));
+                    FacadeAtlas.paint(town, district), null, null, null);
+        }
+
+        /** Painted and with the textures prepared, all of it away from the render thread. */
+        static Painted prepared(GraphicsDevice graphics, TownLibrary town, District district) {
+            Painted painted = of(town, district);
+            return new Painted(painted.sprites, painted.ground, painted.facades,
+                    Textures.prepare(graphics, painted.sprites.image, true),
+                    Textures.prepare(graphics, painted.ground.image, true),
+                    Textures.prepare(graphics, painted.facades.image, true));
         }
     }
 
@@ -73,9 +84,12 @@ final class DistrictScene implements AutoCloseable {
         SpriteAtlas spriteAtlas = painted.sprites();
         GroundAtlas groundAtlas = painted.ground();
         FacadeAtlas facadeAtlas = painted.facades();
-        spriteTexture = Textures.fromImage(graphics, spriteAtlas.image, true);
-        groundTexture = Textures.fromImage(graphics, groundAtlas.image, true);
-        facadeTexture = Textures.fromImage(graphics, facadeAtlas.image, true);
+        spriteTexture = painted.spriteTexture() != null ? painted.spriteTexture().finish()
+                : Textures.fromImage(graphics, spriteAtlas.image, true);
+        groundTexture = painted.groundTexture() != null ? painted.groundTexture().finish()
+                : Textures.fromImage(graphics, groundAtlas.image, true);
+        facadeTexture = painted.facadeTexture() != null ? painted.facadeTexture().finish()
+                : Textures.fromImage(graphics, facadeAtlas.image, true);
         groundAtlasLayout = new Vec3(1f / groundAtlas.cellCount, (float) GroundAtlas.GUTTER / GroundAtlas.CELL,
                 (float) GroundAtlas.TILE / GroundAtlas.CELL);
         facadeAtlasLayout = new Vec3(1f / facadeAtlas.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,

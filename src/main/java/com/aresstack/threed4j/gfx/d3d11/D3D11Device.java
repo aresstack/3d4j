@@ -401,6 +401,21 @@ public final class D3D11Device implements GraphicsDevice {
         }
     }
 
+    /**
+     * The device (unlike its context) may be used from any thread, and creating a texture with
+     * its pixels needs the device only: the whole texture is made where this is called.
+     */
+    @Override
+    public boolean createsOffThread() {
+        return true;
+    }
+
+    @Override
+    public PendingTexture prepareTexture(int textureWidth, int textureHeight, int[] argb, boolean smooth) {
+        Texture texture = createTexture(textureWidth, textureHeight, argb, smooth);
+        return () -> texture;
+    }
+
     @Override
     public void draw(Mesh mesh, Shader shader) {
         ((D3D11Shader) shader).bind();

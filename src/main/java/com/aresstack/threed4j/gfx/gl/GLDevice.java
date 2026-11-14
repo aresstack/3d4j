@@ -183,6 +183,18 @@ public final class GLDevice implements GraphicsDevice {
         return new GLTexture(textureWidth, textureHeight, argb, smooth);
     }
 
+    /** OpenGL belongs to the render thread; putting the pixels in its order does not. */
+    @Override
+    public PendingTexture prepareTexture(int textureWidth, int textureHeight, int[] argb, boolean smooth) {
+        java.lang.foreign.Arena arena = java.lang.foreign.Arena.ofShared();
+        java.lang.foreign.MemorySegment pixels = GLTexture.pixels(arena, argb);
+        return () -> {
+            try (arena) {
+                return new GLTexture(textureWidth, textureHeight, pixels, smooth);
+            }
+        };
+    }
+
     @Override
     public void draw(Mesh mesh, Shader shader) {
         ((GLShader) shader).use();
