@@ -105,6 +105,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private final java.util.Map<String, DistrictScene> pieces = new java.util.LinkedHashMap<>();
     private TownPlanner townPlanner;
     private Sea sea;
+    private Alps alps;
     private String partsShown;
     private double partsCheckedAt;
     private BackgroundArtist backgroundArtist;
@@ -263,6 +264,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 .scalar("uFogEnd")
                 .scalar("uTime"));
         sea = new Sea(graphics);
+        alps = new Alps(graphics);
         loadArtwork(graphics);
         System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 6 draw calls%n",
                 scene.buildingCount, scene.cityTriangles + scene.groundTriangles + scene.facadeTriangles,
@@ -716,6 +718,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             drawPiece(graphics, scene.city, scene.facades, scene.ground, scene.sprites, facadeTexture,
                     facadeAtlasLayout, groundTexture, groundAtlasLayout, spriteAtlas);
         }
+        if (position.x() < Alps.FOOT_X + 140f + reach) {
+            graphics.draw(alps.peaks, sceneShader);
+        }
         boolean seaNear = position.x() > 100f - reach;
         if (seaNear) {
             graphics.draw(sea.surface, sceneShader);
@@ -861,6 +866,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         pieces.values().forEach(DistrictScene::close);
         if (sea != null) {
             sea.close();
+            alps.close();
         }
         if (setup != null) {
             setup.close();

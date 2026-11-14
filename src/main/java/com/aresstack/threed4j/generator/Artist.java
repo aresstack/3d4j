@@ -42,6 +42,10 @@ final class Artist {
             return subject + ", seen from the side, friendly. The game shows it in the sea and hides the lowest "
                     + "quarter of the picture under water, so draw no water and no waves yourself";
         }
+        if (kind == PartLibrary.Kind.ANIMAL) {
+            // An animal is an animal; only where it lives differs from district to district.
+            return subject + ". A friendly cartoon animal; it fills the tall picture, so draw it upright and large";
+        }
         if (kind.shared()) {
             // People are at home in the whole town; no district lends them its look.
             return "a friendly person standing upright, seen from the front: " + subject;

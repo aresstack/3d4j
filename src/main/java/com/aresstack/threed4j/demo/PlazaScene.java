@@ -83,6 +83,7 @@ final class PlazaScene implements AutoCloseable {
         for (float[] plant : worksPlants) { // last, so that everything before keeps its picture
             batch.add(Kind.values()[(int) plant[0]], plant[1], plant[2], plant[3]);
         }
+        animals(batch);
         sprites = batch.build(graphics);
         spriteCount = batch.count;
 
@@ -599,6 +600,37 @@ final class PlazaScene implements AutoCloseable {
             batch.add(Kind.VISITOR, random.nextInt(3), x, z,
                     1.9f + random.nextFloat() * 0.3f, 0.6f + random.nextFloat() * 1.6f,
                     (random.nextBoolean() ? 1 : -1) * (0.15f + random.nextFloat() * 0.3f), random.nextFloat() * 6.28f);
+        }
+    }
+
+    /**
+     * The animals of the two districts: they stroll like the people, on the square,
+     * along the streets of the Blütenviertel and in the yard of the Werksviertel.
+     * Added last, so that everything before keeps its picture.
+     */
+    private static void animals(SpriteBatch batch) {
+        Random random = new Random(99);
+        for (int i = 0; i < 36; i++) {
+            float radius = 0.6f + random.nextFloat() * 1.8f;
+            float x;
+            float z;
+            if (i < 12) {
+                double angle = random.nextDouble() * 2 * Math.PI;
+                double distance = FOUNTAIN_RADIUS + 1.5 + radius + random.nextDouble() * (PLAZA_RADIUS - 10);
+                x = (float) (Math.cos(angle) * distance);
+                z = (float) (Math.sin(angle) * distance);
+            } else if (i < 26) {
+                float along = (random.nextBoolean() ? 1 : -1) * (PLAZA_RADIUS + random.nextFloat() * 70f);
+                float across = (random.nextFloat() * 2 - 1) * (STREET_HALF_WIDTH - 2.4f);
+                boolean northSouth = random.nextBoolean();
+                x = northSouth ? across : along;
+                z = northSouth ? along : across;
+            } else {
+                x = (random.nextFloat() * 2 - 1) * 5f;
+                z = District.WORKS_BORDER_Z - 6f - random.nextFloat() * 66f;
+            }
+            batch.add(Kind.ANIMAL, x, z, 1.1f + random.nextFloat() * 0.6f, radius,
+                    (random.nextBoolean() ? 1 : -1) * (0.2f + random.nextFloat() * 0.5f), random.nextFloat() * 6.28f);
         }
     }
 

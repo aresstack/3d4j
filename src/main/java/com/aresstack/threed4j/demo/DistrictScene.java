@@ -140,6 +140,25 @@ final class DistrictScene implements AutoCloseable {
                 }
             }
         };
+        for (int i = 0; i < 24; i++) { // the district's animals, among the people
+            float radius = 0.6f + random.nextFloat() * 1.8f;
+            float dx;
+            float dz;
+            if (i < 9) {
+                double angle = random.nextDouble() * 2 * Math.PI;
+                double distance = foot + 1.5 + radius + random.nextDouble() * Math.max(1f, plaza - foot - 4f);
+                dx = (float) (Math.cos(angle) * distance);
+                dz = (float) (Math.sin(angle) * distance);
+            } else {
+                float along = (random.nextBoolean() ? 1 : -1) * (plaza + random.nextFloat() * (HALF_PLOT - plaza - 6f));
+                float across = (random.nextFloat() * 2 - 1) * (STREET_HALF_WIDTH - 2.4f);
+                boolean northSouth = random.nextBoolean();
+                dx = northSouth ? across : along;
+                dz = northSouth ? along : across;
+            }
+            batch.add(Kind.ANIMAL, centerX + dx, centerZ + dz, 1.1f + random.nextFloat() * 0.6f, radius,
+                    (random.nextBoolean() ? 1 : -1) * (0.2f + random.nextFloat() * 0.5f), random.nextFloat() * 6.28f);
+        }
         if (District.coastal(layout.plotX())) {
             // What lives in the sea swims in circles off the shore, its lowest part under water.
             for (int i = 0; i < 16; i++) {

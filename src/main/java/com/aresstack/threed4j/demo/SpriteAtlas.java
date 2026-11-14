@@ -32,7 +32,8 @@ final class SpriteAtlas {
 
     /** The kinds of the collection that are figures. */
     static final List<PartLibrary.Kind> KINDS = List.of(PartLibrary.Kind.BLOSSOM_TREE, PartLibrary.Kind.GREEN_TREE,
-            PartLibrary.Kind.LAMP, PartLibrary.Kind.VISITOR, PartLibrary.Kind.BUSH, PartLibrary.Kind.SEA_ANIMAL);
+            PartLibrary.Kind.LAMP, PartLibrary.Kind.VISITOR, PartLibrary.Kind.BUSH, PartLibrary.Kind.SEA_ANIMAL,
+            PartLibrary.Kind.ANIMAL);
 
     /**
      * One picture in the atlas.
@@ -208,6 +209,25 @@ final class SpriteAtlas {
                 } else {
                     bush(g);
                 }
+            }
+            case ANIMAL -> {
+                // A cat, sitting: what walks the streets until the model has drawn the district's animals.
+                Color fur = new Color(0xE8A85C);
+                outlined(g, new RoundRectangle2D.Float(30, 120, 68, 126, 44, 44), fur);
+                java.awt.geom.Path2D ears = new java.awt.geom.Path2D.Float();
+                ears.moveTo(34, 70);
+                ears.lineTo(40, 30);
+                ears.lineTo(60, 52);
+                ears.lineTo(68, 52);
+                ears.lineTo(88, 30);
+                ears.lineTo(94, 70);
+                ears.closePath();
+                outlined(g, ears, fur);
+                outlined(g, new Ellipse2D.Float(28, 48, 72, 68), fur);
+                g.setColor(OUTLINE);
+                g.fill(new Ellipse2D.Float(46, 74, 8, 10));
+                g.fill(new Ellipse2D.Float(74, 74, 8, 10));
+                g.fill(new Ellipse2D.Float(60, 90, 8, 6));
             }
             case SEA_ANIMAL -> {
                 // A duck: what swims until the model has drawn the animals of the sea.

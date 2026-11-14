@@ -1,0 +1,542 @@
+{
+  "id": "hauptstadtviertel",
+  "name": "Hauptstadtviertel",
+  "style": "A big-city quarter like Berlin: tall old town houses with stucco and balconies beside plain slab blocks of the sixties, pale plaster in cream, grey and washed-out pastel, posters and a little graffiti, tram wires, kiosks; busy, a bit rough, friendly.",
+  "plot": [
+    0,
+    -2
+  ],
+  "plannedBy": "",
+  "plannedAt": "2026-11-14T03:40:00Z",
+  "palette": {
+    "walls": [
+      "#E9E1CF",
+      "#D9CBB5",
+      "#C9D1D9",
+      "#F0E6D2",
+      "#BFC7CE"
+    ],
+    "roofs": [
+      "#5B5F6B",
+      "#7A4B3A",
+      "#8D949E"
+    ],
+    "lawn": "#9BC98A",
+    "street": "#B5B7BD",
+    "plaza": "#D8D6D0"
+  },
+  "buildings": {
+    "minHeight": 12.0,
+    "maxHeight": 26.0,
+    "minWidth": 10.0,
+    "maxWidth": 16.0,
+    "spacing": 21.0,
+    "roofs": [
+      "flat",
+      "attic"
+    ]
+  },
+  "motifs": {
+    "blossom-tree": {
+      "name": "Linde",
+      "plural": "Linden",
+      "variations": [
+        "a linden tree of a city avenue: grey trunk with an iron grate around its foot, round light green crown",
+        "a tall linden tree with a bicycle leaning against its trunk",
+        "a linden tree with yellowing leaves and a poster wrapped around its trunk",
+        "a young linden tree tied to two wooden stakes"
+      ]
+    },
+    "green-tree": {
+      "name": "Platane",
+      "plural": "Platanen",
+      "variations": [
+        "a plane tree: trunk with patches of grey, cream and green bark, wide crown",
+        "a pollarded plane tree with knobbly short branches and fresh shoots",
+        "a horse chestnut tree with spiky green fruit"
+      ]
+    },
+    "lamp": {
+      "name": "Gaslaterne",
+      "plural": "Gaslaternen",
+      "variations": [
+        "an old city gas lantern: fluted dark green cast-iron post, a lantern with a small crown on top",
+        "a modern city street lamp: tall grey mast with a long flat lamp arm",
+        "a double-armed city lantern on a dark post with a street sign fixed to it",
+        "a slim lantern post plastered with stickers"
+      ]
+    },
+    "bush": {
+      "name": "Straßenmöbel",
+      "plural": "Straßenmöbel",
+      "variations": [
+        "an advertising column covered in colourful posters, with a small pointed roof",
+        "an orange public litter bin on a post",
+        "a bicycle stand with two bikes locked to it",
+        "a green iron water pump on the pavement",
+        "a kerbside planter with a shrub and a few flowers"
+      ]
+    },
+    "lawn": {
+      "name": "Stadtwiese",
+      "plural": "Stadtwiesen",
+      "variations": [
+        "a worn city lawn: short grass with a few bare patches and dandelions: base colour #9BC98A, the shapes in slightly lighter and darker shades of the base colour",
+        "a park meadow with clover and daisies: base colour #9BC98A, the shapes in slightly lighter and darker shades of the base colour",
+        "a lawn with fallen linden leaves: base colour #9BC98A, small tufts of grass and a few yellow-green leaves"
+      ]
+    },
+    "street": {
+      "name": "Pflaster",
+      "plural": "Pflaster",
+      "variations": [
+        "a city pavement of large granite slabs with a band of small mosaic stones: base colour #B5B7BD, the shapes in slightly lighter and darker shades of the base colour",
+        "asphalt with patched repairs and a few cracks: base colour #B5B7BD, the shapes in slightly lighter and darker shades of the base colour",
+        "small grey cobblestones laid in rows: base colour #B5B7BD, the shapes in slightly lighter and darker shades of the base colour"
+      ]
+    },
+    "window": {
+      "name": "Fenster",
+      "plural": "Fenster",
+      "variations": [
+        "a tall old town-house window with a stucco frame and a small pediment on top",
+        "a double casement window with a stone balcony and an iron railing in front of its lower half",
+        "a plain wide window of a slab block with a coloured panel below it",
+        "a window with a flower box and a lace curtain",
+        "a bay window with three narrow panes",
+        "a window with a satellite dish and a bicycle wheel on its balcony",
+        "a round-arched staircase window with coloured glass"
+      ]
+    },
+    "door": {
+      "name": "Haustür",
+      "plural": "Haustüren",
+      "variations": [
+        "a tall double house door with carved panels, a fanlight and brass bell plates beside it",
+        "a heavy wooden door covered in stickers and a little graffiti",
+        "a glass door of a slab block with a row of letterboxes beside it",
+        "a green door under a stucco arch with a house number sign"
+      ]
+    },
+    "shop": {
+      "name": "Laden",
+      "plural": "Läden",
+      "variations": [
+        "a late-night corner shop front with crates of bottles outside and a glowing sign board without letters",
+        "a snack stand front with a serving hatch, a sausage and a paper tray of chips painted on its board",
+        "a kebab shop front with a rotating spit behind the window",
+        "a bakery front with rolls and doughnuts in the window",
+        "a record shop front with posters in the window and a red awning"
+      ]
+    },
+    "animal": {
+      "name": "Tier",
+      "plural": "Tiere",
+      "variations": [
+        "a brown bear sitting upright and waving one paw, friendly",
+        "a city fox sitting upright, bushy tail",
+        "a grey pigeon standing, seen from the front",
+        "a wild boar piglet with stripes, standing, seen from the front",
+        "a raccoon standing on its hind legs",
+        "a small dog in a knitted coat, sitting",
+        "a sparrow standing, seen from the front, fluffed up"
+      ]
+    }
+  },
+  "landmark": {
+    "name": "Fernsehturm",
+    "idea": "A tall television tower: a slim concrete shaft above a low pavilion, a silver sphere with a band of windows, and a red and white antenna on top.",
+    "components": [
+      {
+        "name": "pavilion at the foot",
+        "shape": "extrude",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 0.0,
+        "height": 3.2,
+        "width": 7.5,
+        "depth": 7.5,
+        "roofHeight": 0.0,
+        "color": "#E4E7EC",
+        "topColor": "#C9CED6",
+        "outline": [
+          [
+            -0.42,
+            -1
+          ],
+          [
+            0.42,
+            -1
+          ],
+          [
+            1,
+            -0.42
+          ],
+          [
+            1,
+            0.42
+          ],
+          [
+            0.42,
+            1
+          ],
+          [
+            -0.42,
+            1
+          ],
+          [
+            -1,
+            0.42
+          ],
+          [
+            -1,
+            -0.42
+          ]
+        ]
+      },
+      {
+        "name": "ring of pointed roofs",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 3.2,
+        "height": 1.6,
+        "width": 6.0,
+        "depth": 6.0,
+        "roofHeight": 0.0,
+        "color": "#F4F6F9",
+        "topColor": "#DDE2E8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.82,
+            0.5
+          ],
+          [
+            0.5,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "concrete shaft",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 4.8,
+        "height": 34.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "roofHeight": 0.0,
+        "color": "#D5D9DF",
+        "topColor": "#D5D9DF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.72,
+            0.25
+          ],
+          [
+            0.55,
+            0.6
+          ],
+          [
+            0.46,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "sphere",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 38.0,
+        "height": 9.0,
+        "width": 4.8,
+        "depth": 4.8,
+        "roofHeight": 0.0,
+        "color": "#C4CBD4",
+        "topColor": "#DDE3EA",
+        "outline": [
+          [
+            0.25,
+            0
+          ],
+          [
+            0.62,
+            0.1
+          ],
+          [
+            0.86,
+            0.25
+          ],
+          [
+            0.98,
+            0.4
+          ],
+          [
+            1,
+            0.5
+          ],
+          [
+            0.98,
+            0.6
+          ],
+          [
+            0.86,
+            0.75
+          ],
+          [
+            0.62,
+            0.9
+          ],
+          [
+            0.25,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "band of windows around the sphere",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 41.9,
+        "height": 1.2,
+        "width": 4.86,
+        "depth": 4.86,
+        "roofHeight": 0.0,
+        "color": "#3E5B7A",
+        "topColor": "#3E5B7A",
+        "outline": [
+          [
+            0.985,
+            0
+          ],
+          [
+            1,
+            0.5
+          ],
+          [
+            0.985,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna foot",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 47.0,
+        "height": 3.0,
+        "width": 1.0,
+        "depth": 1.0,
+        "roofHeight": 0.0,
+        "color": "#D5D9DF",
+        "topColor": "#D5D9DF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.6,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 1",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 50.0,
+        "height": 2.6,
+        "width": 0.6,
+        "depth": 0.6,
+        "roofHeight": 0.0,
+        "color": "#E7475E",
+        "topColor": "#E7475E",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9167,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 2",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 52.6,
+        "height": 2.6,
+        "width": 0.5499999999999999,
+        "depth": 0.5499999999999999,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9091,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 3",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 55.2,
+        "height": 2.6,
+        "width": 0.5,
+        "depth": 0.5,
+        "roofHeight": 0.0,
+        "color": "#E7475E",
+        "topColor": "#E7475E",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 4",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 57.8,
+        "height": 2.6,
+        "width": 0.44999999999999996,
+        "depth": 0.44999999999999996,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.8889,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 5",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 60.4,
+        "height": 2.6,
+        "width": 0.39999999999999997,
+        "depth": 0.39999999999999997,
+        "roofHeight": 0.0,
+        "color": "#E7475E",
+        "topColor": "#E7475E",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.875,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 6",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 63.0,
+        "height": 2.6,
+        "width": 0.35,
+        "depth": 0.35,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.8571,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna band 7",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 65.6,
+        "height": 2.6,
+        "width": 0.29999999999999993,
+        "depth": 0.29999999999999993,
+        "roofHeight": 0.0,
+        "color": "#E7475E",
+        "topColor": "#E7475E",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.8333,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "antenna tip",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 68.2,
+        "height": 3.0,
+        "width": 0.22,
+        "depth": 0.22,
+        "roofHeight": 0.0,
+        "color": "#E7475E",
+        "topColor": "#E7475E",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -115,6 +115,18 @@
         "beach café with a striped awning, tables set with pastel mugs",
         "souvenir shop displaying seashells and pastel‑colored postcards in open shelves"
       ]
+    },
+    "animal": {
+      "name": "Tier",
+      "plural": "Tiere",
+      "variations": [
+        "a white seagull standing, seen from the front, yellow beak",
+        "a ginger harbour cat sitting upright with a small fish in its mouth",
+        "a red crab standing on its legs, claws raised, seen from the front",
+        "a pelican standing, big yellow beak, seen from the front",
+        "a small white dog in a blue sailor collar, sitting",
+        "a duck standing, seen from the front"
+      ]
     }
   },
   "landmark": {

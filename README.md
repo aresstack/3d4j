@@ -155,8 +155,17 @@ Zwei Stadtteile bringt das Spiel mit; `District.at(x, z)` zieht ihre Grenze:
 ### Mitgelieferte Bilder
 
 Das Spiel bringt Bilder mit, die Modelle in früheren Läufen gezeichnet haben: die Besucher,
-die Sammlungen von Blütenviertel und Werksviertel und ein geplantes Viertel, das
-**Wellenviertel** mit seinem Leuchtturm (östlich vom Startplatz). Beim ersten Start kopiert
+die Sammlungen von Blütenviertel und Werksviertel und drei geplante Viertel als `district.json`
+(von Hand geschrieben oder überarbeitet, in derselben Form, in der das Modell plant):
+
+| Viertel | Lage | Wahrzeichen |
+|---|---|---|
+| **Wellenviertel** | östlich vom Startplatz, am Meer | Leuchtturm auf der Landzunge |
+| **Alpenviertel** | westlich vom Startplatz, vor den Bergen | Kirche mit Zwiebelturm und Maibaum |
+| **Hauptstadtviertel** | hinter dem Werksviertel | Fernsehturm |
+
+Die Karte ist ein Scherz auf Deutschland: das WEST.SIDE-Ensemble als Bonn, der Leuchtturm als
+Küste, die Alpen, der Fernsehturm als Berlin. Beim ersten Start kopiert
 `DefaultAssets` sie aus dem Programm in den Asset-Ordner (`src/main/resources/defaults`).
 Jede Datei wird genau einmal angeboten (`library/.defaults` merkt sich, welche): Vorhandenes
 bleibt unberührt, und ein gelöschtes Bild kommt nicht wieder. Abschalten mit
@@ -177,6 +186,21 @@ sind wie die Besucher eine Art der ganzen Stadt (`sea-animal` in `library/stadt`
 und werden im Hintergrund gezeichnet: Delfin, Robbe, Schwan, Wal, Schildkröte, Krake, Möwe,
 Ente, Krebs, Pelikan, Segelboot, Boje. Bis das erste Bild da ist, schwimmt eine Ente.
 Ringe auf dem Wasser zeichnet der Shader des Brunnenwassers.
+
+### Die Berge
+
+Westlich der Stadt stehen die Alpen (`Alps`): eine Reihe grüner Vorberge und hoher Gipfel mit
+Schnee, gleich hinter der ersten Spalte von Feldern im Westen. Wie am Meer im Osten wird
+dahinter nichts mehr geplant; die Stadt wächst nach Norden und Süden.
+
+### Tiere auf den Straßen
+
+Jedes Viertel hat eigene Tiere (Art `animal`, Vorgabe 8 Bilder), die wie die Besucher über
+Platz und Straßen laufen: im Blütenviertel Katze, Hund, Taube, Eichhörnchen, Hase; im
+Werksviertel Streunerkatze, Krähe, Fuchs, Igel; im Alpenviertel Kuh mit Glocke, Ziege, Dackel,
+Huhn, Murmeltier, Gams, Bernhardiner; im Hauptstadtviertel Bär, Fuchs, Taube, Frischling,
+Waschbär. Der Planer legt sie für neue Viertel mit fest. Welches Bild ein Tier zeigt, wählt es
+wie alles andere selbst; alle Tiere sind gleich groß.
 
 ### Die Stadt wächst: geplante Viertel
 
@@ -207,7 +231,7 @@ eigenen Texturen: Gezeichnet wird es nur, wenn es näher ist, als der Dunst reic
 gebaut nur das Viertel, dessen Plan oder Bilder sich geändert haben.
 
 `TownPlanner` plant im Hintergrund das nächste Viertel, sobald das jüngste alle Bilder seiner
-Sammlung hat, bis zur eingestellten Höchstzahl (Vorgabe 5 Viertel, die zwei mitgelieferten
+Sammlung hat, bis zur eingestellten Höchstzahl (Vorgabe 10 Viertel, die fünf mitgelieferten
 eingerechnet). Einstellungen in `.3d4j/generator.properties`: `world.enabled`, `world.model`
 (Vorgabe `openai/gpt-oss-120b`), `world.maxDistricts`.
 

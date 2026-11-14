@@ -46,7 +46,9 @@ public final class PartLibrary {
         BUSH(6, 256, 256), LAWN(3, 256, 256), STREET(3, 256, 256),
         WINDOW(8, 128, 128), DOOR(4, 128, 128), SHOP(4, 128, 128),
         /** What lives in the sea; new kinds go to the end, so that everything else keeps its picture. */
-        SEA_ANIMAL(12, 256, 512);
+        SEA_ANIMAL(12, 256, 512),
+        /** The animals that walk a district's streets among the people. */
+        ANIMAL(8, 256, 512);
 
         private final int defaultTarget;
         private final int width;

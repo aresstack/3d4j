@@ -242,12 +242,14 @@ public final class DistrictPlanner {
                 + "- \"street\": the street paving, seen from above: describe only the pattern, no colours\n"
                 + "- \"window\": a window of a house front\n"
                 + "- \"door\": a house door\n"
-                + "- \"shop\": what a ground floor has instead of a window: a shop window, a gate, a stall ...\n\n"
-                + "Answer with this JSON object, with all nine keys:\n"
+                + "- \"shop\": what a ground floor has instead of a window: a shop window, a gate, a stall ...\n"
+                + "- \"animal\": animals that walk the streets among the people and suit the district; describe each "
+                + "sitting or standing upright, seen from the front\n\n"
+                + "Answer with this JSON object, with all ten keys:\n"
                 + "{\"blossom-tree\": {\"name\": \"German word, one of it\", \"plural\": \"German word, several\", "
                 + "\"variations\": [\"3 to 6 short English descriptions, each of one thing to draw\"]}, "
                 + "\"green-tree\": {...}, \"lamp\": {...}, \"bush\": {...}, \"lawn\": {...}, \"street\": {...}, "
-                + "\"window\": {...}, \"door\": {...}, \"shop\": {...}}";
+                + "\"window\": {...}, \"door\": {...}, \"shop\": {...}, \"animal\": {...}}";
     }
 
     static String checkMotifs(JsonObject motifs) {

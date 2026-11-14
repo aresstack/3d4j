@@ -131,6 +131,10 @@ public final class DistrictFile {
             Map<Kind, Motif> motifs = new EnumMap<>(Kind.class);
             JsonObject entries = root.getAsJsonObject("motifs");
             for (Kind kind : TownLibrary.districtKinds()) {
+                if (kind == Kind.ANIMAL && !entries.has(kind.fileName())) {
+                    motifs.put(kind, District.townAnimals()); // a plan from before districts had animals
+                    continue;
+                }
                 JsonObject entry = entries.getAsJsonObject(kind.fileName());
                 List<String> variations = new ArrayList<>();
                 entry.getAsJsonArray("variations").forEach(variation -> variations.add(variation.getAsString()));

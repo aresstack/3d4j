@@ -173,6 +173,17 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
         return kind == Kind.SEA_ANIMAL ? seaAnimals() : visitors();
     }
 
+    /** The animals of a district whose plan names none: what walks the streets of any town. */
+    public static Motif townAnimals() {
+        return new Motif("Tier", "Tiere", List.of(
+                "a ginger cat sitting upright, tail curled around its paws",
+                "a small white dog with a red collar, sitting, tongue out",
+                "a grey pigeon standing, seen from the front",
+                "a red squirrel sitting upright with a nut in its paws, bushy tail",
+                "a black cat standing, tail straight up",
+                "a brown rabbit sitting upright, long ears"));
+    }
+
     /** What lives in the sea along the town's coast. */
     private static Motif seaAnimals() {
         return new Motif("Meerestier", "Meerestiere", List.of(
@@ -212,6 +223,7 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
                 "a street lamp with a hanging lantern on a curved swan-neck post")));
         motifs.put(Kind.VISITOR, visitors());
         motifs.put(Kind.SEA_ANIMAL, seaAnimals());
+        motifs.put(Kind.ANIMAL, townAnimals());
         motifs.put(Kind.BUSH, new Motif("Pfingstrosenbusch", "Pfingstrosen", List.of("a bush of pink peonies")));
         motifs.put(Kind.LAWN, new Motif("Rasen", "Rasen", List.of(
                 "a mown lawn: base colour #A2D08C, small tufts of grass in slightly darker and lighter greens, a few "
@@ -278,6 +290,13 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
                 "a modern slim dark mast with a flat rectangular lamp head")));
         motifs.put(Kind.VISITOR, visitors());
         motifs.put(Kind.SEA_ANIMAL, seaAnimals());
+        motifs.put(Kind.ANIMAL, new Motif("Tier", "Tiere", List.of(
+                "a scruffy grey stray cat sitting upright, one ear bent",
+                "a black crow standing, seen from the front",
+                "a fox sitting upright, bushy tail, curious look",
+                "a big brown guard dog sitting, leather collar",
+                "a grey pigeon standing, seen from the front",
+                "a hedgehog standing on its hind legs")));
         motifs.put(Kind.BUSH, new Motif("Wildwuchs", "Wildwuchs", List.of(
                 "tall fireweed growing wild: several upright green stems with spikes of pink-purple flowers",
                 "a butterfly bush growing wild: arching green branches with long purple flower cones",
@@ -370,7 +389,8 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
      */
     public static List<int[]> plotOrder() {
         List<int[]> plots = new java.util.ArrayList<>();
-        for (int x = -3; x <= 1; x++) { // east of the first column there is only water
+        // East of the first column there is only water, west of the first column only mountains.
+        for (int x = -1; x <= 1; x++) {
             for (int z = -3; z <= 3; z++) {
                 if (!plotTaken(x, z)) {
                     plots.add(new int[] {x, z});

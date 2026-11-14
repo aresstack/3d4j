@@ -1,0 +1,614 @@
+{
+  "id": "alpenviertel",
+  "name": "Alpenviertel",
+  "style": "An alpine Bavarian village: white plastered houses with dark carved wooden balconies full of red geraniums, green shutters, painted frames around the windows, wooden shingle roofs, blue-and-white lozenge flags; cosy and festive.",
+  "plot": [
+    -1,
+    0
+  ],
+  "plannedBy": "",
+  "plannedAt": "2026-11-14T03:30:00Z",
+  "palette": {
+    "walls": [
+      "#FBF7EE",
+      "#F3ECDD",
+      "#FFFDF6",
+      "#F7EFD8"
+    ],
+    "roofs": [
+      "#8A5A3C",
+      "#6E4A34",
+      "#9C5B3B"
+    ],
+    "lawn": "#8FCB6B",
+    "street": "#CFC8BC",
+    "plaza": "#E8DFCF"
+  },
+  "buildings": {
+    "minHeight": 6.0,
+    "maxHeight": 10.0,
+    "minWidth": 9.0,
+    "maxWidth": 13.0,
+    "spacing": 18.0,
+    "roofs": [
+      "pyramid"
+    ]
+  },
+  "motifs": {
+    "blossom-tree": {
+      "name": "Fichte",
+      "plural": "Fichten",
+      "variations": [
+        "a tall spruce: brown trunk, dark green tiers of branches narrowing to a point",
+        "a spruce with snow on its upper branches",
+        "an old larch: straight trunk, light green airy tiers of needles",
+        "a young fir, small and bushy, with a few cones"
+      ]
+    },
+    "green-tree": {
+      "name": "Kastanie",
+      "plural": "Kastanien",
+      "variations": [
+        "a chestnut tree of a beer garden: thick trunk, wide round dark green crown with white blossom candles",
+        "a linden tree: grey trunk, heart-shaped light green crown",
+        "an apple tree full of red apples",
+        "a chestnut tree with a wooden bench around its trunk"
+      ]
+    },
+    "lamp": {
+      "name": "Laterne",
+      "plural": "Laternen",
+      "variations": [
+        "a wrought-iron street lantern on a dark post with a basket of red geraniums hanging below the lamp",
+        "a wooden lamp post with a carved top and a warm yellow lantern",
+        "a black iron lantern with scrolls on a slim post",
+        "a lantern post with a small blue-and-white lozenge flag"
+      ]
+    },
+    "bush": {
+      "name": "Blumenkübel",
+      "plural": "Blumenkübel",
+      "variations": [
+        "a wooden tub full of red geraniums",
+        "an old milk churn with flowers in it",
+        "a wooden beer barrel standing upright",
+        "a small stack of hay with a pitchfork leaning on it",
+        "a wooden trough with pink and white flowers"
+      ]
+    },
+    "lawn": {
+      "name": "Almwiese",
+      "plural": "Almwiesen",
+      "variations": [
+        "an alpine meadow: short grass with small tufts and a few tiny yellow and blue flowers: base colour #8FCB6B, the shapes in slightly lighter and darker shades of the base colour",
+        "a mown meadow with clover leaves: base colour #8FCB6B, the shapes in slightly lighter and darker shades of the base colour",
+        "a meadow with daisies: base colour #8FCB6B, small tufts of grass and tiny white flowers"
+      ]
+    },
+    "street": {
+      "name": "Pflaster",
+      "plural": "Pflaster",
+      "variations": [
+        "rounded cobblestones of a village street: base colour #CFC8BC, the shapes in slightly lighter and darker shades of the base colour",
+        "flat natural stone slabs of different sizes: base colour #CFC8BC, the shapes in slightly lighter and darker shades of the base colour",
+        "small square granite setts laid in arcs: base colour #CFC8BC, the shapes in slightly lighter and darker shades of the base colour"
+      ]
+    },
+    "window": {
+      "name": "Fenster",
+      "plural": "Fenster",
+      "variations": [
+        "a window with green wooden shutters and a flower box of red geraniums",
+        "a window with a painted baroque frame in ochre and blue around it",
+        "a window with heart-shaped cut-outs in its brown shutters",
+        "a small window under a carved wooden lintel, with a red-and-white checked curtain",
+        "a window with a wrought-iron grille shaped like a basket",
+        "a double window with a carved dark wooden balcony railing and geraniums in front of its lower half"
+      ]
+    },
+    "door": {
+      "name": "Tür",
+      "plural": "Türen",
+      "variations": [
+        "a heavy carved wooden door with iron fittings under a round arch",
+        "a green door with a carved sunburst pattern and a small roof above it",
+        "a wooden door with a heart-shaped window and a bench beside it",
+        "a double door painted with flowers, with a lantern above it"
+      ]
+    },
+    "shop": {
+      "name": "Wirtshaus",
+      "plural": "Wirtshäuser",
+      "variations": [
+        "an inn front: a wide window with bull's-eye panes and a wrought-iron sign with a golden pretzel above it",
+        "a bakery window with pretzels and loaves on a shelf and a striped blue-and-white awning",
+        "a beer garden hatch with a wooden counter, beer mugs on it and a blue-and-white lozenge banner",
+        "a butcher's window with sausages hanging in a row and a carved wooden sign"
+      ]
+    },
+    "animal": {
+      "name": "Tier",
+      "plural": "Tiere",
+      "variations": [
+        "a brown and white cow with a big bell on a leather collar, standing, seen from the front",
+        "a white goat with small horns and a beard, standing, seen from the front",
+        "a brown dachshund sitting upright, long ears",
+        "a hen with a red comb standing, seen from the front",
+        "a marmot standing upright on its hind legs",
+        "a chamois with curved horns standing on a small rock",
+        "a St. Bernard dog sitting, a small barrel on its collar",
+        "a white goose standing, orange beak, seen from the front"
+      ]
+    }
+  },
+  "landmark": {
+    "name": "Zwiebelturm und Maibaum",
+    "idea": "A white village church with a green onion dome on its tower, and beside it a tall maypole with blue and white bands, a wreath and a little tree on top.",
+    "components": [
+      {
+        "name": "nave of the church",
+        "shape": "extrude",
+        "x": 3.5,
+        "z": 0,
+        "base": 0,
+        "height": 7.5,
+        "width": 6.0,
+        "depth": 3.6,
+        "roofHeight": 4.5,
+        "color": "#FBF7EE",
+        "topColor": "#8A5A3C",
+        "outline": [
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            -1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "apse",
+        "shape": "extrude",
+        "x": 10.2,
+        "z": 0,
+        "base": 0,
+        "height": 6.0,
+        "width": 1.6,
+        "depth": 2.6,
+        "roofHeight": 2.5,
+        "color": "#FBF7EE",
+        "topColor": "#8A5A3C",
+        "outline": [
+          [
+            -1,
+            -1
+          ],
+          [
+            0.3,
+            -1
+          ],
+          [
+            1,
+            -0.4
+          ],
+          [
+            1,
+            0.4
+          ],
+          [
+            0.3,
+            1
+          ],
+          [
+            -1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower",
+        "shape": "extrude",
+        "x": -4.6,
+        "z": 0,
+        "base": 0,
+        "height": 15.0,
+        "width": 2.3,
+        "depth": 2.3,
+        "roofHeight": 0.0,
+        "color": "#FBF7EE",
+        "topColor": "#E9E2D2",
+        "outline": [
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            -1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "ledge under the dome",
+        "shape": "lathe",
+        "x": -4.6,
+        "z": 0,
+        "base": 15.0,
+        "height": 0.7,
+        "width": 2.9,
+        "depth": 2.9,
+        "roofHeight": 0.0,
+        "color": "#E9E2D2",
+        "topColor": "#E9E2D2",
+        "outline": [
+          [
+            0.8,
+            0
+          ],
+          [
+            1,
+            0.4
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "onion dome",
+        "shape": "lathe",
+        "x": -4.6,
+        "z": 0,
+        "base": 15.7,
+        "height": 6.2,
+        "width": 2.9,
+        "depth": 2.9,
+        "roofHeight": 0.0,
+        "color": "#5FA08A",
+        "topColor": "#7CB8A2",
+        "outline": [
+          [
+            0.72,
+            0
+          ],
+          [
+            0.98,
+            0.18
+          ],
+          [
+            1,
+            0.32
+          ],
+          [
+            0.86,
+            0.5
+          ],
+          [
+            0.52,
+            0.66
+          ],
+          [
+            0.24,
+            0.78
+          ],
+          [
+            0.14,
+            0.9
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "golden ball and spire",
+        "shape": "lathe",
+        "x": -4.6,
+        "z": 0,
+        "base": 21.9,
+        "height": 2.4,
+        "width": 0.34,
+        "depth": 0.34,
+        "roofHeight": 0.0,
+        "color": "#F2C94C",
+        "topColor": "#F2C94C",
+        "outline": [
+          [
+            0.3,
+            0
+          ],
+          [
+            0.3,
+            0.2
+          ],
+          [
+            1,
+            0.38
+          ],
+          [
+            1,
+            0.55
+          ],
+          [
+            0.25,
+            0.7
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 1",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 0.0,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#3F7FC8",
+        "topColor": "#3F7FC8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 2",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 2.4,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 3",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 4.8,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#3F7FC8",
+        "topColor": "#3F7FC8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 4",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 7.199999999999999,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 5",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 9.6,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#3F7FC8",
+        "topColor": "#3F7FC8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 6",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 12.0,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 7",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 14.399999999999999,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#3F7FC8",
+        "topColor": "#3F7FC8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "maypole band 8",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 16.8,
+        "height": 2.4,
+        "width": 0.3,
+        "depth": 0.3,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "wreath on the maypole",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 13.4,
+        "height": 0.7,
+        "width": 1.7,
+        "depth": 1.7,
+        "roofHeight": 0.0,
+        "color": "#4E9A52",
+        "topColor": "#62B266",
+        "outline": [
+          [
+            0.72,
+            0
+          ],
+          [
+            1,
+            0.3
+          ],
+          [
+            1,
+            0.7
+          ],
+          [
+            0.72,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "little tree on top of the maypole",
+        "shape": "lathe",
+        "x": 2.0,
+        "z": 8.5,
+        "base": 19.2,
+        "height": 3.0,
+        "width": 0.9,
+        "depth": 0.9,
+        "roofHeight": 0.0,
+        "color": "#3F8A47",
+        "topColor": "#4E9A52",
+        "outline": [
+          [
+            0.2,
+            0
+          ],
+          [
+            1,
+            0.12
+          ],
+          [
+            0.55,
+            0.5
+          ],
+          [
+            0.7,
+            0.52
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}
