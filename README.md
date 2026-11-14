@@ -108,10 +108,16 @@ Das Spiel startet im **Vollbild**: ein rahmenloses Fenster über den ganzen Bild
 den Bildschirmmodus umzuschalten. Alt+Enter wechselt zum Fenster und zurück; die Wahl wird
 gemerkt, `--windowed` startet einmalig im Fenster. Im Vollbild ist die Maus **eingefangen**,
 solange gespielt wird: Der Zeiger ist weg, und die Maus sieht sich um, ohne dass eine Taste
-gehalten wird. In jedem Menü (Pause, Zugang) ist der Zeiger wieder da, als rosa Pfeil mit
-Kirschblüte; wechselt man in ein anderes Programm, gibt das Spiel die Maus frei. Im Fenster
+gehalten wird. In jedem Menü (Pause, Zugang) ist der Zeiger wieder da, als pinke Pfeilspitze,
+deren Enden dünn auslaufen und sich wie ein gezwirbelter Bart nach oben wenden; wechselt man in ein anderes Programm, gibt das Spiel die Maus frei. Im Fenster
 wird wie bisher mit gehaltener Maustaste umgesehen, was auch in Remote-Sitzungen und
 virtuellen Maschinen zuverlässig funktioniert.
+
+Die eingefangene Maus misst `RelativeMouse`: Bewegung zählt immer von der vorigen Position aus,
+und der Zeiger wird nur in die Mitte zurückgesetzt, wenn er sich weit entfernt hat. Das
+Zurücksetzen wirkt verzögert, vor allem in einer Remote-Sitzung; Positionen von vor dem Sprung,
+die danach noch eintreffen, werden daran erkannt, dass sie weit weg von der Mitte und von der
+letzten Position liegen, und ausgelassen.
 
 ### Messen
 
@@ -379,8 +385,11 @@ Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
 Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt, gehört dorthin:
 
 - **Bild:** Auflösung (100 bis 25 %, wie die Tasten 1 bis 5), Hochskalieren (weich oder
-  pixelig, wie F) und Vollbild (an oder aus, wie Alt+Enter).
-- **Steuerung:** Geschwindigkeit der Maus beim Umsehen (langsam, normal, schnell).
+  pixelig, wie F), Anzeige (Vollbild oder Fenster, wie Alt+Enter) und, bei mehreren
+  Bildschirmen, auf welchem das Spiel läuft (von links nach rechts nummeriert; gemerkt als
+  `window.monitor`).
+- **Steuerung:** Geschwindigkeit der Maus beim Umsehen, als Schieberegler von 0,10 bis 3,00
+  mit einem Zahlenfeld daneben (anklicken, tippen, Enter); 1,00 ist die Vorgabe.
 - **KI:** „Nachdenken vor dem Zeichnen“ (Standard, wenig, mittel, viel) wird als
   `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.
   „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit.

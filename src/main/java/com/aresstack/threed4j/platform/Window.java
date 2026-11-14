@@ -38,6 +38,23 @@ public interface Window extends AutoCloseable {
     }
 
     /**
+     * The screens there are, from left to right: each as x, y, width and height in
+     * pixels of the desktop. At least one.
+     */
+    default java.util.List<int[]> monitors() {
+        return java.util.List.of(new int[] {0, 0, width(), height()});
+    }
+
+    /** The index in {@link #monitors()} of the screen the window is on. */
+    default int monitor() {
+        return 0;
+    }
+
+    /** Moves the window to a screen: it fills that one if it is full screen, otherwise it is centered there. */
+    default void setMonitor(int index) {
+    }
+
+    /**
      * Captures the mouse for looking around: the pointer disappears and stays
      * inside the window, and its movement arrives as {@link Input#mouseDeltaX()} and
      * {@link Input#mouseDeltaY()} without end at the screen's edge. Call it every frame

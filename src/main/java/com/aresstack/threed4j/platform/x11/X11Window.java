@@ -43,8 +43,7 @@ public final class X11Window implements GLWindow {
     private int windowedHeight;
     private boolean focused = true;
     private boolean mouseCaptured;
-    private int centerX;
-    private int centerY;
+    private final com.aresstack.threed4j.platform.RelativeMouse relativeMouse = new com.aresstack.threed4j.platform.RelativeMouse();
     private long invisibleCursor;
 
     private int width;
@@ -206,9 +205,8 @@ public final class X11Window implements GLWindow {
                     int y = event.get(JAVA_INT, POINTER_Y);
                     if (mouseCaptured) {
                         // Only the movement counts; the pointer goes back to the middle, so it never reaches an edge.
-                        if (x != centerX || y != centerY) {
-                            input.onMouseDelta(x - centerX, y - centerY);
-                            warpPointer(display, window, centerX, centerY);
+                        if (relativeMouse.move(x, y, input)) {
+                            warpPointer(display, window, width / 2, height / 2);
                         }
                     } else {
                         input.onMouseMove(x, y);
@@ -298,9 +296,9 @@ public final class X11Window implements GLWindow {
             invisibleCursor = invisibleCursor(display, window);
         }
         if (grabPointer(display, window, invisibleCursor)) {
-            centerX = width / 2;
-            centerY = height / 2;
-            warpPointer(display, window, centerX, centerY);
+            warpPointer(display, window, width / 2, height / 2);
+            relativeMouse.begin(width / 2, height / 2, width, height);
+            relativeMouse.expectAtCenter();
             mouseCaptured = true;
         }
     }

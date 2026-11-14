@@ -14,7 +14,7 @@ import java.util.Properties;
  *
  * @param renderScale   internal resolution as a fraction of the window, 0.25 to 1
  * @param smoothUpscale blend neighboring pixels when the scene is stretched to the window
- * @param mouseSpeed    factor on how far the view turns per pixel of mouse movement, 0.25 to 4
+ * @param mouseSpeed    factor on how far the view turns per pixel of mouse movement, 0.05 to 4
  */
 record GameSettings(float renderScale, boolean smoothUpscale, float mouseSpeed) {
 
@@ -61,10 +61,25 @@ record GameSettings(float renderScale, boolean smoothUpscale, float mouseSpeed) 
         } catch (NumberFormatException e) {
             // keep the default
         }
-        if (!(mouse >= 0.25f && mouse <= 4f)) {
+        if (!(mouse >= 0.05f && mouse <= 4f)) {
             mouse = DEFAULTS.mouseSpeed();
         }
         return new GameSettings(scale, !"false".equalsIgnoreCase(properties.getProperty("render.smooth")), mouse);
+    }
+
+    /** The screen the game is shown on ({@code window.monitor}, counted from 0, left to right); -1 if none was chosen. */
+    static int monitor(Path file) {
+        try {
+            return Integer.parseInt(read(file).getProperty("window.monitor", "-1").trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    static void saveMonitor(Path file, int monitor) {
+        Properties properties = read(file);
+        properties.setProperty("window.monitor", String.valueOf(monitor));
+        store(file, properties);
     }
 
     /** Whether the game fills the screen ({@code window.fullscreen}); it does unless switched off. */

@@ -93,6 +93,20 @@ final class PauseMenu {
         default void fullscreen(boolean fill) {
         }
 
+        /** The screens there are, each as x, y, width, height; see {@code Window.monitors()}. */
+        default java.util.List<int[]> monitors() {
+            return java.util.List.of();
+        }
+
+        /** The index of the screen the game is on. */
+        default int monitor() {
+            return 0;
+        }
+
+        /** Show the game on this screen. */
+        default void monitor(int index) {
+        }
+
         /** Have a further district planned now. */
         default void planDistrict() {
         }
@@ -120,8 +134,17 @@ final class PauseMenu {
     }
 
     private static final String[] TABS = {"Bild", "Steuerung", "KI", "Welt"};
-    private static final float[] MOUSE_SPEEDS = {0.5f, 1f, 2f};
-    private static final String[] MOUSE_SPEED_LABELS = {"Langsam", "Normal", "Schnell"};
+    /** The range of the mouse speed's slider, and where the slider lies on the card. */
+    private static final float MOUSE_SPEED_MIN = 0.1f;
+    private static final float MOUSE_SPEED_MAX = 3f;
+    private static final int SLIDER_LEFT = 52;
+    private static final int SLIDER_RIGHT = 352;
+    private static final int SLIDER_Y = 240;
+    private static final Rectangle2D SPEED_BOX = new Rectangle2D.Double(378, 220, 92, 40);
+    /** The slider's knob follows the mouse while the button is held. */
+    private boolean draggingSpeed;
+    /** What is typed into the number box; {@code null} while it is not being edited. */
+    private StringBuilder speedText;
     private static final String[] EFFORTS = {null, "low", "medium", "high"};
     private static final String[] EFFORT_LABELS = {"Standard", "Wenig", "Mittel", "Viel"};
     private static final int[] TOKEN_LIMITS = {2048, 4096, 8192, 16384};
@@ -336,8 +359,74 @@ final class PauseMenu {
                 return;
             }
         }
+        if (settingsPage && tab == 1) {
+            updateMouseSpeed(input, x, y);
+        }
         if (input.wasPressed(MouseButton.LEFT) && under >= 0) {
             run(regions.get(under));
+        }
+    }
+
+    /** The slider and the number box of the mouse speed: dragging, clicking, typing. */
+    private void updateMouseSpeed(Input input, double x, double y) {
+        boolean onSlider = x >= SLIDER_LEFT - 16 && x <= SLIDER_RIGHT + 16 && Math.abs(y - SLIDER_Y) <= 18;
+        if (input.wasPressed(MouseButton.LEFT)) {
+            if (speedText != null && !SPEED_BOX.contains(x, y)) {
+                applySpeedText(); // a click elsewhere takes what was typed
+            }
+            if (onSlider) {
+                draggingSpeed = true;
+                dirty = true;
+            } else if (SPEED_BOX.contains(x, y) && speedText == null) {
+                speedText = new StringBuilder();
+                dirty = true;
+            }
+        }
+        if (draggingSpeed) {
+            if (input.isDown(MouseButton.LEFT)) {
+                double share = (Math.max(SLIDER_LEFT, Math.min(SLIDER_RIGHT, x)) - SLIDER_LEFT) / (SLIDER_RIGHT - SLIDER_LEFT);
+                // In steps of 0.05, so that the number is a round one.
+                float speed = Math.round((MOUSE_SPEED_MIN + share * (MOUSE_SPEED_MAX - MOUSE_SPEED_MIN)) * 20) / 20f;
+                setMouseSpeed(speed);
+            } else {
+                draggingSpeed = false;
+                dirty = true;
+            }
+        }
+        if (speedText != null) {
+            for (char character : input.typedText().toCharArray()) {
+                if (character == '\r' || character == '\t') {
+                    applySpeedText();
+                    break;
+                } else if (character == '\b') {
+                    if (speedText.length() > 0) {
+                        speedText.setLength(speedText.length() - 1);
+                    }
+                    dirty = true;
+                } else if ((Character.isDigit(character) || character == ',' || character == '.') && speedText.length() < 4) {
+                    speedText.append(character);
+                    dirty = true;
+                }
+            }
+        }
+    }
+
+    private void applySpeedText() {
+        try {
+            setMouseSpeed(Float.parseFloat(speedText.toString().replace(',', '.')));
+        } catch (NumberFormatException e) {
+            // nothing usable was typed: the speed stays
+        }
+        speedText = null;
+        dirty = true;
+    }
+
+    private void setMouseSpeed(float speed) {
+        float clamped = Math.max(MOUSE_SPEED_MIN, Math.min(MOUSE_SPEED_MAX, speed));
+        if (Math.abs(clamped - mouseSpeed) > 0.0001f) {
+            mouseSpeed = clamped;
+            actions.mouseSpeed(clamped);
+            dirty = true;
         }
     }
 
@@ -484,22 +573,60 @@ final class PauseMenu {
 
         // Also switched with Alt+Enter. In full screen the mouse looks around without a button held.
         boolean fills = actions.fullscreen();
-        label(g, "Vollbild", 410);
-        choice(g, "An", 40, 422, 150, fills, () -> actions.fullscreen(true));
-        choice(g, "Aus", 200, 422, 150, !fills, () -> actions.fullscreen(false));
+        label(g, "Anzeige", 410);
+        choice(g, "Vollbild", 40, 422, 106, fills, () -> actions.fullscreen(true));
+        choice(g, "Fenster", 152, 422, 106, !fills, () -> actions.fullscreen(false));
+
+        // Which screen: numbered from left to right; the chosen one's size beside the label.
+        java.util.List<int[]> screens = actions.monitors();
+        if (screens.size() > 1) {
+            int on = Math.max(0, Math.min(screens.size() - 1, actions.monitor()));
+            label(g, "Bildschirm", 284, 410, 16);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+            g.setColor(TEXT);
+            g.drawString(screens.get(on)[2] + " × " + screens.get(on)[3], 376, 410);
+            for (int i = 0; i < Math.min(4, screens.size()); i++) {
+                int index = i;
+                choice(g, String.valueOf(i + 1), 284 + i * 50, 422, 44, i == on, () -> actions.monitor(index));
+            }
+        }
     }
 
     private void paintControlsTab(Graphics2D g) {
-        label(g, "Maus beim Umsehen", 206);
-        for (int i = 0; i < MOUSE_SPEEDS.length; i++) {
-            float speed = MOUSE_SPEEDS[i];
-            choice(g, MOUSE_SPEED_LABELS[i], 40 + i * 150, 218, 140, Math.abs(speed - mouseSpeed) < 0.01f, () -> {
-                mouseSpeed = speed;
-                actions.mouseSpeed(speed);
-            });
-        }
-        note(g, "Umsehen: Maustaste halten und ziehen, oder Pfeiltasten.", 284);
-        note(g, "Gehen: W A S D, schneller mit Umschalt, E und Q hoch und runter.", 308);
+        label(g, "Mausgeschwindigkeit beim Umsehen", 206);
+        // The slider: a track, filled up to the knob.
+        double share = (Math.max(MOUSE_SPEED_MIN, Math.min(MOUSE_SPEED_MAX, mouseSpeed)) - MOUSE_SPEED_MIN)
+                / (MOUSE_SPEED_MAX - MOUSE_SPEED_MIN);
+        double knob = SLIDER_LEFT + share * (SLIDER_RIGHT - SLIDER_LEFT);
+        Shape track = new RoundRectangle2D.Double(SLIDER_LEFT - 8, SLIDER_Y - 7, SLIDER_RIGHT - SLIDER_LEFT + 16, 14, 14, 14);
+        g.setColor(PINK_LIGHT);
+        g.fill(track);
+        g.setColor(PINK_DARK);
+        g.fill(new RoundRectangle2D.Double(SLIDER_LEFT - 8, SLIDER_Y - 7, knob - SLIDER_LEFT + 16, 14, 14, 14));
+        g.setStroke(new BasicStroke(2.5f));
+        g.draw(track);
+        Shape handle = new java.awt.geom.Ellipse2D.Double(knob - 14, SLIDER_Y - 14, 28, 28);
+        g.setColor(draggingSpeed ? PINK_DARK : Color.WHITE);
+        g.fill(handle);
+        g.setColor(PINK_DARK);
+        g.draw(handle);
+        // The number beside it; a click lets it be typed.
+        Shape box = new RoundRectangle2D.Double(SPEED_BOX.getX(), SPEED_BOX.getY(), SPEED_BOX.getWidth(),
+                SPEED_BOX.getHeight(), 16, 16);
+        g.setColor(Color.WHITE);
+        g.fill(box);
+        g.setStroke(new BasicStroke(speedText != null ? 3.5f : 2.5f));
+        g.setColor(PINK_DARK);
+        g.draw(box);
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+        String number = speedText != null ? speedText + "|" : String.format(java.util.Locale.GERMAN, "%.2f", mouseSpeed);
+        g.drawString(number, (int) (SPEED_BOX.getCenterX() - g.getFontMetrics().stringWidth(number) / 2.0),
+                (int) SPEED_BOX.getCenterY() + 6);
+        note(g, "1,00 ist die Vorgabe. Zahl anklicken, tippen, Enter.", 290);
+        note(g, "Umsehen: im Vollbild die Maus bewegen; im Fenster Maustaste", 322);
+        note(g, "halten und ziehen. Die Pfeiltasten gehen immer.", 342);
+        note(g, "Gehen: W A S D, schneller mit Umschalt, E und Q hoch und runter.", 374);
     }
 
     private void paintAiTab(Graphics2D g) {

@@ -234,6 +234,10 @@ final class Win32Api {
             FunctionDescriptor.of(JAVA_INT, JAVA_INT, JAVA_INT));
     private static final MethodHandle ClipCursor = Native.downcall(USER32, "ClipCursor",
             FunctionDescriptor.of(JAVA_INT, ADDRESS));
+    private static final MethodHandle ShowCursor = Native.downcall(USER32, "ShowCursor",
+            FunctionDescriptor.of(JAVA_INT, JAVA_INT));
+    private static final MethodHandle EnumDisplayMonitors = Native.downcall(USER32, "EnumDisplayMonitors",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS, ADDRESS, JAVA_LONG));
     private static final MethodHandle SetCursor = Native.downcall(USER32, "SetCursor",
             FunctionDescriptor.of(ADDRESS, ADDRESS));
     private static final MethodHandle CreateIconIndirect = Native.downcall(USER32, "CreateIconIndirect",
@@ -342,6 +346,57 @@ final class Win32Api {
     static void clipCursor(MemorySegment rect) {
         try {
             int ignored = (int) ClipCursor.invokeExact(rect);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * Hides or shows the pointer for this program by Windows' own counter, beside
+     * setting no pointer shape: some setups keep drawing a pointer otherwise.
+     */
+    static void pointerVisible(boolean visible) {
+        try {
+            // The counter is raised or lowered until it says what is wanted; never endlessly (no mouse: always -1).
+            for (int tries = 0; tries < 8; tries++) {
+                int count = (int) ShowCursor.invokeExact(visible ? 1 : 0);
+                if (visible ? count >= 0 : count < 0) {
+                    break;
+                }
+            }
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    private static final java.util.List<int[]> FOUND_MONITORS = new java.util.ArrayList<>();
+
+    /** Called by Windows once per screen from inside {@code EnumDisplayMonitors}. */
+    private static int monitorFound(MemorySegment monitor, MemorySegment deviceContext, MemorySegment rect, long data) {
+        try {
+            MemorySegment r = Native.sized(rect, SIZEOF_RECT);
+            FOUND_MONITORS.add(new int[] {r.get(JAVA_INT, RECT_LEFT), r.get(JAVA_INT, RECT_TOP),
+                    r.get(JAVA_INT, RECT_RIGHT) - r.get(JAVA_INT, RECT_LEFT),
+                    r.get(JAVA_INT, RECT_BOTTOM) - r.get(JAVA_INT, RECT_TOP)});
+        } catch (Throwable t) {
+            t.printStackTrace(); // never into native code
+        }
+        return 1;
+    }
+
+    /** The screens of the desktop, each as x, y, width, height; from left to right, then top to bottom. */
+    static java.util.List<int[]> monitors() {
+        try (Arena arena = Arena.ofConfined()) {
+            java.lang.invoke.MethodHandle found = java.lang.invoke.MethodHandles.lookup().findStatic(Win32Api.class,
+                    "monitorFound", java.lang.invoke.MethodType.methodType(int.class, MemorySegment.class,
+                            MemorySegment.class, MemorySegment.class, long.class));
+            MemorySegment callback = Native.LINKER.upcallStub(found,
+                    FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS, ADDRESS, JAVA_LONG), arena);
+            FOUND_MONITORS.clear();
+            int ignored = (int) EnumDisplayMonitors.invokeExact(MemorySegment.NULL, MemorySegment.NULL, callback, 0L);
+            java.util.List<int[]> monitors = new java.util.ArrayList<>(FOUND_MONITORS);
+            monitors.sort(java.util.Comparator.<int[]>comparingInt(m -> m[0]).thenComparingInt(m -> m[1]));
+            return monitors;
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

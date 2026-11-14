@@ -50,9 +50,8 @@ public final class Win32Window implements GLWindow {
     /** Whether the window has the keyboard; without it the mouse is let go. */
     private boolean focused = true;
     private boolean mouseCaptured;
-    /** The middle of the drawable area, where the captured pointer is put back: in the window, and on the screen. */
-    private int centerX;
-    private int centerY;
+    private final com.aresstack.threed4j.platform.RelativeMouse relativeMouse = new com.aresstack.threed4j.platform.RelativeMouse();
+    /** The middle of the drawable area on the screen, where the captured pointer is put back. */
     private int centerScreenX;
     private int centerScreenY;
     private final MemorySegment arrowCursor;
@@ -268,9 +267,8 @@ public final class Win32Window implements GLWindow {
                     int x = (short) (lParam & 0xFFFF);
                     int y = (short) ((lParam >>> 16) & 0xFFFF);
                     if (mouseCaptured) {
-                        // Only the movement counts; the pointer goes back to the middle, so it never reaches an edge.
-                        if (x != centerX || y != centerY) {
-                            input.onMouseDelta(x - centerX, y - centerY);
+                        // Only the movement counts; the pointer goes back to the middle when it has strayed far.
+                        if (relativeMouse.move(x, y, input)) {
                             setCursorPos(centerScreenX, centerScreenY);
                         }
                     } else {
@@ -350,6 +348,53 @@ public final class Win32Window implements GLWindow {
     }
 
     @Override
+    public java.util.List<int[]> monitors() {
+        java.util.List<int[]> monitors = Win32Api.monitors();
+        return monitors.isEmpty() ? GLWindow.super.monitors() : monitors;
+    }
+
+    @Override
+    public int monitor() {
+        try (Arena temp = Arena.ofConfined()) {
+            MemorySegment rect = Native.bytes(temp, SIZEOF_RECT);
+            if (monitorRect(window, rect)) {
+                java.util.List<int[]> monitors = monitors();
+                for (int i = 0; i < monitors.size(); i++) {
+                    if (monitors.get(i)[0] == rect.get(JAVA_INT, RECT_LEFT) && monitors.get(i)[1] == rect.get(JAVA_INT, RECT_TOP)) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public void setMonitor(int index) {
+        java.util.List<int[]> monitors = monitors();
+        if (index < 0 || index >= monitors.size()) {
+            return;
+        }
+        int[] screen = monitors.get(index);
+        try (Arena temp = Arena.ofConfined()) {
+            if (!fullscreen) {
+                MemorySegment rect = Native.bytes(temp, SIZEOF_RECT);
+                getWindowRect(window, rect);
+                windowed[2] = rect.get(JAVA_INT, RECT_RIGHT) - rect.get(JAVA_INT, RECT_LEFT);
+                windowed[3] = rect.get(JAVA_INT, RECT_BOTTOM) - rect.get(JAVA_INT, RECT_TOP);
+            }
+        }
+        // Where the window is, or would be again, on that screen: in its middle, the title bar never above the top.
+        windowed[0] = screen[0] + Math.max(0, (screen[2] - windowed[2]) / 2);
+        windowed[1] = screen[1] + Math.max(0, (screen[3] - windowed[3]) / 2);
+        if (fullscreen) {
+            setWindowPos(window, screen[0], screen[1], screen[2], screen[3]);
+        } else {
+            setWindowPos(window, windowed[0], windowed[1], windowed[2], windowed[3]);
+        }
+    }
+
+    @Override
     public void captureMouse(boolean capture) {
         if (!capture) {
             releaseMouse();
@@ -364,14 +409,15 @@ public final class Win32Window implements GLWindow {
             getClientRect(window, rect);
             clientToScreen(window, rect);
             clientToScreen(window, rect.asSlice(RECT_RIGHT));
-            centerX = width / 2;
-            centerY = height / 2;
-            centerScreenX = rect.get(JAVA_INT, RECT_LEFT) + centerX;
-            centerScreenY = rect.get(JAVA_INT, RECT_TOP) + centerY;
+            centerScreenX = rect.get(JAVA_INT, RECT_LEFT) + width / 2;
+            centerScreenY = rect.get(JAVA_INT, RECT_TOP) + height / 2;
             clipCursor(rect);
             setCursorPos(centerScreenX, centerScreenY);
+            relativeMouse.begin(width / 2, height / 2, width, height);
+            relativeMouse.expectAtCenter();
             mouseCaptured = true;
             showCursor(MemorySegment.NULL);
+            pointerVisible(false);
         }
     }
 
@@ -379,6 +425,7 @@ public final class Win32Window implements GLWindow {
         if (mouseCaptured) {
             mouseCaptured = false;
             clipCursor(MemorySegment.NULL);
+            pointerVisible(true);
             showCursor(Native.isNull(cursor) ? arrowCursor : cursor);
         }
     }

@@ -251,6 +251,6 @@ class PauseMenuTest {
         java.awt.image.BufferedImage pointer = GameCursor.paint();
         assertEquals(GameCursor.SIZE, pointer.getWidth());
         assertEquals(0, pointer.getRGB(GameCursor.SIZE - 1, 0) >>> 24, "nothing in the far corner");
-        assertTrue((pointer.getRGB(GameCursor.HOTSPOT_X + 2, GameCursor.HOTSPOT_Y + 6) >>> 24) > 200, "the arrow below its tip");
+        assertTrue((pointer.getRGB(GameCursor.HOTSPOT_X + 5, GameCursor.HOTSPOT_Y + 5) >>> 24) > 200, "the arrow below its tip");
     }
 }

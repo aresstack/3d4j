@@ -64,6 +64,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private static final Vec3 FACADE_DETAIL = new Vec3(0f, 55f, 120f);
     private static final float WALK_SPEED = 9f;
     private static final float LOOK_SPEED = 0.004f;
+    /** Radians per pixel while the mouse is captured: it moves much further there than a drag does. */
+    private static final float CAPTURED_LOOK_SPEED = 0.0018f;
 
     private final Options options;
 
@@ -197,6 +199,12 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         }
         // The game's own pointer for its menus, and the whole screen unless told otherwise.
         context.window().setCursor(GameCursor.paint(), GameCursor.HOTSPOT_X, GameCursor.HOTSPOT_Y);
+        if (!options.benchmark()) {
+            int screen = GameSettings.monitor(GameSettings.file());
+            if (screen >= 0 && screen < context.window().monitors().size()) {
+                context.window().setMonitor(screen); // before filling the screen: this one is to be filled
+            }
+        }
         if (!options.benchmark() && !options.windowed() && GameSettings.fullscreen(GameSettings.file())) {
             context.window().setFullscreen(true);
         }
@@ -584,6 +592,22 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     @Override
+    public java.util.List<int[]> monitors() {
+        return engine.window().monitors();
+    }
+
+    @Override
+    public int monitor() {
+        return engine.window().monitor();
+    }
+
+    @Override
+    public void monitor(int index) {
+        engine.window().setMonitor(index);
+        GameSettings.saveMonitor(GameSettings.file(), index);
+    }
+
+    @Override
     public void planDistrict() {
         if (townPlanner != null) {
             townPlanner.planDistrict();
@@ -634,8 +658,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     private void moveCamera(Input input, float step) {
         if (mouseLook || input.isDown(MouseButton.LEFT) || input.isDown(MouseButton.RIGHT)) {
-            yaw += input.mouseDeltaX() * LOOK_SPEED * settings.mouseSpeed();
-            pitch -= input.mouseDeltaY() * LOOK_SPEED * settings.mouseSpeed();
+            float speed = (mouseLook ? CAPTURED_LOOK_SPEED : LOOK_SPEED) * settings.mouseSpeed();
+            yaw += input.mouseDeltaX() * speed;
+            pitch -= input.mouseDeltaY() * speed;
         }
         float turn = 1.6f * step;
         if (input.isDown(Key.LEFT)) {
