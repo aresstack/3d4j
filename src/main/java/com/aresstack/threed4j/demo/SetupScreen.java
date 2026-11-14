@@ -1,8 +1,5 @@
 package com.aresstack.threed4j.demo;
 
-import com.aresstack.threed4j.assets.AssetCatalog;
-import com.aresstack.threed4j.assets.AssetSpec;
-import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.generator.KeePassEntry;
 import com.aresstack.threed4j.platform.Input;
@@ -70,22 +67,19 @@ final class SetupScreen implements AutoCloseable {
     /** Number of KeePass entries visible at once in the open drop-down list. */
     private static final int ENTRY_ROWS = 5;
 
-    private static final String[] STEPS = {"Zugang", "Modell", "Welt"};
+    private static final String[] STEPS = {"Zugang", "Modell"};
     private static final int ACCESS = 0;
     private static final int MODEL = 1;
-    private static final int WORLD = 2;
     private static final String HINT_KEEPASS = "Willkommen! Verbinde das Spiel mit KeePass und wähle den Eintrag des "
             + "KI-Dienstes. Adresse und API-Key kommen aus dem Eintrag und bleiben in KeePass.";
     private static final String HINT_MANUAL = "Willkommen! Trag ein, wo der KI-Dienst wohnt, und seinen API-Key. "
             + "Der Schlüssel wird nicht gespeichert.";
     private static final String[] HINTS = {
             HINT_KEEPASS,
-            "Diese Modelle bietet der Dienst an. Ich habe eines vorgewählt, du kannst ein anderes anklicken.",
-            "Das Modell zeichnet die Bewohner und Pflanzen der Stadt, alle gleichzeitig. „neu“ zeichnet ein "
-                    + "einzelnes Motiv noch einmal. Was gelingt, siehst du gleich im Spiel."
+            "Diese Modelle bietet der Dienst an. Ich habe eines vorgewählt, du kannst ein anderes anklicken. "
+                    + "Mit ihm zeichnet das Spiel im Hintergrund weiter, während du spielst."
     };
 
-    private final AssetStore store;
     private final BufferedImage backdrop;
     private final BufferedImage cover;
     private final ExecutorService background = Executors.newCachedThreadPool(runnable -> {
@@ -123,20 +117,8 @@ final class SetupScreen implements AutoCloseable {
     private List<String> models = List.of();
     private String selectedModel;
     private int modelScroll;
-    private final Map<AssetSpec, String> assetStates = new LinkedHashMap<>();
-    private boolean generating;
-    private boolean generatedOnce;
     private boolean finished;
     private boolean fromGame;
-
-    /**
-     * Address, key and model that worked last in this run of the program. Kept in
-     * memory only, so that drawing again does not need KeePass a second time.
-     */
-    private record Access(String serviceUrl, String apiKey, String model) {
-    }
-
-    private static volatile Access lastAccess;
 
     private final List<Runnable> posted = new ArrayList<>();
     private final List<Region> regions = new ArrayList<>();
@@ -146,8 +128,7 @@ final class SetupScreen implements AutoCloseable {
     private record Region(Rectangle2D area, Runnable action) {
     }
 
-    SetupScreen(AssetStore store, BufferedImage backdrop, BufferedImage cover) {
-        this.store = store;
+    SetupScreen(BufferedImage backdrop, BufferedImage cover) {
         this.backdrop = backdrop;
         this.cover = cover;
         AiSetup.Settings settings = AiSetup.load();
@@ -157,9 +138,6 @@ final class SetupScreen implements AutoCloseable {
         // Once paired, connecting needs nothing from the user: do it right away.
         connectOnOpen = useKeePass && AiSetup.isPaired();
         selectedModel = settings.model();
-        for (AssetSpec spec : AssetCatalog.ALL) {
-            assetStates.put(spec, store.has(spec) ? "vorhanden" : "fehlt");
-        }
     }
 
     /** {@code true} once the user has left the menu, with or without generating anything. */
@@ -611,128 +589,15 @@ final class SetupScreen implements AutoCloseable {
             return;
         }
         say("", false);
-        lastAccess = new Access(serviceUrl, apiKey, selectedModel);
+        // From here on the game draws by itself, in the background.
         AiSetup.rememberSession(new AiSetup.Session(serviceUrl, selectedModel, apiKey));
-        step = WORLD;
-    }
-
-    /** Asks for all assets, or only for the missing ones. */
-    private void generate(boolean everything) {
-        List<AssetSpec> wanted = new ArrayList<>();
-        for (AssetSpec spec : AssetCatalog.ALL) {
-            if (everything || !store.has(spec)) {
-                wanted.add(spec);
-            }
-        }
-        generate(wanted);
-    }
-
-    /** Asks for the given assets at the same time; each reports back on its own. */
-    private void generate(List<AssetSpec> wanted) {
-        for (AssetSpec spec : wanted) {
-            assetStates.put(spec, "wird gezeichnet …");
-        }
-        if (wanted.isEmpty()) {
-            say("Alles ist schon da. „Alles neu zeichnen“ ersetzt es.", false);
-            return;
-        }
-        generating = true;
-        generatedOnce = true;
-        say("", false);
-        AiSetup.Session session = new AiSetup.Session(serviceUrl, selectedModel, apiKey);
-        AtomicInteger open = new AtomicInteger(wanted.size());
-        for (AssetSpec spec : wanted) {
-            background.submit(() -> {
-                String problem;
-                try {
-                    problem = session.generate(store, spec);
-                } catch (RuntimeException e) {
-                    problem = String.valueOf(e.getMessage());
-                }
-                String result = problem == null ? "fertig" : "Fehler: " + inGerman(problem);
-                boolean last = open.decrementAndGet() == 0;
-                post(() -> {
-                    assetStates.put(spec, result);
-                    if (last) {
-                        generating = false;
-                    }
-                });
-            });
-        }
-    }
-
-    /** The generator reports in English for the console; the menu speaks German. */
-    private static String inGerman(String problem) {
-        if (problem.contains("no <svg> element")) {
-            return "Die Antwort enthielt keine Zeichnung.";
-        }
-        if (problem.contains("empty or tiny")) {
-            return "Die Zeichnung war leer.";
-        }
-        if (problem.contains("background is not transparent")) {
-            return "Das Motiv war nicht freigestellt.";
-        }
-        if (problem.contains("the plan was unusable")) {
-            return "Der Bauplan war unbrauchbar.";
-        }
-        if (problem.startsWith("part ")) {
-            return "Ein Bauteil war unbrauchbar (" + problem.substring(5, Math.max(5, problem.indexOf(" was"))) + ").";
-        }
-        if (problem.contains("cut off at max_tokens")) {
-            return "Die Antwort wurde abgeschnitten (Antwortlänge in den Einstellungen erhöhen).";
-        }
-        if (problem.contains("proxy route")) {
-            return "Kein Weg zum Dienst (Proxy).";
-        }
-        if (problem.contains("cannot reach")) {
-            return "Der Dienst ist nicht erreichbar.";
-        }
-        if (problem.contains("answered HTTP")) {
-            return "Der Dienst lehnt ab: " + problem.substring(problem.indexOf("HTTP"));
-        }
-        if (problem.contains("not valid SVG") || problem.contains("cannot be drawn") || problem.contains("has no size")) {
-            return "Die Zeichnung war fehlerhaft.";
-        }
-        return problem;
+        finish();
     }
 
     /** Tells the menu that it was opened from the running game, for the wording of its way out. */
     void openedFromGame() {
         fromGame = true;
         dirty = true;
-        Access known = lastAccess;
-        if (known != null) {
-            // Everything was chosen earlier in this run: straight to the drawing.
-            connectOnOpen = false;
-            serviceUrl = known.serviceUrl();
-            apiKey = known.apiKey();
-            selectedModel = known.model();
-            step = WORLD;
-        } else if (useKeePass && AiSetup.isPaired() && !rememberedEntry.isBlank()
-                && selectedModel != null && !selectedModel.isBlank()) {
-            // Chosen in an earlier run: fetch the entry again without asking, then straight to the drawing.
-            connectOnOpen = false;
-            String title = rememberedEntry;
-            inBackground("Hole den Zugang aus KeePass …", () -> {
-                KeePassEntry entry;
-                try {
-                    entry = AiSetup.keePassEntry(title, () -> ""); // an empty code cancels a pairing nobody asked for
-                } catch (Exception e) {
-                    throw new Exception(keePassProblem(e));
-                }
-                String address = entry == null ? null : AiSetup.normalizeBaseUrl(entry.url());
-                if (address == null || entry.password().isBlank()) {
-                    throw new Exception("Der Eintrag „" + title + "“ liefert keinen Zugang mehr. Bitte neu wählen.");
-                }
-                return () -> {
-                    serviceUrl = address;
-                    apiKey = entry.password();
-                    lastAccess = new Access(serviceUrl, apiKey, selectedModel);
-        AiSetup.rememberSession(new AiSetup.Session(serviceUrl, selectedModel, apiKey));
-                    step = WORLD;
-                };
-            });
-        }
     }
 
     // ------------------------------------------------------------ step navigation
@@ -743,14 +608,13 @@ final class SetupScreen implements AutoCloseable {
 
     /** Whether the step can be opened right now by clicking it in the trail at the top. */
     private boolean reachable(int target) {
-        if (busy != null || generating) {
+        if (busy != null) {
             return false;
         }
         boolean accessEntered = useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank();
         return switch (target) {
             case ACCESS -> true;
-            case MODEL -> accessKnown() || step == ACCESS && accessEntered;
-            default -> accessKnown() && selectedModel != null && !selectedModel.isBlank();
+            default -> accessKnown() || step == ACCESS && accessEntered;
         };
     }
 
@@ -765,10 +629,6 @@ final class SetupScreen implements AutoCloseable {
             confirmAccess(); // like "Weiter": takes what is chosen here and loads the models
             return;
         }
-        if (step == MODEL && target == WORLD && !models.isEmpty()) {
-            confirmModel(); // like "Weiter": remembers the model
-            return;
-        }
         closeEntries();
         step = target;
         focus = target == ACCESS && !useKeePass ? baseUrl : null;
@@ -777,12 +637,10 @@ final class SetupScreen implements AutoCloseable {
         }
     }
 
-    /** Leaves the menu as "Schließen" does; ignored while artwork is being drawn. */
+    /** Leaves the menu without changing anything. */
     void leave() {
-        if (!generating) {
-            finish();
-            dirty = true;
-        }
+        finish();
+        dirty = true;
     }
 
     private void finish() {
@@ -822,8 +680,7 @@ final class SetupScreen implements AutoCloseable {
         paintHeader(g);
         switch (step) {
             case ACCESS -> paintAccess(g);
-            case MODEL -> paintModel(g);
-            default -> paintWorld(g);
+            default -> paintModel(g);
         }
         paintFooter(g);
         g.dispose();
@@ -1098,53 +955,6 @@ final class SetupScreen implements AutoCloseable {
         back(g, ACCESS);
     }
 
-    private void paintWorld(Graphics2D g) {
-        note(g, "Modell: " + selectedModel, 430, 314, TEXT);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        int y = 340;
-        for (Map.Entry<AssetSpec, String> entry : assetStates.entrySet()) {
-            String state = entry.getValue();
-            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
-            g.setColor(state.startsWith("Fehler") ? BAD : state.equals("fertig") ? GOOD : TEXT);
-            g.fill(new Ellipse2D.Double(432, y - 12, 12, 12));
-            g.setColor(INK);
-            g.drawString(displayName(entry.getKey()), 456, y);
-            g.setColor(state.startsWith("Fehler") ? BAD : state.equals("fertig") ? GOOD : TEXT);
-            g.drawString(fitted(g, state, 380), 630, y);
-            if (!generating) {
-                // One motif alone, e.g. only the cherry tree.
-                AssetSpec spec = entry.getKey();
-                button(g, "neu", 1056, y - 18, 74, 23, PINK_LIGHT, INK, () -> generate(List.of(spec)));
-            }
-            y += 26;
-        }
-        if (!generating) {
-            if (generatedOnce) {
-                primary(g, "Spielen", this::finish);
-                secondary(g, "Alles neu zeichnen", 720, () -> generate(true));
-            } else {
-                primary(g, "Zeichnen lassen", () -> generate(false));
-                secondary(g, "Alles neu zeichnen", 720, () -> generate(true));
-            }
-            back(g, MODEL);
-        }
-    }
-
-    private static String displayName(AssetSpec spec) {
-        return switch (spec.id()) {
-            case "blossom-tree" -> "Kirschbaum";
-            case "green-tree" -> "Parkbaum";
-            case "lamp" -> "Laterne";
-            case "visitor-1" -> "Besucherin 1";
-            case "visitor-2" -> "Besucher 2";
-            case "visitor-3" -> "Besucher 3";
-            case "peony-bush" -> "Pfingstrosen";
-            case "lawn-tile" -> "Rasen";
-            case "street-tile" -> "Straße";
-            default -> spec.id();
-        };
-    }
-
     private void paintFooter(Graphics2D g) {
         if (busy != null) {
             note(g, busy, 430, 606, PINK_DARK);
@@ -1152,13 +962,11 @@ final class SetupScreen implements AutoCloseable {
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
             g.setColor(messageIsError ? BAD : GOOD);
             // Where the step leaves room: below the fields, inside the empty model list, above the buttons.
-            int y = step == MODEL ? (models.isEmpty() ? 362 : 592) : step == WORLD ? 586 : 540;
+            int y = step == MODEL ? (models.isEmpty() ? 362 : 592) : 540;
             wrapped(g, message, step == MODEL && models.isEmpty() ? 450 : 430, y, 680, 21);
         }
         // Leaving is always possible: the game runs with the built-in pictures.
-        if (!generating) {
-            button(g, generatedOnce ? "Schließen" : fromGame ? "Zurück ins Spiel" : "Ohne KI spielen", 146, 600, 250, PINK_LIGHT, INK, this::finish);
-        }
+        button(g, fromGame ? "Zurück ins Spiel" : "Ohne KI spielen", 146, 600, 250, PINK_LIGHT, INK, this::finish);
     }
 
     // ------------------------------------------------------------------ widgets

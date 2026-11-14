@@ -69,7 +69,7 @@ class FacadesTest {
         PartLibrary library = new PartLibrary(new AssetStore(directory), "altstadt");
         FacadeAtlas builtIn = FacadeAtlas.paint(library);
         assertEquals(3, builtIn.cellCount);
-        for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
+        for (PartLibrary.Kind kind : FacadeAtlas.KINDS) {
             FacadeAtlas.Cell cell = builtIn.cells(kind).get(0);
             assertEquals(0, cell.number(), "0 marks the built-in part");
             assertTrue(cell.coverage() > 0.15f && cell.coverage() < 0.8f, kind + " covers " + cell.coverage());
@@ -91,5 +91,33 @@ class FacadesTest {
         assertEquals(0.25f, red.coverage(), 0.01f);
         assertEquals(1f, red.averageColor().x(), 0.01f);
         assertEquals(0f, red.averageColor().y(), 0.01f);
+    }
+
+    @Test
+    void figuresAndGroundUsePlaceholdersUntilTheCollectionHasPicturesAndThenChooseAmongThem(@TempDir Path directory)
+            throws Exception {
+        PartLibrary library = new PartLibrary(new AssetStore(directory), "altstadt");
+        SpriteAtlas builtIn = SpriteAtlas.paint(library);
+        assertEquals(3, builtIn.cells(PartLibrary.Kind.VISITOR).size(), "three built-in people");
+        assertEquals(1, builtIn.cells(PartLibrary.Kind.BLOSSOM_TREE).size());
+        assertTrue(builtIn.cells(PartLibrary.Kind.BLOSSOM_TREE).get(0).number() <= 0);
+        GroundAtlas ground = GroundAtlas.paint(library);
+        assertEquals(3, ground.cellCount, "lawn, street, plaza");
+
+        BufferedImage tree = new BufferedImage(64, 128, BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < 20; i++) {
+            library.add(PartLibrary.Kind.BLOSSOM_TREE, null, tree, null);
+        }
+        library.add(PartLibrary.Kind.LAWN, null, new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB), null);
+
+        SpriteAtlas grown = SpriteAtlas.paint(library);
+        assertEquals(20, grown.cells(PartLibrary.Kind.BLOSSOM_TREE).size(), "the placeholder is gone");
+        assertEquals(2, grown.rows, "more pictures than fit into one row");
+        java.util.Set<Integer> chosen = new java.util.HashSet<>();
+        for (long figure = 0; figure < 300; figure++) {
+            chosen.add(grown.choose(PartLibrary.Kind.BLOSSOM_TREE, figure).number());
+        }
+        assertEquals(20, chosen.size(), "every picture is used by some tree");
+        assertEquals(1, GroundAtlas.paint(library).choose(GroundAtlas.Surface.LAWN, 7).number());
     }
 }

@@ -53,6 +53,7 @@ final class PartArtist {
             case SHOP -> "The shop front is centered, 96 to 108 units wide, and reaches from about y = 18 down to "
                     + "about y = 112. Leave at least 8 units of empty, transparent space on all four sides: the wall "
                     + "of the house shows there.";
+            default -> throw new IllegalArgumentException(kind + " is not a house part");
         };
         return "You draw parts of house fronts for a video game as SVG. The game puts your drawing on the wall of a "
                 + "house in a pastel-coloured cartoon town; the same drawing is used many times.\n\n"
@@ -73,6 +74,7 @@ final class PartArtist {
             case WINDOW -> WINDOW_VARIATIONS;
             case DOOR -> DOOR_VARIATIONS;
             case SHOP -> SHOP_VARIATIONS;
+            default -> throw new IllegalArgumentException(kind + " is not a house part");
         };
         return "Draw: " + variations[Math.floorMod(number - 1, variations.length)] + ".\n"
                 + "It belongs to a district of the town with this look, which every part of the district shares: "

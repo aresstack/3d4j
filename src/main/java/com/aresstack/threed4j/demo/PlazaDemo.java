@@ -1,7 +1,7 @@
 package com.aresstack.threed4j.demo;
 
-import com.aresstack.threed4j.assets.AssetCatalog;
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.PartLibrary;
 import com.aresstack.threed4j.generator.AiSetup;
 import com.aresstack.threed4j.generator.BackgroundArtist;
@@ -56,9 +56,6 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private static final Vec3 LIGHT_DIRECTION = new Vec3(-0.45f, -1.0f, -0.6f);
     private static final float FOG_START = 45f;
     private static final float FOG_END = 150f;
-    /** For the ground shader: width of an atlas cell, gutter and tile width as parts of a cell. */
-    private static final Vec3 GROUND_ATLAS = new Vec3(1f / GroundAtlas.CELLS,
-            (float) GroundAtlas.GUTTER / GroundAtlas.CELL, (float) GroundAtlas.TILE / GroundAtlas.CELL);
     /** Size of a ground tile in the world; from 30 to 75 units away its pattern fades to its average colour. */
     private static final Vec3 GROUND_DETAIL = new Vec3(PlazaScene.GROUND_TILE, 30f, 75f);
     /** From 55 to 120 units away the windows and doors of a wall fade into its mixed colour. */
@@ -99,6 +96,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private Shader facadeShader;
     private Texture facadeTexture;
     private Vec3 facadeAtlasLayout;
+    private Vec3 groundAtlasLayout;
     private final District district = District.BLOSSOM_QUARTER;
     private PartLibrary partLibrary;
     private String partsShown;
@@ -200,11 +198,13 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     /** The loading screen is over: open the menu if it is wanted, otherwise start the game. */
     private void afterTitle(EngineContext context) {
-        AssetStore store = AssetStore.standard();
-        boolean nothingGenerated = AssetCatalog.ALL.stream().noneMatch(store::has);
-        boolean wanted = options.showSetup() != null ? options.showSetup() : nothingGenerated;
+        // The game draws its pictures by itself while it runs. The menu is only for the access to the
+        // AI service: it opens the first time, when no access is known and nothing has been collected yet.
+        boolean firstTime = !AiSetup.accessKnown()
+                && new PartLibrary(AssetStore.standard(), district.id()).parts().isEmpty();
+        boolean wanted = options.showSetup() != null ? options.showSetup() : firstTime;
         if (wanted) {
-            setup = new SetupScreen(store, Textures.readResource("/images/loading.jpg"),
+            setup = new SetupScreen(Textures.readResource("/images/loading.jpg"),
                     Textures.readResource("/images/cover.jpg"));
         } else {
             startPlaying(context);
@@ -255,58 +255,62 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     /**
-     * Loads what comes from the asset folder (sprites, ground textures) and builds the
-     * scene with it; again after the world menu, to show new artwork.
+     * Paints the atlases from the district's collection and builds the scene with
+     * them. Again whenever the collection changes: everything in the scene chooses
+     * anew among the pictures there are.
      */
     private void loadArtwork(GraphicsDevice graphics) {
         AssetStore store = AssetStore.standard();
-        spriteAtlas = Textures.fromImage(graphics, SpriteAtlas.paint(store), true);
+        partLibrary = new PartLibrary(store, district.id());
+        // Single pictures in the asset folder (earlier versions, the command "generate", a hand) join the collection.
+        int taken = partLibrary.importSingleAssets(store);
+        if (taken > 0) {
+            System.out.println("Library: took " + taken + " picture(s) from " + store.directory());
+        }
+        partsShown = partLibrary.signature();
+
+        SpriteAtlas sprites = SpriteAtlas.paint(partLibrary);
+        spriteAtlas = Textures.fromImage(graphics, sprites.image, true);
         spriteShader.setTexture(spriteAtlas);
-        GroundAtlas ground = GroundAtlas.paint(store);
+        GroundAtlas ground = GroundAtlas.paint(partLibrary);
         groundTexture = Textures.fromImage(graphics, ground.image, true);
         groundShader.setTexture(groundTexture);
-        partLibrary = new PartLibrary(store, district.id());
-        partsShown = partLibrary.signature();
-        FacadeAtlas facades = loadFacadeAtlas(graphics);
-        scene = new PlazaScene(graphics, ground, facades);
-    }
-
-    private FacadeAtlas loadFacadeAtlas(GraphicsDevice graphics) {
+        groundAtlasLayout = new Vec3(1f / ground.cellCount, (float) GroundAtlas.GUTTER / GroundAtlas.CELL,
+                (float) GroundAtlas.TILE / GroundAtlas.CELL);
         FacadeAtlas facades = FacadeAtlas.paint(partLibrary);
         facadeTexture = Textures.fromImage(graphics, facades.image, true);
         facadeShader.setTexture(facadeTexture);
         facadeAtlasLayout = new Vec3(1f / facades.cellCount, (float) FacadeAtlas.GUTTER / FacadeAtlas.CELL,
                 (float) FacadeAtlas.TILE / FacadeAtlas.CELL);
-        return facades;
+        scene = new PlazaScene(graphics, ground, facades, sprites);
+    }
+
+    private void unloadArtwork() {
+        spriteAtlas.close();
+        groundTexture.close();
+        facadeTexture.close();
+        scene.close();
     }
 
     /**
-     * Once a second: has the district got new building parts (drawn in the background,
-     * or put into the folder by hand)? Then the houses choose again.
+     * Once a second: has the district's collection changed (a picture drawn in the
+     * background, removed in the menu, or put into the folder by hand)? Then the
+     * scene is built again with what there is now.
      */
     private void showNewParts(EngineContext context) {
         if (context.timeSeconds() - partsCheckedAt < 1.0) {
             return;
         }
         partsCheckedAt = context.timeSeconds();
-        String parts = partLibrary.signature();
-        if (!parts.equals(partsShown)) {
-            partsShown = parts;
-            facadeTexture.close();
-            scene.rebuildFacades(context.graphics(), loadFacadeAtlas(context.graphics()));
+        if (!partLibrary.signature().equals(partsShown)) {
+            unloadArtwork();
+            loadArtwork(context.graphics());
         }
     }
 
     private void startPlaying(EngineContext context) {
         if (scene == null) {
             loadScene(context); // after the menu, so that freshly generated artwork is used
-        } else {
-            // Back from "draw the world again": show the new artwork.
-            spriteAtlas.close();
-            groundTexture.close();
-            facadeTexture.close();
-            scene.close();
-            loadArtwork(context.graphics());
         }
         playing = true;
         if (backgroundArtist == null && !options.benchmark()) {
@@ -328,7 +332,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             } else if (pause == null) {
                 pause = new PauseMenu(this, new PauseMenu.State(settings.renderScale(), settings.smoothUpscale(),
                         settings.mouseSpeed(), AiSetup.reasoningEffort(), AiSetup.maxTokens(),
-                        AiSetup.backgroundEnabled()));
+                        AiSetup.backgroundEnabled()), partLibrary, district.name());
                 return;
             }
         }
@@ -353,6 +357,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             updateTitle(context, input);
             return;
         }
+        showNewParts(context); // also while paused: what is removed in the collection disappears behind the menu
         if (pause != null) {
             // The game stands still while the menu is open.
             pause.update(input, context.window().width(), context.window().height());
@@ -362,7 +367,6 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             context.requestScreenshot(Path.of("screenshot.png"));
         }
 
-        showNewParts(context);
         sceneTime = options.frozenTime() != null ? options.frozenTime() : sceneTime + deltaSeconds;
         chooseResolution(context, input);
         if (options.benchmark() && options.view() != null) {
@@ -469,10 +473,10 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     @Override
-    public void recreateWorld() {
+    public void openAccessMenu() {
         closePause();
         playing = false;
-        setup = new SetupScreen(AssetStore.standard(), Textures.readResource("/images/loading.jpg"),
+        setup = new SetupScreen(Textures.readResource("/images/loading.jpg"),
                 Textures.readResource("/images/cover.jpg"));
         setup.openedFromGame();
     }
@@ -589,7 +593,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
         groundShader.setUniform("uViewProjection", viewProjection);
         groundShader.setUniform("uCameraPosition", position);
-        groundShader.setUniform("uAtlas", GROUND_ATLAS);
+        groundShader.setUniform("uAtlas", groundAtlasLayout);
         groundShader.setUniform("uDetail", GROUND_DETAIL);
         groundShader.setUniform("uFogColor", haze);
         groundShader.setUniform("uFogStart", FOG_START);
@@ -676,7 +680,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         drawImage(graphics, 1f, 1f, 0f, 0f, new Vec3(0.20f, 0.11f, 0.27f), 0.45f);
         float scale = (float) PauseMenu.scale(width, height);
         imageShader.setTexture(pauseImage);
-        drawImage(graphics, PauseMenu.CARD_WIDTH * scale / width, PauseMenu.CARD_HEIGHT * scale / height, 0f, 0f,
+        drawImage(graphics, pause.cardWidth() * scale / width, pause.cardHeight() * scale / height, 0f, 0f,
                 new Vec3(1f, 1f, 1f));
     }
 

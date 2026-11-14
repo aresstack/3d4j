@@ -28,6 +28,10 @@ import java.util.Map;
  */
 final class FacadeAtlas {
 
+    /** The kinds of the collection that are parts of house fronts. */
+    static final List<PartLibrary.Kind> KINDS =
+            List.of(PartLibrary.Kind.WINDOW, PartLibrary.Kind.DOOR, PartLibrary.Kind.SHOP);
+
     static final int TILE = PartLibrary.SIZE;
     static final int GUTTER = 4;
     static final int CELL = TILE + 2 * GUTTER;
@@ -62,7 +66,7 @@ final class FacadeAtlas {
         List<Integer> numbers = new ArrayList<>();
         List<BufferedImage> tiles = new ArrayList<>();
         int generated = 0;
-        for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
+        for (PartLibrary.Kind kind : KINDS) {
             int before = tiles.size();
             for (PartLibrary.Part part : library.parts(kind)) {
                 BufferedImage picture = library.load(part);
@@ -81,7 +85,7 @@ final class FacadeAtlas {
         }
         BufferedImage image = new BufferedImage(tiles.size() * CELL, CELL, BufferedImage.TYPE_INT_ARGB);
         FacadeAtlas atlas = new FacadeAtlas(image, tiles.size());
-        for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
+        for (PartLibrary.Kind kind : KINDS) {
             atlas.cells.put(kind, new ArrayList<>());
         }
         Graphics2D g = image.createGraphics();

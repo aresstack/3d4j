@@ -84,13 +84,18 @@ final class Facades {
         FacadeAtlas.Cell best = parts.get(0);
         long bestRating = Long.MIN_VALUE;
         for (FacadeAtlas.Cell part : parts) {
-            long rating = mix(houseSeed * 0x9E3779B97F4A7C15L + part.number() * 0xC2B2AE3D27D4EB4FL + salt);
+            long rating = rating(houseSeed, part.number(), salt);
             if (rating > bestRating) {
                 bestRating = rating;
                 best = part;
             }
         }
         return best;
+    }
+
+    /** How much the owner of {@code seed} likes picture {@code number}; {@code salt} separates the kinds of choice. */
+    static long rating(long seed, int number, int salt) {
+        return mix(seed * 0x9E3779B97F4A7C15L + number * 0xC2B2AE3D27D4EB4FL + salt);
     }
 
     private static long mix(long value) {

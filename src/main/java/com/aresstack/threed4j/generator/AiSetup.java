@@ -241,13 +241,12 @@ public final class AiSetup {
         }
 
         /**
-         * Lets the model draw one building part for a district and adds it to the library.
+         * Lets the model draw one picture of this kind for a district and adds it to the collection.
          *
          * @return {@code null} on success, otherwise why it failed
          */
-        public String drawPart(PartLibrary library, PartLibrary.Kind kind, int number, String districtStyle) {
-            ChatClient chat = chat();
-            return PartArtist.generate(chat::ask, library, kind, number, districtStyle, model);
+        public String draw(PartLibrary library, PartLibrary.Kind kind, int number, String districtStyle) {
+            return Artist.draw(chat(), library, kind, number, districtStyle);
         }
     }
 
@@ -293,7 +292,20 @@ public final class AiSetup {
         }
     }
 
-    /** Whether building parts are drawn in the background while the game runs ({@code background.enabled}). */
+    /**
+     * Whether access to the AI service is at hand without asking anybody: chosen in
+     * this run, or remembered from an earlier one. Does not talk to KeePass.
+     */
+    public static boolean accessKnown() {
+        if (session != null) {
+            return true;
+        }
+        Settings settings = load();
+        return apiKeyFromEnvironment() != null && normalizeBaseUrl(settings.baseUrl()) != null
+                || isPaired() && !settings.keePassEntry().isBlank();
+    }
+
+    /** Whether pictures are drawn in the background while the game runs ({@code background.enabled}). */
     public static boolean backgroundEnabled() {
         return !"false".equalsIgnoreCase(read(settingsFile()).getProperty("background.enabled"));
     }

@@ -1,5 +1,6 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.PartLibrary.Kind;
 import com.aresstack.threed4j.gfx.GraphicsDevice;
 import com.aresstack.threed4j.gfx.Mesh;
 import com.aresstack.threed4j.gfx.MeshBuilder;
@@ -35,11 +36,11 @@ final class PlazaScene implements AutoCloseable {
 
     final Mesh city;
     final Mesh ground;
-    /** The walls of the houses with their windows and doors; replaced when the district gets new building parts. */
-    Mesh facades;
+    /** The walls of the houses with their windows and doors. */
+    final Mesh facades;
     /** The houses of the town, for building {@link #facades}. */
     final List<Facades.House> houses = new ArrayList<>();
-    int facadeTriangles;
+    final int facadeTriangles;
     final Mesh sprites;
     final Mesh sky;
     final int cityTriangles;
@@ -50,8 +51,9 @@ final class PlazaScene implements AutoCloseable {
     /**
      * @param groundAtlas the ground textures; their average colours go into the ground mesh
      * @param facadeAtlas the building parts the houses choose from
+     * @param spriteAtlas the pictures the trees, lamps, people and bushes choose from
      */
-    PlazaScene(GraphicsDevice graphics, GroundAtlas groundAtlas, FacadeAtlas facadeAtlas) {
+    PlazaScene(GraphicsDevice graphics, GroundAtlas groundAtlas, FacadeAtlas facadeAtlas, SpriteAtlas spriteAtlas) {
         Random random = new Random(21);
 
         ground = ground(graphics, groundAtlas);
@@ -65,7 +67,7 @@ final class PlazaScene implements AutoCloseable {
         facades = walls.mesh();
         facadeTriangles = walls.triangles();
 
-        SpriteBatch batch = new SpriteBatch();
+        SpriteBatch batch = new SpriteBatch(spriteAtlas);
         plants(batch, random);
         visitors(batch, random);
         bushes(batch, random); // after the rest, so that everything before keeps its place
@@ -136,20 +138,24 @@ final class PlazaScene implements AutoCloseable {
                 float z = iz * GROUND_TILE;
                 float centerX = x + GROUND_TILE / 2;
                 float centerZ = z + GROUND_TILE / 2;
-                int cell;
+                GroundAtlas.Surface surface;
                 if (centerZ < -100f) {
                     // Paved under and around the ensemble and where the street arrives, lawn beside it.
                     boolean site = Math.abs(centerX) < WestSide.HALF_WIDTH + 6f && centerZ < WEST_SIDE_FRONT + 10f;
-                    cell = site || Math.abs(centerX) < STREET_HALF_WIDTH ? GroundAtlas.STREET : GroundAtlas.LAWN;
+                    surface = site || Math.abs(centerX) < STREET_HALF_WIDTH
+                            ? GroundAtlas.Surface.STREET : GroundAtlas.Surface.LAWN;
                 } else if (Math.hypot(centerX, centerZ) < PLAZA_RADIUS) {
-                    cell = GroundAtlas.PLAZA;
+                    surface = GroundAtlas.Surface.PLAZA;
                 } else if (Math.abs(centerX) < STREET_HALF_WIDTH || Math.abs(centerZ) < STREET_HALF_WIDTH) {
-                    cell = GroundAtlas.STREET;
+                    surface = GroundAtlas.Surface.STREET;
                 } else {
-                    cell = GroundAtlas.LAWN;
+                    surface = GroundAtlas.Surface.LAWN;
                 }
                 float brightness = ((ix + iz) & 1) == 0 ? 1f : 0.96f;
-                Vec3 average = atlas.averages[cell];
+                // Larger patches than a square share a tile, so that the ground does not look like a quilt.
+                GroundAtlas.Cell tile = atlas.choose(surface, 1000L * Math.floorDiv(ix, 3) + Math.floorDiv(iz, 3));
+                int cell = tile.index();
+                Vec3 average = tile.average();
                 int first = v / 9;
                 // Counter-clockwise when seen from above.
                 float[][] corners = {{x, z + GROUND_TILE}, {x + GROUND_TILE, z + GROUND_TILE}, {x + GROUND_TILE, z}, {x, z}};
@@ -188,14 +194,6 @@ final class PlazaScene implements AutoCloseable {
     }
 
     // ---------------------------------------------------------------- buildings
-
-    /** Builds the walls again, after the district got new building parts. */
-    void rebuildFacades(GraphicsDevice graphics, FacadeAtlas facadeAtlas) {
-        facades.close();
-        Facades.Built walls = Facades.build(graphics, houses, facadeAtlas);
-        facades = walls.mesh();
-        facadeTriangles = walls.triangles();
-    }
 
     /**
      * The houses: roofs and what stands on them go into the town's mesh, the walls
@@ -246,20 +244,20 @@ final class PlazaScene implements AutoCloseable {
             if (Math.abs(x) < STREET_HALF_WIDTH || Math.abs(z) < STREET_HALF_WIDTH) {
                 continue;
             }
-            batch.add(i % 2 == 0 ? SpriteAtlas.BLOSSOM_TREE : SpriteAtlas.LAMP, x, z, i % 2 == 0 ? 9f : 5f);
+            batch.add(i % 2 == 0 ? Kind.BLOSSOM_TREE : Kind.LAMP, x, z, i % 2 == 0 ? 9f : 5f);
         }
         for (float along = 28f; along < 95f; along += 9f) {
             for (int side = -1; side <= 1; side += 2) {
                 float offset = side * (STREET_HALF_WIDTH + 0.6f);
-                int kind = random.nextInt(4) == 0 ? SpriteAtlas.GREEN_TREE : SpriteAtlas.BLOSSOM_TREE;
+                Kind kind = random.nextInt(4) == 0 ? Kind.GREEN_TREE : Kind.BLOSSOM_TREE;
                 float height = 7.5f + random.nextFloat() * 2.5f;
                 batch.add(kind, offset, along, height);
                 batch.add(kind, offset, -along, height);
                 batch.add(kind, along, offset, height);
                 batch.add(kind, -along, offset, height);
                 float lampAt = along + 4.5f;
-                batch.add(SpriteAtlas.LAMP, offset * 0.8f, lampAt, 5f);
-                batch.add(SpriteAtlas.LAMP, lampAt, offset * 0.8f, 5f);
+                batch.add(Kind.LAMP, offset * 0.8f, lampAt, 5f);
+                batch.add(Kind.LAMP, lampAt, offset * 0.8f, 5f);
             }
         }
     }
@@ -272,7 +270,7 @@ final class PlazaScene implements AutoCloseable {
     private static void bushes(SpriteBatch batch, Random random) {
         for (int i = 0; i < 12; i++) {
             double angle = 2 * Math.PI * i / 12;
-            batch.add(SpriteAtlas.PEONY_BUSH, (float) Math.cos(angle) * 6.1f, (float) Math.sin(angle) * 6.1f,
+            batch.add(Kind.BUSH, (float) Math.cos(angle) * 6.1f, (float) Math.sin(angle) * 6.1f,
                     2.6f + random.nextFloat() * 0.8f);
         }
         for (int i = 0; i < 32; i++) {
@@ -282,7 +280,7 @@ final class PlazaScene implements AutoCloseable {
             if (Math.abs(x) < STREET_HALF_WIDTH + 1f || Math.abs(z) < STREET_HALF_WIDTH + 1f) {
                 continue;
             }
-            batch.add(SpriteAtlas.PEONY_BUSH, x, z, 3.0f + random.nextFloat() * 1.2f);
+            batch.add(Kind.BUSH, x, z, 3.0f + random.nextFloat() * 1.2f);
         }
     }
 
@@ -291,21 +289,21 @@ final class PlazaScene implements AutoCloseable {
         float front = WEST_SIDE_FRONT;
         for (int i = 0; i < 6; i++) {
             float z = front - 6f - i * 10f;
-            batch.add(i % 2 == 0 ? SpriteAtlas.BLOSSOM_TREE : SpriteAtlas.LAMP, -9.5f, z, i % 2 == 0 ? 8f : 5f);
-            batch.add(i % 2 == 0 ? SpriteAtlas.LAMP : SpriteAtlas.BLOSSOM_TREE, 9.5f, z, i % 2 == 0 ? 5f : 8f);
+            batch.add(i % 2 == 0 ? Kind.BLOSSOM_TREE : Kind.LAMP, -9.5f, z, i % 2 == 0 ? 8f : 5f);
+            batch.add(i % 2 == 0 ? Kind.LAMP : Kind.BLOSSOM_TREE, 9.5f, z, i % 2 == 0 ? 5f : 8f);
         }
         for (int side = -1; side <= 1; side += 2) { // beside the two entrances in the middle of the yard
-            batch.add(SpriteAtlas.PEONY_BUSH, side * 10.6f, front - 26.2f, 3.2f);
-            batch.add(SpriteAtlas.PEONY_BUSH, side * 10.6f, front - 35.8f, 3.2f);
+            batch.add(Kind.BUSH, side * 10.6f, front - 26.2f, 3.2f);
+            batch.add(Kind.BUSH, side * 10.6f, front - 35.8f, 3.2f);
         }
         for (int i = 0; i < 4; i++) {
-            batch.add(SpriteAtlas.GREEN_TREE, -44f + i * 4f * (i % 2), front + 4f + i * 3f, 7f + i * 0.6f);
-            batch.add(SpriteAtlas.GREEN_TREE, 34f + i * 3f, front + 6f - i * 14f, 7.5f);
+            batch.add(Kind.GREEN_TREE, -44f + i * 4f * (i % 2), front + 4f + i * 3f, 7f + i * 0.6f);
+            batch.add(Kind.GREEN_TREE, 34f + i * 3f, front + 6f - i * 14f, 7.5f);
         }
         for (int i = 0; i < 18; i++) {
             float x = (random.nextFloat() * 2 - 1) * 8f;
             float z = front + 8f - random.nextFloat() * 62f;
-            batch.add(SpriteAtlas.FIRST_VISITOR + random.nextInt(SpriteAtlas.VISITOR_COUNT), x, z,
+            batch.add(Kind.VISITOR, random.nextInt(3), x, z,
                     1.9f + random.nextFloat() * 0.3f, 0.6f + random.nextFloat() * 1.6f,
                     (random.nextBoolean() ? 1 : -1) * (0.15f + random.nextFloat() * 0.3f), random.nextFloat() * 6.28f);
         }
@@ -330,7 +328,7 @@ final class PlazaScene implements AutoCloseable {
             float radius = 0.8f + random.nextFloat() * 2.2f;
             float speed = (random.nextBoolean() ? 1 : -1) * (0.15f + random.nextFloat() * 0.35f);
             float phase = random.nextFloat() * 6.28f;
-            batch.add(SpriteAtlas.FIRST_VISITOR + random.nextInt(SpriteAtlas.VISITOR_COUNT),
+            batch.add(Kind.VISITOR, random.nextInt(3),
                     x, z, 1.9f + random.nextFloat() * 0.3f, radius, speed, phase);
         }
     }
@@ -347,19 +345,38 @@ final class PlazaScene implements AutoCloseable {
         private float[] vertices = new float[FLOATS_PER_SPRITE * 64];
         private int count;
 
-        void add(int cell, float x, float z, float height) {
-            add(cell, x, z, height, 0f, 0f, 0f);
+        private final SpriteAtlas atlas;
+
+        SpriteBatch(SpriteAtlas atlas) {
+            this.atlas = atlas;
         }
 
-        void add(int cell, float x, float z, float height, float radius, float speed, float phase) {
+        void add(Kind kind, float x, float z, float height) {
+            add(kind, x, z, height, 0f, 0f, 0f);
+        }
+
+        /** @param unused a random number drawn at this point by earlier versions; drawing it keeps everybody in place */
+        void add(Kind kind, int unused, float x, float z, float height, float radius, float speed, float phase) {
+            add(kind, x, z, height, radius, speed, phase);
+        }
+
+        /**
+         * Adds a figure. Which picture of its kind it shows is its own choice among the
+         * pictures there are (see {@link SpriteAtlas#choose}); the figure's number in
+         * the scene is what makes it differ from the others.
+         */
+        void add(Kind kind, float x, float z, float height, float radius, float speed, float phase) {
             if ((count + 1) * FLOATS_PER_SPRITE > vertices.length) {
                 vertices = Arrays.copyOf(vertices, vertices.length * 2);
             }
+            SpriteAtlas.Cell cell = atlas.choose(kind, count);
             float half = height * SpriteAtlas.CELL_WIDTH / SpriteAtlas.CELL_HEIGHT / 2f;
-            float u0 = (float) cell / SpriteAtlas.CELLS;
-            float u1 = (float) (cell + 1) / SpriteAtlas.CELLS;
+            float u0 = (float) cell.column() / atlas.columns;
+            float u1 = (float) (cell.column() + 1) / atlas.columns;
+            float v0 = (float) cell.row() / atlas.rows;
+            float v1 = (float) (cell.row() + 1) / atlas.rows;
             float[][] corners = { // offset x, offset y, u, v – counter-clockwise for the viewer
-                    {-half, 0, u0, 1}, {half, 0, u1, 1}, {half, height, u1, 0}, {-half, height, u0, 0}};
+                    {-half, 0, u0, v1}, {half, 0, u1, v1}, {half, height, u1, v0}, {-half, height, u0, v0}};
             int offset = count * FLOATS_PER_SPRITE;
             for (float[] corner : corners) {
                 vertices[offset++] = x;

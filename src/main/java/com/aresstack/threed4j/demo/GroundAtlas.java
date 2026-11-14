@@ -1,8 +1,6 @@
 package com.aresstack.threed4j.demo;
 
-import com.aresstack.threed4j.assets.AssetCatalog;
-import com.aresstack.threed4j.assets.AssetSpec;
-import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.PartLibrary;
 import com.aresstack.threed4j.math.Vec3;
 
 import java.awt.Color;
@@ -11,12 +9,17 @@ import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
  * The textures of the ground side by side in one image: lawn, street, plaza. Each
- * is a square tile that repeats without a seam. Tiles in the asset folder
- * ({@link AssetStore}) replace the built-in ones.
+ * is a square tile that repeats without a seam. Lawn and street come from the
+ * district's collection ({@link PartLibrary}), several of each if there are; a
+ * built-in tile stands in for a kind the collection has nothing of.
  *
  * <p>Around every tile its own opposite edges are repeated (the gutter), so that
  * smooth filtering at the edge of a tile blends with the pixels it meets when
@@ -24,40 +27,89 @@ import java.util.Random;
  */
 final class GroundAtlas {
 
-    static final int LAWN = 0;
-    static final int STREET = 1;
-    static final int PLAZA = 2;
-    static final int CELLS = 3;
+    /** What a piece of ground is. */
+    enum Surface {
+        LAWN(PartLibrary.Kind.LAWN), STREET(PartLibrary.Kind.STREET), PLAZA(null);
+
+        /** The kind of the collection its tiles come from; {@code null} if there is only the built-in tile. */
+        final PartLibrary.Kind kind;
+
+        Surface(PartLibrary.Kind kind) {
+            this.kind = kind;
+        }
+    }
 
     static final int TILE = 256;
     static final int GUTTER = 8;
     static final int CELL = TILE + 2 * GUTTER;
 
-    /** Which asset file replaces which cell; the plaza has none yet. */
-    private static final AssetSpec[] CELL_ASSETS = {AssetCatalog.LAWN_TILE, AssetCatalog.STREET_TILE, null};
-
-    final BufferedImage image;
-    /** Average colour of each tile: what the ground shows in the distance. */
-    final Vec3[] averages = new Vec3[CELLS];
-
-    private GroundAtlas(BufferedImage image) {
-        this.image = image;
+    /**
+     * One tile in the atlas.
+     *
+     * @param number  the tile's number in the collection; 0 for the built-in tile
+     * @param average what the ground shows in the distance
+     */
+    record Cell(int index, int number, Vec3 average) {
     }
 
-    /** Paints the atlas; tiles from the asset folder where there are any, built-in ones otherwise. */
-    static GroundAtlas paint(AssetStore store) {
-        BufferedImage image = new BufferedImage(CELLS * CELL, CELL, BufferedImage.TYPE_INT_ARGB);
-        GroundAtlas atlas = new GroundAtlas(image);
+    final BufferedImage image;
+    final int cellCount;
+    private final Map<Surface, List<Cell>> cells = new EnumMap<>(Surface.class);
+
+    private GroundAtlas(BufferedImage image, int cellCount) {
+        this.image = image;
+        this.cellCount = cellCount;
+    }
+
+    /** The tile a square of ground takes: the one it rates highest, as figures and houses choose. */
+    Cell choose(Surface surface, long seed) {
+        List<Cell> candidates = cells.get(surface);
+        Cell best = candidates.get(0);
+        long bestRating = Long.MIN_VALUE;
+        for (Cell candidate : candidates) {
+            long rating = Facades.rating(seed, candidate.number(), surface.ordinal() + 30);
+            if (rating > bestRating) {
+                bestRating = rating;
+                best = candidate;
+            }
+        }
+        return best;
+    }
+
+    /** Paints the atlas; tiles from the collection where there are any, built-in ones otherwise. */
+    static GroundAtlas paint(PartLibrary library) {
+        List<Surface> surfaces = new ArrayList<>();
+        List<Integer> numbers = new ArrayList<>();
+        List<BufferedImage> tiles = new ArrayList<>();
+        int collected = 0;
+        for (Surface surface : Surface.values()) {
+            int before = tiles.size();
+            if (surface.kind != null) {
+                for (PartLibrary.Part part : library.parts(surface.kind)) {
+                    BufferedImage tile = library.load(part);
+                    if (tile != null) {
+                        surfaces.add(surface);
+                        numbers.add(part.number());
+                        tiles.add(tile);
+                        collected++;
+                    }
+                }
+            }
+            if (tiles.size() == before) {
+                surfaces.add(surface);
+                numbers.add(0);
+                tiles.add(builtIn(surface));
+            }
+        }
+        BufferedImage image = new BufferedImage(tiles.size() * CELL, CELL, BufferedImage.TYPE_INT_ARGB);
+        GroundAtlas atlas = new GroundAtlas(image, tiles.size());
+        for (Surface surface : Surface.values()) {
+            atlas.cells.put(surface, new ArrayList<>());
+        }
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        int replaced = 0;
-        for (int cell = 0; cell < CELLS; cell++) {
-            BufferedImage tile = CELL_ASSETS[cell] == null ? null : store.load(CELL_ASSETS[cell]);
-            if (tile != null) {
-                replaced++;
-            } else {
-                tile = builtIn(cell);
-            }
+        for (int cell = 0; cell < tiles.size(); cell++) {
+            BufferedImage tile = tiles.get(cell);
             if (tile.getWidth() != TILE || tile.getHeight() != TILE) {
                 BufferedImage scaled = new BufferedImage(TILE, TILE, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D s = scaled.createGraphics();
@@ -74,11 +126,11 @@ final class GroundAtlas {
                 }
             }
             clipped.dispose();
-            atlas.averages[cell] = average(tile);
+            atlas.cells.get(surfaces.get(cell)).add(new Cell(cell, numbers.get(cell), average(tile)));
         }
         g.dispose();
-        System.out.println("Ground: " + replaced + " of " + (CELLS - 1) + " textures from " + store.directory()
-                + ", the rest built in");
+        System.out.println("Ground: " + collected + " textures from " + library.directory()
+                + (collected == 0 ? ", using the built-in ones" : ""));
         return atlas;
     }
 
@@ -99,12 +151,12 @@ final class GroundAtlas {
     }
 
     /** The built-in tiles: the flat colours of the first version with a little texture. */
-    private static BufferedImage builtIn(int cell) {
+    private static BufferedImage builtIn(Surface surface) {
         BufferedImage tile = new BufferedImage(TILE, TILE, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = tile.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Random random = new Random(7 + cell);
-        switch (cell) {
+        Random random = new Random(7 + surface.ordinal());
+        switch (surface) {
             case LAWN -> {
                 g.setColor(new Color(0xA2D08C));
                 g.fillRect(0, 0, TILE, TILE);

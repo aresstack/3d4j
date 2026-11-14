@@ -1,5 +1,7 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.PartLibrary;
+import com.aresstack.threed4j.generator.BackgroundArtist;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
 import com.aresstack.threed4j.platform.MouseButton;
@@ -31,6 +33,10 @@ final class PauseMenu {
 
     static final int CARD_WIDTH = 520;
     static final int CARD_HEIGHT = 560;
+    private static final int COLLECTION_WIDTH = 960;
+    private static final int COLLECTION_HEIGHT = 640;
+    /** Pictures per page of the collection: four in a row, two rows. */
+    private static final int PICTURES_PER_PAGE = 8;
 
     /** The window is treated as at least this large in card units, so the card never fills it completely. */
     private static final int DESIGN_WIDTH = 1280;
@@ -66,8 +72,8 @@ final class PauseMenu {
          */
         void requestOptions(int maxTokens, String reasoningEffort);
 
-        /** Open the "create the world" menu to draw the artwork again. */
-        void recreateWorld();
+        /** Open the menu for the access to the AI service (KeePass or by hand, model). */
+        void openAccessMenu();
 
         /** Whether building parts are drawn in the background while the game runs. */
         void backgroundDrawing(boolean enabled);
@@ -105,6 +111,15 @@ final class PauseMenu {
     private String[] shownStatus = {"", ""};
     private boolean settingsPage;
     private int tab;
+    // The page that shows the district's collection of pictures.
+    private final PartLibrary library;
+    private final String districtName;
+    private boolean collectionPage;
+    private PartLibrary.Kind shownKind = PartLibrary.Kind.BLOSSOM_TREE;
+    private int shownFrom;
+    private String shownSignature = "";
+    private long signatureCheckedAt;
+    private final java.util.Map<java.nio.file.Path, BufferedImage> thumbnails = new java.util.HashMap<>();
     /** Index of the button under the mouse or chosen with the arrow keys; -1 for none. */
     private int marked = -1;
     private int lastMouseX = -1;
@@ -112,8 +127,14 @@ final class PauseMenu {
     private final List<Region> regions = new ArrayList<>();
     private boolean dirty = true;
 
-    PauseMenu(Actions actions, State state) {
+    /**
+     * @param library      the collection of pictures of the district the player is in
+     * @param districtName what the player reads as the district's name
+     */
+    PauseMenu(Actions actions, State state, PartLibrary library, String districtName) {
         this.actions = actions;
+        this.library = library;
+        this.districtName = districtName;
         this.renderScale = state.renderScale();
         this.smoothUpscale = state.smoothUpscale();
         this.mouseSpeed = state.mouseSpeed();
@@ -129,6 +150,15 @@ final class PauseMenu {
         return wasDirty;
     }
 
+    /** The card's size in card units; the page with the collection needs more room than the others. */
+    int cardWidth() {
+        return collectionPage ? COLLECTION_WIDTH : CARD_WIDTH;
+    }
+
+    int cardHeight() {
+        return collectionPage ? COLLECTION_HEIGHT : CARD_HEIGHT;
+    }
+
     /** Window pixels per card unit: the card keeps its share of a 1280 x 720 window at any window size. */
     static double scale(int windowWidth, int windowHeight) {
         return Math.min((double) windowWidth / DESIGN_WIDTH, (double) windowHeight / DESIGN_HEIGHT);
@@ -138,12 +168,20 @@ final class PauseMenu {
 
     void update(Input input, int windowWidth, int windowHeight) {
         if (input.wasPressed(Key.ESCAPE)) {
-            if (settingsPage) {
+            if (collectionPage) {
+                showCollection(false);
+            } else if (settingsPage) {
                 showPage(false);
             } else {
                 actions.resume();
             }
             return;
+        }
+        if (collectionPage && System.nanoTime() - signatureCheckedAt > 1_000_000_000L) {
+            signatureCheckedAt = System.nanoTime();
+            if (!library.signature().equals(shownSignature)) {
+                dirty = true; // a picture arrived or left while the page is open
+            }
         }
         if (regions.isEmpty()) {
             return; // not painted yet
@@ -152,8 +190,8 @@ final class PauseMenu {
             dirty = true; // the background drawing has moved on
         }
         double scale = scale(windowWidth, windowHeight);
-        double x = (input.mouseX() - (windowWidth - CARD_WIDTH * scale) / 2) / scale;
-        double y = (input.mouseY() - (windowHeight - CARD_HEIGHT * scale) / 2) / scale;
+        double x = (input.mouseX() - (windowWidth - cardWidth() * scale) / 2) / scale;
+        double y = (input.mouseY() - (windowHeight - cardHeight() * scale) / 2) / scale;
         int under = -1;
         for (int i = 0; i < regions.size(); i++) {
             if (regions.get(i).area().contains(x, y)) {
@@ -166,7 +204,7 @@ final class PauseMenu {
             lastMouseY = input.mouseY();
             mark(under);
         }
-        if (!settingsPage) {
+        if (!settingsPage && !collectionPage) {
             // The three buttons of the first page can be reached without the mouse.
             if (input.wasPressed(Key.DOWN)) {
                 mark(Math.min(regions.size() - 1, marked + 1));
@@ -196,6 +234,13 @@ final class PauseMenu {
         }
     }
 
+    private void showCollection(boolean show) {
+        collectionPage = show;
+        marked = -1;
+        regions.clear();
+        dirty = true;
+    }
+
     private void showPage(boolean settings) {
         settingsPage = settings;
         marked = -1;
@@ -208,33 +253,37 @@ final class PauseMenu {
     /** Paints the card for a window of the given size; the image is as large as the card appears. */
     BufferedImage paint(int windowWidth, int windowHeight) {
         double scale = scale(windowWidth, windowHeight);
-        int width = Math.max(1, (int) Math.round(CARD_WIDTH * scale));
-        int height = Math.max(1, (int) Math.round(CARD_HEIGHT * scale));
+        int cardWidth = cardWidth();
+        int cardHeight = cardHeight();
+        int width = Math.max(1, (int) Math.round(cardWidth * scale));
+        int height = Math.max(1, (int) Math.round(cardHeight * scale));
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.scale((double) width / CARD_WIDTH, (double) height / CARD_HEIGHT);
+        g.scale((double) width / cardWidth, (double) height / cardHeight);
 
         // A soft shadow, then the card with its pink frame; everything else stays transparent.
         for (int i = 0; i < 6; i++) {
             g.setColor(new Color(74, 42, 94, 14));
-            g.fill(new RoundRectangle2D.Double(10 - i, 14 - i, CARD_WIDTH - 14 + 2 * i, CARD_HEIGHT - 16 + 2 * i,
+            g.fill(new RoundRectangle2D.Double(10 - i, 14 - i, cardWidth - 14 + 2 * i, cardHeight - 16 + 2 * i,
                     52 + 2 * i, 52 + 2 * i));
         }
-        Shape card = new RoundRectangle2D.Double(8, 6, CARD_WIDTH - 20, CARD_HEIGHT - 20, 48, 48);
+        Shape card = new RoundRectangle2D.Double(8, 6, cardWidth - 20, cardHeight - 20, 48, 48);
         g.setColor(CARD);
         g.fill(card);
         g.setStroke(new BasicStroke(5f));
         g.setColor(PINK);
         g.draw(card);
         SetupScreen.blossom(g, 44, 46, 30);
-        SetupScreen.blossom(g, CARD_WIDTH - 60, CARD_HEIGHT - 44, 30);
-        SetupScreen.blossom(g, CARD_WIDTH - 52, 44, 17);
-        SetupScreen.blossom(g, 42, CARD_HEIGHT - 40, 19);
+        SetupScreen.blossom(g, cardWidth - 60, cardHeight - 44, 30);
+        SetupScreen.blossom(g, cardWidth - 52, 44, 17);
+        SetupScreen.blossom(g, 42, cardHeight - 40, 19);
 
         regions.clear();
-        if (settingsPage) {
+        if (collectionPage) {
+            paintCollection(g);
+        } else if (settingsPage) {
             paintSettings(g);
         } else {
             paintMain(g);
@@ -347,7 +396,129 @@ final class PauseMenu {
         g.drawString(fitted(g, shownStatus[1], 440), 40, 340);
         g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 362);
 
-        button(g, "Welt neu zeichnen lassen …", 40, 398, 440, 46, actions::recreateWorld);
+        button(g, "Sammlung ansehen …", 40, 380, 440, 42, () -> showCollection(true));
+        button(g, "KI-Zugang …", 40, 428, 440, 42, actions::openAccessMenu);
+    }
+
+    // ---------------------------------------------------------- the collection
+
+    /**
+     * The district's pictures: the kinds on the left with how many there are of
+     * each, on the right the pictures of the chosen kind. A picture can be taken
+     * out, the limit of a kind raised or lowered.
+     */
+    private void paintCollection(Graphics2D g) {
+        shownSignature = library.signature();
+        g.setColor(INK);
+        g.setFont(new Font(Font.SERIF, Font.BOLD | Font.ITALIC, 34));
+        g.drawString("Sammlung · " + districtName, 84, 72);
+
+        // Kinds
+        int y = 96;
+        for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
+            int have = library.parts(kind).size();
+            String text = BackgroundArtist.plural(kind) + "  " + have + "/" + library.target(kind);
+            PartLibrary.Kind chosen = kind;
+            choice(g, text, 40, y, 250, 38, kind == shownKind, 15, () -> {
+                shownKind = chosen;
+                shownFrom = 0;
+            });
+            y += 43;
+        }
+
+        // The limit of the chosen kind
+        int limit = library.target(shownKind);
+        label(g, BackgroundArtist.plural(shownKind), 330, 116, 20);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+        g.setColor(TEXT);
+        g.drawString("höchstens", 690, 116);
+        choice(g, "–", 770, 92, 40, 36, false, 18, () -> setLimit(limit - 1));
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+        String number = String.valueOf(limit);
+        g.drawString(number, 838 - g.getFontMetrics().stringWidth(number) / 2, 117);
+        choice(g, "+", 866, 92, 40, 36, false, 18, () -> setLimit(limit + 1));
+
+        // Pictures
+        java.util.List<PartLibrary.Part> parts = library.parts(shownKind);
+        if (shownFrom >= parts.size()) {
+            shownFrom = Math.max(0, (parts.size() - 1) / PICTURES_PER_PAGE * PICTURES_PER_PAGE);
+        }
+        if (parts.isEmpty()) {
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+            g.drawString("Noch kein Bild. Bis eines gezeichnet ist, zeigt das Spiel das eingebaute.", 330, 170);
+        }
+        for (int i = 0; i < PICTURES_PER_PAGE && shownFrom + i < parts.size(); i++) {
+            PartLibrary.Part part = parts.get(shownFrom + i);
+            int x = 330 + (i % 4) * 146;
+            int top = 136 + (i / 4) * 212;
+            Shape frame = new RoundRectangle2D.Double(x, top, 134, 150, 16, 16);
+            g.setColor(PINK_LIGHT);
+            g.fill(frame);
+            BufferedImage picture = thumbnail(part);
+            if (picture != null) {
+                double fit = Math.min(122.0 / picture.getWidth(), 138.0 / picture.getHeight());
+                int w = (int) Math.round(picture.getWidth() * fit);
+                int h = (int) Math.round(picture.getHeight() * fit);
+                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.drawImage(picture, x + (134 - w) / 2, top + (150 - h) / 2, w, h, null);
+            }
+            g.setStroke(new BasicStroke(2f));
+            g.setColor(PINK);
+            g.draw(frame);
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            com.google.gson.JsonObject info = library.info(part);
+            String model = info.has("model") && !info.get("model").getAsString().isBlank()
+                    ? info.get("model").getAsString() : "von Hand";
+            g.drawString(fitted(g, "Nr. " + part.number() + " · " + model.substring(model.lastIndexOf('/') + 1), 134),
+                    x, top + 166);
+            choice(g, "Löschen", x, top + 172, 134, 26, false, 13, () -> delete(part));
+        }
+
+        // Pages, the way back, and what the background drawing is doing
+        int pages = Math.max(1, (parts.size() + PICTURES_PER_PAGE - 1) / PICTURES_PER_PAGE);
+        if (pages > 1) {
+            int page = shownFrom / PICTURES_PER_PAGE + 1;
+            choice(g, "‹", 770, 574, 40, 36, false, 18, () -> shownFrom = Math.max(0, shownFrom - PICTURES_PER_PAGE));
+            g.setColor(TEXT);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+            String text = page + "/" + pages;
+            g.drawString(text, 838 - g.getFontMetrics().stringWidth(text) / 2, 598);
+            choice(g, "›", 866, 574, 40, 36, false, 18, () -> {
+                if (shownFrom + PICTURES_PER_PAGE < parts.size()) {
+                    shownFrom += PICTURES_PER_PAGE;
+                }
+            });
+        }
+        button(g, "Zurück", 40, 568, 150, 46, () -> showCollection(false));
+        shownStatus = actions.backgroundStatus();
+        g.setColor(TEXT);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+        g.drawString(fitted(g, "Im Hintergrund: " + shownStatus[0], 420), 330, 598);
+    }
+
+    private BufferedImage thumbnail(PartLibrary.Part part) {
+        return thumbnails.computeIfAbsent(part.png(), file -> library.load(part));
+    }
+
+    private void setLimit(int limit) {
+        try {
+            library.setTarget(shownKind, limit);
+        } catch (java.io.IOException e) {
+            System.err.println("Limit not saved: " + e.getMessage());
+        }
+    }
+
+    /** Takes the picture out of the collection; its files move to the folder "deleted". */
+    private void delete(PartLibrary.Part part) {
+        try {
+            library.remove(part);
+            thumbnails.remove(part.png());
+        } catch (java.io.IOException e) {
+            System.err.println("Picture not removed: " + e.getMessage());
+        }
     }
 
     private static String fitted(Graphics2D g, String text, int width) {
@@ -394,8 +565,19 @@ final class PauseMenu {
 
     /** One of several options side by side; the chosen one is filled. */
     private void choice(Graphics2D g, String text, int x, int y, int width, boolean chosen, Runnable action) {
-        pill(g, text, x, y, width, 40, chosen, 16);
-        regions.add(new Region(new Rectangle2D.Double(x, y, width, 40), action));
+        choice(g, text, x, y, width, 40, chosen, 16, action);
+    }
+
+    private void choice(Graphics2D g, String text, int x, int y, int width, int height, boolean chosen, int fontSize,
+                        Runnable action) {
+        pill(g, text, x, y, width, height, chosen, fontSize);
+        regions.add(new Region(new Rectangle2D.Double(x, y, width, height), action));
+    }
+
+    private void label(Graphics2D g, String text, int x, int y, int size) {
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, size));
+        g.drawString(text, x, y);
     }
 
     private static void pill(Graphics2D g, String text, int x, int y, int width, int height, boolean filled, int fontSize) {

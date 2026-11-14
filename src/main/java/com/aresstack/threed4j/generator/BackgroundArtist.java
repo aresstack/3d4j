@@ -4,9 +4,9 @@ import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.assets.PartLibrary;
 
 /**
- * Keeps drawing building parts for a district while the game runs: one request at
- * a time, on a thread of its own, until the district's {@link PartLibrary} has
- * as many windows, doors and shop fronts as it collects.
+ * Keeps drawing pictures for a district while the game runs: one at a time, on a
+ * thread of its own, until every kind in the district's {@link PartLibrary} has
+ * reached its limit. When pictures are removed or a limit is raised, it goes on.
  *
  * <p>It needs access to the AI service. It uses the access chosen in the world
  * menu during this run; otherwise it fetches the remembered one without asking
@@ -45,38 +45,62 @@ public final class BackgroundArtist implements AutoCloseable {
         return status;
     }
 
-    /** How far the collection is, e.g. "Fenster 3/8, Türen 1/4, Läden 0/4". */
+    /** How far the collection is, e.g. "34 von 60 Bildern". */
     public String progress() {
-        StringBuilder text = new StringBuilder();
+        int have = 0;
+        int want = 0;
         for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
-            text.append(text.length() == 0 ? "" : ", ").append(plural(kind)).append(' ')
-                    .append(Math.min(library.parts(kind).size(), kind.target())).append('/').append(kind.target());
+            int target = library.target(kind);
+            have += Math.min(library.parts(kind).size(), target);
+            want += target;
         }
-        return text.toString();
+        return have + " von " + want + " Bildern";
     }
 
-    private static String plural(PartLibrary.Kind kind) {
+    /** What a kind is called in German, one of it. */
+    public static String name(PartLibrary.Kind kind) {
         return switch (kind) {
-            case WINDOW -> "Fenster";
-            case DOOR -> "Türen";
-            case SHOP -> "Läden";
-        };
-    }
-
-    private static String singular(PartLibrary.Kind kind) {
-        return switch (kind) {
+            case BLOSSOM_TREE -> "Kirschbaum";
+            case GREEN_TREE -> "Parkbaum";
+            case LAMP -> "Laterne";
+            case VISITOR -> "Besucher";
+            case BUSH -> "Pfingstrosenbusch";
+            case LAWN -> "Rasen";
+            case STREET -> "Straßenpflaster";
             case WINDOW -> "Fenster";
             case DOOR -> "Tür";
             case SHOP -> "Laden";
         };
     }
 
-    /** The kind that is furthest from its target, measured in parts of the target; {@code null} if all are complete. */
-    private PartLibrary.Kind next() {
+    /** What a kind is called in German, several of it. */
+    public static String plural(PartLibrary.Kind kind) {
+        return switch (kind) {
+            case BLOSSOM_TREE -> "Kirschbäume";
+            case GREEN_TREE -> "Parkbäume";
+            case LAMP -> "Laternen";
+            case VISITOR -> "Besucher";
+            case BUSH -> "Pfingstrosen";
+            case LAWN -> "Rasen";
+            case STREET -> "Pflaster";
+            case WINDOW -> "Fenster";
+            case DOOR -> "Türen";
+            case SHOP -> "Läden";
+        };
+    }
+
+    /**
+     * The kind to draw next: the one that is furthest from its limit, measured in
+     * parts of the limit, so that every kind gets its first pictures early.
+     *
+     * @return the kind, or {@code null} if every kind has reached its limit
+     */
+    static PartLibrary.Kind next(PartLibrary library) {
         PartLibrary.Kind choice = null;
         double least = 1.0;
         for (PartLibrary.Kind kind : PartLibrary.Kind.values()) {
-            double filled = library.parts(kind).size() / (double) kind.target();
+            int target = library.target(kind);
+            double filled = target == 0 ? 1.0 : library.parts(kind).size() / (double) target;
             if (filled < least) {
                 least = filled;
                 choice = kind;
@@ -95,7 +119,7 @@ public final class BackgroundArtist implements AutoCloseable {
                     Thread.sleep(2000);
                     continue;
                 }
-                PartLibrary.Kind kind = next();
+                PartLibrary.Kind kind = next(library);
                 if (kind == null) {
                     status = "fertig: die Sammlung ist vollständig";
                     Thread.sleep(10_000);
@@ -108,19 +132,19 @@ public final class BackgroundArtist implements AutoCloseable {
                     retryAccessAt = System.currentTimeMillis() + 60_000;
                 }
                 if (session == null) {
-                    status = "wartet auf Zugang zur KI (im Menü „Die Welt erschaffen“ wählen)";
+                    status = "wartet auf den Zugang zur KI";
                     Thread.sleep(2000);
                     continue;
                 }
                 int number = library.parts(kind).stream().mapToInt(PartLibrary.Part::number).max().orElse(0) + 1;
-                status = "zeichnet " + singular(kind) + " " + number;
-                String problem = session.drawPart(library, kind, number, districtStyle);
+                status = "zeichnet " + name(kind) + " " + number;
+                String problem = session.draw(library, kind, number, districtStyle);
                 if (problem == null) {
-                    status = singular(kind) + " " + number + " ist fertig";
+                    status = name(kind) + " " + number + " ist fertig";
                     Thread.sleep(3000);
                 } else {
                     // Not again at once: a service that refuses or a model that fails should not be hammered.
-                    status = singular(kind) + " " + number + " misslang: " + problem;
+                    status = name(kind) + " " + number + " misslang: " + problem;
                     System.out.println("Background artist: " + kind + " " + number + " failed: " + problem);
                     Thread.sleep(45_000);
                 }

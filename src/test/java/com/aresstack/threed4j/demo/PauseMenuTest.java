@@ -1,5 +1,7 @@
 package com.aresstack.threed4j.demo;
 
+import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.PartLibrary;
 import com.aresstack.threed4j.platform.Input;
 import com.aresstack.threed4j.platform.Key;
 import com.aresstack.threed4j.platform.MouseButton;
@@ -19,6 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PauseMenuTest {
 
     private final List<String> asked = new ArrayList<>();
+    @TempDir
+    static Path assets;
+
+    private final PartLibrary library = new PartLibrary(new AssetStore(assets), "altstadt");
     private final PauseMenu menu = new PauseMenu(new PauseMenu.Actions() {
         @Override
         public void resume() {
@@ -61,10 +67,10 @@ class PauseMenuTest {
         }
 
         @Override
-        public void recreateWorld() {
-            asked.add("world");
+        public void openAccessMenu() {
+            asked.add("access");
         }
-    }, new PauseMenu.State(1f, true, 1f, null, 8192, true));
+    }, new PauseMenu.State(1f, true, 1f, null, 8192, true), library, "Altstadt");
     private final Input input = new Input();
 
     /** Clicks a point given in card units, in a 1280 x 720 window (card at 380, 80, scale 1). */
@@ -126,14 +132,53 @@ class PauseMenuTest {
         click(95, 234);  // Standard: nothing is sent, the model decides
         click(429, 146); // tab "Welt"
         click(205, 238); // background drawing off
-        click(260, 421); // Welt neu zeichnen lassen
+        click(260, 449); // KI-Zugang
         assertEquals(List.of("scale 0.5", "smooth false", "mouse 2.0", "ai 8192 high", "ai 4096 high",
-                "ai 4096 null", "background false", "world"), asked);
+                "ai 4096 null", "background false", "access"), asked);
 
         press(Key.ESCAPE); // back to the first page, the game stays paused
         assertEquals(8, asked.size());
         press(Key.ESCAPE);
         assertEquals("resume", asked.get(8));
+    }
+
+    /** Clicks a point of the wide card of the collection (960 x 640, at 160, 40 in a 1280 x 720 window). */
+    private void clickCollection(int cardX, int cardY) {
+        menu.paint(1280, 720);
+        input.beginFrame();
+        input.onMouseMove(160 + cardX, 40 + cardY);
+        input.onMouseButton(MouseButton.LEFT, true);
+        menu.update(input, 1280, 720);
+        input.onMouseButton(MouseButton.LEFT, false);
+    }
+
+    @Test
+    void theCollectionShowsThePicturesOfAKindAndRemovesOneAndChangesTheLimit() throws Exception {
+        BufferedImage picture = new BufferedImage(64, 128, BufferedImage.TYPE_INT_ARGB);
+        for (PartLibrary.Part old : library.parts()) {
+            library.remove(old);
+        }
+        library.add(PartLibrary.Kind.VISITOR, null, picture, null);
+        library.add(PartLibrary.Kind.VISITOR, null, picture, null);
+
+        click(260, 291); // Einstellungen
+        click(429, 146); // tab "Welt"
+        click(260, 401); // Sammlung ansehen
+        assertEquals(960, menu.paint(1280, 720).getWidth(), "the collection has a wider card");
+
+        clickCollection(165, 244); // fourth kind on the left: Besucher
+        clickCollection(397, 321); // "Löschen" below the first picture
+        assertEquals(List.of(2), library.parts(PartLibrary.Kind.VISITOR).stream().map(PartLibrary.Part::number).toList());
+
+        int before = library.target(PartLibrary.Kind.VISITOR);
+        clickCollection(886, 110); // +
+        clickCollection(886, 110);
+        clickCollection(790, 110); // -
+        assertEquals(before + 1, library.target(PartLibrary.Kind.VISITOR));
+
+        press(Key.ESCAPE); // back to the settings
+        assertEquals(PauseMenu.CARD_WIDTH, menu.paint(1280, 720).getWidth());
+        assertTrue(asked.isEmpty(), "none of this is the game's business: " + asked);
     }
 
     @Test

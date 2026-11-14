@@ -88,86 +88,100 @@ Beim Start gibt die Engine aus, womit sie rendert, zum Beispiel
 Die Grafik-API lässt sich mit `-Dthreed4j.backend=d3d11` oder `-Dthreed4j.backend=opengl`
 erzwingen (Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler OpenGL).
 
-## Grafiken aus Dateien und vom Chatmodell
+## Grafiken: die Sammlung des Stadtteils
 
-Bäume, Laternen und Besucher des Testplatzes sind eingebaute Platzhalter. Liegt im
-Asset-Ordner eine Datei mit passendem Namen, ersetzt sie den Platzhalter:
+Alles Gezeichnete im Spiel stammt aus einer Sammlung je **Stadtteil** (`District`), der
+Bilddatenbank des Spiels: Bäume, Laternen, Besucher, Pfingstrosenbüsche, Bodentexturen und die
+Teile der Hausfassaden. Von jeder Art gibt es mehrere Bilder. Sie liegt als Ordner unter dem
+Asset-Ordner:
 
-| Datei | Motiv |
-|---|---|
-| `blossom-tree`, `green-tree` | Bäume |
-| `lamp` | Laterne |
-| `visitor-1`, `visitor-2`, `visitor-3` | Besucher |
+```
+.3d4j/assets/library/<stadtteil>/<art>-<nummer>.svg|.png|.json
+```
 
-Jeweils als `.svg` oder `.png`, hochkant im Verhältnis 1:2 mit transparentem Hintergrund. Der
-Ordner ist `.3d4j/assets` im Benutzerverzeichnis (unter Windows `%USERPROFILE%\.3d4j\assets`),
-änderbar mit `-Dthreed4j.assets=ORDNER`. Eine SVG-Datei rechnet das Spiel beim Start mit Apache
-Batik in ein PNG um. Es genügt also, ein SVG in den Ordner zu legen, auch eines, das man aus
-einem Chat kopiert hat. Beim Laden der Szene meldet die Konsole, wie viele Sprites aus dem
-Ordner kommen.
+Arten: `blossom-tree`, `green-tree`, `lamp`, `visitor`, `bush`, `lawn`, `street`, `window`,
+`door`, `shop`. Die JSON-Datei nennt Modell, Zeitpunkt und Auftrag. Der Asset-Ordner ist
+`.3d4j/assets` im Benutzerverzeichnis (unter Windows `%USERPROFILE%\.3d4j\assets`), änderbar
+mit `-Dthreed4j.assets=ORDNER`. Bisher gibt es einen Stadtteil, das Blütenviertel
+(`bluetenviertel`) um den Startplatz; `District.at(x, z)` ist die Stelle, an der weitere ihre
+Grenzen bekommen.
 
-### Das Menü „Die Welt erschaffen“
+- **Sofort spielen:** Das Spiel wartet auf nichts. Solange die Sammlung von einer Art kein Bild
+  hat, steht ein eingebautes dafür; alle Bäume, Leute und Häuser sehen dann gleich aus.
+- **Im Hintergrund:** Beim Spielen zeichnet `BackgroundArtist` auf einem eigenen Thread ein Bild
+  nach dem anderen, immer von der Art, die am weitesten von ihrer Höchstzahl entfernt ist. Jede
+  Anfrage enthält den Stil des Stadtteils und eine Variante aus einer festen Liste (anderer
+  Baumwuchs, andere Kleidung, Rundbogenfenster …), damit die Bilder zusammenpassen und sich
+  trotzdem unterscheiden. Den Zugang nimmt er aus dem Zugangsmenü dieses Programmlaufs, sonst
+  holt er den gemerkten ohne Nachfrage (KeePass-Eintrag oder Umgebungsvariable). Ohne Zugang
+  wartet er.
+- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 4 Laternen, 12 Besucher, 6 Büsche,
+  je 3 Rasen- und Pflasterkacheln, 8 Fenster, 4 Türen, 4 Läden; je Stadtteil änderbar (0 bis 30),
+  gespeichert in `limits.properties` im Ordner der Sammlung.
+- **Zuweisung:** Jeder Baum, jeder Besucher, jedes Haus und jedes Stück Boden bewertet jedes Bild
+  seiner Art mit einer Zahl, die nur von ihm und dem Bild abhängt, und nimmt das höchstbewertete.
+  Kommt ein Bild dazu, übernimmt es seinen Anteil, alles Übrige bleibt, wie es war; dieselbe
+  Sammlung ergibt immer dieselbe Stadt. Das Spiel bemerkt Änderungen innerhalb einer Sekunde und
+  baut die Szene mit dem neuen Stand.
+- **Nichts wird überschrieben:** Neue Bilder kommen dazu. Entfernen kann man ein Bild nur von
+  Hand, in der Sammlung im Pausenmenü; seine Dateien wandern dann nach `deleted/`.
+- **Von Hand:** Ein Bild oder SVG, das man unter passendem Namen in den Ordner legt, zählt
+  genauso (ein SVG rechnet das Spiel mit Apache Batik in ein PNG um). Einzelne Dateien direkt im
+  Asset-Ordner (`blossom-tree.svg`, `lamp.png` … von früheren Fassungen oder von `generate`)
+  übernimmt das Spiel beim Start in die Sammlung, samt `history/`, und legt sie nach `imported/`.
 
-Solange noch keine erzeugten Motive im Asset-Ordner liegen, öffnet sich nach dem Ladebildschirm
-ein Menü im Stil des Spiels. Es führt in drei Schritten zur erzeugten Welt, nach dem Vorbild der
-Einrichtungsassistenten von Space Harvester und Enterprise AI Client:
+### Das Zugangsmenü
+
+Beim ersten Start, solange kein Zugang zur KI bekannt und noch nichts gesammelt ist, öffnet sich
+nach dem Ladebildschirm ein Menü im Stil des Spiels (später: Pausenmenü, Einstellungen, Reiter
+„Welt“, „KI-Zugang …“). Es hat zwei Schritte, nach dem Vorbild der Einrichtungsassistenten von
+Space Harvester und Enterprise AI Client:
 
 1. **Zugang:** oben wählt man **KeePass** oder **Manuell**.
    - *KeePass* (vorgewählt): „Koppeln“ verbindet das Spiel mit KeePass. KeePass zeigt ein
-     Einmal-Passwort, das man im Menü eintippt; das ist nur beim ersten Mal nötig, danach
-     verbindet sich das Menü beim Öffnen selbst. Dann wählt man in der Auswahlliste den Eintrag
-     des KI-Dienstes. Die **URL des Eintrags ist die Adresse der API** (`https://…/v1`), sein
-     **Passwort der API-Key**. Tippen sucht in der Liste, die Pfeiltasten blättern. Der zuletzt
-     gewählte Eintrag ist beim nächsten Mal vorgewählt, ebenso der aus `chat.apiKeyRef` des
-     Enterprise AI Client.
+     Einmal-Passwort, das man im Menü eintippt; das ist nur beim ersten Mal nötig. Dann wählt man
+     in der Auswahlliste den Eintrag des KI-Dienstes. Die **URL des Eintrags ist die Adresse der
+     API** (`https://…/v1`), sein **Passwort der API-Key**. Tippen sucht in der Liste, die
+     Pfeiltasten blättern.
    - *Manuell:* Adresse und API-Key eintippen. Der Key wird nicht gespeichert.
-2. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `openai/gpt-oss-120b` vor,
-   falls angeboten.
-3. **Welt:** „Zeichnen lassen“ fragt alle Motive gleichzeitig an und zeigt je Motiv den Stand.
-   „Spielen“ startet das Spiel mit dem, was gelungen ist.
+2. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `openai/gpt-oss-120b` vor, falls
+   angeboten. „Weiter“ startet das Spiel; gezeichnet wird ab dann im Hintergrund.
 
-Die Schritte oben sind anklickbar, sobald sie möglich sind (Modell erst mit Zugang, Welt erst mit
-Modell); ein Klick auf den nächsten Schritt wirkt wie „Weiter“. Im Schritt „Welt“ zeichnet „neu“
-neben einem Motiv nur dieses eine noch einmal.
+Die Schritte oben sind anklickbar, sobald sie möglich sind. „Ohne KI spielen“ verlässt das Menü
+jederzeit; das Spiel läuft dann mit den eingebauten Bildern. `--setup` öffnet das Menü beim
+Start in jedem Fall, `--no-setup` nie. Bedient wird es mit der Maus; Tab wechselt das Feld, Enter
+löst den rechten Knopf aus, Strg+V fügt ein.
 
-Aus dem Pausenmenü geöffnet, springt das Menü direkt zum Schritt „Welt“: Zugang und Modell der
-letzten Runde gelten weiter (im selben Programmlauf aus dem Speicher, sonst holt das Menü den
-gemerkten Eintrag ohne Nachfrage aus KeePass). Ändern lässt sich beides über die Schritte oben.
+### Wie die Bilder entstehen
 
-„Ohne KI spielen“ verlässt das Menü jederzeit. `--setup` öffnet es auch dann, wenn schon Motive
-vorhanden sind, `--no-setup` unterdrückt es. Bedient wird es mit der Maus; Tab wechselt das
-Feld, Enter löst den rechten Knopf aus, Strg+V fügt ein.
+- **Figuren** (Bäume, Laternen, Besucher): eine Zeichnung als SVG, hochkant 1:2, freigestellt.
+- **Bodenkacheln** (Rasen, Pflaster): quadratisch, von oben; ein Rechteck in der Grundfarbe über
+  das ganze Quadrat, darauf kleine Formen mit Abstand zu allen Rändern, damit sich die Kachel
+  nahtlos wiederholt. Geprüft wird volle Deckung und ein einfarbiger Rand.
+- **Pfingstrosenbusch:** aus Bauplan und Bauteilen (`FlowerComposer`). Das Modell liefert einen
+  Bauplan als JSON (Blütenblätter je Ring, Größe, Versatz, Farben) und fünf kleine Bauteile als
+  SVG-Fragment, alle gleichzeitig. Java zieht Zahlen in ihren Bereich, baut jedes Bauteil neu auf
+  (nur Geometrie und Füllfarben werden übernommen; Farbe aus dem Plan, Schattierung an der
+  Silhouette abgeschnitten, Kontur obendrauf) und montiert Blüten und Busch mit `<defs>`/`<use>`.
+- **Fassadenteile** (Fenster, Türen, Läden): kleine Bilder mit durchsichtigem Rand, in dem die
+  Hauswand sichtbar bleibt; Türen und Läden dürfen auf der Unterkante stehen.
 
-### Häuser: Stadtteile und ihre Bauteil-Sammlung
+Unbrauchbare Antworten werden mit Begründung neu angefragt, bis zu dreimal.
 
-Die Häuser haben Fenster, Türen und Läden. Sie stammen aus einer Sammlung je **Stadtteil**
-(`District`): Bilder mit durchsichtigem Rand unter `assets/library/<stadtteil>/` als
-`window-001.svg|.png|.json`, `door-…`, `shop-…`. Die JSON-Datei nennt Modell, Zeitpunkt und
-Auftrag. Bisher gibt es einen Stadtteil, das Blütenviertel um den Startplatz; `District.at(x, z)`
-ist die Stelle, an der weitere ihre Grenzen bekommen.
+### Im Renderer
 
-- **Gleicher Stadtteil, gleicher Stil:** Jede Anfrage enthält den Stil des Stadtteils (ein
-  Satz, den alle Teile teilen) und eine Variante aus einer festen Liste (Rundbogen, Fensterläden,
-  Blumenkasten …), damit die Teile zusammenpassen und sich trotzdem unterscheiden.
-- **Im Hintergrund:** Beim Spielen zeichnet `BackgroundArtist` auf einem eigenen Thread ein
-  Teil nach dem anderen, bis die Sammlung 8 Fenster, 4 Türen und 4 Läden hat. Den Zugang nimmt
-  er aus dem Weltmenü dieses Programmlaufs, sonst holt er den gemerkten ohne Nachfrage
-  (KeePass-Eintrag oder Umgebungsvariable). Ohne Zugang wartet er. Abschalten: Pausenmenü,
-  Einstellungen, Reiter „Welt“; dort steht auch der Stand.
-- **Zuweisung:** Solange ein Stadtteil kein erzeugtes Teil einer Art hat, steht ein eingebautes
-  dafür, alle Häuser sehen dann gleich aus. Jedes Haus bewertet jedes Teil mit einer Zahl, die
-  nur von Haus und Teil abhängt, und nimmt das höchstbewertete. Kommt ein Teil dazu, übernimmt
-  es seinen Anteil der Häuser, die übrigen bleiben, wie sie waren; dieselbe Sammlung ergibt
-  immer dieselbe Stadt. Fensterabstand, Geschosshöhe, Läden ja oder nein und die Seite der Tür
-  sind ebenfalls Eigenschaften des Hauses.
-- **Im Renderer:** Die Wände sind ein eigenes Netz (fünfter Draw Call). Eine Wand ist ein
-  einziges Rechteck; der Shader wiederholt das Teil entlang der Wand und zeigt die Wandfarbe,
-  wo das Bild durchsichtig ist. Ein Haus kostet so ein Dutzend Rechtecke, egal wie viele
-  Fenster es hat, und kein Pixel wird doppelt gezeichnet. In der Ferne blendet die Wand in die
-  Mischfarbe aus Wand und Teil über.
+- **Figuren:** ein Atlas mit allen Bildern der Sammlung, ein Netz, ein Draw Call.
+- **Boden:** eigenes Netz mit eigenem Shader. Die Texturkoordinate ergibt sich aus der Position
+  in der Welt (eine Kachel je 4 m); benachbarte Flächen teilen sich eine Kachel. Weil Texturen
+  noch keine Mipmaps haben, blendet der Shader das Muster zwischen 30 und 75 m in die
+  Durchschnittsfarbe der Kachel über.
+- **Hauswände:** eigenes Netz. Eine Wand ist ein einziges Rechteck; der Shader wiederholt das
+  Fassadenteil entlang der Wand und zeigt die Wandfarbe, wo das Bild durchsichtig ist. Ein Haus
+  kostet so ein Dutzend Rechtecke, egal wie viele Fenster es hat, und kein Pixel wird doppelt
+  gezeichnet. Fensterabstand, Geschosshöhe, Läden ja oder nein und die Seite der Tür sind
+  Eigenschaften des Hauses.
 
-Ein Bild, das man unter passendem Namen in den Ordner legt, zählt genauso; das Spiel bemerkt
-neue Teile innerhalb einer Sekunde.
+Zusammen mit Stadt und Himmel sind das fünf Draw Calls.
 
 ### Easter Egg: WEST.SIDE
 
@@ -198,14 +212,15 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
 - **KI:** „Nachdenken vor dem Zeichnen“ (Standard, wenig, mittel, viel) wird als
   `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.
   „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit.
-- **Welt:** „Häuser im Hintergrund weiterzeichnen“ an oder aus, mit dem Stand der Sammlung.
-  Darunter „Welt neu zeichnen lassen …“: öffnet das Menü „Die Welt erschaffen“ aus dem
-  laufenden Spiel.
+- **Welt:** „Im Hintergrund weiterzeichnen“ an oder aus, mit dem Stand. „Sammlung ansehen …“
+  zeigt die Bilder des Stadtteils: links die Arten mit Anzahl und Höchstzahl, rechts die Bilder
+  der gewählten Art mit Nummer und Modell. „Löschen“ nimmt ein Bild heraus, „–“ und „+“ ändern
+  die Höchstzahl. „KI-Zugang …“ öffnet das Zugangsmenü.
 
 Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
 `--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
 (`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`), wo sie auch für `generate` gelten. Das Modell wählt
-man im Menü „Die Welt erschaffen“.
+man im Zugangsmenü.
 
 Dafür mischt der Renderer im Overlay (nach dem Hochskalieren der Szene) durchsichtige Pixel
 mit dem, was darunter liegt, in OpenGL wie in Direct3D 11. Die Szene selbst bleibt deckend
@@ -213,15 +228,16 @@ gezeichnet; im laufenden Spiel kostet das nichts.
 
 ### Der Generator auf der Kommandozeile
 
-Dasselbe ohne Menü:
+Einzelne Bilder ohne Spiel:
 
 ```
 java -jar 3d4j.jar generate
 ```
 
-Er fragt jedes Motiv als SVG an (mehrere Anfragen gleichzeitig), prüft, ob sich die Antwort
-zeichnen lässt und ein freigestelltes Motiv zeigt, fragt bei Fehlern bis zu dreimal mit einem
-Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht kein Netz.
+Er fragt je ein Bild der Figuren, des Busches und der Bodenkacheln an (mehrere Anfragen
+gleichzeitig) und legt SVG, PNG und JSON direkt im Asset-Ordner ab; das Spiel übernimmt sie
+beim nächsten Start in die Sammlung. Für das laufende Auffüllen der Sammlung ist das Spiel
+selbst zuständig. Die folgenden Einstellungen gelten für beide.
 
 - **Dienst und Modell:** eine OpenAI-kompatible API (`POST <Basis-URL>/chat/completions`).
   Der Generator verwendet, was im Menü gewählt wurde (`.3d4j/generator.properties`), sonst die
@@ -237,7 +253,7 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
   `.3d4j/generator.properties` oder dem Enterprise AI Client). Meldet der Dienst
   `finish_reason=length`, gilt die Antwort als abgeschnitten und wird nicht verwendet.
 - **Weitere Argumente:** `--parallel=N` (Standard 4), `--only=lamp,visitor-1`, `--force`
-  (vorhandene Motive neu erzeugen).
+  (auch zeichnen, was im Asset-Ordner schon liegt).
 - **Proxy:** Den Weg zum Dienst bestimmt `win-proxy-java`, wie im Enterprise AI Client und in
   Space Harvester. Gelesen wird `network.proxy.*` aus der Konfiguration des Enterprise AI
   Client (Modus, PAC-URL, Host, Port, `nonProxyHosts`, BASIC-Anmeldung aus KeePass); dieselben
@@ -252,41 +268,8 @@ Hinweis nach und legt SVG und PNG im Asset-Ordner ab. Das Spiel selbst braucht k
 
 Abgelehnte Antworten des Modells landen zur Ansicht als `<name>.rejected.txt` im Asset-Ordner.
 
-**Motive aus Bauplan und Bauteilen.** Der Pfingstrosenbusch (`peony-bush`) wird nicht als
-eine Zeichnung angefragt. Das Modell liefert, was es kann: einen Bauplan als JSON (Blütenblätter
-je Ring, Größe, Versatz, Farben) und fünf kleine Bauteile als SVG-Fragment (drei Blütenblätter,
-Blütenmitte, Blatt), alle Bauteile gleichzeitig. Alles Räumliche macht Java (`FlowerComposer`):
-
-- Zahlen des Plans außerhalb ihres Bereichs werden hineingezogen, unbrauchbare Farben ersetzt.
-- Jedes Bauteil wird geprüft und neu aufgebaut: nur eine flache Gruppe aus Pfaden (Kreise nur in
-  der Blütenmitte), nur Geometrie und Füllfarben werden übernommen. Die Silhouette bekommt die
-  Farbe aus dem Plan, Schattierungen werden an der Silhouette abgeschnitten, die Kontur im Stil
-  des Spiels kommt zuletzt obendrauf. Ein Bauteil, das sein Feld verlässt oder viel zu klein
-  ist, wird mit Begründung neu angefragt (bis zu dreimal).
-- Montage: Blütenblätter nach Plan zur Blüte, fünf Blüten und ein Blätterfächer zum Busch;
-  jedes Bauteil steht einmal unter `<defs>` und wird mit `<use>` platziert.
-
-Der Plan steht danach in `peony-bush.json`. Im Spiel stehen die Büsche um den Brunnen und am
-Rand des Platzes.
-
-**Bodentexturen.** Rasen (`lawn-tile`) und Straße (`street-tile`) sind quadratische Kacheln,
-von oben gesehen, die sich nahtlos wiederholen. Der Generator verlangt dafür: ein Rechteck in
-der Grundfarbe über das ganze Quadrat, darauf kleine Formen, die mindestens 12 Einheiten Abstand
-zu allen Rändern halten. Geprüft wird, dass die Kachel das Quadrat vollständig deckt und ihr
-äußerster Rand einfarbig ist; sonst wird mit Begründung neu angefragt. Ohne Dateien zeichnet das
-Spiel eingebaute Kacheln. Der Platz hat vorerst nur die eingebaute.
-
-Im Spiel ist der Boden ein eigenes Netz mit eigenem Shader (vierter Draw Call). Die
-Texturkoordinate ergibt sich aus der Position in der Welt (eine Kachel je 4 m), alle Kacheln
-liegen in einem Atlas mit wiederholtem Rand. Weil Texturen noch keine Mipmaps haben, blendet der
-Shader das Muster zwischen 30 und 75 m Entfernung in die Durchschnittsfarbe der Kachel über;
-sonst würde der Boden in der Ferne flimmern.
-
-**Alte Motive bleiben erhalten.** Zu jedem erzeugten Motiv schreibt der Generator `<name>.json`
-(Modell, Zeitpunkt, Beschreibung, Größe). Wird ein Motiv neu gezeichnet, wandern SVG, PNG und
-JSON des bisherigen vorher nach `history/<name>/<JJJJMMTT-HHMMSS>.svg|.png|.json` im
-Asset-Ordner; der Zeitstempel ist der Zeitpunkt, zu dem das alte Motiv entstand. Das gilt auch
-für von Hand abgelegte Dateien. Das Spiel lädt nur die Dateien direkt im Asset-Ordner.
+Wird ein Bild mit `generate` neu gezeichnet, wandert das bisherige vorher nach
+`history/<name>/`; auch das übernimmt das Spiel.
 
 ## Der Launcher
 
@@ -346,10 +329,10 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `gfx.d3d11` | Direct3D-11-Implementierung: `D3D11Api` (Bindings), `ComObject` (COM-Aufrufe), `D3D11Device`, `D3D11Shader`, `D3D11Mesh`, `D3D11Texture` |
 | `core` | `Engine` (Game-Loop), `Display` (Auswahl von Fenster und Grafik-API), `Game`, `EngineContext`, `EngineConfig`, `FrameStats` |
 | `math` | `Vec3`, `Mat4` |
-| `assets` | `AssetStore` (Asset-Ordner), `PartLibrary` (Bauteil-Sammlung je Stadtteil), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
-| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `PartArtist` und `BackgroundArtist` (Bauteile der Häuser), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
+| `assets` | `AssetStore` (Asset-Ordner), `PartLibrary` (Sammlung je Stadtteil), `District`, `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
+| `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `Artist`, `PartArtist` und `BackgroundArtist` (Bilder für die Sammlung), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
-| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `District`, `Facades`, `FacadeAtlas`, `WestSide` (Easter Egg), `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
+| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `Facades`, `FacadeAtlas`, `WestSide` (Easter Egg), `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.

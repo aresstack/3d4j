@@ -2,63 +2,98 @@ package com.aresstack.threed4j.assets;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * The collection of building parts of one district: windows, doors and shop
- * fronts, each a small picture with a transparent surrounding. Houses take their
- * parts from here, so the collection decides how a district looks; it grows
- * while the game runs.
+ * The collection of artwork of one district, the game's picture database: trees,
+ * lamps, people, flower bushes, ground textures and the parts of house fronts.
+ * Of every kind there are several pictures; what stands in the district chooses
+ * among them, so the collection decides how the district looks. It grows while
+ * the game runs, up to a limit per kind, and nothing in it is overwritten.
  *
- * <p>Files: {@code library/<district>/<kind>-<number>.svg|.png|.json} below the
- * asset folder; the JSON file says which model drew the part, when, and with which
- * instruction. A picture put there by hand under such a name counts as well.</p>
+ * <p>Files below the asset folder: {@code library/<district>/<kind>-<number>.svg|.png|.json}.
+ * The JSON file says which model drew the picture, when, and with which
+ * instruction. A picture put there by hand under such a name counts as well; an
+ * SVG without a PNG is turned into one. {@code limits.properties} holds the
+ * limits that differ from the defaults; removed pictures move to
+ * {@code deleted/}.</p>
  */
 public final class PartLibrary {
 
-    /** What a part is, and how many of that kind a district collects. */
+    /** What a picture shows, how large it is, and how many of the kind a district collects by default. */
     public enum Kind {
-        WINDOW(8), DOOR(4), SHOP(4);
+        BLOSSOM_TREE(10, 256, 512), GREEN_TREE(6, 256, 512), LAMP(4, 256, 512), VISITOR(12, 256, 512),
+        BUSH(6, 256, 256), LAWN(3, 256, 256), STREET(3, 256, 256),
+        WINDOW(8, 128, 128), DOOR(4, 128, 128), SHOP(4, 128, 128);
 
-        private final int target;
+        private final int defaultTarget;
+        private final int width;
+        private final int height;
 
-        Kind(int target) {
-            this.target = target;
+        Kind(int defaultTarget, int width, int height) {
+            this.defaultTarget = defaultTarget;
+            this.width = width;
+            this.height = height;
         }
 
-        /** How many parts of this kind a district collects before it stops asking for more. */
-        public int target() {
-            return target;
+        public int defaultTarget() {
+            return defaultTarget;
         }
 
+        /** Pixel size a picture of this kind is rendered at. */
+        public int width() {
+            return width;
+        }
+
+        public int height() {
+            return height;
+        }
+
+        /** The kind as it appears in file names, e.g. {@code blossom-tree}. */
         public String fileName() {
-            return name().toLowerCase(Locale.ROOT);
+            return name().toLowerCase(Locale.ROOT).replace('_', '-');
+        }
+
+        static Kind ofFileName(String name) {
+            for (Kind kind : values()) {
+                if (kind.fileName().equals(name)) {
+                    return kind;
+                }
+            }
+            return null;
         }
     }
 
-    /** @param number distinguishes the parts of a kind; stays the same for as long as the file exists */
+    /** @param number distinguishes the pictures of a kind; stays the same for as long as the file exists */
     public record Part(Kind kind, int number, Path png) {
     }
 
-    /** Edge length of a part's picture in pixels. */
+    /** Edge length of a house part's picture (window, door, shop front) in pixels. */
     public static final int SIZE = 128;
+    /** The most pictures of one kind a district may be set to collect. */
+    public static final int MAX_TARGET = 30;
 
-    private static final Pattern FILE = Pattern.compile("(window|door|shop)-(\\d+)\\.png");
+    private static final Pattern FILE = Pattern.compile("([a-z-]+)-(\\d+)\\.(png|svg)");
 
     private final Path directory;
 
@@ -70,32 +105,65 @@ public final class PartLibrary {
         return directory;
     }
 
-    /** All parts of the district, by kind and number. */
+    /** All pictures of the district, by kind and number. */
     public List<Part> parts() {
         List<Part> parts = new ArrayList<>();
         if (!Files.isDirectory(directory)) {
             return parts;
         }
-        try (Stream<Path> files = Files.list(directory)) {
-            for (Path file : (Iterable<Path>) files::iterator) {
-                Matcher name = FILE.matcher(file.getFileName().toString());
-                if (name.matches()) {
-                    parts.add(new Part(Kind.valueOf(name.group(1).toUpperCase(Locale.ROOT)),
-                            Integer.parseInt(name.group(2)), file));
+        List<Path> files;
+        try (Stream<Path> listing = Files.list(directory)) {
+            files = listing.toList();
+        } catch (IOException e) {
+            return parts; // an unreadable folder is treated like an empty one
+        }
+        for (Path file : files) {
+            Matcher name = FILE.matcher(file.getFileName().toString());
+            Kind kind = name.matches() ? Kind.ofFileName(name.group(1)) : null;
+            if (kind == null) {
+                continue;
+            }
+            int number;
+            try {
+                number = Integer.parseInt(name.group(2));
+            } catch (NumberFormatException e) {
+                continue;
+            }
+            if (name.group(3).equals("png")) {
+                parts.add(new Part(kind, number, file));
+            } else {
+                // An SVG put there by hand: make its picture, which shows up at the next look.
+                Path png = file.resolveSibling(file.getFileName().toString().replaceFirst("\\.svg$", ".png"));
+                if (!Files.exists(png)) {
+                    render(file, png, kind);
+                    if (Files.exists(png)) {
+                        parts.add(new Part(kind, number, png));
+                    }
                 }
             }
-        } catch (IOException | NumberFormatException e) {
-            return new ArrayList<>(); // an unreadable folder is treated like an empty one
         }
         parts.sort(Comparator.comparing(Part::kind).thenComparingInt(Part::number));
         return parts;
+    }
+
+    private static void render(Path svg, Path png, Kind kind) {
+        try {
+            String source = SvgRasterizer.extract(Files.readString(svg, StandardCharsets.UTF_8));
+            if (source.isEmpty()) {
+                return;
+            }
+            ImageIO.setUseCache(false);
+            ImageIO.write(SvgRasterizer.render(source, kind.width(), kind.height()), "png", png.toFile());
+        } catch (IOException | SvgRasterizer.UnreadableSvgException e) {
+            System.out.println("Library: " + svg + " is unusable (" + e.getMessage() + ")");
+        }
     }
 
     public List<Part> parts(Kind kind) {
         return parts().stream().filter(part -> part.kind() == kind).toList();
     }
 
-    /** Changes whenever a part is added or removed; cheap enough to ask once a second. */
+    /** Changes whenever a picture is added or removed; cheap enough to ask once a second. */
     public String signature() {
         StringBuilder signature = new StringBuilder();
         for (Part part : parts()) {
@@ -114,29 +182,197 @@ public final class PartLibrary {
         }
     }
 
+    /** What is recorded about a picture (model, time, instruction); empty for a picture put there by hand. */
+    public JsonObject info(Part part) {
+        Path json = sibling(part, ".json");
+        try {
+            return Files.isRegularFile(json)
+                    ? JsonParser.parseString(Files.readString(json, StandardCharsets.UTF_8)).getAsJsonObject()
+                    : new JsonObject();
+        } catch (IOException | RuntimeException e) {
+            return new JsonObject();
+        }
+    }
+
+    private static Path sibling(Part part, String extension) {
+        return part.png().resolveSibling(part.png().getFileName().toString().replaceFirst("\\.png$", extension));
+    }
+
     /**
-     * Adds a part under the next free number of its kind.
+     * Adds a picture under the next free number of its kind.
      *
+     * @param svg     the source, or {@code null} if there is only the picture
      * @param details facts for the JSON file besides kind, number and time, e.g. model and instruction
      */
     public synchronized Part add(Kind kind, String svg, BufferedImage image, JsonObject details) throws IOException {
         Files.createDirectories(directory);
         int number = parts(kind).stream().mapToInt(Part::number).max().orElse(0) + 1;
         String base = kind.fileName() + "-" + String.format(Locale.ROOT, "%03d", number);
-        Files.writeString(directory.resolve(base + ".svg"), svg, StandardCharsets.UTF_8);
+        // The picture first: an SVG without its picture would be rendered again by a reader in between.
+        Path png = directory.resolve(base + ".png");
+        ImageIO.setUseCache(false);
+        ImageIO.write(image, "png", png.toFile());
+        if (svg != null) {
+            Files.writeString(directory.resolve(base + ".svg"), svg, StandardCharsets.UTF_8);
+        }
         JsonObject info = new JsonObject();
         info.addProperty("kind", kind.fileName());
         info.addProperty("number", number);
-        info.addProperty("createdAt", Instant.now().truncatedTo(ChronoUnit.SECONDS).toString());
+        if (details == null || !details.has("createdAt")) {
+            info.addProperty("createdAt", Instant.now().truncatedTo(ChronoUnit.SECONDS).toString());
+        }
         if (details != null) {
             details.entrySet().forEach(entry -> info.add(entry.getKey(), entry.getValue()));
         }
         Files.writeString(directory.resolve(base + ".json"),
                 new GsonBuilder().setPrettyPrinting().create().toJson(info) + "\n", StandardCharsets.UTF_8);
-        // The picture last: it is what makes the part visible to the game.
-        Path png = directory.resolve(base + ".png");
-        ImageIO.setUseCache(false);
-        ImageIO.write(image, "png", png.toFile());
         return new Part(kind, number, png);
+    }
+
+    /**
+     * Takes a picture out of the collection. Its files are not destroyed: they move
+     * to the folder {@code deleted}.
+     */
+    public synchronized void remove(Part part) throws IOException {
+        Path trash = directory.resolve("deleted");
+        Files.createDirectories(trash);
+        String stamp = String.valueOf(System.currentTimeMillis());
+        for (String extension : new String[] {".png", ".svg", ".json"}) {
+            Path file = sibling(part, extension);
+            if (Files.isRegularFile(file)) {
+                Files.move(file, trash.resolve(stamp + "-" + file.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------ limits
+
+    private Path limitsFile() {
+        return directory.resolve("limits.properties");
+    }
+
+    /** How many pictures of this kind the district collects before nothing more is drawn. */
+    public int target(Kind kind) {
+        Path file = limitsFile();
+        if (Files.isRegularFile(file)) {
+            Properties limits = new Properties();
+            try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+                limits.load(in);
+                return Math.max(0, Math.min(MAX_TARGET,
+                        Integer.parseInt(limits.getProperty(kind.fileName(), String.valueOf(kind.defaultTarget())).trim())));
+            } catch (IOException | IllegalArgumentException e) {
+                return kind.defaultTarget();
+            }
+        }
+        return kind.defaultTarget();
+    }
+
+    public synchronized void setTarget(Kind kind, int target) throws IOException {
+        Properties limits = new Properties();
+        Path file = limitsFile();
+        if (Files.isRegularFile(file)) {
+            try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+                limits.load(in);
+            } catch (IllegalArgumentException e) {
+                limits.clear();
+            }
+        }
+        limits.setProperty(kind.fileName(), String.valueOf(Math.max(0, Math.min(MAX_TARGET, target))));
+        Files.createDirectories(directory);
+        try (Writer out = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+            limits.store(out, "How many pictures of each kind this district collects");
+        }
+    }
+
+    // --------------------------------------------------- artwork of earlier versions
+
+    /**
+     * Takes single pictures from the asset folder into the collection: what earlier
+     * versions of the game stored there as {@code blossom-tree.svg}, {@code lamp.png}
+     * and so on, including their {@code history}, and what the command
+     * {@code generate} or a hand puts there. The files then move to the folder
+     * {@code imported}, so that each is taken once.
+     *
+     * @return how many pictures were taken
+     */
+    public int importSingleAssets(AssetStore store) {
+        int taken = 0;
+        for (AssetSpec spec : AssetCatalog.ALL) {
+            Kind kind = switch (spec.id()) {
+                case "blossom-tree" -> Kind.BLOSSOM_TREE;
+                case "green-tree" -> Kind.GREEN_TREE;
+                case "lamp" -> Kind.LAMP;
+                case "peony-bush" -> Kind.BUSH;
+                case "lawn-tile" -> Kind.LAWN;
+                case "street-tile" -> Kind.STREET;
+                default -> spec.id().startsWith("visitor") ? Kind.VISITOR : null;
+            };
+            if (kind == null) {
+                continue;
+            }
+            // Oldest first: the history, then the current picture.
+            List<Path> bases = new ArrayList<>();
+            Path history = store.historyDirectory(spec);
+            if (Files.isDirectory(history)) {
+                try (Stream<Path> files = Files.list(history)) {
+                    files.map(file -> file.getFileName().toString())
+                            .filter(name -> name.endsWith(".png") || name.endsWith(".svg"))
+                            .map(name -> name.substring(0, name.length() - 4)).distinct().sorted()
+                            .forEach(name -> bases.add(history.resolve(name)));
+                } catch (IOException e) {
+                    // the history is skipped
+                }
+            }
+            if (store.has(spec)) {
+                store.load(spec); // makes the PNG from an SVG put there by hand
+                bases.add(store.directory().resolve(spec.id()));
+            }
+            for (Path base : bases) {
+                try {
+                    if (take(kind, base, store.directory().resolve("imported"), spec)) {
+                        taken++;
+                    }
+                } catch (IOException | RuntimeException e) {
+                    System.out.println("Library: " + base + " could not be taken over (" + e.getMessage() + ")");
+                }
+            }
+        }
+        return taken;
+    }
+
+    private boolean take(Kind kind, Path base, Path importedDirectory, AssetSpec spec) throws IOException {
+        Path png = Path.of(base + ".png");
+        Path svg = Path.of(base + ".svg");
+        Path json = Path.of(base + ".json");
+        boolean added = false;
+        if (Files.isRegularFile(svg) && !Files.isRegularFile(png)) {
+            render(svg, png, kind);
+        }
+        if (Files.isRegularFile(png)) {
+            ImageIO.setUseCache(false);
+            BufferedImage image = ImageIO.read(png.toFile());
+            if (image != null) {
+                JsonObject details = new JsonObject();
+                if (Files.isRegularFile(json)) {
+                    try {
+                        details = JsonParser.parseString(Files.readString(json, StandardCharsets.UTF_8)).getAsJsonObject();
+                    } catch (RuntimeException e) {
+                        details = new JsonObject();
+                    }
+                }
+                details.remove("id");
+                details.addProperty("importedFrom", spec.id());
+                add(kind, Files.isRegularFile(svg) ? Files.readString(svg, StandardCharsets.UTF_8) : null, image, details);
+                added = true;
+            }
+        }
+        Files.createDirectories(importedDirectory);
+        String prefix = base.getParent().getFileName().toString().equals(spec.id()) ? spec.id() + "-" : "";
+        for (Path file : new Path[] {png, svg, json}) {
+            if (Files.isRegularFile(file)) {
+                Files.move(file, importedDirectory.resolve(prefix + file.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+        return added;
     }
 }

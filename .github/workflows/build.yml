@@ -86,8 +86,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # An SVG dropped into the asset folder must replace a built-in sprite. This also
-          # proves that Batik works from inside the combined JAR.
+          # An SVG dropped into the asset folder must join the collection and replace a built-in
+          # sprite. This also proves that Batik works from inside the combined JAR.
           mkdir -p build/assets
           cat > build/assets/blossom-tree.svg <<'SVG'
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
@@ -98,8 +98,10 @@ jobs:
           xvfb-run -a -s "-screen 0 1400x900x24" \
             java -Dthreed4j.assets=build/assets -jar build/libs/3d4j.jar --benchmark --frames=60 --no-vsync \
               --screenshot=build/smoke-test-assets.png | tee build/assets.log
-          grep -q "Sprites: 1 of 7" build/assets.log
-          test -s build/assets/blossom-tree.png
+          grep -q "Library: took 1 picture" build/assets.log
+          grep -q "Sprites: 1 pictures" build/assets.log
+          test -s build/assets/library/bluetenviertel/blossom-tree-001.png
+          test -s build/assets/imported/blossom-tree.svg
 
           # The generator command must start from the JAR and explain itself when nothing is
           # configured; with a KeePass entry but no KeePass running it must say so. The second

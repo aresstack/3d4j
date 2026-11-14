@@ -1,6 +1,5 @@
 package com.aresstack.threed4j.demo;
 
-import com.aresstack.threed4j.assets.AssetStore;
 import com.aresstack.threed4j.generator.KeePassEntry;
 import com.aresstack.threed4j.gfx.Textures;
 import com.aresstack.threed4j.platform.Input;
@@ -31,7 +30,7 @@ class SetupScreenTest {
     void open() {
         previousHome = System.getProperty("user.home");
         System.setProperty("user.home", temp.resolve("home").toString());
-        screen = new SetupScreen(new AssetStore(temp.resolve("assets")),
+        screen = new SetupScreen(
                 Textures.readResource("/images/loading.jpg"), Textures.readResource("/images/cover.jpg"));
     }
 
