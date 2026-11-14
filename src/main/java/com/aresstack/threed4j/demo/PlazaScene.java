@@ -118,9 +118,10 @@ final class PlazaScene implements AutoCloseable {
     }
 
     /**
-     * The water the fountain throws: from the top of the glowing cubes a crown of
-     * jets falls in arcs into the basin, a ring of lower jets rises from the basin's
-     * rim towards the middle, and where water lands, rings spread on the surface.
+     * The water the fountain throws: the nozzle on top throws a plume that falls
+     * into the small bowl, the small bowl runs over into the wide one and that into
+     * the basin, a ring of low jets rises from the basin's rim towards the middle,
+     * and where water lands, rings spread on the surface.
      *
      * <p>One quad per drop and per ring. Layout: start point (3), corner of the quad
      * (2), speed at the start (3), timing as phase, duration of a flight and size
@@ -130,45 +131,60 @@ final class PlazaScene implements AutoCloseable {
     private static Mesh fountainWater(GraphicsDevice graphics) {
         List<float[]> quads = new ArrayList<>();
         Random random = new Random(5);
-        float gravity = 9.8f;
         float surface = 1.0f;
 
-        // The crown: from the top of the cubes outward and down into the basin.
-        float top = 6.0f;
         int jets = 14;
-        for (int jet = 0; jet < jets; jet++) {
-            double angle = 2 * Math.PI * jet / jets;
-            float up = 5.2f;
-            float flight = (float) ((up + Math.sqrt(up * up + 2 * gravity * (top - surface))) / gravity);
-            float out = 3.6f / flight; // lands 3.6 from the middle, inside the basin
-            for (int drop = 0; drop < 7; drop++) {
-                quads.add(new float[] {0f, top, 0f, (float) Math.cos(angle) * out, up, (float) Math.sin(angle) * out,
-                        (drop + random.nextFloat() * 0.3f) / 7f, flight, 0.15f + random.nextFloat() * 0.06f,
-                        0f, 0.94f + random.nextFloat() * 0.06f});
-            }
-            // Where the jet lands, a ring spreads, again and again.
-            quads.add(new float[] {(float) Math.cos(angle) * 3.6f, surface + 0.03f, (float) Math.sin(angle) * 3.6f,
-                    0f, 0f, 0f, random.nextFloat(), 1.1f + random.nextFloat() * 0.5f, 0.55f, 1f, 1f});
+        // The plume: the nozzle throws water up, it falls back into the small bowl.
+        float nozzle = 5.7f;
+        float smallBowl = 5.12f;
+        for (int drop = 0; drop < 26; drop++) {
+            double angle = random.nextDouble() * 2 * Math.PI;
+            float up = 3.6f + random.nextFloat() * 1.6f;
+            float flight = flight(up, nozzle - smallBowl);
+            float out = (0.25f + random.nextFloat() * 0.55f) / flight;
+            quads.add(new float[] {0f, nozzle, 0f, (float) Math.cos(angle) * out, up, (float) Math.sin(angle) * out,
+                    random.nextFloat(), flight, 0.13f + random.nextFloat() * 0.06f, 0f, 1f});
         }
-        // Small jets from the rim of the basin towards the middle, between the big ones.
+        quads.add(new float[] {0f, smallBowl + 0.02f, 0f, 0f, 0f, 0f, 0f, 0.9f, 0.75f, 1f, 1f});
+        quads.add(new float[] {0f, smallBowl + 0.02f, 0f, 0f, 0f, 0f, 0.5f, 0.9f, 0.75f, 1f, 1f});
+
+        // The small bowl runs over into the wide one, the wide one into the basin.
+        float wideBowl = 3.47f;
+        for (int jet = 0; jet < jets; jet++) {
+            double high = 2 * Math.PI * (jet + 0.5) / jets;
+            float flight = flight(0.5f, 5.0f - wideBowl);
+            float out = 0.45f / flight;
+            for (int drop = 0; drop < 4; drop++) {
+                quads.add(new float[] {(float) Math.cos(high) * 1.2f, 5.0f, (float) Math.sin(high) * 1.2f,
+                        (float) Math.cos(high) * out, 0.5f, (float) Math.sin(high) * out,
+                        (drop + random.nextFloat() * 0.4f) / 4f, flight, 0.10f + random.nextFloat() * 0.04f, 0f, 1f});
+            }
+            quads.add(new float[] {(float) Math.cos(high) * 1.65f, wideBowl + 0.02f, (float) Math.sin(high) * 1.65f,
+                    0f, 0f, 0f, random.nextFloat(), 0.9f + random.nextFloat() * 0.4f, 0.3f, 1f, 1f});
+
+            double low = 2 * Math.PI * jet / jets;
+            flight = flight(0.9f, 3.35f - surface);
+            out = 1.3f / flight;
+            for (int drop = 0; drop < 6; drop++) {
+                quads.add(new float[] {(float) Math.cos(low) * 2.2f, 3.35f, (float) Math.sin(low) * 2.2f,
+                        (float) Math.cos(low) * out, 0.9f, (float) Math.sin(low) * out,
+                        (drop + random.nextFloat() * 0.4f) / 6f, flight, 0.13f + random.nextFloat() * 0.06f, 0f, 1f});
+            }
+            quads.add(new float[] {(float) Math.cos(low) * 3.5f, surface + 0.03f, (float) Math.sin(low) * 3.5f,
+                    0f, 0f, 0f, random.nextFloat(), 1.1f + random.nextFloat() * 0.5f, 0.5f, 1f, 1f});
+        }
+        // Small jets from the rim of the basin towards the middle.
         for (int jet = 0; jet < jets; jet++) {
             double angle = 2 * Math.PI * (jet + 0.5) / jets;
-            float up = 3.4f;
-            float flight = 2 * up / gravity;
-            float inward = -1.9f / flight;
+            float up = 3.0f;
+            float flight = flight(up, 0f);
+            float inward = -1.2f / flight;
             for (int drop = 0; drop < 4; drop++) {
                 quads.add(new float[] {(float) Math.cos(angle) * 4.3f, surface, (float) Math.sin(angle) * 4.3f,
                         (float) Math.cos(angle) * inward, up, (float) Math.sin(angle) * inward,
                         (drop + random.nextFloat() * 0.3f) / 4f, flight, 0.10f + random.nextFloat() * 0.04f,
                         0f, 1f});
             }
-        }
-        // A bubbling top.
-        for (int drop = 0; drop < 10; drop++) {
-            double angle = random.nextDouble() * 2 * Math.PI;
-            float up = 2.2f + random.nextFloat() * 1.2f;
-            quads.add(new float[] {0f, top, 0f, (float) Math.cos(angle) * 0.35f, up, (float) Math.sin(angle) * 0.35f,
-                    random.nextFloat(), 2 * up / gravity, 0.14f, 0f, 1f});
         }
 
         float[][] corners = {{-1f, -1f}, {1f, -1f}, {1f, 1f}, {-1f, 1f}};
@@ -205,6 +221,12 @@ final class PlazaScene implements AutoCloseable {
             indices[at + 5] = first + 3;
         }
         return graphics.createMesh(vertices, indices, 3, 2, 3, 3, 3);
+    }
+
+    /** How long a drop flies that starts upwards at this speed and lands this far below its start. */
+    private static float flight(float up, float fall) {
+        float gravity = 9.8f; // twice the 4.9 of the water shader
+        return (float) ((up + Math.sqrt(up * up + 2 * gravity * fall)) / gravity);
     }
 
     /** Edge length of one ground texture tile in the world. */
@@ -274,16 +296,71 @@ final class PlazaScene implements AutoCloseable {
         return graphics.createMesh(vertices, indices, 3, 3, 3);
     }
 
+    /** Outer radius of the fountain's basin; it stands in the middle of the square. */
+    static final float FOUNTAIN_RADIUS = 5.2f;
+    /** Up to this height the fountain and its water are in the way. */
+    static final float FOUNTAIN_HEIGHT = 7.5f;
+
+    /**
+     * Where somebody ends up who wants to go to this place: the fountain is solid, so
+     * a place inside it is moved out to its edge. Walking against it at an angle
+     * therefore slides along the basin. Above the fountain the way is free.
+     *
+     * @param distance how far from the basin the place has to stay
+     */
+    static Vec3 outsideFountain(Vec3 wanted, float distance) {
+        float nearest = FOUNTAIN_RADIUS + distance;
+        double fromMiddle = Math.hypot(wanted.x(), wanted.z());
+        if (wanted.y() >= FOUNTAIN_HEIGHT || fromMiddle >= nearest) {
+            return wanted;
+        }
+        if (fromMiddle < 0.001) {
+            return new Vec3(0f, wanted.y(), nearest);
+        }
+        float scale = (float) (nearest / fromMiddle);
+        return new Vec3(wanted.x() * scale, wanted.y(), wanted.z() * scale);
+    }
+
     private static void fountain(MeshBuilder builder) {
         Vec3 stone = new Vec3(0.86f, 0.84f, 0.90f);
+        Vec3 shade = new Vec3(0.74f, 0.72f, 0.80f);
         Vec3 water = new Vec3(0.55f, 0.86f, 0.95f);
-        Vec3 glow = new Vec3(0.75f, 0.97f, 1.00f);
-        builder.prism(0, 0f, 0.9f, 0, 5.2f, 16, stone, stone);
+        // The basin on the ground.
+        builder.prism(0, 0f, 0.9f, 0, FOUNTAIN_RADIUS, 16, stone, stone);
         builder.prism(0, 0.9f, 1.0f, 0, 4.6f, 16, water, water);
-        builder.prism(0, 1.0f, 2.2f, 0, 1.0f, 8, stone, stone);
-        // The glowing cube stack of the title picture, as plain boxes.
-        builder.box(-1.1f, 2.6f, -1.1f, 1.1f, 4.8f, 1.1f, glow, glow);
-        builder.box(-0.6f, 4.8f, -0.6f, 0.6f, 6.0f, 0.6f, glow, glow);
+        // A foot, a column, a wide bowl, a thinner column, a small bowl and the nozzle.
+        builder.prism(0, 1.0f, 1.5f, 0, 1.0f, 8, stone, stone);
+        builder.prism(0, 1.5f, 2.7f, 0, 0.55f, 8, stone, stone);
+        bowl(builder, 2.7f, 3.25f, 0.55f, 2.2f, 3.45f, stone, shade, water);
+        builder.prism(0, 3.45f, 4.55f, 0, 0.38f, 8, stone, stone);
+        bowl(builder, 4.55f, 4.95f, 0.38f, 1.2f, 5.1f, stone, shade, water);
+        builder.prism(0, 5.1f, 5.7f, 0, 0.16f, 8, stone, stone);
+    }
+
+    /**
+     * A bowl of the fountain around the middle of the square: it widens from the
+     * column below to its rim, and is filled with water almost to the top.
+     *
+     * @param bottom height where the bowl leaves the column, of radius {@code neck}
+     * @param widest height where the bowl has reached its {@code radius}
+     * @param top    height of the rim
+     */
+    private static void bowl(MeshBuilder builder, float bottom, float widest, float neck, float radius, float top,
+                             Vec3 stone, Vec3 shade, Vec3 water) {
+        int sides = 12;
+        for (int i = 0; i < sides; i++) {
+            double angle0 = 2 * Math.PI * i / sides;
+            double angle1 = 2 * Math.PI * (i + 1) / sides;
+            float cos0 = (float) Math.cos(angle0);
+            float sin0 = (float) Math.sin(angle0);
+            float cos1 = (float) Math.cos(angle1);
+            float sin1 = (float) Math.sin(angle1);
+            // The underside, seen from below and from the side.
+            builder.quad(new Vec3(cos1 * neck, bottom, sin1 * neck), new Vec3(cos0 * neck, bottom, sin0 * neck),
+                    new Vec3(cos0 * radius, widest, sin0 * radius), new Vec3(cos1 * radius, widest, sin1 * radius), shade);
+        }
+        builder.prism(0, widest, top, 0, radius, sides, stone, stone);
+        builder.prism(0, top, top + 0.02f, 0, radius - 0.18f, sides, water, water);
     }
 
     // ---------------------------------------------------------------- buildings
@@ -419,6 +496,14 @@ final class PlazaScene implements AutoCloseable {
                 z = northSouth ? along : across;
             }
             float radius = 0.8f + random.nextFloat() * 2.2f;
+            // Nobody strolls through the fountain: the whole circle stays outside of it.
+            double fromMiddle = Math.hypot(x, z);
+            float nearest = FOUNTAIN_RADIUS + 0.9f + radius;
+            if (fromMiddle < nearest) {
+                double angle = fromMiddle < 0.01 ? random.nextDouble() * 2 * Math.PI : Math.atan2(z, x);
+                x = (float) (Math.cos(angle) * nearest);
+                z = (float) (Math.sin(angle) * nearest);
+            }
             float speed = (random.nextBoolean() ? 1 : -1) * (0.15f + random.nextFloat() * 0.35f);
             float phase = random.nextFloat() * 6.28f;
             batch.add(Kind.VISITOR, random.nextInt(3),

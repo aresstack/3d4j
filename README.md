@@ -352,9 +352,11 @@ Kamera und die Bewegung rechnet der Vertex-Shader), das Wasser des Brunnens und 
 Sechs Zeichenaufrufe pro Frame, Beleuchtung in drei festen Stufen, Dunst statt Fernsicht,
 Sprites ausgestanzt statt transparent.
 
-Der Brunnen spuckt Wasser: Vom Würfelturm fällt ein Kranz aus Strahlen in das Becken, vom
-Beckenrand steigen kleinere Strahlen zur Mitte, und wo Wasser auftrifft, laufen Ringe über
-die Oberfläche. Jeder Tropfen ist ein Viereck mit Startpunkt, Startgeschwindigkeit und Takt;
+Der Brunnen ist ein Schalenbrunnen aus Stein und spuckt Wasser: Die Düse an der Spitze wirft
+eine Fontäne in die kleine Schale, die läuft in die große über und diese in das Becken; vom
+Beckenrand steigen kleine Strahlen zur Mitte, und wo Wasser auftrifft, laufen Ringe über die
+Oberfläche. Der Brunnen ist fest: Der Spieler gleitet am Becken entlang, statt hindurchzugehen
+(darüber hinwegfliegen geht), und die Besucher drehen ihre Runden außerhalb. Jeder Tropfen ist ein Viereck mit Startpunkt, Startgeschwindigkeit und Takt;
 wo er gerade ist, rechnet der Vertex-Shader (`water`) allein aus der Zeit. Pro Frame fällt
 dafür auf der CPU nichts an, und Texturen braucht das Wasser nicht.
 

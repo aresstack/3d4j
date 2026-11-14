@@ -550,6 +550,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         float speed = WALK_SPEED * (input.isDown(Key.SHIFT) ? 3f : 1f);
         position = position.add(move.normalize().scale(speed * step));
         position = new Vec3(position.x(), Math.max(0.6f, position.y()), position.z());
+        position = PlazaScene.outsideFountain(position, 0.7f);
     }
 
     /**
