@@ -89,6 +89,14 @@ final class PauseMenu {
             return false;
         }
 
+        /** How many pictures the background drawing asks for at the same time. */
+        default int backgroundParallel() {
+            return 1;
+        }
+
+        default void backgroundParallel(int parallel) {
+        }
+
         /** Whether looking around in full screen needs a held mouse button. */
         default boolean holdToLook() {
             return false;
@@ -673,6 +681,17 @@ final class PauseMenu {
             backgroundDrawing = false;
             actions.backgroundDrawing(false);
         });
+        // How many requests go to the AI at the same time.
+        int parallel = actions.backgroundParallel();
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+        g.setColor(TEXT);
+        g.drawString("gleichzeitig", 282, 244);
+        choice(g, "–", 366, 221, 34, 34, false, 17, () -> actions.backgroundParallel(parallel - 1));
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+        String count = String.valueOf(parallel);
+        g.drawString(count, 420 - g.getFontMetrics().stringWidth(count) / 2, 244);
+        choice(g, "+", 440, 221, 34, 34, false, 17, () -> actions.backgroundParallel(parallel + 1));
         note(g, "Die KI zeichnet beim Spielen Fenster, Türen und Läden;", 284);
         note(g, "die Häuser bekommen sie nach und nach.", 304);
         shownStatus = actions.backgroundStatus();

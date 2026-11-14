@@ -233,9 +233,23 @@ public final class PartLibrary {
      * @param svg     the source, or {@code null} if there is only the picture
      * @param details facts for the JSON file besides kind, number and time, e.g. model and instruction
      */
-    public synchronized Part add(Kind kind, String svg, BufferedImage image, JsonObject details) throws IOException {
+    public Part add(Kind kind, String svg, BufferedImage image, JsonObject details) throws IOException {
+        // One at a time across all libraries: several requests draw side by side, each with a
+        // library of its own that was read before the others stored their pictures.
+        synchronized (ADDING) {
+            return addNow(kind, svg, image, details);
+        }
+    }
+
+    private static final Object ADDING = new Object();
+
+    private Part addNow(Kind kind, String svg, BufferedImage image, JsonObject details) throws IOException {
         Files.createDirectories(directory);
         int number = parts(kind).stream().mapToInt(Part::number).max().orElse(0) + 1;
+        // What is on disk decides: another library may have stored this number meanwhile.
+        while (Files.exists(directory.resolve(kind.fileName() + "-" + String.format(Locale.ROOT, "%03d", number) + ".png"))) {
+            number++;
+        }
         String base = kind.fileName() + "-" + String.format(Locale.ROOT, "%03d", number);
         // The picture first: an SVG without its picture would be rendered again by a reader in between.
         Path png = directory.resolve(base + ".png");

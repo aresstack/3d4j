@@ -6,7 +6,9 @@ import com.aresstack.threed4j.assets.PartLibrary;
 import com.aresstack.threed4j.assets.TownLibrary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Keeps drawing pictures for the town while the game runs: one at a time, on a
@@ -26,27 +28,53 @@ public final class BackgroundArtist implements AutoCloseable {
     }
 
     private final AssetStore store;
-    private final Thread thread;
+    /** One worker per request that may run at the same time; those beyond the setting wait. */
+    private final Thread[] threads = new Thread[AiSetup.MAX_PARALLEL];
+    /** What each worker is doing; {@code null} for one that has nothing to say. */
+    private final String[] statuses = new String[AiSetup.MAX_PARALLEL];
+    private final List<Claim> inWork = new ArrayList<>();
     private volatile boolean closed;
-    private volatile String status = "wartet";
+    private volatile long pauseUntil;
+    private long retryAccessAt;
 
     private BackgroundArtist(AssetStore store) {
         this.store = store;
-        this.thread = new Thread(this::work, "3d4j-background-artist");
-        this.thread.setDaemon(true);
-        this.thread.setPriority(Thread.MIN_PRIORITY); // the game comes first
+        statuses[0] = "wartet";
+        for (int i = 0; i < threads.length; i++) {
+            int worker = i;
+            threads[i] = new Thread(() -> work(worker), "3d4j-background-artist-" + (i + 1));
+            threads[i].setDaemon(true);
+            threads[i].setPriority(Thread.MIN_PRIORITY); // the game comes first
+        }
     }
 
     /** Starts drawing for all districts of the town and for what they share. */
     public static BackgroundArtist start(AssetStore store) {
         BackgroundArtist artist = new BackgroundArtist(store);
-        artist.thread.start();
+        for (Thread thread : artist.threads) {
+            thread.start();
+        }
         return artist;
     }
 
     /** What it is doing, in German, for the settings: e.g. "zeichnet Fenster 3". */
     public String status() {
-        return status;
+        // With several requests at once: what is being drawn; otherwise whatever the first worker says.
+        java.util.Set<String> drawing = new java.util.LinkedHashSet<>();
+        java.util.Set<String> other = new java.util.LinkedHashSet<>();
+        for (String status : statuses) {
+            if (status != null) {
+                (status.startsWith("zeichnet ") ? drawing : other).add(status);
+            }
+        }
+        if (drawing.isEmpty()) {
+            return other.isEmpty() ? "wartet" : other.iterator().next();
+        }
+        StringBuilder text = new StringBuilder("zeichnet ");
+        for (String status : drawing) {
+            text.append(text.length() > 9 ? ", " : "").append(status.substring(9));
+        }
+        return text.toString();
     }
 
     /** How far the collection is, e.g. "34 von 60 Bildern". */
@@ -85,12 +113,20 @@ public final class BackgroundArtist implements AutoCloseable {
      * @return the job, or {@code null} if everything has reached its limit
      */
     static Job next(TownLibrary town) {
+        return next(town, Map.of());
+    }
+
+    /**
+     * @param inWork how many pictures of a job are being drawn right now; they count as there
+     */
+    static Job next(TownLibrary town, Map<Job, Integer> inWork) {
         Job choice = null;
         double least = 1.0;
         for (Job job : jobs(town)) {
             PartLibrary library = town.of(job.district(), job.kind());
             int target = library.target(job.kind());
-            double filled = target == 0 ? 1.0 : library.parts(job.kind()).size() / (double) target;
+            double filled = target == 0 ? 1.0
+                    : (library.parts(job.kind()).size() + inWork.getOrDefault(job, 0)) / (double) target;
             if (filled < least) {
                 least = filled;
                 choice = job;
@@ -139,49 +175,102 @@ public final class BackgroundArtist implements AutoCloseable {
         return choice;
     }
 
-    private void work() {
-        long retryAccessAt = 0;
+    /** A picture being drawn right now: nobody else takes its number, and it counts as nearly there. */
+    private record Claim(Job job, int number) {
+    }
+
+    /**
+     * Chooses what a worker draws next and reserves it, so that several workers neither draw the same
+     * picture nor all rush at the same kind.
+     *
+     * @return the claim, or {@code null} if everything has reached its limit or is being drawn
+     */
+    private synchronized Claim claim(TownLibrary town) {
+        Map<Job, Integer> counts = new HashMap<>();
+        for (Claim claim : inWork) {
+            counts.merge(claim.job(), 1, Integer::sum);
+        }
+        Job job = next(town, counts);
+        if (job == null) {
+            return null;
+        }
+        PartLibrary library = town.of(job.district(), job.kind());
+        int number = library.parts(job.kind()).stream().mapToInt(PartLibrary.Part::number).max().orElse(0) + 1;
+        while (inWork.contains(new Claim(job, number))) {
+            number++;
+        }
+        Claim claim = new Claim(job, number);
+        inWork.add(claim);
+        return claim;
+    }
+
+    private synchronized void done(Claim claim) {
+        inWork.remove(claim);
+    }
+
+    /** The access to the AI; only one worker at a time looks for it. */
+    private synchronized AiSetup.Session access(int worker) {
+        AiSetup.Session session = AiSetup.session();
+        if (session == null && System.currentTimeMillis() >= retryAccessAt) {
+            statuses[worker] = "sucht den Zugang zur KI";
+            session = AiSetup.resumeSession();
+            retryAccessAt = System.currentTimeMillis() + 60_000;
+        }
+        return session;
+    }
+
+    private void work(int worker) {
         try {
-            Thread.sleep(4000); // let the game start first
+            Thread.sleep(4000 + worker * 700L); // let the game start first
             while (!closed) {
+                if (worker >= AiSetup.backgroundParallel()) {
+                    statuses[worker] = null; // not wanted right now
+                    Thread.sleep(2000);
+                    continue;
+                }
                 if (!AiSetup.backgroundEnabled()) {
-                    status = "ausgeschaltet";
+                    statuses[worker] = "ausgeschaltet";
+                    Thread.sleep(2000);
+                    continue;
+                }
+                long wait = pauseUntil - System.currentTimeMillis();
+                if (wait > 0) {
+                    Thread.sleep(Math.min(wait, 2000)); // a request failed: nobody hammers the service
+                    continue;
+                }
+                AiSetup.Session session = access(worker);
+                if (session == null) {
+                    statuses[worker] = "wartet auf den Zugang zur KI";
                     Thread.sleep(2000);
                     continue;
                 }
                 TownLibrary town = new TownLibrary(store); // read anew: districts come and go
-                Job job = next(town);
-                if (job == null) {
-                    status = "fertig: die Sammlungen sind vollständig";
-                    Thread.sleep(10_000);
+                Claim claim = claim(town);
+                if (claim == null) {
+                    statuses[worker] = inWorkCount() == 0 ? "fertig: die Sammlungen sind vollständig" : null;
+                    Thread.sleep(inWorkCount() == 0 ? 10_000 : 2000);
                     continue;
                 }
-                AiSetup.Session session = AiSetup.session();
-                if (session == null && System.currentTimeMillis() >= retryAccessAt) {
-                    status = "sucht den Zugang zur KI";
-                    session = AiSetup.resumeSession();
-                    retryAccessAt = System.currentTimeMillis() + 60_000;
-                }
-                if (session == null) {
-                    status = "wartet auf den Zugang zur KI";
-                    Thread.sleep(2000);
-                    continue;
-                }
+                Job job = claim.job();
                 PartLibrary.Kind kind = job.kind();
-                PartLibrary library = town.of(job.district(), kind);
-                int number = library.parts(kind).stream().mapToInt(PartLibrary.Part::number).max().orElse(0) + 1;
                 // "Birke 2 (Werksviertel)"; the people belong to no district.
-                String what = name(job.district(), kind) + " " + number
+                String what = name(job.district(), kind) + " " + claim.number()
                         + (kind.shared() ? "" : " (" + job.district().name() + ")");
-                status = "zeichnet " + what;
-                String problem = session.draw(library, job.district(), kind, number);
+                statuses[worker] = "zeichnet " + what;
+                String problem;
+                try {
+                    problem = session.draw(town.of(job.district(), kind), job.district(), kind, claim.number());
+                } finally {
+                    done(claim);
+                }
                 if (problem == null) {
-                    status = what + " ist fertig";
+                    statuses[worker] = what + " ist fertig";
                     Thread.sleep(3000);
                 } else {
                     // Not again at once: a service that refuses or a model that fails should not be hammered.
-                    status = what + " misslang: " + problem;
+                    statuses[worker] = what + " misslang: " + problem;
                     System.out.println("Background artist: " + what + " failed: " + problem);
+                    pauseUntil = System.currentTimeMillis() + 45_000;
                     Thread.sleep(45_000);
                 }
             }
@@ -190,9 +279,15 @@ public final class BackgroundArtist implements AutoCloseable {
         }
     }
 
+    private synchronized int inWorkCount() {
+        return inWork.size();
+    }
+
     @Override
     public void close() {
         closed = true;
-        thread.interrupt();
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
     }
 }

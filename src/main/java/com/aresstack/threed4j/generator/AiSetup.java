@@ -449,6 +449,28 @@ public final class AiSetup {
         return !"false".equalsIgnoreCase(read(settingsFile()).getProperty("background.enabled"));
     }
 
+    /** The most requests the background drawing may send at the same time. */
+    public static final int MAX_PARALLEL = 8;
+
+    /** How many pictures are drawn at the same time ({@code background.parallel}); one unless set. */
+    public static int backgroundParallel() {
+        try {
+            return Math.max(1, Math.min(MAX_PARALLEL,
+                    Integer.parseInt(read(settingsFile()).getProperty("background.parallel", "1").trim())));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+
+    public static void saveBackgroundParallel(int parallel) throws IOException {
+        Properties own = read(settingsFile());
+        own.setProperty("background.parallel", String.valueOf(Math.max(1, Math.min(MAX_PARALLEL, parallel))));
+        Files.createDirectories(home());
+        try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
+            own.store(out, "3d4j asset generator");
+        }
+    }
+
     public static void saveBackgroundEnabled(boolean enabled) throws IOException {
         Properties own = read(settingsFile());
         own.setProperty("background.enabled", String.valueOf(enabled));
