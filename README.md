@@ -1,6 +1,47 @@
-# 3d4j
+# 3d4j – Nur zur ZIHR
+
+**Eine begehbare, blühende Datenstadt – und gleichzeitig ein Experiment mit einer selbst geschriebenen Java-3D-Engine und KI-generierten Spielgrafiken.**
 
 <img src="src/main/resources/images/cover.jpg" alt="Nur zur ZIHR – Cover" width="320">
+
+> **Projektstatus:** Experimenteller Prototyp. Engine, begehbare Testszene und ein erster SVG-Asset-Generator sind im Repository enthalten. Die automatische Erweiterung der Objektbibliothek um weitere Varianten, unter anderem Fenster, Türen und runde Fenster, wird derzeit erprobt und ausgebaut.
+
+## Die Idee: IT-Systeme als Stadt erleben
+
+„Nur zur ZIHR“ verbindet eine verspielte, pastellfarbene Stadt mit einem technischen Experiment: Was wäre, wenn sich IT-Strukturen nicht nur in Diagrammen beschreiben, sondern als begehbare Welt betrachten ließen?
+
+Die Häuser bilden die Kulisse, Bäume und Laternen machen die Straßen lebendig, und kleine Besucher bevölkern den Platz. Langfristig soll die Stadt als anschauliche Metapher für Software- und Datenlandschaften dienen. Der aktuelle Stand ist bewusst ein **Prototyp**, keine fertige Fachvisualisierung oder ein vollständiges Spiel.
+
+Das zweite Experiment läuft gewissermaßen hinter den Kulissen: **Die Grafiken werden nicht alle von Hand gezeichnet.** Ein Chatmodell erhält eine Beschreibung des gewünschten Objekts und zeichnet es als SVG. Die Anwendung prüft und speichert die Ergebnisse, rastert sie bei Bedarf und verwendet sie anschließend in der 3D-Szene. So entsteht schrittweise eine wiederverwendbare Bibliothek mit Bäumen, Personen, Laternen und – im laufenden Ausbau – unterschiedlichen Fenster- und Türformen. Ziel ist eine vielfältige Welt, die ohne manuelles Zeichnen jedes einzelnen Details wachsen kann.
+
+### Was man heute ausprobieren kann
+
+- **Durch die Stadt laufen:** Eine Testszene mit Gebäuden, Bäumen, Laternen und Besuchern aus einer frei beweglichen Kamera betrachten.
+- **Grafiken austauschen:** Eigene SVG- oder PNG-Dateien in den Asset-Ordner legen und beim nächsten Start in der Szene verwenden.
+- **Motive per KI generieren:** Den separaten Generator an eine OpenAI-kompatible Chat-API anbinden und neue SVG-Motive erzeugen lassen.
+- **Den Renderer untersuchen:** Bildrate, Framezeiten, Auflösung und Backend vergleichen – auch auf Rechnern ohne dedizierten Grafiktreiber.
+
+### So funktioniert die Grafik-Pipeline
+
+```text
+Objektbeschreibung
+       |
+       v
+Chatmodell (OpenAI-kompatible API)
+       |
+       v
+SVG-Antwort -- Validierung / ggf. erneuter Versuch
+       |
+       v
+Asset-Ordner (SVG + PNG)
+       |
+       v
+Sprite-Atlas / Szene --> 3D-Renderer --> begehbare Datenstadt
+```
+
+Die KI ist **für das Erzeugen der Assets** zuständig; das eigentliche Anzeigen und Begehen der Stadt läuft lokal. Der Generator kann vorhandene Bilder wiederverwenden, anstatt bei jedem Spielstart neue Anfragen zu stellen. Wie gut die Ergebnisse aussehen, hängt auch vom gewählten Modell und den Beschreibungen der Objekte ab.
+
+## Die Engine hinter der Stadt
 
 Grundgerüst für eine 3D-Engine in reinem Java 21. Alles ist in Java geschrieben, auch die
 eingebundenen Bibliotheken; nativen Code bringt das Projekt nicht mit. Fenster, Eingabe und
@@ -89,6 +130,8 @@ erzwingen (Standard `auto`: unter Windows Direct3D 11 und nur bei einem Fehler O
 
 ## Grafiken aus Dateien und vom Chatmodell
 
+Die Engine und der Asset-Generator sind bewusst getrennt: Der Renderer verbraucht vorhandene Bilder, während der Generator bei Bedarf neue Dateien liefert. **Der hier dokumentierte Stand der veröffentlichten Generator-Implementierung umfasst sechs Motive.** Die größere, sich automatisch vervollständigende Bibliothek mit Fenstern, Türen und zusätzlichen Varianten ist ein laufender Ausbau; ihre genaue Bedienung kann sich noch ändern.
+
 Bäume, Laternen und Besucher des Testplatzes sind eingebaute Platzhalter. Liegt im
 Asset-Ordner eine Datei mit passendem Namen, ersetzt sie den Platzhalter:
 
@@ -105,7 +148,7 @@ Batik in ein PNG um. Es genügt also, ein SVG in den Ordner zu legen, auch eines
 einem Chat kopiert hat. Beim Laden der Szene meldet die Konsole, wie viele Sprites aus dem
 Ordner kommen.
 
-Der Generator lässt ein Chatmodell die Motive zeichnen:
+Der mit dem aktuellen Repository ausgelieferte Generator lässt ein Chatmodell diese Motive zeichnen:
 
 ```
 java -jar 3d4j.jar generate
