@@ -44,6 +44,17 @@ final class Win32Api {
     static final int CS_OWNDC = 0x0020;
 
     static final int WS_OVERLAPPEDWINDOW = 0x00CF0000;
+    static final int WS_POPUP = 0x80000000;
+    static final int WS_VISIBLE = 0x10000000;
+    static final int GWL_STYLE = -16;
+    static final int SWP_NOZORDER = 0x0004;
+    static final int SWP_FRAMECHANGED = 0x0020;
+    static final int SWP_NOOWNERZORDER = 0x0200;
+    static final int MONITOR_DEFAULTTONEAREST = 2;
+    static final int HTCLIENT = 1;
+    /** {@code sizeof(MONITORINFO)}; the monitor's rectangle follows the size field. */
+    static final long SIZEOF_MONITORINFO = 40;
+    static final long MONITORINFO_MONITOR = 4;
     static final int CW_USEDEFAULT = 0x80000000;
     static final int SW_SHOW = 5;
     static final int SM_REMOTESESSION = 0x1000;
@@ -56,6 +67,10 @@ final class Win32Api {
 
     static final int WM_DESTROY = 0x0002;
     static final int WM_SIZE = 0x0005;
+    static final int WM_SETFOCUS = 0x0007;
+    static final int WM_KILLFOCUS = 0x0008;
+    static final int WM_SETCURSOR = 0x0020;
+    static final int WM_SYSCHAR = 0x0106;
     static final int WM_CLOSE = 0x0010;
     static final int WM_ERASEBKGND = 0x0014;
     static final int WM_KEYDOWN = 0x0100;
@@ -203,6 +218,34 @@ final class Win32Api {
             FunctionDescriptor.of(JAVA_INT));
     private static final MethodHandle GetSystemMetrics = Native.downcall(USER32, "GetSystemMetrics",
             FunctionDescriptor.of(JAVA_INT, JAVA_INT));
+    private static final MethodHandle SetWindowLongPtrW = Native.downcall(USER32, "SetWindowLongPtrW",
+            FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_INT, JAVA_LONG));
+    private static final MethodHandle SetWindowPos = Native.downcall(USER32, "SetWindowPos",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT));
+    private static final MethodHandle GetWindowRect = Native.downcall(USER32, "GetWindowRect",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
+    private static final MethodHandle MonitorFromWindow = Native.downcall(USER32, "MonitorFromWindow",
+            FunctionDescriptor.of(ADDRESS, ADDRESS, JAVA_INT));
+    private static final MethodHandle GetMonitorInfoW = Native.downcall(USER32, "GetMonitorInfoW",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
+    private static final MethodHandle ClientToScreen = Native.downcall(USER32, "ClientToScreen",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
+    private static final MethodHandle SetCursorPos = Native.downcall(USER32, "SetCursorPos",
+            FunctionDescriptor.of(JAVA_INT, JAVA_INT, JAVA_INT));
+    private static final MethodHandle ClipCursor = Native.downcall(USER32, "ClipCursor",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS));
+    private static final MethodHandle SetCursor = Native.downcall(USER32, "SetCursor",
+            FunctionDescriptor.of(ADDRESS, ADDRESS));
+    private static final MethodHandle CreateIconIndirect = Native.downcall(USER32, "CreateIconIndirect",
+            FunctionDescriptor.of(ADDRESS, ADDRESS));
+    private static final MethodHandle DestroyIcon = Native.downcall(USER32, "DestroyIcon",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS));
+    private static final MethodHandle CreateDIBSection = Native.downcall(GDI32, "CreateDIBSection",
+            FunctionDescriptor.of(ADDRESS, ADDRESS, ADDRESS, JAVA_INT, ADDRESS, ADDRESS, JAVA_INT));
+    private static final MethodHandle CreateBitmap = Native.downcall(GDI32, "CreateBitmap",
+            FunctionDescriptor.of(ADDRESS, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, ADDRESS));
+    private static final MethodHandle DeleteObject = Native.downcall(GDI32, "DeleteObject",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS));
     /** OpenGL 1.1 function, a plain export of opengl32.dll: usable before the GL class is. */
     private static final MethodHandle glGetString = Native.downcall(OPENGL32, "glGetString",
             FunctionDescriptor.of(ADDRESS, JAVA_INT));
@@ -230,6 +273,147 @@ final class Win32Api {
     }
 
     // ----------------------------------------------------------- typed wrappers
+
+    static void setWindowStyle(MemorySegment window, int style) {
+        try {
+            long previous = (long) SetWindowLongPtrW.invokeExact(window, GWL_STYLE, (long) style);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Moves and resizes the window; its frame is worked out anew, as after a change of style. */
+    static void setWindowPos(MemorySegment window, int x, int y, int width, int height) {
+        try {
+            int ignored = (int) SetWindowPos.invokeExact(window, MemorySegment.NULL, x, y, width, height,
+                    SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** The window with its frame, in screen coordinates. */
+    static void getWindowRect(MemorySegment window, MemorySegment rect) {
+        try {
+            int ignored = (int) GetWindowRect.invokeExact(window, rect);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * The rectangle of the monitor the window is on, in screen coordinates.
+     *
+     * @return {@code false} if Windows does not tell
+     */
+    static boolean monitorRect(MemorySegment window, MemorySegment rect) {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment monitor = (MemorySegment) MonitorFromWindow.invokeExact(window, MONITOR_DEFAULTTONEAREST);
+            MemorySegment info = Native.bytes(arena, SIZEOF_MONITORINFO);
+            info.set(JAVA_INT, 0, (int) SIZEOF_MONITORINFO);
+            if (Native.isNull(monitor) || (int) GetMonitorInfoW.invokeExact(monitor, info) == 0) {
+                return false;
+            }
+            MemorySegment.copy(info, MONITORINFO_MONITOR, rect, 0, SIZEOF_RECT);
+            return true;
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Turns a point of the drawable area (two 32-bit integers) into screen coordinates, in place. */
+    static void clientToScreen(MemorySegment window, MemorySegment point) {
+        try {
+            int ignored = (int) ClientToScreen.invokeExact(window, point);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void setCursorPos(int x, int y) {
+        try {
+            int ignored = (int) SetCursorPos.invokeExact(x, y);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Keeps the pointer inside a rectangle of the screen; {@code NULL} sets it free. */
+    static void clipCursor(MemorySegment rect) {
+        try {
+            int ignored = (int) ClipCursor.invokeExact(rect);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Shows this pointer; {@code NULL} shows none. */
+    static void showCursor(MemorySegment cursor) {
+        try {
+            MemorySegment previous = (MemorySegment) SetCursor.invokeExact(cursor);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void destroyCursor(MemorySegment cursor) {
+        try {
+            int ignored = (int) DestroyIcon.invokeExact(cursor);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * Makes a pointer from a picture with transparency, the way GLFW does: a
+     * 32-bit bitmap with an alpha channel for the colours and an empty mask.
+     *
+     * @param argb the pixels row by row, as {@code BufferedImage.getRGB} returns them
+     * @return the {@code HCURSOR}, or {@code NULL} if Windows refuses
+     */
+    static MemorySegment createCursor(MemorySegment deviceContext, int[] argb, int width, int height,
+                                      int hotspotX, int hotspotY) {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment header = Native.bytes(arena, 124); // BITMAPV5HEADER
+            header.set(JAVA_INT, 0, 124);
+            header.set(JAVA_INT, 4, width);
+            header.set(JAVA_INT, 8, -height); // top row first
+            header.set(java.lang.foreign.ValueLayout.JAVA_SHORT, 12, (short) 1);
+            header.set(java.lang.foreign.ValueLayout.JAVA_SHORT, 14, (short) 32);
+            header.set(JAVA_INT, 16, 3); // BI_BITFIELDS
+            header.set(JAVA_INT, 40, 0x00FF0000);
+            header.set(JAVA_INT, 44, 0x0000FF00);
+            header.set(JAVA_INT, 48, 0x000000FF);
+            header.set(JAVA_INT, 52, 0xFF000000);
+            MemorySegment bits = arena.allocate(ADDRESS);
+            MemorySegment color = (MemorySegment) CreateDIBSection.invokeExact(deviceContext, header, 0, bits,
+                    MemorySegment.NULL, 0);
+            if (Native.isNull(color)) {
+                return MemorySegment.NULL;
+            }
+            MemorySegment mask = (MemorySegment) CreateBitmap.invokeExact(width, height, 1, 1, MemorySegment.NULL);
+            if (Native.isNull(mask)) {
+                int ignored = (int) DeleteObject.invokeExact(color);
+                return MemorySegment.NULL;
+            }
+            // 0xAARRGGBB as a little-endian integer is the byte order blue, green, red, alpha the bitmap wants.
+            MemorySegment pixels = Native.sized(bits.get(ADDRESS, 0), (long) width * height * 4);
+            MemorySegment.copy(argb, 0, pixels, JAVA_INT, 0, width * height);
+
+            MemorySegment info = Native.bytes(arena, 32); // ICONINFO
+            info.set(JAVA_INT, 0, 0); // a cursor, not an icon
+            info.set(JAVA_INT, 4, hotspotX);
+            info.set(JAVA_INT, 8, hotspotY);
+            info.set(ADDRESS, 16, mask);
+            info.set(ADDRESS, 24, color);
+            MemorySegment cursor = (MemorySegment) CreateIconIndirect.invokeExact(info);
+            int ignoredColor = (int) DeleteObject.invokeExact(color);
+            int ignoredMask = (int) DeleteObject.invokeExact(mask);
+            return cursor;
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
 
     /** Keeps mouse messages coming to the window while the pointer is outside of it. */
     static void setCapture(MemorySegment window) {

@@ -35,6 +35,18 @@ public final class X11Window implements GLWindow {
     private final MemorySegment event;
     private final MemorySegment textBuffer;
 
+    private final int screen;
+    private final long root;
+    private boolean fullscreen;
+    /** The size the window had before it filled the screen. */
+    private int windowedWidth;
+    private int windowedHeight;
+    private boolean focused = true;
+    private boolean mouseCaptured;
+    private int centerX;
+    private int centerY;
+    private long invisibleCursor;
+
     private int width;
     private int height;
     private boolean closeRequested;
@@ -45,8 +57,8 @@ public final class X11Window implements GLWindow {
         if (Native.isNull(display)) {
             throw new IllegalStateException("Cannot open the X display (is DISPLAY set?)");
         }
-        int screen = defaultScreen(display);
-        long root = rootWindow(display, screen);
+        screen = defaultScreen(display);
+        root = rootWindow(display, screen);
         width = config.width();
         height = config.height();
         event = Native.bytes(arena, SIZEOF_XEVENT);
@@ -68,7 +80,7 @@ public final class X11Window implements GLWindow {
             MemorySegment attributes = Native.bytes(temp, SIZEOF_SET_WINDOW_ATTRIBUTES);
             attributes.set(JAVA_LONG, SWA_BORDER_PIXEL, 0L);
             attributes.set(JAVA_LONG, SWA_EVENT_MASK, KEY_PRESS_MASK | KEY_RELEASE_MASK | BUTTON_PRESS_MASK | BUTTON_RELEASE_MASK
-                    | POINTER_MOTION_MASK | STRUCTURE_NOTIFY_MASK);
+                    | POINTER_MOTION_MASK | STRUCTURE_NOTIFY_MASK | FOCUS_CHANGE_MASK);
             attributes.set(JAVA_LONG, SWA_COLORMAP, colormap);
             window = createWindow(display, root, width, height, depth, visual,
                     CW_BORDER_PIXEL | CW_EVENT_MASK | CW_COLORMAP, attributes);
@@ -173,7 +185,14 @@ public final class X11Window implements GLWindow {
             int type = event.get(JAVA_INT, 0);
             switch (type) {
                 case KEY_PRESS, KEY_RELEASE -> {
-                    input.onKey(mapKey(lookupKeysym(event)), type == KEY_PRESS);
+                    Key key = mapKey(lookupKeysym(event));
+                    if (key == Key.ENTER && (event.get(JAVA_INT, KEY_STATE) & MOD1_MASK) != 0) {
+                        if (type == KEY_PRESS) {
+                            setFullscreen(!fullscreen); // Alt+Enter
+                        }
+                        continue;
+                    }
+                    input.onKey(key, type == KEY_PRESS);
                     if (type == KEY_PRESS) {
                         int length = lookupString(event, textBuffer);
                         for (int i = 0; i < length; i++) {
@@ -182,9 +201,28 @@ public final class X11Window implements GLWindow {
                     }
                 }
                 // While a button is held, X keeps sending the motion to this window (implicit grab).
-                case MOTION_NOTIFY -> input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                case MOTION_NOTIFY -> {
+                    int x = event.get(JAVA_INT, POINTER_X);
+                    int y = event.get(JAVA_INT, POINTER_Y);
+                    if (mouseCaptured) {
+                        // Only the movement counts; the pointer goes back to the middle, so it never reaches an edge.
+                        if (x != centerX || y != centerY) {
+                            input.onMouseDelta(x - centerX, y - centerY);
+                            warpPointer(display, window, centerX, centerY);
+                        }
+                    } else {
+                        input.onMouseMove(x, y);
+                    }
+                }
+                case FOCUS_IN -> focused = true;
+                case FOCUS_OUT -> {
+                    focused = false;
+                    releaseMouse(); // whoever switches to another program gets the pointer back
+                }
                 case BUTTON_PRESS, BUTTON_RELEASE -> {
-                    input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                    if (!mouseCaptured) {
+                        input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
+                    }
                     input.onMouseButton(switch (event.get(JAVA_INT, BUTTON_NUMBER)) {
                         case 1 -> MouseButton.LEFT;
                         case 2 -> MouseButton.MIDDLE;
@@ -193,8 +231,13 @@ public final class X11Window implements GLWindow {
                     }, type == BUTTON_PRESS);
                 }
                 case CONFIGURE_NOTIFY -> {
-                    width = event.get(JAVA_INT, CONFIGURE_WIDTH);
-                    height = event.get(JAVA_INT, CONFIGURE_HEIGHT);
+                    int newWidth = event.get(JAVA_INT, CONFIGURE_WIDTH);
+                    int newHeight = event.get(JAVA_INT, CONFIGURE_HEIGHT);
+                    if (newWidth != width || newHeight != height) {
+                        width = newWidth;
+                        height = newHeight;
+                        releaseMouse(); // captured anew for the new size by the next captureMouse(true)
+                    }
                 }
                 case CLIENT_MESSAGE -> {
                     if (event.get(JAVA_LONG, CLIENT_MESSAGE_DATA) == wmDeleteWindow) {
@@ -204,6 +247,69 @@ public final class X11Window implements GLWindow {
                 default -> {
                 }
             }
+        }
+    }
+
+    @Override
+    public void setFullscreen(boolean on) {
+        if (on == fullscreen) {
+            return;
+        }
+        fullscreen = on;
+        try (Arena temp = Arena.ofConfined()) {
+            // Ask the window manager, the way the desktop standard describes it ...
+            MemorySegment request = Native.bytes(temp, SIZEOF_XEVENT);
+            request.set(JAVA_INT, 0, CLIENT_MESSAGE);
+            request.set(JAVA_LONG, CLIENT_MESSAGE_WINDOW, window);
+            request.set(JAVA_LONG, CLIENT_MESSAGE_TYPE, internAtom(display, Native.cString(temp, "_NET_WM_STATE")));
+            request.set(JAVA_INT, CLIENT_MESSAGE_FORMAT, 32);
+            request.set(JAVA_LONG, CLIENT_MESSAGE_DATA, on ? 1L : 0L);
+            request.set(JAVA_LONG, CLIENT_MESSAGE_DATA + 8,
+                    internAtom(display, Native.cString(temp, "_NET_WM_STATE_FULLSCREEN")));
+            request.set(JAVA_LONG, CLIENT_MESSAGE_DATA + 24, 1L);
+            sendEvent(display, root, SUBSTRUCTURE_NOTIFY_MASK | SUBSTRUCTURE_REDIRECT_MASK, request);
+        }
+        // ... and resize the window ourselves, for a display without a window manager.
+        if (on) {
+            windowedWidth = width;
+            windowedHeight = height;
+            moveResizeWindow(display, window, 0, 0, displayWidth(display, screen), displayHeight(display, screen));
+        } else {
+            moveResizeWindow(display, window, 0, 0, windowedWidth, windowedHeight);
+        }
+        flush(display);
+    }
+
+    @Override
+    public boolean fullscreen() {
+        return fullscreen;
+    }
+
+    @Override
+    public void captureMouse(boolean capture) {
+        if (!capture) {
+            releaseMouse();
+            return;
+        }
+        if (mouseCaptured || !focused) {
+            return;
+        }
+        if (invisibleCursor == 0L) {
+            invisibleCursor = invisibleCursor(display, window);
+        }
+        if (grabPointer(display, window, invisibleCursor)) {
+            centerX = width / 2;
+            centerY = height / 2;
+            warpPointer(display, window, centerX, centerY);
+            mouseCaptured = true;
+        }
+    }
+
+    private void releaseMouse() {
+        if (mouseCaptured) {
+            mouseCaptured = false;
+            ungrabPointer(display);
+            flush(display);
         }
     }
 

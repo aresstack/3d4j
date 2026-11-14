@@ -104,6 +104,10 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     /** The planned districts as pieces of the world, by the district's id. */
     private final java.util.Map<String, DistrictScene> pieces = new java.util.LinkedHashMap<>();
     private TownPlanner townPlanner;
+    /** Whether the window filled the screen when last looked at, to notice a switch. */
+    private boolean fullscreenKnown;
+    /** Whether the mouse is captured and looks around without a button held. */
+    private boolean mouseLook;
     private Sea sea;
     private Alps alps;
     private String partsShown;
@@ -124,7 +128,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     /** @param showSetup {@code null} decides by whether generated artwork exists already */
     private record Options(boolean benchmark, boolean showTitle, Boolean showSetup, Float renderScale,
-                           Double frozenTime, Path finalScreenshot, long finalFrame, float[] view) {
+                           Double frozenTime, Path finalScreenshot, long finalFrame, float[] view, boolean windowed) {
     }
 
     public static void main(String[] args) {
@@ -136,6 +140,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         Double time = null;
         Path screenshot = null;
         float[] view = null;
+        boolean windowed = false;
         for (String arg : args) {
             if (arg.startsWith("--frames=")) {
                 config = config.withMaxFrames(Long.parseLong(arg.substring("--frames=".length())));
@@ -164,6 +169,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 showSetup = true;
             } else if (arg.equals("--no-setup")) {
                 showSetup = false;
+            } else if (arg.equals("--windowed")) {
+                windowed = true;
             } else if (arg.equals("--no-vsync")) {
                 config = config.withVsync(false);
             } else {
@@ -171,7 +178,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             }
         }
         Engine.run(config, new PlazaDemo(
-                new Options(benchmark, showTitle, showSetup, scale, time, screenshot, config.maxFrames(), view)));
+                new Options(benchmark, showTitle, showSetup, scale, time, screenshot, config.maxFrames(), view, windowed)));
     }
 
     // --------------------------------------------------------------------- init
@@ -188,6 +195,12 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         if (options.renderScale() != null) {
             settings = settings.withRenderScale(options.renderScale());
         }
+        // The game's own pointer for its menus, and the whole screen unless told otherwise.
+        context.window().setCursor(GameCursor.paint(), GameCursor.HOTSPOT_X, GameCursor.HOTSPOT_Y);
+        if (!options.benchmark() && !options.windowed() && GameSettings.fullscreen(GameSettings.file())) {
+            context.window().setFullscreen(true);
+        }
+        fullscreenKnown = context.window().fullscreen();
         graphics.setRenderScale(settings.renderScale());
         graphics.setSmoothUpscale(settings.smoothUpscale());
         smoothUpscale = settings.smoothUpscale();
@@ -401,6 +414,22 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     @Override
     public void update(EngineContext context, double deltaSeconds) {
         Input input = context.input();
+        if (!options.benchmark()) {
+            boolean fills = context.window().fullscreen();
+            if (fills != fullscreenKnown) { // switched with Alt+Enter or in the settings
+                fullscreenKnown = fills;
+                if (!options.windowed()) {
+                    GameSettings.saveFullscreen(GameSettings.file(), fills);
+                }
+                if (pause != null) {
+                    pause.changed();
+                }
+            }
+            // In full screen the mouse belongs to the game while it is played: the pointer is gone and
+            // moving the mouse looks around. Every menu gets the pointer back.
+            mouseLook = fills && playing && pause == null && setup == null;
+            context.window().captureMouse(mouseLook);
+        }
         if (input.wasPressed(Key.ESCAPE)) {
             if (setup != null && scene != null) {
                 setup.leave(); // opened from the pause menu: back to the game
@@ -545,6 +574,16 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     @Override
+    public boolean fullscreen() {
+        return engine.window().fullscreen();
+    }
+
+    @Override
+    public void fullscreen(boolean fill) {
+        engine.window().setFullscreen(fill);
+    }
+
+    @Override
     public void planDistrict() {
         if (townPlanner != null) {
             townPlanner.planDistrict();
@@ -594,7 +633,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     private void moveCamera(Input input, float step) {
-        if (input.isDown(MouseButton.LEFT) || input.isDown(MouseButton.RIGHT)) {
+        if (mouseLook || input.isDown(MouseButton.LEFT) || input.isDown(MouseButton.RIGHT)) {
             yaw += input.mouseDeltaX() * LOOK_SPEED * settings.mouseSpeed();
             pitch -= input.mouseDeltaY() * LOOK_SPEED * settings.mouseSpeed();
         }

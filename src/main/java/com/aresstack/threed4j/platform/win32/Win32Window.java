@@ -44,6 +44,21 @@ public final class Win32Window implements GLWindow {
     private boolean closeRequested;
     private boolean closed;
 
+    private boolean fullscreen;
+    /** Where the window was before it filled the screen: left, top, width, height with its frame. */
+    private final int[] windowed = new int[4];
+    /** Whether the window has the keyboard; without it the mouse is let go. */
+    private boolean focused = true;
+    private boolean mouseCaptured;
+    /** The middle of the drawable area, where the captured pointer is put back: in the window, and on the screen. */
+    private int centerX;
+    private int centerY;
+    private int centerScreenX;
+    private int centerScreenY;
+    private final MemorySegment arrowCursor;
+    /** The game's own pointer; {@code NULL} while the system's arrow is used. */
+    private MemorySegment cursor = MemorySegment.NULL;
+
     /**
      * @param openGL {@code true} to create an OpenGL 3.3 core context for the window,
      *               {@code false} for a plain window (used by the Direct3D backend)
@@ -65,7 +80,8 @@ public final class Win32Window implements GLWindow {
         windowClass.set(JAVA_INT, WNDCLASSEX_STYLE, CS_OWNDC | CS_HREDRAW | CS_VREDRAW);
         windowClass.set(ADDRESS, WNDCLASSEX_WNDPROC, windowProcedure);
         windowClass.set(ADDRESS, WNDCLASSEX_INSTANCE, instance);
-        windowClass.set(ADDRESS, WNDCLASSEX_CURSOR, loadArrowCursor());
+        arrowCursor = loadArrowCursor();
+        windowClass.set(ADDRESS, WNDCLASSEX_CURSOR, arrowCursor);
         windowClass.set(ADDRESS, WNDCLASSEX_CLASS_NAME, className);
         if (registerClassEx(windowClass) == 0) {
             throw failure("RegisterClassExW");
@@ -212,7 +228,24 @@ public final class Win32Window implements GLWindow {
                 }
                 case WM_SIZE -> {
                     storeSize((int) (lParam & 0xFFFF), (int) ((lParam >>> 16) & 0xFFFF));
+                    releaseMouse(); // captured anew for the new size by the next captureMouse(true)
                     return 0;
+                }
+                case WM_SETFOCUS -> focused = true;
+                case WM_KILLFOCUS -> {
+                    focused = false;
+                    releaseMouse(); // whoever switches to another program gets the pointer back
+                }
+                case WM_SETCURSOR -> {
+                    if ((lParam & 0xFFFF) == HTCLIENT) {
+                        showCursor(mouseCaptured ? MemorySegment.NULL : Native.isNull(cursor) ? arrowCursor : cursor);
+                        return 1;
+                    }
+                }
+                case WM_SYSCHAR -> {
+                    if (wParam == VK_RETURN) {
+                        return 0; // Alt+Enter is ours; without this Windows beeps
+                    }
                 }
                 case WM_ERASEBKGND -> {
                     return 1; // OpenGL paints everything; erasing would only flicker
@@ -232,7 +265,17 @@ public final class Win32Window implements GLWindow {
                 }
                 case WM_MOUSEMOVE -> {
                     // The position is two signed 16-bit values: negative while dragging outside the window.
-                    input.onMouseMove((short) (lParam & 0xFFFF), (short) ((lParam >>> 16) & 0xFFFF));
+                    int x = (short) (lParam & 0xFFFF);
+                    int y = (short) ((lParam >>> 16) & 0xFFFF);
+                    if (mouseCaptured) {
+                        // Only the movement counts; the pointer goes back to the middle, so it never reaches an edge.
+                        if (x != centerX || y != centerY) {
+                            input.onMouseDelta(x - centerX, y - centerY);
+                            setCursorPos(centerScreenX, centerScreenY);
+                        }
+                    } else {
+                        input.onMouseMove(x, y);
+                    }
                     return 0;
                 }
                 case WM_LBUTTONDOWN, WM_MBUTTONDOWN, WM_RBUTTONDOWN -> {
@@ -249,7 +292,15 @@ public final class Win32Window implements GLWindow {
                     return 0;
                 }
                 // Keys pressed together with Alt: record them, but let Windows handle Alt+F4 etc.
-                case WM_SYSKEYDOWN -> input.onKey(mapKey((int) wParam), true);
+                case WM_SYSKEYDOWN -> {
+                    if (wParam == VK_RETURN) {
+                        if ((lParam & (1L << 30)) == 0) { // not a repeat of a held key
+                            setFullscreen(!fullscreen);
+                        }
+                        return 0;
+                    }
+                    input.onKey(mapKey((int) wParam), true);
+                }
                 case WM_SYSKEYUP -> input.onKey(mapKey((int) wParam), false);
                 default -> {
                 }
@@ -260,6 +311,94 @@ public final class Win32Window implements GLWindow {
             t.printStackTrace();
             closeRequested = true;
             return 0;
+        }
+    }
+
+    @Override
+    public void setFullscreen(boolean on) {
+        if (on == fullscreen) {
+            return;
+        }
+        try (Arena temp = Arena.ofConfined()) {
+            MemorySegment rect = Native.bytes(temp, SIZEOF_RECT);
+            if (on) {
+                getWindowRect(window, rect);
+                windowed[0] = rect.get(JAVA_INT, RECT_LEFT);
+                windowed[1] = rect.get(JAVA_INT, RECT_TOP);
+                windowed[2] = rect.get(JAVA_INT, RECT_RIGHT) - windowed[0];
+                windowed[3] = rect.get(JAVA_INT, RECT_BOTTOM) - windowed[1];
+                if (!monitorRect(window, rect)) {
+                    return;
+                }
+                fullscreen = true;
+                // A window without a frame that covers its monitor: no change of the screen's mode.
+                setWindowStyle(window, WS_POPUP | WS_VISIBLE);
+                setWindowPos(window, rect.get(JAVA_INT, RECT_LEFT), rect.get(JAVA_INT, RECT_TOP),
+                        rect.get(JAVA_INT, RECT_RIGHT) - rect.get(JAVA_INT, RECT_LEFT),
+                        rect.get(JAVA_INT, RECT_BOTTOM) - rect.get(JAVA_INT, RECT_TOP));
+            } else {
+                fullscreen = false;
+                setWindowStyle(window, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+                setWindowPos(window, windowed[0], windowed[1], windowed[2], windowed[3]);
+            }
+        }
+    }
+
+    @Override
+    public boolean fullscreen() {
+        return fullscreen;
+    }
+
+    @Override
+    public void captureMouse(boolean capture) {
+        if (!capture) {
+            releaseMouse();
+            return;
+        }
+        if (mouseCaptured || !focused) {
+            return;
+        }
+        try (Arena temp = Arena.ofConfined()) {
+            // The drawable area in screen coordinates: its two corners, turned one after the other.
+            MemorySegment rect = Native.bytes(temp, SIZEOF_RECT);
+            getClientRect(window, rect);
+            clientToScreen(window, rect);
+            clientToScreen(window, rect.asSlice(RECT_RIGHT));
+            centerX = width / 2;
+            centerY = height / 2;
+            centerScreenX = rect.get(JAVA_INT, RECT_LEFT) + centerX;
+            centerScreenY = rect.get(JAVA_INT, RECT_TOP) + centerY;
+            clipCursor(rect);
+            setCursorPos(centerScreenX, centerScreenY);
+            mouseCaptured = true;
+            showCursor(MemorySegment.NULL);
+        }
+    }
+
+    private void releaseMouse() {
+        if (mouseCaptured) {
+            mouseCaptured = false;
+            clipCursor(MemorySegment.NULL);
+            showCursor(Native.isNull(cursor) ? arrowCursor : cursor);
+        }
+    }
+
+    @Override
+    public void setCursor(java.awt.image.BufferedImage image, int hotspotX, int hotspotY) {
+        MemorySegment old = cursor;
+        cursor = MemorySegment.NULL;
+        if (image != null) {
+            int[] argb = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+            cursor = createCursor(deviceContext, argb, image.getWidth(), image.getHeight(), hotspotX, hotspotY);
+            if (Native.isNull(cursor)) {
+                System.out.println("The game's pointer could not be made; the system's arrow stays.");
+            }
+        }
+        if (!mouseCaptured) {
+            showCursor(Native.isNull(cursor) ? arrowCursor : cursor);
+        }
+        if (!Native.isNull(old)) {
+            destroyCursor(old);
         }
     }
 
@@ -364,6 +503,10 @@ public final class Win32Window implements GLWindow {
         if (!Native.isNull(context)) {
             wglMakeCurrent(MemorySegment.NULL, MemorySegment.NULL);
             wglDeleteContext(context);
+        }
+        releaseMouse();
+        if (!Native.isNull(cursor)) {
+            destroyCursor(cursor);
         }
         releaseDC(window, deviceContext);
         destroyWindow(window); // still sends messages, so the stub must outlive it

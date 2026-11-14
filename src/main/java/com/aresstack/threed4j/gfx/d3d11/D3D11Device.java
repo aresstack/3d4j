@@ -102,6 +102,7 @@ public final class D3D11Device implements GraphicsDevice {
         device = objects.device();
         context = objects.context();
         swapChain = objects.swapChain();
+        leaveAltEnterToTheWindow(swapChain, window.handle());
         description = "Direct3D 11 (feature level " + featureLevelName(objects.featureLevel()) + ") | "
                 + describeAdapter();
 

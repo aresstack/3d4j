@@ -96,15 +96,22 @@ und Besuchern.
 | W A S D | Gehen |
 | E / Q | Hoch / runter |
 | Umschalt | Schneller |
-| Maustaste halten und ziehen, oder Pfeiltasten | Umsehen |
+| Maus (im Vollbild), Maustaste halten und ziehen (im Fenster), oder Pfeiltasten | Umsehen |
+| Alt+Enter | Vollbild an oder aus |
 | 1 bis 5 | Interne Auflösung: 100, 75, 50, 33, 25 Prozent |
 | F | Hochskalieren weich oder pixelig |
 | R | Framezeit-Statistik zurücksetzen |
 | P | `screenshot.png` speichern |
 | Esc | Pausenmenü (Weiterspielen, Einstellungen, Spiel beenden) |
 
-Umgesehen wird mit gehaltener Maustaste statt mit eingefangenem Mauszeiger, weil das auch in
-Remote-Sitzungen und virtuellen Maschinen zuverlässig funktioniert.
+Das Spiel startet im **Vollbild**: ein rahmenloses Fenster über den ganzen Bildschirm, ohne
+den Bildschirmmodus umzuschalten. Alt+Enter wechselt zum Fenster und zurück; die Wahl wird
+gemerkt, `--windowed` startet einmalig im Fenster. Im Vollbild ist die Maus **eingefangen**,
+solange gespielt wird: Der Zeiger ist weg, und die Maus sieht sich um, ohne dass eine Taste
+gehalten wird. In jedem Menü (Pause, Zugang) ist der Zeiger wieder da, als rosa Pfeil mit
+Kirschblüte; wechselt man in ein anderes Programm, gibt das Spiel die Maus frei. Im Fenster
+wird wie bisher mit gehaltener Maustaste umgesehen, was auch in Remote-Sitzungen und
+virtuellen Maschinen zuverlässig funktioniert.
 
 ### Messen
 
@@ -121,7 +128,7 @@ Argumente: `--benchmark` (kein Ladebildschirm, feste Kamerafahrt), `--scale=0.5`
 Auflösung), `--frames=N` (nach N Frames beenden), `--screenshot=DATEI` (den letzten dieser
 Frames speichern), `--time=SEKUNDEN` (Szene an diesem Zeitpunkt einfrieren, für vergleichbare
 Bilder), `--view=x,y,z,gier,nick` (mit `--benchmark`: fester Standpunkt statt Rundflug, Winkel
-in Grad; z. B. `--view=0,2.2,-100,0,8` vor dem WEST.SIDE-Hof), `--no-title`, `--no-vsync`.
+in Grad; z. B. `--view=0,2.2,-100,0,8` vor dem WEST.SIDE-Hof), `--no-title`, `--no-vsync`, `--windowed`.
 
 Der drehende Würfel ist als Minimalbeispiel weiter enthalten:
 `java -Dthreed4j.main=com.aresstack.threed4j.demo.CubeDemo -jar 3d4j.jar`.
@@ -371,8 +378,8 @@ Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
 
 Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt, gehört dorthin:
 
-- **Bild:** Auflösung (100 bis 25 %, wie die Tasten 1 bis 5) und Hochskalieren (weich oder
-  pixelig, wie F).
+- **Bild:** Auflösung (100 bis 25 %, wie die Tasten 1 bis 5), Hochskalieren (weich oder
+  pixelig, wie F) und Vollbild (an oder aus, wie Alt+Enter).
 - **Steuerung:** Geschwindigkeit der Maus beim Umsehen (langsam, normal, schnell).
 - **KI:** „Nachdenken vor dem Zeichnen“ (Standard, wenig, mittel, viel) wird als
   `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.

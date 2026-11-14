@@ -349,6 +349,30 @@ final class D3D11Api {
         }
     }
 
+    private static final MethodHandle INT_PI = com(JAVA_INT, ADDRESS, JAVA_INT);
+
+    /**
+     * Tells DXGI to leave Alt+Enter alone ({@code IDXGIFactory::MakeWindowAssociation}
+     * with {@code DXGI_MWA_NO_ALT_ENTER}). Otherwise DXGI switches the screen to its
+     * exclusive mode on that key, beside the window's own way of filling the screen.
+     * A failure only means that DXGI keeps its habit.
+     */
+    static void leaveAltEnterToTheWindow(ComObject swapChain, MemorySegment window) {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment factoryId = guid(arena, 0x7b7166ec, 0x21c7, 0x44ae, 0xb2, 0x1a, 0xc9, 0xae, 0x32, 0x1a, 0xe3, 0x69);
+            MemorySegment out = arena.allocate(ADDRESS);
+            // IDXGIObject::GetParent of the swap chain is the factory that made it.
+            if ((int) INT_PP.invokeExact(swapChain.method(6), swapChain.pointer, factoryId, out) < 0) {
+                return;
+            }
+            ComObject factory = new ComObject(out.get(ADDRESS, 0), 9);
+            int ignored = (int) INT_PI.invokeExact(factory.method(8), factory.pointer, window, 2);
+            factory.release();
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
     /** {@code IDXGISwapChain::ResizeBuffers}, keeping buffer count and format. */
     static void resizeBuffers(ComObject swapChain, int width, int height) {
         try {

@@ -2,6 +2,7 @@ package com.aresstack.threed4j.platform.x11;
 
 import com.aresstack.threed4j.ffm.Native;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
@@ -43,6 +44,19 @@ final class X11Api {
     static final long BUTTON_RELEASE_MASK = 1L << 3;
     static final long POINTER_MOTION_MASK = 1L << 6;
     static final long STRUCTURE_NOTIFY_MASK = 1L << 17;
+    static final long SUBSTRUCTURE_NOTIFY_MASK = 1L << 19;
+    static final long SUBSTRUCTURE_REDIRECT_MASK = 1L << 20;
+    static final long FOCUS_CHANGE_MASK = 1L << 21;
+    static final int FOCUS_IN = 9;
+    static final int FOCUS_OUT = 10;
+    /** The Alt key in the {@code state} of a key event. */
+    static final int MOD1_MASK = 1 << 3;
+    static final long KEY_STATE = 80;
+    static final int GRAB_MODE_ASYNC = 1;
+    /** Fields of {@code XClientMessageEvent} besides the data. */
+    static final long CLIENT_MESSAGE_WINDOW = 32;
+    static final long CLIENT_MESSAGE_TYPE = 40;
+    static final long CLIENT_MESSAGE_FORMAT = 48;
 
     static final int KEY_PRESS = 2;
     static final int KEY_RELEASE = 3;
@@ -128,6 +142,23 @@ final class X11Api {
     private static final MethodHandle XSetWMProtocols = x11("XSetWMProtocols",
             FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, ADDRESS, JAVA_INT));
     private static final MethodHandle XPending = x11("XPending", FunctionDescriptor.of(JAVA_INT, ADDRESS));
+    private static final MethodHandle XDisplayWidth = x11("XDisplayWidth", FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_INT));
+    private static final MethodHandle XDisplayHeight = x11("XDisplayHeight", FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_INT));
+    private static final MethodHandle XMoveResizeWindow = x11("XMoveResizeWindow",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT));
+    private static final MethodHandle XSendEvent = x11("XSendEvent",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, JAVA_INT, JAVA_LONG, ADDRESS));
+    private static final MethodHandle XGrabPointer = x11("XGrabPointer",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_LONG,
+                    JAVA_LONG, JAVA_LONG));
+    private static final MethodHandle XUngrabPointer = x11("XUngrabPointer", FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG));
+    private static final MethodHandle XWarpPointer = x11("XWarpPointer",
+            FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG, JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT,
+                    JAVA_INT, JAVA_INT));
+    private static final MethodHandle XCreateBitmapFromData = x11("XCreateBitmapFromData",
+            FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_LONG, ADDRESS, JAVA_INT, JAVA_INT));
+    private static final MethodHandle XCreatePixmapCursor = x11("XCreatePixmapCursor",
+            FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_LONG, JAVA_LONG, ADDRESS, ADDRESS, JAVA_INT, JAVA_INT));
     private static final MethodHandle XNextEvent = x11("XNextEvent", FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS));
     private static final MethodHandle XLookupKeysym = x11("XLookupKeysym", FunctionDescriptor.of(JAVA_LONG, ADDRESS, JAVA_INT));
     private static final MethodHandle XLookupString = x11("XLookupString",
@@ -259,6 +290,84 @@ final class X11Api {
     static void storeName(MemorySegment display, long window, MemorySegment name) {
         try {
             int ignored = (int) XStoreName.invokeExact(display, window, name);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static int displayWidth(MemorySegment display, int screen) {
+        try {
+            return (int) XDisplayWidth.invokeExact(display, screen);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static int displayHeight(MemorySegment display, int screen) {
+        try {
+            return (int) XDisplayHeight.invokeExact(display, screen);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void moveResizeWindow(MemorySegment display, long window, int x, int y, int width, int height) {
+        try {
+            int ignored = (int) XMoveResizeWindow.invokeExact(display, window, x, y, width, height);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Sends an event to a window, e.g. a request to the window manager by way of the root window. */
+    static void sendEvent(MemorySegment display, long window, long eventMask, MemorySegment event) {
+        try {
+            int ignored = (int) XSendEvent.invokeExact(display, window, 0, eventMask, event);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /**
+     * Takes the pointer: all its events go to the window, it cannot leave the window,
+     * and it is shown as the given cursor.
+     *
+     * @return {@code true} if the pointer was taken
+     */
+    static boolean grabPointer(MemorySegment display, long window, long cursor) {
+        try {
+            return (int) XGrabPointer.invokeExact(display, window, 1,
+                    (int) (BUTTON_PRESS_MASK | BUTTON_RELEASE_MASK | POINTER_MOTION_MASK), GRAB_MODE_ASYNC,
+                    GRAB_MODE_ASYNC, window, cursor, 0L) == 0;
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static void ungrabPointer(MemorySegment display) {
+        try {
+            int ignored = (int) XUngrabPointer.invokeExact(display, 0L);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** Puts the pointer at a place of the window. */
+    static void warpPointer(MemorySegment display, long window, int x, int y) {
+        try {
+            int ignored = (int) XWarpPointer.invokeExact(display, 0L, window, 0, 0, 0, 0, x, y);
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    /** A cursor that shows nothing: one transparent pixel. */
+    static long invisibleCursor(MemorySegment display, long window) {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment empty = arena.allocate(8); // zeroed: the pixel, and below a black XColor
+            long bitmap = (long) XCreateBitmapFromData.invokeExact(display, window, empty, 1, 1);
+            MemorySegment black = arena.allocate(16);
+            return (long) XCreatePixmapCursor.invokeExact(display, bitmap, bitmap, black, black, 0, 0);
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }

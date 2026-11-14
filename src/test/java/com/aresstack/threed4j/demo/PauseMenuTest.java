@@ -230,4 +230,27 @@ class PauseMenuTest {
         java.nio.file.Files.writeString(file, "render.scale=17\nrender.smooth=vielleicht\nmouse.speed=-3\n");
         assertEquals(GameSettings.DEFAULTS, GameSettings.load(file));
     }
+
+    @Test
+    void fullScreenIsRememberedBesideTheOtherSettings(@org.junit.jupiter.api.io.TempDir java.nio.file.Path directory) {
+        java.nio.file.Path file = directory.resolve("game.properties");
+        assertTrue(GameSettings.fullscreen(file), "the game fills the screen unless switched off");
+
+        GameSettings.saveFullscreen(file, false);
+        new GameSettings(0.5f, true, 2f).save(file); // must not forget what else is in the file
+        assertTrue(!GameSettings.fullscreen(file));
+        assertEquals(2f, GameSettings.load(file).mouseSpeed(), 0.001f);
+
+        GameSettings.saveFullscreen(file, true);
+        assertTrue(GameSettings.fullscreen(file));
+        assertEquals(0.5f, GameSettings.load(file).renderScale(), 0.001f);
+    }
+
+    @Test
+    void theGamesPointerHasATransparentBackgroundAndAnOpaqueTip() {
+        java.awt.image.BufferedImage pointer = GameCursor.paint();
+        assertEquals(GameCursor.SIZE, pointer.getWidth());
+        assertEquals(0, pointer.getRGB(GameCursor.SIZE - 1, 0) >>> 24, "nothing in the far corner");
+        assertTrue((pointer.getRGB(GameCursor.HOTSPOT_X + 2, GameCursor.HOTSPOT_Y + 6) >>> 24) > 200, "the arrow below its tip");
+    }
 }

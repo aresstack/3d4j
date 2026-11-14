@@ -84,6 +84,15 @@ final class PauseMenu {
         /** Two short lines for the settings: what the background drawing does, and how far the collection is. */
         String[] backgroundStatus();
 
+        /** Whether the game fills the screen. */
+        default boolean fullscreen() {
+            return false;
+        }
+
+        /** Fill the screen, or go back to a window. */
+        default void fullscreen(boolean fill) {
+        }
+
         /** Have a further district planned now. */
         default void planDistrict() {
         }
@@ -353,6 +362,11 @@ final class PauseMenu {
         dirty = true;
     }
 
+    /** Something the menu shows was changed from outside, e.g. full screen by Alt+Enter. */
+    void changed() {
+        dirty = true;
+    }
+
     private void showTownHall(boolean show) {
         townHallPage = show;
         modelList = false;
@@ -467,6 +481,12 @@ final class PauseMenu {
             smoothUpscale = false;
             actions.smoothUpscale(false);
         });
+
+        // Also switched with Alt+Enter. In full screen the mouse looks around without a button held.
+        boolean fills = actions.fullscreen();
+        label(g, "Vollbild", 410);
+        choice(g, "An", 40, 422, 150, fills, () -> actions.fullscreen(true));
+        choice(g, "Aus", 200, 422, 150, !fills, () -> actions.fullscreen(false));
     }
 
     private void paintControlsTab(Graphics2D g) {

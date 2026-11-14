@@ -114,6 +114,15 @@ public final class Input {
         mouseY = y;
     }
 
+    /**
+     * Called by the platform window while the mouse is captured: movement without a
+     * position, as the pointer is put back in the middle after every move.
+     */
+    public void onMouseDelta(int dx, int dy) {
+        mouseDeltaX += dx;
+        mouseDeltaY += dy;
+    }
+
     /** Called by the platform window for every mouse button event; {@code button} may be {@code null}. */
     public void onMouseButton(MouseButton button, boolean isDown) {
         if (button == null) {

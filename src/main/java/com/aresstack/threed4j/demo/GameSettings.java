@@ -67,9 +67,43 @@ record GameSettings(float renderScale, boolean smoothUpscale, float mouseSpeed) 
         return new GameSettings(scale, !"false".equalsIgnoreCase(properties.getProperty("render.smooth")), mouse);
     }
 
+    /** Whether the game fills the screen ({@code window.fullscreen}); it does unless switched off. */
+    static boolean fullscreen(Path file) {
+        return !"false".equalsIgnoreCase(read(file).getProperty("window.fullscreen"));
+    }
+
+    static void saveFullscreen(Path file, boolean fullscreen) {
+        Properties properties = read(file);
+        properties.setProperty("window.fullscreen", String.valueOf(fullscreen));
+        store(file, properties);
+    }
+
+    private static Properties read(Path file) {
+        Properties properties = new Properties();
+        if (Files.isRegularFile(file)) {
+            try (Reader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+                properties.load(in);
+            } catch (IOException | IllegalArgumentException e) {
+                properties.clear();
+            }
+        }
+        return properties;
+    }
+
+    private static void store(Path file, Properties properties) {
+        try {
+            Files.createDirectories(file.getParent());
+            try (Writer out = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+                properties.store(out, "Nur zur ZIHR");
+            }
+        } catch (IOException e) {
+            System.err.println("Settings not saved: " + e.getMessage());
+        }
+    }
+
     /** Remembers the settings; a failure only means they are asked for again next time. */
     void save(Path file) {
-        Properties properties = new Properties();
+        Properties properties = read(file); // keeps what else is remembered there
         properties.setProperty("render.scale", String.format(Locale.ROOT, "%.4f", renderScale));
         properties.setProperty("render.smooth", String.valueOf(smoothUpscale));
         properties.setProperty("mouse.speed", String.format(Locale.ROOT, "%.2f", mouseSpeed));
