@@ -20,7 +20,9 @@ class ArtistTest {
         String first = Artist.description(PartLibrary.Kind.VISITOR, 1, "pastel old town");
         String second = Artist.description(PartLibrary.Kind.VISITOR, 2, "pastel old town");
         assertNotEquals(first, second);
-        assertTrue(first.contains("pastel old town") && first.contains("standing upright"));
+        assertTrue(first.contains("standing upright") && !first.contains("pastel old town"),
+                "people belong to the whole town, not to a district's look");
+        assertTrue(Artist.description(PartLibrary.Kind.LAMP, 1, "pastel old town").contains("pastel old town"));
         assertEquals(first, Artist.description(PartLibrary.Kind.VISITOR, 13, "pastel old town"), "the list starts again");
         assertTrue(Artist.description(PartLibrary.Kind.LAWN, 1, "x").contains("base colour"));
         assertTrue(Artist.description(PartLibrary.Kind.BLOSSOM_TREE, 2, "x").contains("cherry"));
