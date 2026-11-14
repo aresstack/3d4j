@@ -52,6 +52,11 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private static final Vec3 LIGHT_DIRECTION = new Vec3(-0.45f, -1.0f, -0.6f);
     private static final float FOG_START = 45f;
     private static final float FOG_END = 150f;
+    /** For the ground shader: width of an atlas cell, gutter and tile width as parts of a cell. */
+    private static final Vec3 GROUND_ATLAS = new Vec3(1f / GroundAtlas.CELLS,
+            (float) GroundAtlas.GUTTER / GroundAtlas.CELL, (float) GroundAtlas.TILE / GroundAtlas.CELL);
+    /** Size of a ground tile in the world; from 30 to 75 units away its pattern fades to its average colour. */
+    private static final Vec3 GROUND_DETAIL = new Vec3(PlazaScene.GROUND_TILE, 30f, 75f);
     private static final float WALK_SPEED = 9f;
     private static final float LOOK_SPEED = 0.004f;
 
@@ -83,6 +88,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private PlazaScene scene;
     private Shader sceneShader;
     private Shader spriteShader;
+    private Shader groundShader;
+    private Texture groundTexture;
     private Shader skyShader;
     private Texture spriteAtlas;
     private final Camera camera = new Camera().perspective((float) Math.toRadians(65), 0.1f, 400f);
@@ -200,11 +207,31 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 .scalar("uTime"));
         skyShader = graphics.createShader("sky", ShaderLayout.attributes(3, 3)
                 .mat4("uViewProjection"));
-        spriteAtlas = Textures.fromImage(graphics, SpriteAtlas.paint(AssetStore.standard()), true);
+        groundShader = graphics.createShader("ground", ShaderLayout.attributes(3, 3, 3)
+                .mat4("uViewProjection")
+                .vec3("uCameraPosition")
+                .vec3("uAtlas")
+                .vec3("uDetail")
+                .vec3("uFogColor")
+                .scalar("uFogStart")
+                .scalar("uFogEnd"));
+        loadArtwork(graphics);
+        System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 4 draw calls%n",
+                scene.buildingCount, scene.cityTriangles + scene.groundTriangles, scene.spriteCount);
+    }
+
+    /**
+     * Loads what comes from the asset folder (sprites, ground textures) and builds the
+     * scene with it; again after the world menu, to show new artwork.
+     */
+    private void loadArtwork(GraphicsDevice graphics) {
+        AssetStore store = AssetStore.standard();
+        spriteAtlas = Textures.fromImage(graphics, SpriteAtlas.paint(store), true);
         spriteShader.setTexture(spriteAtlas);
-        scene = new PlazaScene(graphics);
-        System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 3 draw calls%n",
-                scene.buildingCount, scene.cityTriangles, scene.spriteCount);
+        GroundAtlas ground = GroundAtlas.paint(store);
+        groundTexture = Textures.fromImage(graphics, ground.image, true);
+        groundShader.setTexture(groundTexture);
+        scene = new PlazaScene(graphics, ground);
     }
 
     private void startPlaying(EngineContext context) {
@@ -213,8 +240,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         } else {
             // Back from "draw the world again": show the new artwork.
             spriteAtlas.close();
-            spriteAtlas = Textures.fromImage(context.graphics(), SpriteAtlas.paint(AssetStore.standard()), true);
-            spriteShader.setTexture(spriteAtlas);
+            groundTexture.close();
+            scene.close();
+            loadArtwork(context.graphics());
         }
         playing = true;
         context.frameStats().reset(); // loading must not count as slow frames
@@ -460,6 +488,15 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         sceneShader.setUniform("uFogEnd", FOG_END);
         graphics.draw(scene.city, sceneShader);
 
+        groundShader.setUniform("uViewProjection", viewProjection);
+        groundShader.setUniform("uCameraPosition", position);
+        groundShader.setUniform("uAtlas", GROUND_ATLAS);
+        groundShader.setUniform("uDetail", GROUND_DETAIL);
+        groundShader.setUniform("uFogColor", haze);
+        groundShader.setUniform("uFogStart", FOG_START);
+        groundShader.setUniform("uFogEnd", FOG_END);
+        graphics.draw(scene.ground, groundShader);
+
         spriteShader.setUniform("uViewProjection", viewProjection);
         spriteShader.setUniform("uCameraPosition", position);
         spriteShader.setUniform("uCameraRight", camera.right());
@@ -579,6 +616,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         if (scene != null) {
             scene.close();
             spriteAtlas.close();
+            groundTexture.close();
+            groundShader.close();
             skyShader.close();
             spriteShader.close();
             sceneShader.close();

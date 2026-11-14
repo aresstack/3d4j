@@ -47,6 +47,23 @@ public final class AssetGenerator {
             - Use only basic shapes and paths with solid fills. No text, no images, no filters, \
             no gradients, no scripts, no external references.""";
 
+    /** The rules for a ground texture; the opposite of a figure: it fills its square and repeats. */
+    static final String TILE_STYLE = """
+            You draw ground textures for a video game as SVG. The game lays your drawing like a floor \
+            tile, edge to edge in all directions, in a pastel-coloured cartoon town seen from above.
+
+            Rules:
+            - Answer with one complete SVG document and nothing else.
+            - Root element: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">.
+            - The first element is <rect x="0" y="0" width="256" height="256"> filled with the base colour.
+            - Then 20 to 45 small, simple shapes spread evenly and irregularly over the square. \
+            Every shape stays at least 12 units away from all four edges, so that the tile repeats \
+            without a visible seam.
+            - It is a floor: flat friendly colours close to the base colour, low contrast, no \
+            dark outlines, nothing that looks like a single object.
+            - Use only basic shapes and paths with solid fills. No text, no images, no filters, \
+            no gradients, no scripts, no external references.""";
+
     private AssetGenerator() {
     }
 
@@ -144,6 +161,7 @@ public final class AssetGenerator {
         if (spec.recipe() == AssetSpec.Recipe.FLOWER_BUSH) {
             return FlowerComposer.generate(chat::ask, store, spec, chat.model());
         }
+        boolean tile = spec.recipe() == AssetSpec.Recipe.TILE;
         String problem = null;
         String lastAnswer = null;
         for (int attempt = 1; attempt <= ATTEMPTS; attempt++) {
@@ -151,7 +169,7 @@ public final class AssetGenerator {
                     + (problem == null ? "" : "\n\nYour previous answer was unusable: " + problem
                     + ". Follow the rules exactly and answer with the corrected SVG only.");
             try {
-                lastAnswer = chat.ask(STYLE, prompt);
+                lastAnswer = chat.ask(tile ? TILE_STYLE : STYLE, prompt);
             } catch (IOException e) {
                 return e.getMessage(); // a network or service problem does not get better by asking again
             }
@@ -162,12 +180,8 @@ public final class AssetGenerator {
             }
             try {
                 BufferedImage image = SvgRasterizer.render(svg, spec.width(), spec.height());
-                double coverage = SvgRasterizer.coverage(image);
-                if (coverage < 0.03) {
-                    problem = "the drawing is empty or tiny";
-                } else if (coverage > 0.93) {
-                    problem = "the background is not transparent";
-                } else {
+                problem = tile ? tileProblem(image) : figureProblem(image);
+                if (problem == null) {
                     store.save(spec, svg, image, chat.model());
                     return null;
                 }
@@ -180,6 +194,45 @@ public final class AssetGenerator {
         keepForInspection(store, spec, lastAnswer);
         return String.format(Locale.ROOT, "%s (after %d attempts; last answer saved as %s.rejected.txt)",
                 problem, ATTEMPTS, spec.id());
+    }
+
+    /** A figure stands free: something is drawn, and the background stayed transparent. */
+    static String figureProblem(BufferedImage image) {
+        double coverage = SvgRasterizer.coverage(image);
+        if (coverage < 0.03) {
+            return "the drawing is empty or tiny";
+        }
+        return coverage > 0.93 ? "the background is not transparent" : null;
+    }
+
+    /**
+     * A tile covers its square completely, and its outermost pixels all have the same
+     * colour: then it repeats without a visible seam.
+     */
+    static String tileProblem(BufferedImage image) {
+        if (SvgRasterizer.coverage(image) < 0.995) {
+            return "the tile does not cover the whole square; start with a rectangle that fills it";
+        }
+        int width = image.getWidth();
+        int height = image.getHeight();
+        // The colour of the top left corner is the reference; every pixel of the outermost ring must be close to it.
+        int reference = image.getRGB(0, 0);
+        int ring = 3;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (x >= ring && x < width - ring && y >= ring && y < height - ring) {
+                    continue;
+                }
+                int rgb = image.getRGB(x, y);
+                for (int shift = 0; shift <= 16; shift += 8) {
+                    if (Math.abs(((rgb >> shift) & 0xFF) - ((reference >> shift) & 0xFF)) > 24) {
+                        return "shapes touch the edge of the square, so the tile would not repeat seamlessly; "
+                                + "keep every shape at least 12 units away from all four edges";
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private static void keepForInspection(AssetStore store, AssetSpec spec, String answer) {

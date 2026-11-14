@@ -16,7 +16,9 @@ public record AssetSpec(String id, int width, int height, String description, Re
         /** The model draws the whole picture as one SVG. */
         DRAWING,
         /** The model plans a peony and draws its parts; the program assembles a bush from them. */
-        FLOWER_BUSH
+        FLOWER_BUSH,
+        /** The model draws a square piece of ground that repeats without a seam. */
+        TILE
     }
 
     public AssetSpec(String id, int width, int height, String description) {

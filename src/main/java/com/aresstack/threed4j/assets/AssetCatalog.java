@@ -22,8 +22,17 @@ public final class AssetCatalog {
     public static final AssetSpec PEONY_BUSH = new AssetSpec("peony-bush", 256, 256,
             "a bush of pink peonies", AssetSpec.Recipe.FLOWER_BUSH);
 
-    public static final List<AssetSpec> ALL =
-            List.of(BLOSSOM_TREE, GREEN_TREE, LAMP, VISITOR_1, VISITOR_2, VISITOR_3, PEONY_BUSH);
+    /** Ground textures: square tiles seen from above that repeat without a seam. */
+    public static final AssetSpec LAWN_TILE = new AssetSpec("lawn-tile", 256, 256,
+            "a mown lawn: base colour #A2D08C, small tufts of grass in slightly darker and lighter greens, "
+                    + "a few tiny white and pink flowers", AssetSpec.Recipe.TILE);
+    public static final AssetSpec STREET_TILE = new AssetSpec("street-tile", 256, 256,
+            "the paving of a town street: base colour #D2CEDB, flat paving stones of different sizes in "
+                    + "slightly lighter and darker shades of the base colour, a few short cracks",
+            AssetSpec.Recipe.TILE);
+
+    public static final List<AssetSpec> ALL = List.of(BLOSSOM_TREE, GREEN_TREE, LAMP, VISITOR_1, VISITOR_2,
+            VISITOR_3, PEONY_BUSH, LAWN_TILE, STREET_TILE);
 
     private AssetCatalog() {
     }

@@ -12,9 +12,9 @@ import java.util.Random;
  * Builds the test plaza: a round square with a fountain, four streets and blocks
  * of simple buildings around it, plus trees, lamps and visitors as flat sprites.
  *
- * <p>It is a benchmark scene, not level design: everything static ends up in one
- * mesh, all sprites in a second one, the sky in a third. Three draw calls per
- * frame.</p>
+ * <p>It is a benchmark scene, not level design: buildings and fountain end up in
+ * one mesh, the textured ground in a second, all sprites in a third, the sky in a
+ * fourth. Four draw calls per frame.</p>
  */
 final class PlazaScene implements AutoCloseable {
 
@@ -32,17 +32,20 @@ final class PlazaScene implements AutoCloseable {
             new Vec3(0.45f, 0.62f, 0.58f)};
 
     final Mesh city;
+    final Mesh ground;
     final Mesh sprites;
     final Mesh sky;
     final int cityTriangles;
+    final int groundTriangles = 50 * 50 * 2;
     final int spriteCount;
     final int buildingCount;
 
-    PlazaScene(GraphicsDevice graphics) {
+    /** @param groundAtlas the ground textures; their average colours go into the ground mesh */
+    PlazaScene(GraphicsDevice graphics, GroundAtlas groundAtlas) {
         Random random = new Random(21);
 
+        ground = ground(graphics, groundAtlas);
         MeshBuilder builder = new MeshBuilder();
-        ground(builder);
         fountain(builder);
         buildingCount = buildings(builder, random);
         city = builder.build(graphics);
@@ -60,28 +63,61 @@ final class PlazaScene implements AutoCloseable {
 
     // ------------------------------------------------------------------- ground
 
-    private static void ground(MeshBuilder builder) {
-        Vec3[] stone = {new Vec3(0.95f, 0.89f, 0.83f), new Vec3(0.91f, 0.85f, 0.80f)};
-        Vec3[] pavement = {new Vec3(0.83f, 0.81f, 0.86f), new Vec3(0.79f, 0.77f, 0.83f)};
-        Vec3[] grass = {new Vec3(0.64f, 0.82f, 0.55f), new Vec3(0.60f, 0.79f, 0.52f)};
-        float tile = 4f;
-        for (int ix = -25; ix < 25; ix++) {
-            for (int iz = -25; iz < 25; iz++) {
-                float x = ix * tile;
-                float z = iz * tile;
-                float centerX = x + tile / 2;
-                float centerZ = z + tile / 2;
-                Vec3[] palette;
+    /** Edge length of one ground texture tile in the world. */
+    static final float GROUND_TILE = 4f;
+
+    /**
+     * The ground as its own mesh: squares of {@link #GROUND_TILE} at y = 0. Layout:
+     * position (3); atlas cell and brightness (3, the last unused); average colour of
+     * the texture (3). The texture coordinate follows from the position, so the
+     * pattern runs on across squares. Neighboring squares differ slightly in
+     * brightness, as the flat-coloured ground did.
+     */
+    private static Mesh ground(GraphicsDevice graphics, GroundAtlas atlas) {
+        int perSide = 50; // groundTriangles follows from this
+        float[] vertices = new float[perSide * perSide * 4 * 9];
+        int[] indices = new int[perSide * perSide * 6];
+        int v = 0;
+        int i = 0;
+        for (int ix = -perSide / 2; ix < perSide / 2; ix++) {
+            for (int iz = -perSide / 2; iz < perSide / 2; iz++) {
+                float x = ix * GROUND_TILE;
+                float z = iz * GROUND_TILE;
+                float centerX = x + GROUND_TILE / 2;
+                float centerZ = z + GROUND_TILE / 2;
+                int cell;
                 if (Math.hypot(centerX, centerZ) < PLAZA_RADIUS) {
-                    palette = stone;
+                    cell = GroundAtlas.PLAZA;
                 } else if (Math.abs(centerX) < STREET_HALF_WIDTH || Math.abs(centerZ) < STREET_HALF_WIDTH) {
-                    palette = pavement;
+                    cell = GroundAtlas.STREET;
                 } else {
-                    palette = grass;
+                    cell = GroundAtlas.LAWN;
                 }
-                builder.floor(x, z, x + tile, z + tile, 0f, palette[(ix + iz) & 1]);
+                float brightness = ((ix + iz) & 1) == 0 ? 1f : 0.96f;
+                Vec3 average = atlas.averages[cell];
+                int first = v / 9;
+                // Counter-clockwise when seen from above.
+                float[][] corners = {{x, z + GROUND_TILE}, {x + GROUND_TILE, z + GROUND_TILE}, {x + GROUND_TILE, z}, {x, z}};
+                for (float[] corner : corners) {
+                    vertices[v++] = corner[0];
+                    vertices[v++] = 0f;
+                    vertices[v++] = corner[1];
+                    vertices[v++] = cell;
+                    vertices[v++] = brightness;
+                    vertices[v++] = 0f;
+                    vertices[v++] = average.x();
+                    vertices[v++] = average.y();
+                    vertices[v++] = average.z();
+                }
+                indices[i++] = first;
+                indices[i++] = first + 1;
+                indices[i++] = first + 2;
+                indices[i++] = first;
+                indices[i++] = first + 2;
+                indices[i++] = first + 3;
             }
         }
+        return graphics.createMesh(vertices, indices, 3, 3, 3);
     }
 
     private static void fountain(MeshBuilder builder) {
@@ -310,6 +346,7 @@ final class PlazaScene implements AutoCloseable {
     public void close() {
         sky.close();
         sprites.close();
+        ground.close();
         city.close();
     }
 }

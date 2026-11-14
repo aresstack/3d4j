@@ -1097,12 +1097,12 @@ final class SetupScreen implements AutoCloseable {
     }
 
     private void paintWorld(Graphics2D g) {
-        note(g, "Modell: " + selectedModel, 430, 322, TEXT);
+        note(g, "Modell: " + selectedModel, 430, 318, TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        int y = 352;
+        int y = 346;
         for (Map.Entry<AssetSpec, String> entry : assetStates.entrySet()) {
             String state = entry.getValue();
-            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
             g.setColor(state.startsWith("Fehler") ? BAD : state.equals("fertig") ? GOOD : TEXT);
             g.fill(new Ellipse2D.Double(432, y - 12, 12, 12));
             g.setColor(INK);
@@ -1112,9 +1112,9 @@ final class SetupScreen implements AutoCloseable {
             if (!generating) {
                 // One motif alone, e.g. only the cherry tree.
                 AssetSpec spec = entry.getKey();
-                button(g, "neu", 1056, y - 21, 74, 28, PINK_LIGHT, INK, () -> generate(List.of(spec)));
+                button(g, "neu", 1056, y - 18, 74, 23, PINK_LIGHT, INK, () -> generate(List.of(spec)));
             }
-            y += 32;
+            y += 27;
         }
         if (!generating) {
             if (generatedOnce) {
@@ -1137,6 +1137,8 @@ final class SetupScreen implements AutoCloseable {
             case "visitor-2" -> "Besucher 2";
             case "visitor-3" -> "Besucher 3";
             case "peony-bush" -> "Pfingstrosen";
+            case "lawn-tile" -> "Rasen";
+            case "street-tile" -> "Straße";
             default -> spec.id();
         };
     }

@@ -220,6 +220,19 @@ Blütenmitte, Blatt), alle Bauteile gleichzeitig. Alles Räumliche macht Java (`
 Der Plan steht danach in `peony-bush.json`. Im Spiel stehen die Büsche um den Brunnen und am
 Rand des Platzes.
 
+**Bodentexturen.** Rasen (`lawn-tile`) und Straße (`street-tile`) sind quadratische Kacheln,
+von oben gesehen, die sich nahtlos wiederholen. Der Generator verlangt dafür: ein Rechteck in
+der Grundfarbe über das ganze Quadrat, darauf kleine Formen, die mindestens 12 Einheiten Abstand
+zu allen Rändern halten. Geprüft wird, dass die Kachel das Quadrat vollständig deckt und ihr
+äußerster Rand einfarbig ist; sonst wird mit Begründung neu angefragt. Ohne Dateien zeichnet das
+Spiel eingebaute Kacheln. Der Platz hat vorerst nur die eingebaute.
+
+Im Spiel ist der Boden ein eigenes Netz mit eigenem Shader (vierter Draw Call). Die
+Texturkoordinate ergibt sich aus der Position in der Welt (eine Kachel je 4 m), alle Kacheln
+liegen in einem Atlas mit wiederholtem Rand. Weil Texturen noch keine Mipmaps haben, blendet der
+Shader das Muster zwischen 30 und 75 m Entfernung in die Durchschnittsfarbe der Kachel über;
+sonst würde der Boden in der Ferne flimmern.
+
 **Alte Motive bleiben erhalten.** Zu jedem erzeugten Motiv schreibt der Generator `<name>.json`
 (Modell, Zeitpunkt, Beschreibung, Größe). Wird ein Motiv neu gezeichnet, wandern SVG, PNG und
 JSON des bisherigen vorher nach `history/<name>/<JJJJMMTT-HHMMSS>.svg|.png|.json` im
@@ -287,7 +300,7 @@ Alles liegt unter `com.aresstack.threed4j`:
 | `assets` | `AssetStore` (Asset-Ordner), `AssetCatalog`, `SvgRasterizer` (SVG zu Bild mit Batik) |
 | `generator` | `AiSetup` (Schnittstelle für das Menü), `AssetGenerator`, `FlowerComposer` (Motiv aus Bauplan und Bauteilen), `ChatClient`, `KeePassApiKey`, `KeePassEntry`, `GeneratorConfig`, `ProxyRoutes` |
 | `com.aresstack.enterpriseai…keepassrpc` | KeePassRPC-Anbindung (Kopplung, Einträge), unveränderte Kopie aus dem Enterprise AI Client, wie in Space Harvester; siehe `UPSTREAM.md` dort. Eigene Datei nur `KeePassRpcLink` |
-| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `SpriteAtlas`, `CubeDemo` |
+| `demo` | `PlazaDemo` (Ladebildschirm, Menü und Testplatz), `SetupScreen` (das Menü), `PauseMenu`, `GameSettings`, `PlazaScene`, `GroundAtlas`, `SpriteAtlas`, `CubeDemo` |
 
 Ein Spiel benutzt nur `core`, `gfx`, `math` und `platform`; von OpenGL oder Direct3D sieht es
 nichts.
