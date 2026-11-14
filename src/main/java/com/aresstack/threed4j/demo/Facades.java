@@ -115,10 +115,9 @@ final class Facades {
         float windowSpacing = 2.5f + random.nextFloat() * 0.9f;
         float floorHeight = 2.9f + random.nextFloat() * 0.5f;
         boolean shops = random.nextInt(10) < 7;
-        // The door faces the nearer of the two streets.
-        int doorSide = Math.abs(house.x()) < Math.abs(house.z())
-                ? (house.x() > 0 ? 1 : 0)
-                : (house.z() > 0 ? 3 : 2);
+        // A door on each side that looks towards one of the two main streets, which cross in the middle of the town.
+        int doorSideX = doorSideTowardsX0(house);
+        int doorSideZ = doorSideTowardsZ0(house);
 
         Vec3 plinth = house.wall().scale(0.82f);
         float upper = house.height() - GROUND_FLOOR;
@@ -132,7 +131,7 @@ final class Facades {
             float out = house.half() + PLINTH;
             int steps = Math.max(1, Math.round(2 * out / 3.1f));
             FacadeAtlas.Cell part = shops ? shop : window;
-            if (side != doorSide) {
+            if (side != doorSideX && side != doorSideZ) {
                 wall(house, side, out, 0f, 1f, 0f, GROUND_FLOOR, plinth, part, steps, 1);
             } else {
                 int doorStep = steps / 2;
@@ -142,6 +141,16 @@ final class Facades {
                 }
             }
         }
+    }
+
+    /** The side of the house (see {@link #wall}) that looks towards the street along x = 0. */
+    static int doorSideTowardsX0(House house) {
+        return house.x() > 0 ? 0 : 1;
+    }
+
+    /** The side of the house that looks towards the street along z = 0. */
+    static int doorSideTowardsZ0(House house) {
+        return house.z() > 0 ? 2 : 3;
     }
 
     /**

@@ -159,8 +159,8 @@ Grenzen bekommen.
   trotzdem unterscheiden. Den Zugang nimmt er aus dem Zugangsmenü dieses Programmlaufs, sonst
   holt er den gemerkten ohne Nachfrage (KeePass-Eintrag oder Umgebungsvariable). Ohne Zugang
   wartet er.
-- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 1 Laterne, 30 Besucher, 6 Büsche,
-  je 3 Rasen- und Pflasterkacheln, 8 Fenster, 4 Türen, 4 Läden; je Stadtteil änderbar (0 bis 30),
+- **Höchstzahl je Art:** Vorgabe 10 Kirschbäume, 6 Parkbäume, 1 Laterne, 50 Besucher, 6 Büsche,
+  je 3 Rasen- und Pflasterkacheln, 8 Fenster, 4 Türen, 4 Läden; je Stadtteil änderbar (0 bis 99),
   gespeichert in `limits.properties` im Ordner der Sammlung.
 - **Modell je Art:** In der Sammlung steht oben neben dem Namen der Art, welches Modell sie
   zeichnet; ein Klick öffnet die Liste der Modelle des Dienstes. Ohne eigene Wahl zeichnet das

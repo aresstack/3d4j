@@ -42,7 +42,7 @@ public final class PartLibrary {
 
     /** What a picture shows, how large it is, and how many of the kind a district collects by default. */
     public enum Kind {
-        BLOSSOM_TREE(10, 256, 512), GREEN_TREE(6, 256, 512), LAMP(1, 256, 512), VISITOR(30, 256, 512),
+        BLOSSOM_TREE(10, 256, 512), GREEN_TREE(6, 256, 512), LAMP(1, 256, 512), VISITOR(50, 256, 512),
         BUSH(6, 256, 256), LAWN(3, 256, 256), STREET(3, 256, 256),
         WINDOW(8, 128, 128), DOOR(4, 128, 128), SHOP(4, 128, 128);
 
@@ -100,7 +100,7 @@ public final class PartLibrary {
     /** Edge length of a house part's picture (window, door, shop front) in pixels. */
     public static final int SIZE = 128;
     /** The most pictures of one kind a district may be set to collect. */
-    public static final int MAX_TARGET = 30;
+    public static final int MAX_TARGET = 99;
 
     private static final Pattern FILE = Pattern.compile("([a-z-]+)-(\\d+)\\.(png|svg)");
 

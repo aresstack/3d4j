@@ -120,4 +120,16 @@ class FacadesTest {
         assertEquals(20, chosen.size(), "every picture is used by some tree");
         assertEquals(1, GroundAtlas.paint(library).choose(GroundAtlas.Surface.LAWN, 7).number());
     }
+
+    /** Doors once were on the back of the houses, where nobody saw them. */
+    @Test
+    void doorsLookTowardsTheMainStreets() {
+        Facades.House northEast = new Facades.House(13f, 27f, 4f, 10f, new com.aresstack.threed4j.math.Vec3(1f, 1f, 1f), 1L);
+        assertEquals(0, Facades.doorSideTowardsX0(northEast), "side -x looks to the street along x = 0");
+        assertEquals(2, Facades.doorSideTowardsZ0(northEast), "side -z looks to the street along z = 0");
+
+        Facades.House southWest = new Facades.House(-13f, -27f, 4f, 10f, new com.aresstack.threed4j.math.Vec3(1f, 1f, 1f), 2L);
+        assertEquals(1, Facades.doorSideTowardsX0(southWest));
+        assertEquals(3, Facades.doorSideTowardsZ0(southWest));
+    }
 }
