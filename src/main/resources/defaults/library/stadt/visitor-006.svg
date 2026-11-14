@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <rect x="85" y="470" width="40" height="42" rx="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="470" width="40" height="42" rx="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Legs -->
+  <rect x="92" y="360" width="30" height="120" rx="15" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="134" y="360" width="30" height="120" rx="15" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <rect x="55" y="220" width="35" height="100" rx="17" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="166" y="220" width="35" height="100" rx="17" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- T-Shirt Body -->
+  <rect x="70" y="200" width="116" height="170" rx="30" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- T-Shirt Sleeves -->
+  <rect x="50" y="200" width="40" height="60" rx="15" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="166" y="200" width="40" height="60" rx="15" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shirt Highlight -->
+  <path d="M85 220 Q 95 220 95 250" fill="none" stroke="#FFA500" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Detail on Shirt -->
+  <circle cx="110" cy="240" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="110" cy="240" r="4" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Neck -->
+  <rect x="115" y="170" width="26" height="30" rx="10" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <rect x="90" y="100" width="76" height="85" rx="35" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="112" cy="135" r="5" fill="#3B2A4A" />
+  <circle cx="144" cy="135" r="5" fill="#3B2A4A" />
+
+  <!-- Smile -->
+  <path d="M118 155 Q 128 165 138 155" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Curly Brown Hair -->
+  <circle cx="90" cy="110" r="25" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="85" r="25" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="85" r="25" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="165" cy="110" r="25" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="140" r="20" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="95" cy="140" r="20" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="75" r="30" fill="#6F4E37" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair Highlights -->
+  <circle cx="115" cy="80" r="8" fill="#8B5A2B" />
+  <circle cx="140" cy="80" r="8" fill="#8B5A2B" />
+</svg>

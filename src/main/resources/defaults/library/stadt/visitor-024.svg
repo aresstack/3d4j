@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Backpack -->
+  <rect x="65" y="180" width="126" height="170" rx="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 200 Q128 180 176 200" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Legs -->
+  <rect x="85" y="360" width="38" height="152" rx="15" fill="#FEFAE0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="133" y="360" width="38" height="152" rx="15" fill="#FEFAE0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Arms -->
+  <rect x="55" y="200" width="30" height="140" rx="15" fill="#48D1CC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="171" y="200" width="30" height="140" rx="15" fill="#48D1CC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Torso/Jacket -->
+  <rect x="75" y="180" width="106" height="180" rx="25" fill="#48D1CC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Jacket Highlights -->
+  <path d="M85 200 Q95 200 95 220" fill="none" stroke="#A0F0F0" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="130" r="45" fill="#FFD8B1" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M83 130 C83 70 173 70 173 130 L173 110 C173 80 83 80 83 110 Z" fill="#EF476F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 85 Q128 75 146 85" fill="none" stroke="#FF7096" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="135" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="135" r="4" fill="#3B2A4A" />
+  <path d="M120 150 Q128 160 136 150" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Cherry Blossom Decorations on Jacket -->
+  <circle cx="95" cy="230" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="95" cy="230" r="2" fill="#FFFF00" />
+  
+  <circle cx="110" cy="250" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="110" cy="250" r="2" fill="#FFFF00" />
+  
+  <circle cx="130" cy="220" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="130" cy="220" r="2" fill="#FFFF00" />
+</svg>

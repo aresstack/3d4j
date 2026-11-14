@@ -1,0 +1,10 @@
+{
+  "kind": "street",
+  "number": 1,
+  "createdAt": "2026-11-14T00:21:02Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "the paving of a town street: base colour #D2CEDB, flat paving stones of different sizes in slightly lighter and darker shades of the base colour, a few short cracks",
+  "width": 256,
+  "height": 256,
+  "importedFrom": "street-tile"
+}

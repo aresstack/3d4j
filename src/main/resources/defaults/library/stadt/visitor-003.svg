@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Hair (Behind Face) -->
+  <path d="M80 120 Q70 100 80 80 Q100 60 128 60 Q156 60 176 80 Q186 100 176 120 Z" fill="#FDE047" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 80 Q128 70 146 80" fill="none" stroke="#FEF9C3" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Face -->
+  <circle cx="128" cy="130" r="40" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="115" cy="125" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="125" r="4" fill="#3B2A4A" />
+  <path d="M118 140 Q128 150 138 140" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Sleeves (Behind Body) -->
+  <path d="M80 170 L50 300 Q50 310 80 310 L100 200 Z" fill="#FACC15" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 170 L206 300 Q206 310 176 310 L156 200 Z" fill="#FACC15" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Body -->
+  <path d="M80 170 L176 170 L190 380 Q128 390 66 380 Z" fill="#FACC15" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Details -->
+  <path d="M80 170 L128 210 L176 170" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="230" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="270" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="310" r="6" fill="#3B2A4A" />
+  <path d="M90 220 Q95 220 95 260" fill="none" stroke="#FEF08A" stroke-width="6" stroke-linecap="round" />
+  <path d="M161 220 Q156 220 156 260" fill="none" stroke="#FEF08A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Legs -->
+  <path d="M100 380 L100 480 L120 480 L120 380 Z" fill="#60A5FA" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 380 L136 480 L156 480 L156 380 Z" fill="#60A5FA" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shoes -->
+  <path d="M100 480 L80 480 Q70 480 70 512 L120 512 L120 480 Z" fill="#451A03" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 480 L156 480 Q166 480 166 512 L136 512 L136 480 Z" fill="#451A03" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+</svg>

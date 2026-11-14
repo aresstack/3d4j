@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M122 512 L127 210 L129 210 L134 512 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Crown -->
+  <path d="M128 100 C160 100, 180 120, 180 150 C180 180, 160 210, 128 210 C96 210, 76 180, 76 150 C76 120, 96 100, 128 100 Z" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Blossom Dots -->
+  <circle cx="110" cy="130" r="6" fill="#FF69B4" />
+  <circle cx="140" cy="120" r="6" fill="#FF69B4" />
+  <circle cx="160" cy="140" r="6" fill="#FF69B4" />
+  <circle cx="130" cy="160" r="6" fill="#FF69B4" />
+  <circle cx="100" cy="170" r="6" fill="#FF69B4" />
+  <circle cx="150" cy="180" r="6" fill="#FF69B4" />
+  <circle cx="120" cy="190" r="6" fill="#FF69B4" />
+  <circle cx="160" cy="170" r="6" fill="#FF69B4" />
+  <circle cx="90" cy="150" r="6" fill="#FF69B4" />
+  
+  <!-- Mint Green Leaves -->
+  <ellipse cx="85" cy="180" rx="10" ry="5" fill="#B2F2BB" stroke="#3B2A4A" stroke-width="4" transform="rotate(-30 85 180)" />
+  <ellipse cx="165" cy="130" rx="10" ry="5" fill="#B2F2BB" stroke="#3B2A4A" stroke-width="4" transform="rotate(30 165 130)" />
+  
+  <!-- Highlights -->
+  <path d="M110 120 Q120 110 130 120" fill="none" stroke="#FFF0F5" stroke-width="6" stroke-linecap="round" />
+  <path d="M140 110 Q150 100 160 110" fill="none" stroke="#FFF0F5" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Ground Flowers -->
+  <circle cx="110" cy="500" r="5" fill="#FF69B4" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="140" cy="505" r="5" fill="#FF69B4" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="130" cy="510" r="5" fill="#FF69B4" stroke="#3B2A4A" stroke-width="3" />
+</svg>

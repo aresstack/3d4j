@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Industrial Concrete Planter -->
+  <!-- Main Concrete Body -->
+  <path d="M70 410 L186 410 L176 512 L80 512 Z" fill="#BDBDBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Steel Rim -->
+  <path d="M60 390 L196 390 L196 415 L60 415 Z" fill="#545454" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rivets on the steel rim -->
+  <circle cx="75" cy="402" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="100" cy="402" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="128" cy="402" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="156" cy="402" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="181" cy="402" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Weathered Green Paint Patch on Concrete -->
+  <path d="M85 430 Q95 425 105 435 L100 450 Q90 445 80 440 Z" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Small Weed at the base -->
+  <path d="M75 512 Q70 490 60 485" fill="none" stroke="#7CFC00" stroke-width="6" stroke-linecap="round" />
+  <path d="M75 512 Q80 490 90 480" fill="none" stroke="#7CFC00" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Birch Trunks -->
+  <!-- Left Trunk -->
+  <path d="M115 400 Q110 300 100 220" fill="none" stroke="#FDFDFD" stroke-width="14" stroke-linecap="round" />
+  <path d="M115 400 Q110 300 100 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Right Trunk -->
+  <path d="M135 400 Q140 300 150 220" fill="none" stroke="#FDFDFD" stroke-width="14" stroke-linecap="round" />
+  <path d="M135 400 Q140 300 150 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Birch Bark Details (Horizontal dashes) -->
+  <line x1="112" y1="360" x2="118" y2="360" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="108" y1="320" x2="114" y2="320" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="105" y1="280" x2="111" y2="280" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  
+  <line x1="138" y1="370" x2="144" y2="370" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="142" y1="330" x2="148" y2="330" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="146" y1="290" x2="152" y2="290" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Left Crown (Foliage) -->
+  <circle cx="80" cy="200" r="25" fill="#A8E6CF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="180" r="30" fill="#A8E6CF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="130" cy="210" r="20" fill="#A8E6CF" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Highlights -->
+  <circle cx="85" cy="190" r="8" fill="#C1F0D8" />
+  <circle cx="115" cy="170" r="10" fill="#C1F0D8" />
+
+  <!-- Right Crown (Foliage) -->
+  <circle cx="140" cy="210" r="20" fill="#A8E6CF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="180" r="30" fill="#A8E6CF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="190" cy="200" r="25" fill="#A8E6CF" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Highlights -->
+  <circle cx="175" cy="170" r="10" fill="#C1F0D8" />
+  <circle cx="185" cy="190" r="8" fill="#C1F0D8" />
+</svg>

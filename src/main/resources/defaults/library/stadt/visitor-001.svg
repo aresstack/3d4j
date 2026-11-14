@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <path d="M90 512 L120 512 L120 480 Q105 470 90 480 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 512 L166 512 L166 480 Q151 470 136 480 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Pants -->
+  <path d="M100 480 L120 480 L120 380 L100 380 Z" fill="#3498DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 480 L156 480 L156 380 L136 380 Z" fill="#3498DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Sleeves -->
+  <path d="M80 220 L60 320 Q60 330 70 330 L90 330 L100 240 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 220 L196 320 Q196 330 186 330 L166 330 L166 240 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Body -->
+  <path d="M80 220 L176 220 L176 380 Q128 390 80 380 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Pocket -->
+  <path d="M105 280 L151 280 Q155 280 155 285 L155 340 Q155 345 150 345 L110 345 Q105 345 105 340 L105 285 Q105 280 110 280 Z" fill="#8E44AD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Hood -->
+  <circle cx="128" cy="170" r="45" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="128" cy="175" r="30" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M100 165 Q100 130 128 130 Q156 130 156 165 L156 175 Q140 165 128 175 Q116 165 100 175 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Eyes and Smile -->
+  <circle cx="120" cy="175" r="3" fill="#3B2A4A" />
+  <circle cx="136" cy="175" r="3" fill="#3B2A4A" />
+  <path d="M122 185 Q128 192 134 185" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M90 230 L110 230" stroke="#B19CD9" stroke-width="6" stroke-linecap="round" />
+  <path d="M146 230 L166 230" stroke="#B19CD9" stroke-width="6" stroke-linecap="round" />
+</svg>

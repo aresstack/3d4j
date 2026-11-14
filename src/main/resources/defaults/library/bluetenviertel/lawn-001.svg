@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#A2D08C" />
+  
+  <!-- Darker Green Tufts -->
+  <path d="M30 40 L32 36 L34 40" fill="#8EB87A" />
+  <path d="M70 110 L72 106 L74 110" fill="#8EB87A" />
+  <path d="M120 30 L122 26 L124 30" fill="#8EB87A" />
+  <path d="M180 60 L182 56 L184 60" fill="#8EB87A" />
+  <path d="M220 100 L222 96 L224 100" fill="#8EB87A" />
+  <path d="M40 160 L42 156 L44 160" fill="#8EB87A" />
+  <path d="M100 200 L102 196 L104 200" fill="#8EB87A" />
+  <path d="M150 140 L152 136 L154 140" fill="#8EB87A" />
+  <path d="M200 210 L202 206 L204 210" fill="#8EB87A" />
+  <path d="M230 180 L232 176 L234 180" fill="#8EB87A" />
+  <path d="M130 180 L132 176 L134 180" fill="#8EB87A" />
+  <path d="M60 230 L62 226 L64 230" fill="#8EB87A" />
+  
+  <!-- Lighter Green Tufts -->
+  <path d="M50 80 L52 76 L54 80" fill="#B8E0A5" />
+  <path d="M110 120 L112 116 L114 120" fill="#B8E0A5" />
+  <path d="M170 40 L172 36 L174 40" fill="#B8E0A5" />
+  <path d="M210 150 L212 146 L214 150" fill="#B8E0A5" />
+  <path d="M30 210 L32 206 L34 210" fill="#B8E0A5" />
+  <path d="M90 60 L92 56 L94 60" fill="#B8E0A5" />
+  <path d="M140 90 L142 86 L144 90" fill="#B8E0A5" />
+  <path d="M190 110 L192 106 L194 110" fill="#B8E0A5" />
+  <path d="M230 40 L232 36 L234 40" fill="#B8E0A5" />
+  <path d="M160 220 L162 216 L164 220" fill="#B8E0A5" />
+  <path d="M80 150 L82 146 L84 150" fill="#B8E0A5" />
+  <path d="M120 230 L122 226 L124 230" fill="#B8E0A5" />
+  
+  <!-- White Flowers -->
+  <circle cx="45" cy="130" r="2" fill="#FFFFFF" />
+  <circle cx="115" cy="50" r="2" fill="#FFFFFF" />
+  <circle cx="185" cy="170" r="2" fill="#FFFFFF" />
+  <circle cx="225" cy="130" r="2" fill="#FFFFFF" />
+  <circle cx="65" cy="190" r="2" fill="#FFFFFF" />
+  <circle cx="145" cy="210" r="2" fill="#FFFFFF" />
+  
+  <!-- Pink Flowers -->
+  <circle cx="75" cy="30" r="2" fill="#F8C8DC" />
+  <circle cx="135" cy="150" r="2" fill="#F8C8DC" />
+  <circle cx="195" cy="80" r="2" fill="#F8C8DC" />
+  <circle cx="215" cy="230" r="2" fill="#F8C8DC" />
+  <circle cx="55" cy="60" r="2" fill="#F8C8DC" />
+</svg>

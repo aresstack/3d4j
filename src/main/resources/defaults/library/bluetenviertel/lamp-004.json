@@ -1,0 +1,9 @@
+{
+  "kind": "lamp",
+  "number": 4,
+  "createdAt": "2026-11-14T01:41:12Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a street lamp with a hanging lantern on a curved swan-neck post. It belongs to a district of the town with this look, which everything in the district shares: a cheerful old town in cherry blossom season: frames in cream white and warm wood, shutters and doors in soft pink, mint green or sky blue, rounded friendly shapes, flowers wherever they fit",
+  "width": 256,
+  "height": 512
+}

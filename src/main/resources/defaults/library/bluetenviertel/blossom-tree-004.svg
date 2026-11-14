@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M118,512 Q128,350 128,250 L136,250 Q136,350 146,512 Z" 
+        fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Branches -->
+  <path d="M128,300 L100,260" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M128,320 L156,270" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Crown Base (Light Pink) -->
+  <circle cx="128" cy="180" r="70" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="170" r="50" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="170" r="50" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="130" r="50" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="220" r="50" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Mint Green Leaves -->
+  <ellipse cx="80" cy="210" rx="12" ry="6" fill="#B2E2B2" stroke="#3B2A4A" stroke-width="6" transform="rotate(-30 80 210)" />
+  <ellipse cx="176" cy="210" rx="12" ry="6" fill="#B2E2B2" stroke="#3B2A4A" stroke-width="6" transform="rotate(30 176 210)" />
+  <ellipse cx="128" cy="240" rx="12" ry="6" fill="#B2E2B2" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Darker Pink Blossom Dots -->
+  <circle cx="110" cy="150" r="6" fill="#FF8DA1" />
+  <circle cx="140" cy="140" r="6" fill="#FF8DA1" />
+  <circle cx="128" cy="170" r="6" fill="#FF8DA1" />
+  <circle cx="100" cy="180" r="6" fill="#FF8DA1" />
+  <circle cx="156" cy="180" r="6" fill="#FF8DA1" />
+  <circle cx="120" cy="200" r="6" fill="#FF8DA1" />
+  <circle cx="145" cy="210" r="6" fill="#FF8DA1" />
+  <circle cx="115" cy="120" r="6" fill="#FF8DA1" />
+  <circle cx="140" cy="110" r="6" fill="#FF8DA1" />
+  <circle cx="90" cy="140" r="6" fill="#FF8DA1" />
+  <circle cx="160" cy="150" r="6" fill="#FF8DA1" />
+
+  <!-- Highlights -->
+  <circle cx="110" cy="130" r="10" fill="#FFF" fill-opacity="0.3" />
+  <circle cx="150" cy="160" r="8" fill="#FFF" fill-opacity="0.3" />
+</svg>

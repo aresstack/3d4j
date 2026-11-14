@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M 118 512 L 124 180 L 132 180 L 138 512 Z" fill="#B5835A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Left Blossom Cloud -->
+  <path d="M 90 160 A 20 20 0 0 1 110 180 A 20 20 0 0 1 130 200 A 20 20 0 0 1 110 220 A 20 20 0 0 1 90 230 A 20 20 0 0 1 70 220 A 20 20 0 0 1 50 200 A 20 20 0 0 1 70 180 A 20 20 0 0 1 90 160" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Right Blossom Cloud -->
+  <path d="M 166 160 A 20 20 0 0 1 186 180 A 20 20 0 0 1 206 200 A 20 20 0 0 1 186 220 A 20 20 0 0 1 166 230 A 20 20 0 0 1 146 220 A 20 20 0 0 1 126 200 A 20 20 0 0 1 146 180 A 20 20 0 0 1 166 160" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Top Blossom Cloud -->
+  <path d="M 128 100 A 20 20 0 0 1 148 120 A 20 20 0 0 1 168 140 A 20 20 0 0 1 148 160 A 20 20 0 0 1 128 170 A 20 20 0 0 1 108 160 A 20 20 0 0 1 88 140 A 20 20 0 0 1 108 120 A 20 20 0 0 1 128 100" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <circle cx="120" cy="120" r="8" fill="#FFD1DC" />
+  <circle cx="80" cy="180" r="8" fill="#FFD1DC" />
+  <circle cx="156" cy="180" r="8" fill="#FFD1DC" />
+  
+  <!-- Small Blossom Accents -->
+  <circle cx="115" cy="110" r="6" fill="#FFD1DC" />
+  <circle cx="140" cy="115" r="6" fill="#FFD1DC" />
+  <circle cx="65" cy="185" r="6" fill="#FFD1DC" />
+  <circle cx="190" cy="185" r="6" fill="#FFD1DC" />
+  
+  <!-- Base Flowers -->
+  <circle cx="110" cy="500" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="140" cy="490" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="120" cy="480" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+</svg>

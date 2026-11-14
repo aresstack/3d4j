@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Forked Trunk -->
+  <path d="M105 512 L115 360 Q115 320 65 260 L85 240 Q128 280 128 320 Q128 280 169 240 L191 260 Q141 320 141 360 L151 512 Z" 
+        fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Left Crown -->
+  <circle cx="65" cy="200" r="60" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="45" cy="180" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="85" cy="170" r="30" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="105" cy="210" r="25" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Right Crown -->
+  <circle cx="191" cy="200" r="60" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="171" cy="180" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="211" cy="170" r="30" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="151" cy="210" r="25" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Mint Green Leaves -->
+  <ellipse cx="110" cy="280" rx="10" ry="6" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="6" transform="rotate(-20 110 280)" />
+  <ellipse cx="146" cy="280" rx="10" ry="6" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="6" transform="rotate(20 146 280)" />
+  <ellipse cx="60" cy="230" rx="10" ry="6" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="6" transform="rotate(-40 60 230)" />
+  <ellipse cx="196" cy="230" rx="10" ry="6" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="6" transform="rotate(40 196 230)" />
+
+  <!-- Small Blossom Details -->
+  <circle cx="40" cy="220" r="8" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="240" r="8" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="146" cy="240" r="8" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="216" cy="220" r="8" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+</svg>

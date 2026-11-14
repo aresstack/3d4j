@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Outer Wood Frame -->
+  <circle cx="64" cy="64" r="44" fill="#C19A6B" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Inner Cream Trim -->
+  <circle cx="64" cy="64" r="38" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Glass -->
+  <circle cx="64" cy="64" r="32" fill="#AEEEEE" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Window Muntins (Cross bars) -->
+  <rect x="61" y="32" width="6" height="64" rx="3" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="5" />
+  <rect x="32" y="61" width="64" height="6" rx="3" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Glass Highlights -->
+  <circle cx="52" cy="52" r="4" fill="#FFFFFF" />
+  <circle cx="58" cy="48" r="2" fill="#FFFFFF" />
+  
+  <!-- Cherry Blossoms around the frame -->
+  <!-- Flower 1 (Top Left) -->
+  <circle cx="35" cy="35" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="35" cy="35" r="2" fill="#FDF5E6" />
+  
+  <!-- Flower 2 (Top Right) -->
+  <circle cx="93" cy="35" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="93" cy="35" r="2" fill="#FDF5E6" />
+  
+  <!-- Flower 3 (Bottom Left) -->
+  <circle cx="35" cy="93" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="35" cy="93" r="2" fill="#FDF5E6" />
+  
+  <!-- Flower 4 (Bottom Right) -->
+  <circle cx="93" cy="93" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="93" cy="93" r="2" fill="#FDF5E6" />
+  
+  <!-- Flower 5 (Bottom Center) -->
+  <circle cx="64" cy="105" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="64" cy="105" r="2" fill="#FDF5E6" />
+</svg>

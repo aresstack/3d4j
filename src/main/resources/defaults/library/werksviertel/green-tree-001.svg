@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete base slab -->
+  <rect x="70" y="500" width="116" height="12" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" rx="6" />
+  
+  <!-- Small industrial weed -->
+  <path d="M85 500 Q85 470 95 460" fill="none" stroke="#76B947" stroke-width="8" stroke-linecap="round" />
+  <path d="M95 460 Q105 470 100 480" fill="none" stroke="#76B947" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Trunk -->
+  <rect x="122" y="300" width="12" height="200" fill="#8C8C8C" stroke="#3B2A4A" stroke-width="8" rx="4" />
+  
+  <!-- Main Crown Shape (Narrow Poplar) -->
+  <path d="M128 40 Q155 40 165 310 L91 310 Q101 40 128 40" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Leafy Texture/Highlights -->
+  <ellipse cx="120" cy="100" rx="15" ry="30" fill="#4A8C43" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="135" cy="180" rx="12" ry="25" fill="#4A8C43" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="115" cy="250" rx="18" ry="35" fill="#4A8C43" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Small accent leaves on the edges -->
+  <path d="M160 150 Q170 160 160 170" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M95 220 Q85 230 95 240" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M 110 512 C 110 400 170 380 150 300 C 140 260 160 230 128 210 C 96 230 116 260 106 300 C 86 380 146 400 146 512 Z" 
+        fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Crown -->
+  <path d="M 40 180 Q 30 140 80 140 Q 100 110 128 110 Q 156 110 176 140 Q 226 140 226 180 Q 226 220 176 220 Q 156 250 128 250 Q 100 250 80 220 Q 30 220 40 180 Z" 
+        fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Crown Highlights -->
+  <circle cx="90" cy="150" r="15" fill="#FFD1DC" />
+  <circle cx="130" cy="130" r="20" fill="#FFD1DC" />
+  <circle cx="170" cy="150" r="15" fill="#FFD1DC" />
+  
+  <!-- Blossom Accents -->
+  <circle cx="80" cy="170" r="6" fill="#FF8DA1" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="120" cy="160" r="6" fill="#FF8DA1" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="150" cy="180" r="6" fill="#FF8DA1" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="110" cy="210" r="6" fill="#FF8DA1" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="140" cy="220" r="6" fill="#FF8DA1" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="170" cy="190" r="6" fill="#FF8DA1" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Trunk Flowers -->
+  <circle cx="135" cy="340" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="135" cy="340" r="2" fill="#FF8DA1" />
+  <circle cx="115" cy="380" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="115" cy="380" r="2" fill="#FF8DA1" />
+  
+  <!-- Ground Petals -->
+  <ellipse cx="100" cy="505" rx="6" ry="3" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="150" cy="508" rx="6" ry="3" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="120" cy="502" rx="6" ry="3" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+</svg>

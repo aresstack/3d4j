@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="95" y="380" width="30" height="132" rx="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="380" width="30" height="132" rx="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <rect x="85" y="500" width="40" height="12" rx="6" fill="#3B2A4A" />
+  <rect x="131" y="500" width="40" height="12" rx="6" fill="#3B2A4A" />
+
+  <!-- Arms -->
+  <rect x="55" y="230" width="35" height="130" rx="17" fill="#7FB3D5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="166" y="230" width="35" height="130" rx="17" fill="#7FB3D5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Torso / Jacket -->
+  <rect x="75" y="210" width="106" height="180" rx="30" fill="#7FB3D5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Jacket Details (Collar/Opening) -->
+  <path d="M128 210 L128 390" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M128 210 L100 240 M128 210 L156 240" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Pin on Jacket -->
+  <circle cx="150" cy="260" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="150" cy="260" r="4" fill="#FFF0F5" />
+
+  <!-- Head -->
+  <circle cx="128" cy="140" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M83 140 Q83 80 128 80 Q173 80 173 140 Q173 120 160 110 Q140 100 128 110 Q116 100 96 110 Q83 120 83 140" fill="#2C3E50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="145" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="145" r="4" fill="#3B2A4A" />
+  <path d="M120 160 Q128 170 136 160" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M100 120 Q110 110 120 120" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+  <rect x="85" y="230" width="10" height="40" rx="5" fill="#FFFFFF" opacity="0.2" />
+</svg>

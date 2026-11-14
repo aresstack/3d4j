@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Backpack (behind the person) -->
+  <path d="M70 280 Q70 250 128 250 Q186 250 186 280 L186 380 Q186 410 128 410 Q70 410 70 380 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 260 L146 260 L146 380 L110 380 Z" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Legs -->
+  <path d="M100 400 L100 480 Q100 490 110 490 L125 490 L125 400 Z" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 400 L131 480 Q131 490 141 490 L156 490 L156 400 Z" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shoes -->
+  <path d="M90 490 Q90 512 125 512 L125 490 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 490 Q131 512 166 512 L166 490 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body/Jacket -->
+  <path d="M80 260 Q80 230 128 230 Q176 230 176 260 L176 400 Q176 420 128 420 Q80 420 80 400 Z" fill="#40E0D0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Arms -->
+  <path d="M80 270 Q60 300 70 360" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M176 270 Q196 300 186 360" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Backpack Straps -->
+  <path d="M95 230 L110 260" fill="none" stroke="#FFB7C5" stroke-width="12" stroke-linecap="round" />
+  <path d="M161 230 L146 260" fill="none" stroke="#FFB7C5" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="180" r="45" fill="#FFDAB9" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair -->
+  <path d="M83 180 Q83 130 128 130 Q173 130 173 180 Q173 160 160 150 Q140 140 128 150 Q110 140 90 150 Q83 160 83 180" fill="#E63946" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="185" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="185" r="4" fill="#3B2A4A" />
+  <path d="M120 200 Q128 210 136 200" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Decorative Flowers (Cherry Blossoms) -->
+  <!-- On hair -->
+  <circle cx="150" cy="145" r="6" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="156" cy="145" r="6" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="153" cy="151" r="6" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- On jacket -->
+  <circle cx="100" cy="320" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="112" cy="320" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="106" cy="328" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="3" />
+  
+  <!-- Highlights -->
+  <path d="M100 250 Q110 240 120 250" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+  <path d="M140 160 Q150 150 160 160" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+</svg>

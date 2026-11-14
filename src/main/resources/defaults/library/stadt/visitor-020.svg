@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Hair Back -->
+  <path d="M70 120 Q70 80 128 80 Q186 80 186 120 L195 350 Q128 370 61 350 Z" fill="#C4A484" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Legs -->
+  <rect x="95" y="400" width="30" height="112" rx="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="400" width="30" height="112" rx="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Feet -->
+  <ellipse cx="110" cy="505" rx="20" ry="12" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="146" cy="505" rx="20" ry="12" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Body -->
+  <path d="M80 160 Q128 140 176 160 L190 410 Q128 430 66 410 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Sleeves -->
+  <path d="M80 180 Q50 220 60 320 Q70 340 90 320 L100 220 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 180 Q206 220 196 320 Q186 340 166 320 L156 220 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Highlights -->
+  <path d="M90 170 Q110 160 120 170" fill="none" stroke="#FFD1DC" stroke-width="6" stroke-linecap="round" />
+  <path d="M140 170 Q160 160 170 170" fill="none" stroke="#FFD1DC" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="120" r="45" fill="#FFE4C4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="120" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="120" r="4" fill="#3B2A4A" />
+  <path d="M120 135 Q128 145 136 135" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Hair Front/Bangs -->
+  <path d="M83 120 Q83 70 128 70 Q173 70 173 120 Q173 100 150 100 Q128 90 106 100 Q83 100 83 120" fill="#C4A484" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Cherry Blossom Accessory -->
+  <circle cx="170" cy="90" r="12" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="170" cy="90" r="4" fill="#FFFF00" stroke="#3B2A4A" stroke-width="2" stroke-linejoin="round" />
+</svg>

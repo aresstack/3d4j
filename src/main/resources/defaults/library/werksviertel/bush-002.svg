@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Industrial Base: Concrete and Rust -->
+  <path d="M40 512 L216 512 L220 460 L36 460 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M60 460 L80 460 L85 430 L55 430 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M180 460 L200 460 L205 440 L175 440 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 460 L110 440" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Main Stems -->
+  <path d="M128 460 Q128 350 80 250" fill="none" stroke="#7BA05B" stroke-width="12" stroke-linecap="round" />
+  <path d="M128 460 Q140 350 180 280" fill="none" stroke="#7BA05B" stroke-width="12" stroke-linecap="round" />
+  <path d="M128 460 Q110 380 120 200" fill="none" stroke="#7BA05B" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Leaves - Left Branch -->
+  <ellipse cx="110" cy="380" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(-30 110 380)" />
+  <ellipse cx="90" cy="340" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(-40 90 340)" />
+  <ellipse cx="100" cy="300" rx="15" ry="8" fill="#A2C18A" stroke="#3B2A4A" stroke-width="6" transform="rotate(-30 100 300)" />
+  <ellipse cx="70" cy="280" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(-20 70 280)" />
+
+  <!-- Leaves - Right Branch -->
+  <ellipse cx="140" cy="370" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(30 140 370)" />
+  <ellipse cx="160" cy="330" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(40 160 330)" />
+  <ellipse cx="170" cy="290" rx="15" ry="8" fill="#A2C18A" stroke="#3B2A4A" stroke-width="6" transform="rotate(30 170 290)" />
+
+  <!-- Leaves - Center Branch -->
+  <ellipse cx="120" cy="320" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(-10 120 320)" />
+  <ellipse cx="135" cy="260" rx="15" ry="8" fill="#7BA05B" stroke="#3B2A4A" stroke-width="6" transform="rotate(10 135 260)" />
+  <ellipse cx="125" cy="220" rx="15" ry="8" fill="#A2C18A" stroke="#3B2A4A" stroke-width="6" transform="rotate(-10 125 220)" />
+
+  <!-- Flower Cones -->
+  <!-- Left Cone -->
+  <path d="M80 250 Q60 220 60 160 Q60 140 80 140 Q100 140 100 160 Q100 220 80 250" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="80" cy="160" rx="10" ry="20" fill="#C39BD3" />
+  <ellipse cx="70" cy="200" rx="8" ry="15" fill="#C39BD3" />
+
+  <!-- Right Cone -->
+  <path d="M180 280 Q200 250 200 190 Q200 170 180 170 Q160 170 160 190 Q160 250 180 280" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="180" cy="200" rx="10" ry="20" fill="#C39BD3" />
+  <ellipse cx="190" cy="240" rx="8" ry="15" fill="#C39BD3" />
+
+  <!-- Center Cone -->
+  <path d="M120 200 Q100 170 100 110 Q100 90 120 90 Q140 90 140 110 Q140 170 120 200" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="120" cy="120" rx="10" ry="20" fill="#C39BD3" />
+  <ellipse cx="110" cy="160" rx="8" ry="15" fill="#C39BD3" />
+</svg>

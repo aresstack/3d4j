@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <ellipse cx="90" cy="500" rx="25" ry="12" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="166" cy="500" rx="25" ry="12" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Legs/Pants (Mint Green to match district) -->
+  <rect x="85" y="420" width="30" height="80" rx="15" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="141" y="420" width="30" height="80" rx="15" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Red Cardigan Body -->
+  <path d="M60 300 Q60 260 128 260 Q196 260 196 300 L200 430 Q200 440 190 440 L66 440 Q56 440 56 430 Z" fill="#EF5350" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Shirt underneath (Cream White) -->
+  <path d="M115 260 L141 260 L135 300 L121 300 Z" fill="#FFF9C4" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Arms -->
+  <path d="M60 300 Q40 350 60 400" fill="none" stroke="#3B2A4A" stroke-width="24" stroke-linecap="round" />
+  <path d="M60 300 Q40 350 60 400" fill="none" stroke="#EF5350" stroke-width="16" stroke-linecap="round" />
+  
+  <path d="M196 300 Q216 350 196 400" fill="none" stroke="#3B2A4A" stroke-width="24" stroke-linecap="round" />
+  <path d="M196 300 Q216 350 196 400" fill="none" stroke="#EF5350" stroke-width="16" stroke-linecap="round" />
+
+  <!-- Neck -->
+  <rect x="118" y="240" width="20" height="30" fill="#FFCCBC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Head -->
+  <circle cx="128" cy="180" r="50" fill="#FFCCBC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Grey Hair -->
+  <path d="M78 180 Q78 120 128 120 Q178 120 178 180 Q185 200 170 210 Q150 200 128 200 Q106 200 88 210 Q73 200 78 180" fill="#D3D3D3" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Glasses -->
+  <circle cx="113" cy="180" r="12" fill="none" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="143" cy="180" r="12" fill="none" stroke="#3B2A4A" stroke-width="6" />
+  <line x1="125" y1="180" x2="131" y2="180" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Face Details -->
+  <circle cx="113" cy="180" r="3" fill="#3B2A4A" />
+  <circle cx="143" cy="180" r="3" fill="#3B2A4A" />
+  <path d="M120 205 Q128 215 136 205" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Pin on Cardigan -->
+  <circle cx="80" cy="320" r="8" fill="#F8BBD0" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="80" cy="320" r="3" fill="#F06292" />
+
+  <!-- Highlights -->
+  <path d="M100 150 Q110 140 120 150" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+  <path d="M70 310 Q75 300 80 310" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.3" />
+</svg>

@@ -378,9 +378,9 @@ public final class AiSetup {
     /** How many districts the town grows to by itself, the two that come with the game included ({@code world.maxDistricts}). */
     public static int worldMaxDistricts() {
         try {
-            return Math.max(2, Math.min(24, Integer.parseInt(read(settingsFile()).getProperty("world.maxDistricts", "4").trim())));
+            return Math.max(2, Math.min(24, Integer.parseInt(read(settingsFile()).getProperty("world.maxDistricts", "5").trim())));
         } catch (NumberFormatException e) {
-            return 4;
+            return 5;
         }
     }
 

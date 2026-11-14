@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Concrete Sill -->
+  <rect x="12" y="80" width="104" height="8" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Dark Steel Frame -->
+  <rect x="16" y="44" width="96" height="36" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Glass Area -->
+  <rect x="20" y="48" width="88" height="28" fill="#AEE2FF" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Steel Dividers (6 panes) -->
+  <rect x="33" y="48" width="4" height="28" fill="#4A4A4A" />
+  <rect x="47" y="48" width="4" height="28" fill="#4A4A4A" />
+  <rect x="61" y="48" width="4" height="28" fill="#4A4A4A" />
+  <rect x="75" y="48" width="4" height="28" fill="#4A4A4A" />
+  <rect x="89" y="48" width="4" height="28" fill="#4A4A4A" />
+  
+  <!-- Rivets on the frame -->
+  <circle cx="20" cy="46" r="2" fill="#6A6A6A" />
+  <circle cx="108" cy="46" r="2" fill="#6A6A6A" />
+  <circle cx="20" cy="78" r="2" fill="#6A6A6A" />
+  <circle cx="108" cy="78" r="2" fill="#6A6A6A" />
+  <circle cx="18" cy="61" r="2" fill="#6A6A6A" />
+  <circle cx="110" cy="61" r="2" fill="#6A6A6A" />
+  
+  <!-- Glass Highlights -->
+  <path d="M24 52 L30 52 L26 60 L20 60 Z" fill="#DDF7FF" />
+  <path d="M54 52 L60 52 L56 60 L50 60 Z" fill="#DDF7FF" />
+  <path d="M84 52 L90 52 L86 60 L80 60 Z" fill="#DDF7FF" />
+</svg>

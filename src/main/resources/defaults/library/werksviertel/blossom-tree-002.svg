@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Industrial Concrete Planter -->
+  <path d="M60 420 L196 420 L206 512 L50 512 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rust-red Iron Band -->
+  <path d="M60 450 L196 450 L198 475 L58 475 Z" fill="#A54A3A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rivets on the iron band -->
+  <circle cx="70" cy="462" r="4" fill="#3B2A4A" />
+  <circle cx="128" cy="462" r="4" fill="#3B2A4A" />
+  <circle cx="186" cy="462" r="4" fill="#3B2A4A" />
+
+  <!-- Weeds poking out of concrete -->
+  <path d="M55 420 Q50 400 40 410" fill="none" stroke="#7BA34B" stroke-width="6" stroke-linecap="round" />
+  <path d="M58 420 Q62 390 70 405" fill="none" stroke="#7BA34B" stroke-width="6" stroke-linecap="round" />
+  <path d="M190 420 Q200 395 210 410" fill="none" stroke="#7BA34B" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Birch Trunk 1 (Left) -->
+  <path d="M110 420 Q100 300 115 180" fill="none" stroke="#FDFDFD" stroke-width="14" stroke-linecap="round" />
+  <path d="M110 420 Q100 300 115 180" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <!-- Bark details -->
+  <line x1="105" y1="350" x2="112" y2="350" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="110" y1="280" x2="118" y2="280" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="112" y1="220" x2="120" y2="220" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Birch Trunk 2 (Right) -->
+  <path d="M130 420 Q140 300 125 160" fill="none" stroke="#FDFDFD" stroke-width="14" stroke-linecap="round" />
+  <path d="M130 420 Q140 300 125 160" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <!-- Bark details -->
+  <line x1="132" y1="360" x2="139" y2="360" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="135" y1="290" x2="143" y2="290" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="130" y1="210" x2="138" y2="210" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Crown 1 (Left) -->
+  <g>
+    <circle cx="115" cy="170" r="35" fill="#B2D87A" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="130" cy="150" r="25" fill="#B2D87A" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="95" cy="155" r="20" fill="#B2D87A" stroke="#3B2A4A" stroke-width="8" />
+    <!-- Highlights -->
+    <circle cx="105" cy="160" r="8" fill="#D4EDB5" />
+    <circle cx="120" cy="140" r="6" fill="#D4EDB5" />
+  </g>
+
+  <!-- Crown 2 (Right) -->
+  <g>
+    <circle cx="125" cy="150" r="30" fill="#B2D87A" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="145" cy="130" r="25" fill="#B2D87A" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="110" cy="135" r="20" fill="#B2D87A" stroke="#3B2A4A" stroke-width="8" />
+    <!-- Highlights -->
+    <circle cx="135" cy="140" r="8" fill="#D4EDB5" />
+    <circle cx="140" cy="120" r="6" fill="#D4EDB5" />
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Dry Grass Blades -->
+  <path d="M80 512 Q 70 350 50 200" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M80 512 Q 70 350 50 200" fill="none" stroke="#CDBA96" stroke-width="4" stroke-linecap="round" />
+  
+  <path d="M110 512 Q 120 300 140 150" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M110 512 Q 120 300 140 150" fill="none" stroke="#E5D3B3" stroke-width="4" stroke-linecap="round" />
+  
+  <path d="M140 512 Q 130 350 110 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M140 512 Q 130 350 110 220" fill="none" stroke="#CDBA96" stroke-width="4" stroke-linecap="round" />
+  
+  <path d="M170 512 Q 180 300 210 180" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M170 512 Q 180 300 210 180" fill="none" stroke="#E5D3B3" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Thistle 1 (Left) -->
+  <path d="M100 512 Q 90 400 110 250" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M100 512 Q 90 400 110 250" fill="none" stroke="#7A8B6B" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Thistle 1 Leaves -->
+  <path d="M95 450 L 70 430 L 92 420 Z" fill="#7A8B6B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M105 380 L 130 360 L 108 350 Z" fill="#7A8B6B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Thistle 1 Head -->
+  <ellipse cx="110" cy="230" rx="25" ry="35" fill="#A66BBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 210 Q 110 200 120 210" fill="none" stroke="#C39BDB" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Thistle 2 (Right) -->
+  <path d="M160 512 Q 170 400 150 280" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M160 512 Q 170 400 150 280" fill="none" stroke="#7A8B6B" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Thistle 2 Leaves -->
+  <path d="M165 460 L 190 440 L 168 430 Z" fill="#7A8B6B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M155 390 L 130 370 L 152 360 Z" fill="#7A8B6B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Thistle 2 Head -->
+  <ellipse cx="150" cy="260" rx="22" ry="30" fill="#A66BBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M140 240 Q 150 230 160 240" fill="none" stroke="#C39BDB" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Extra small grass tufts at base -->
+  <path d="M60 512 L 50 480" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M200 512 L 210 470" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M128 512 L 128 470" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+</svg>

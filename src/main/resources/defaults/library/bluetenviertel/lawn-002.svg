@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#A2D08C" />
+  <path d="M30 40 Q32 35 34 40 Z" fill="#B5E0A1" />
+  <path d="M60 35 Q62 30 64 35 Z" fill="#8EB87A" />
+  <circle cx="100" cy="45" r="2.5" fill="#C1E6B5" />
+  <circle cx="103" cy="47" r="2.5" fill="#C1E6B5" />
+  <circle cx="97" cy="47" r="2.5" fill="#C1E6B5" />
+  <path d="M150 30 Q152 25 154 30 Z" fill="#B5E0A1" />
+  <circle cx="200" cy="50" r="3" fill="#FADADD" />
+  <path d="M230 70 Q232 65 234 70 Z" fill="#8EB87A" />
+  <path d="M40 80 Q42 75 44 80 Z" fill="#B5E0A1" />
+  <circle cx="80" cy="90" r="3" fill="#FFF5E1" />
+  <path d="M130 85 Q132 80 134 85 Z" fill="#8EB87A" />
+  <circle cx="180" cy="100" r="2.5" fill="#C1E6B5" />
+  <circle cx="183" cy="102" r="2.5" fill="#C1E6B5" />
+  <circle cx="177" cy="102" r="2.5" fill="#C1E6B5" />
+  <path d="M220 120 Q222 115 224 120 Z" fill="#B5E0A1" />
+  <path d="M50 130 Q52 125 54 130 Z" fill="#8EB87A" />
+  <circle cx="100" cy="140" r="3" fill="#FADADD" />
+  <path d="M160 130 Q162 125 164 130 Z" fill="#B5E0A1" />
+  <path d="M210 150 Q212 145 214 150 Z" fill="#8EB87A" />
+  <circle cx="230" cy="190" r="3" fill="#FFF5E1" />
+  <circle cx="180" cy="210" r="2.5" fill="#C1E6B5" />
+  <circle cx="183" cy="212" r="2.5" fill="#C1E6B5" />
+  <circle cx="177" cy="212" r="2.5" fill="#C1E6B5" />
+  <path d="M130 200 Q132 195 134 200 Z" fill="#B5E0A1" />
+  <path d="M70 220 Q72 215 74 220 Z" fill="#8EB87A" />
+  <circle cx="30" cy="210" r="3" fill="#FADADD" />
+  <path d="M60 170 Q62 165 64 170 Z" fill="#B5E0A1" />
+  <path d="M110 180 Q112 175 114 180 Z" fill="#8EB87A" />
+  <circle cx="160" cy="160" r="3" fill="#FFF5E1" />
+  <path d="M200 180 Q202 175 204 180 Z" fill="#B5E0A1" />
+  <path d="M140 110 Q142 105 144 110 Z" fill="#8EB87A" />
+  <path d="M90 60 Q92 55 94 60 Z" fill="#B5E0A1" />
+  <circle cx="190" cy="70" r="3" fill="#FADADD" />
+  <path d="M220 230 Q222 225 224 230 Z" fill="#8EB87A" />
+  <circle cx="40" cy="230" r="2.5" fill="#C1E6B5" />
+  <circle cx="43" cy="232" r="2.5" fill="#C1E6B5" />
+  <circle cx="37" cy="232" r="2.5" fill="#C1E6B5" />
+  <path d="M120 230 Q122 225 124 230 Z" fill="#B5E0A1" />
+</svg>

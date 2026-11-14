@@ -152,6 +152,16 @@ Zwei Stadtteile bringt das Spiel mit; `District.at(x, z)` zieht ihre Grenze:
 | **Blütenviertel** um den Startplatz | `bluetenviertel` | Kirschbäume, Parkbäume, Laterne, Pfingstrosen, Rasen, Pflaster, Fenster, Türen, Läden |
 | **Werksviertel** um das WEST.SIDE-Ensemble, ein altes Industriegebiet | `werksviertel` | Birken, Bäume, Werkslaterne, Wildwuchs, Schotter, Werkspflaster, Werksfenster, Werkstüren, Tore |
 
+### Mitgelieferte Bilder
+
+Das Spiel bringt Bilder mit, die Modelle in früheren Läufen gezeichnet haben: die Besucher,
+die Sammlungen von Blütenviertel und Werksviertel und ein geplantes Viertel, das
+**Wellenviertel** mit seinem Leuchtturm (östlich vom Startplatz). Beim ersten Start kopiert
+`DefaultAssets` sie aus dem Programm in den Asset-Ordner (`src/main/resources/defaults`).
+Jede Datei wird genau einmal angeboten (`library/.defaults` merkt sich, welche): Vorhandenes
+bleibt unberührt, und ein gelöschtes Bild kommt nicht wieder. Abschalten mit
+`-Dthreed4j.defaults=false`.
+
 ### Die Stadt wächst: geplante Viertel
 
 Weitere Viertel plant ein Modell selbst (`DistrictPlanner`), von oben nach unten wie ein
@@ -181,7 +191,7 @@ eigenen Texturen: Gezeichnet wird es nur, wenn es näher ist, als der Dunst reic
 gebaut nur das Viertel, dessen Plan oder Bilder sich geändert haben.
 
 `TownPlanner` plant im Hintergrund das nächste Viertel, sobald das jüngste alle Bilder seiner
-Sammlung hat, bis zur eingestellten Höchstzahl (Vorgabe 4 Viertel, die zwei mitgelieferten
+Sammlung hat, bis zur eingestellten Höchstzahl (Vorgabe 5 Viertel, die zwei mitgelieferten
 eingerechnet). Einstellungen in `.3d4j/generator.properties`: `world.enabled`, `world.model`
 (Vorgabe `openai/gpt-oss-120b`), `world.maxDistricts`.
 

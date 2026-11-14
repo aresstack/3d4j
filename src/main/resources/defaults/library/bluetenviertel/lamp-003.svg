@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Foot/Base -->
+  <!-- Bottom Plate -->
+  <rect x="60" y="480" width="136" height="32" rx="16" fill="#B5835A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Middle Decorative Tier -->
+  <rect x="80" y="440" width="96" height="40" rx="10" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Mint Green Accent Band -->
+  <rect x="80" y="455" width="96" height="10" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Post -->
+  <rect x="122" y="160" width="12" height="280" fill="#B5835A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Decorative Ring on Post -->
+  <rect x="118" y="250" width="20" height="15" rx="4" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="118" y="350" width="20" height="15" rx="4" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Lamp Head -->
+  <!-- Cap -->
+  <path d="M110 160 L146 160 L138 140 L120 140 Z" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 140 Q128 120 136 140" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Globe -->
+  <circle cx="128" cy="110" r="45" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Globe Highlight -->
+  <circle cx="115" cy="95" r="10" fill="#F0F8FF" stroke="none" />
+  
+  <!-- Finial -->
+  <circle cx="128" cy="60" r="6" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Cherry Blossom Decorations -->
+  <!-- Flower 1 -->
+  <circle cx="122" cy="230" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="122" cy="230" r="3" fill="#FFFFFF" stroke="none" />
+  
+  <!-- Flower 2 -->
+  <circle cx="134" cy="320" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="134" cy="320" r="3" fill="#FFFFFF" stroke="none" />
+  
+  <!-- Flower 3 -->
+  <circle cx="122" cy="430" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="122" cy="430" r="3" fill="#FFFFFF" stroke="none" />
+  
+  <!-- Petals falling/clinging -->
+  <ellipse cx="150" cy="400" rx="6" ry="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" transform="rotate(45 150 400)" />
+  <ellipse cx="106" cy="370" rx="6" ry="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" transform="rotate(-30 106 370)" />
+</svg>

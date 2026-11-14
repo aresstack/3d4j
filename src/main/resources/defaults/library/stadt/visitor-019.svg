@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="85" y="380" width="30" height="132" rx="15" fill="#4A3B6B" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="141" y="380" width="30" height="132" rx="15" fill="#4A3B6B" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Torso/Shirt -->
+  <path d="M70 200 Q70 180 128 180 Q186 180 186 200 L195 390 Q195 410 175 410 L81 410 Q61 410 61 390 Z" fill="#FFFDF0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <path d="M70 210 Q40 250 50 320" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M186 210 Q216 250 206 320" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Hands -->
+  <circle cx="50" cy="325" r="12" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="206" cy="325" r="12" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Tie -->
+  <path d="M120 180 L136 180 L140 240 L136 280 L124 280 L120 240 Z" fill="#4A3B6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 280 L136 280 L142 310 L128 320 L114 310 Z" fill="#4A3B6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Neck -->
+  <rect x="118" y="160" width="20" height="30" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Head -->
+  <circle cx="128" cy="120" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Hair -->
+  <path d="M83 120 Q83 60 128 60 Q173 60 173 120 Q173 100 150 90 Q128 80 106 90 Q83 100 83 120" fill="#222222" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="120" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="120" r="4" fill="#3B2A4A" />
+  <path d="M120 135 Q128 145 136 135" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Detail on Shirt -->
+  <circle cx="160" cy="220" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="168" cy="215" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="168" cy="225" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="160" cy="215" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="160" cy="225" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="164" cy="220" r="3" fill="#FFF" />
+
+  <!-- Highlights -->
+  <path d="M100 100 Q110 90 120 100" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+  <path d="M80 220 Q85 250 80 280" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+</svg>

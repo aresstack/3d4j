@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <path d="M100 320 L125 320 L125 500 L95 500 Z" fill="#7B5E57" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 320 L156 320 L161 500 L131 500 Z" fill="#7B5E57" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shoes -->
+  <path d="M95 500 L80 500 Q80 512 95 512 L125 512 L125 500 Z" fill="#333333" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 500 L131 512 L161 512 Q176 512 176 500 L161 500 Z" fill="#333333" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <path d="M90 145 L60 260 L85 270 L100 160 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M166 145 L196 260 L171 270 L156 160 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hands -->
+  <circle cx="72" cy="270" r="12" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="184" cy="270" r="12" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Torso/Jacket -->
+  <path d="M90 145 L166 145 L175 320 L81 320 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Jacket Details -->
+  <path d="M110 145 L128 165 L146 145" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M105 170 L105 290" fill="none" stroke="#6A9EF2" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="100" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair -->
+  <path d="M83 90 Q83 40 128 40 Q173 40 173 90 L173 80 Q128 60 83 80 Z" fill="#2D2D2D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 60 Q128 50 150 60" fill="none" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="100" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="100" r="4" fill="#3B2A4A" />
+  <path d="M118 115 Q128 125 138 115" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+</svg>

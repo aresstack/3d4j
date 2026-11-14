@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M118 512 L138 512 L132 180 L124 180 Z" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bark Marks -->
+  <rect x="124" y="460" width="8" height="4" rx="2" fill="#5D5D5D" />
+  <rect x="126" y="420" width="6" height="4" rx="2" fill="#5D5D5D" />
+  <rect x="124" y="380" width="8" height="4" rx="2" fill="#5D5D5D" />
+  <rect x="128" y="340" width="6" height="4" rx="2" fill="#5D5D5D" />
+  <rect x="125" y="300" width="7" height="4" rx="2" fill="#5D5D5D" />
+  <rect x="127" y="260" width="6" height="4" rx="2" fill="#5D5D5D" />
+  <rect x="124" y="220" width="8" height="4" rx="2" fill="#5D5D5D" />
+
+  <!-- Airy Crown (Light Green) -->
+  <circle cx="128" cy="160" r="80" fill="#B8E986" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="200" r="60" fill="#B8E986" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="200" r="60" fill="#B8E986" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="110" r="60" fill="#B8E986" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Crown Highlights -->
+  <circle cx="110" cy="130" r="20" fill="#DFFFD0" />
+  <circle cx="145" cy="150" r="15" fill="#DFFFD0" />
+  <circle cx="100" cy="180" r="15" fill="#DFFFD0" />
+
+  <!-- Cherry Blossom Accents at Base -->
+  <circle cx="100" cy="505" r="10" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="115" cy="510" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="140" cy="508" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="155" cy="502" r="10" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Left Shutter -->
+  <rect x="12" y="16" width="12" height="96" rx="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Right Shutter -->
+  <rect x="104" y="16" width="12" height="96" rx="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Main Window Frame -->
+  <rect x="24" y="16" width="80" height="96" rx="8" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Area -->
+  <rect x="30" y="22" width="70" height="84" rx="4" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Vertical Casement Bar -->
+  <rect x="53" y="22" width="6" height="84" fill="#C19A6B" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Horizontal Cross Bar -->
+  <rect x="30" y="55" width="70" height="6" fill="#C19A6B" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 36 30 L 46 40 M 66 30 L 76 40" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Cherry Blossom Flowers on the Sill -->
+  <circle cx="32" cy="110" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="32" cy="110" r="1.5" fill="#FFFFE0" />
+  
+  <circle cx="42" cy="113" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="42" cy="113" r="1.5" fill="#FFFFE0" />
+  
+  <circle cx="86" cy="113" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="86" cy="113" r="1.5" fill="#FFFFE0" />
+  
+  <circle cx="96" cy="110" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="96" cy="110" r="1.5" fill="#FFFFE0" />
+</svg>

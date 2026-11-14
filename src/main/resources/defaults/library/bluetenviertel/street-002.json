@@ -1,0 +1,9 @@
+{
+  "kind": "street",
+  "number": 2,
+  "createdAt": "2026-11-14T01:21:48Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "cobblestones: base colour #D2CEDB, small rounded stones in slightly lighter and darker shades of the base colour. It belongs to a district of the town with this look, which everything in the district shares: a cheerful old town in cherry blossom season: frames in cream white and warm wood, shutters and doors in soft pink, mint green or sky blue, rounded friendly shapes, flowers wherever they fit",
+  "width": 256,
+  "height": 256
+}

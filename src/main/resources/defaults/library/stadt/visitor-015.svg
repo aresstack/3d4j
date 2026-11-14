@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <rect x="75" y="460" width="40" height="52" rx="15" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="141" y="460" width="40" height="52" rx="15" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Legs -->
+  <rect x="85" y="400" width="30" height="70" rx="10" fill="#B2F2BB" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="141" y="400" width="30" height="70" rx="10" fill="#B2F2BB" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Raincoat Body -->
+  <path d="M60 220 Q60 200 80 200 L176 200 Q196 200 196 220 L200 410 Q200 430 180 430 L76 430 Q56 430 56 410 Z" fill="#FCE300" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Raincoat Sleeves -->
+  <rect x="40" y="220" width="35" height="130" rx="15" fill="#FCE300" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="181" y="220" width="35" height="130" rx="15" fill="#FCE300" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Raincoat Highlights -->
+  <path d="M70 220 Q70 210 80 210 L100 210" fill="none" stroke="#FFF176" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Raincoat Buttons -->
+  <circle cx="128" cy="260" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="300" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="340" r="6" fill="#3B2A4A" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="160" r="45" fill="#FAD6A5" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair -->
+  <path d="M83 160 Q83 110 128 110 Q173 110 173 160 Q173 170 165 170 Q155 150 145 170 Q135 180 128 170 Q121 180 111 170 Q101 150 91 170 Q83 170 83 160" fill="#F9E076" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M100 130 Q110 120 120 130" fill="none" stroke="#FFF59D" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="155" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="155" r="4" fill="#3B2A4A" />
+  <path d="M120 175 Q128 185 136 175" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Cherry Blossom Detail on Coat -->
+  <circle cx="160" cy="230" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="160" cy="230" r="3" fill="#FFF" />
+</svg>

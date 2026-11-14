@@ -1,0 +1,474 @@
+{
+  "id": "wellenviertel",
+  "name": "Wellenviertel",
+  "style": "Bright pastel blues and sandy beiges dominate, with curved, wave‑shaped houses, light timber frames, whitewashed walls, and a breezy, relaxed seaside mood.",
+  "plot": [
+    1,
+    0
+  ],
+  "plannedBy": "openai/gpt-oss-120b",
+  "plannedAt": "2026-11-14T02:41:15Z",
+  "palette": {
+    "walls": [
+      "#F0E5D8",
+      "#A8D0E6",
+      "#FFE4B5",
+      "#C2E0FF"
+    ],
+    "roofs": [
+      "#FFD700",
+      "#FFB6C1"
+    ],
+    "lawn": "#BCE7A5",
+    "street": "#E0E0E0",
+    "plaza": "#FFF5E1"
+  },
+  "buildings": {
+    "minHeight": 6.0,
+    "maxHeight": 20.0,
+    "minWidth": 8.0,
+    "maxWidth": 16.0,
+    "spacing": 21.0,
+    "roofs": [
+      "flat",
+      "pyramid"
+    ]
+  },
+  "motifs": {
+    "blossom-tree": {
+      "name": "Kirschbaum",
+      "plural": "Kirschbäume",
+      "variations": [
+        "tall cherry tree with pastel pink blossoms swaying over a wave‑shaped roof",
+        "slender cherry tree with white blossoms and a wind‑swept canopy",
+        "small cherry sapling in a sand‑filled pot, branches curling like waves"
+      ]
+    },
+    "green-tree": {
+      "name": "Olivenbaum",
+      "plural": "Olivenbäume",
+      "variations": [
+        "slim olive tree with silvery leaves, trunk curved like a sea wave",
+        "short olive tree with twisted trunk and a few ripe olives",
+        "young olive tree in a wooden planter, leaves rustling in a breezy pose"
+      ]
+    },
+    "lamp": {
+      "name": "Laterne",
+      "plural": "Laternen",
+      "variations": [
+        "curved metal street lamp with a pastel‑blue glass shade, gentle wave motif on the pole",
+        "simple white‑washed lantern with a rope‑like cord, hanging from a low post",
+        "tall pastel‑green lamp post with a wave‑shaped iron base and a soft glowing bulb"
+      ]
+    },
+    "bush": {
+      "name": "Buchsbaum",
+      "plural": "Buchsäume",
+      "variations": [
+        "low evergreen shrub trimmed into a smooth dome, dotted with tiny white flowers",
+        "weathered wooden crate stacked with seashells and driftwood, placed between houses",
+        "small barrel painted beige, half‑filled with sand and a sprig of sea lavender"
+      ]
+    },
+    "lawn": {
+      "name": "Rasenfläche",
+      "plural": "Rasenflächen",
+      "variations": [
+        "soft, undulating swirls that echo the wave‑shaped roofs: base colour #BCE7A5, the shapes in slightly lighter and darker shades of the base colour",
+        "light, irregular patches forming gentle dunes: base colour #BCE7A5, the shapes in slightly lighter and darker shades of the base colour",
+        "thin, parallel lines that ripple like a calm sea: base colour #BCE7A5, the shapes in slightly lighter and darker shades of the base colour"
+      ]
+    },
+    "street": {
+      "name": "Straßenpflaster",
+      "plural": "Straßenpflaster",
+      "variations": [
+        "interlocking hexagonal tiles creating a subtle wave pattern: base colour #E0E0E0, the shapes in slightly lighter and darker shades of the base colour",
+        "rounded cobblestones arranged in concentric circles: base colour #E0E0E0, the shapes in slightly lighter and darker shades of the base colour",
+        "long, narrow rectangles laid out in a flowing, sinusoidal line: base colour #E0E0E0, the shapes in slightly lighter and darker shades of the base colour"
+      ]
+    },
+    "window": {
+      "name": "Fenster",
+      "plural": "Fenster",
+      "variations": [
+        "arched window with pastel curtains fluttering in the breeze",
+        "round window framed in light timber, filled with sea‑glass reflections",
+        "rectangular window with white shutters slightly ajar, showing a glimpse of a cozy interior"
+      ]
+    },
+    "door": {
+      "name": "Tür",
+      "plural": "Türen",
+      "variations": [
+        "curved wooden door painted pastel blue, brass knob shaped like a seashell",
+        "whitewashed door with a woven wicker basket on the sill, wave carving on the lintel",
+        "soft beige door with a glass panel, framed by a gentle wave motif"
+      ]
+    },
+    "shop": {
+      "name": "Laden",
+      "plural": "Läden",
+      "variations": [
+        "small fishmonger stall with nets and hanging lanterns",
+        "beach café with a striped awning, tables set with pastel mugs",
+        "souvenir shop displaying seashells and pastel‑colored postcards in open shelves"
+      ]
+    }
+  },
+  "landmark": {
+    "name": "Leuchtturm",
+    "idea": "A pastel lighthouse with pink and white bands that narrows towards the top, with a gallery, a glowing lantern room and a domed cap, standing on an eight-sided pier.",
+    "components": [
+      {
+        "name": "pier",
+        "shape": "extrude",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 0.0,
+        "height": 0.6,
+        "width": 6.0,
+        "depth": 6.0,
+        "roofHeight": 0.0,
+        "color": "#E8C98E",
+        "topColor": "#F5D6A1",
+        "outline": [
+          [
+            -0.42,
+            -1
+          ],
+          [
+            0.42,
+            -1
+          ],
+          [
+            1,
+            -0.42
+          ],
+          [
+            1,
+            0.42
+          ],
+          [
+            0.42,
+            1
+          ],
+          [
+            -0.42,
+            1
+          ],
+          [
+            -1,
+            0.42
+          ],
+          [
+            -1,
+            -0.42
+          ]
+        ]
+      },
+      {
+        "name": "foot",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 0.6,
+        "height": 1.8,
+        "width": 3.4,
+        "depth": 3.4,
+        "roofHeight": 0.0,
+        "color": "#8CC4E0",
+        "topColor": "#C2E0FF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0.5
+          ],
+          [
+            0.9,
+            0.62
+          ],
+          [
+            0.76,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower band 1",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 2.4,
+        "height": 3.0,
+        "width": 2.5,
+        "depth": 2.5,
+        "roofHeight": 0.0,
+        "color": "#F7A8C8",
+        "topColor": "#F7A8C8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9333,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower band 2",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 5.4,
+        "height": 3.0,
+        "width": 2.3333333333333335,
+        "depth": 2.3333333333333335,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9286,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower band 3",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 8.4,
+        "height": 3.0,
+        "width": 2.1666666666666665,
+        "depth": 2.1666666666666665,
+        "roofHeight": 0.0,
+        "color": "#F7A8C8",
+        "topColor": "#F7A8C8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9231,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower band 4",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 11.4,
+        "height": 3.0,
+        "width": 2.0,
+        "depth": 2.0,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9167,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower band 5",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 14.4,
+        "height": 3.0,
+        "width": 1.8333333333333335,
+        "depth": 1.8333333333333335,
+        "roofHeight": 0.0,
+        "color": "#F7A8C8",
+        "topColor": "#F7A8C8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9091,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "tower band 6",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 17.4,
+        "height": 3.0,
+        "width": 1.6666666666666665,
+        "depth": 1.6666666666666665,
+        "roofHeight": 0.0,
+        "color": "#FFFFFF",
+        "topColor": "#FFFFFF",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.9,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "gallery",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 20.4,
+        "height": 1.1,
+        "width": 2.5,
+        "depth": 2.5,
+        "roofHeight": 0.0,
+        "color": "#8CC4E0",
+        "topColor": "#6FA6C4",
+        "outline": [
+          [
+            0.6,
+            0
+          ],
+          [
+            1,
+            0.3
+          ],
+          [
+            1,
+            0.72
+          ],
+          [
+            0.94,
+            0.72
+          ],
+          [
+            0.94,
+            1
+          ],
+          [
+            0.9,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "lantern room",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 21.2,
+        "height": 2.7,
+        "width": 1.5,
+        "depth": 1.5,
+        "roofHeight": 0.0,
+        "color": "#FFF1A0",
+        "topColor": "#FFF7C8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "cap",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 23.9,
+        "height": 2.3,
+        "width": 1.95,
+        "depth": 1.95,
+        "roofHeight": 0.0,
+        "color": "#F7A8C8",
+        "topColor": "#F7A8C8",
+        "outline": [
+          [
+            1,
+            0
+          ],
+          [
+            0.93,
+            0.3
+          ],
+          [
+            0.72,
+            0.62
+          ],
+          [
+            0.4,
+            0.88
+          ],
+          [
+            0.12,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "finial",
+        "shape": "lathe",
+        "x": 0.0,
+        "z": 0.0,
+        "base": 26.2,
+        "height": 1.5,
+        "width": 0.32,
+        "depth": 0.32,
+        "roofHeight": 0.0,
+        "color": "#FFD25A",
+        "topColor": "#FFD25A",
+        "outline": [
+          [
+            0.35,
+            0
+          ],
+          [
+            0.35,
+            0.45
+          ],
+          [
+            1,
+            0.62
+          ],
+          [
+            1,
+            0.8
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

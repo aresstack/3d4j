@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Main Window Frame -->
+  <rect x="24" y="16" width="80" height="96" rx="2" fill="#3D4D42" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass Background -->
+  <rect x="28" y="20" width="72" height="88" fill="#AEE2FF" />
+  
+  <!-- Vertical Steel Dividers -->
+  <rect x="50" y="20" width="4" height="88" fill="#3D4D42" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="74" y="20" width="4" height="88" fill="#3D4D42" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Horizontal Steel Dividers -->
+  <rect x="28" y="40" width="72" height="4" fill="#3D4D42" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="28" y="62" width="72" height="4" fill="#3D4D42" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="28" y="84" width="72" height="4" fill="#3D4D42" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M32 24 L46 24 L32 36 Z" fill="#DDF5FF" />
+  <path d="M56 66 L70 66 L56 78 Z" fill="#DDF5FF" />
+  <path d="M78 88 L92 88 L78 100 Z" fill="#DDF5FF" />
+  <path d="M32 66 L46 66 L32 78 Z" fill="#DDF5FF" />
+  
+  <!-- Rivets -->
+  <circle cx="27" cy="19" r="2" fill="#3B2A4A" />
+  <circle cx="101" cy="19" r="2" fill="#3B2A4A" />
+  <circle cx="27" cy="110" r="2" fill="#3B2A4A" />
+  <circle cx="101" cy="110" r="2" fill="#3B2A4A" />
+  <circle cx="52" cy="42" r="1.5" fill="#3B2A4A" />
+  <circle cx="52" cy="64" r="1.5" fill="#3B2A4A" />
+  <circle cx="76" cy="42" r="1.5" fill="#3B2A4A" />
+  <circle cx="76" cy="64" r="1.5" fill="#3B2A4A" />
+</svg>

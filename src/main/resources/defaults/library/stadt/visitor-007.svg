@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="85" y="330" width="35" height="182" rx="15" fill="#A0D8EF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="136" y="330" width="35" height="182" rx="15" fill="#A0D8EF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <rect x="55" y="200" width="30" height="130" rx="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="171" y="200" width="30" height="130" rx="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Torso/Shirt -->
+  <rect x="70" y="180" width="116" height="160" rx="20" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tie -->
+  <path d="M120 180 L136 180 L138 240 L128 270 L118 240 Z" fill="#4A3B5A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 180 L136 180 L132 210 L124 210 Z" fill="#4A3B5A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Cherry Blossom Pin -->
+  <circle cx="150" cy="210" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="155" cy="205" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="155" cy="215" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="145" cy="205" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="145" cy="215" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Head -->
+  <circle cx="128" cy="120" r="55" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M73 120 C73 60 183 60 183 120 L183 110 C183 70 150 60 128 60 C106 60 73 70 73 110 Z" fill="#222222" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M73 110 Q80 90 100 100 Q120 80 140 100 Q160 90 183 110" fill="none" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Face -->
+  <circle cx="110" cy="125" r="5" fill="#3B2A4A" />
+  <circle cx="146" cy="125" r="5" fill="#3B2A4A" />
+  <path d="M115 145 Q128 155 141 145" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M100 90 Q110 80 120 90" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.3" />
+  <rect x="80" y="190" width="10" height="40" rx="5" fill="#FFFFFF" opacity="0.5" />
+</svg>

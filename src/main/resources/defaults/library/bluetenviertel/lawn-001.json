@@ -1,0 +1,10 @@
+{
+  "kind": "lawn",
+  "number": 1,
+  "createdAt": "2026-11-14T00:20:01Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a mown lawn: base colour #A2D08C, small tufts of grass in slightly darker and lighter greens, a few tiny white and pink flowers",
+  "width": 256,
+  "height": 256,
+  "importedFrom": "lawn-tile"
+}

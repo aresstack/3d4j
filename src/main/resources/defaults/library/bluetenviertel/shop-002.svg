@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Sign Board -->
+  <rect x="10" y="18" width="108" height="22" rx="8" ry="8" fill="#C19A6B" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Window Frame -->
+  <rect x="14" y="40" width="100" height="72" rx="4" ry="4" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Glass Area -->
+  <rect x="20" y="46" width="88" height="60" rx="2" ry="2" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Window Panes (Muntins) -->
+  <rect x="45" y="46" width="6" height="60" rx="2" ry="2" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="67" y="46" width="6" height="60" rx="2" ry="2" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="20" y="72" width="88" height="6" rx="2" ry="2" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Glass Highlights -->
+  <path d="M30 55 L40 65" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  <path d="M80 55 L90 65" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  <path d="M35 50 L40 55" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Cherry Blossom Clusters -->
+  <!-- Top Left -->
+  <circle cx="10" cy="18" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="14" cy="14" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="18" cy="18" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="12" cy="16" r="2" fill="#98FF98" stroke="#3B2A4A" stroke-width="1" />
+  
+  <!-- Top Right -->
+  <circle cx="118" cy="18" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="114" cy="14" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="110" cy="18" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="116" cy="16" r="2" fill="#98FF98" stroke="#3B2A4A" stroke-width="1" />
+  
+  <!-- Bottom Left -->
+  <circle cx="14" cy="112" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="10" cy="108" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="18" cy="112" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="16" cy="110" r="2" fill="#98FF98" stroke="#3B2A4A" stroke-width="1" />
+  
+  <!-- Bottom Right -->
+  <circle cx="114" cy="112" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="118" cy="108" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="110" cy="112" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="112" cy="110" r="2" fill="#98FF98" stroke="#3B2A4A" stroke-width="1" />
+  
+  <!-- Mid-section Blossoms -->
+  <circle cx="14" cy="40" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="10" cy="36" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="114" cy="40" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="118" cy="36" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+</svg>

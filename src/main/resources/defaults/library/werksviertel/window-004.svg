@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Frame: Dark Steel -->
+  <path d="M24 110 V55 A40 40 0 0 1 104 55 V110 H24 Z" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass: Light Blue -->
+  <path d="M29 105 V59 A35 35 0 0 1 99 59 V105 H29 Z" fill="#B0E0E6" />
+  
+  <!-- Glass Highlights -->
+  <path d="M35 65 L45 75 M40 60 L50 70" stroke="#E0F7FA" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Iron Bars: Outlines -->
+  <g stroke="#3B2A4A" stroke-width="8" stroke-linecap="round">
+    <line x1="44" y1="55" x2="44" y2="110" />
+    <line x1="84" y1="55" x2="84" y2="110" />
+    <line x1="24" y1="80" x2="104" y2="80" />
+  </g>
+  
+  <!-- Iron Bars: Rust-Red Fill -->
+  <g stroke="#8B4513" stroke-width="4" stroke-linecap="round">
+    <line x1="44" y1="55" x2="44" y2="110" />
+    <line x1="84" y1="55" x2="84" y2="110" />
+    <line x1="24" y1="80" x2="104" y2="80" />
+  </g>
+  
+  <!-- Rivets -->
+  <g fill="#8B4513" stroke="#3B2A4A" stroke-width="3">
+    <circle cx="44" cy="80" r="3" />
+    <circle cx="84" cy="80" r="3" />
+    <circle cx="44" cy="55" r="3" />
+    <circle cx="84" cy="55" r="3" />
+    <circle cx="24" cy="80" r="3" />
+    <circle cx="104" cy="80" r="3" />
+  </g>
+  
+  <!-- Weed at the sill -->
+  <path d="M24 110 Q18 100 22 90 Q26 85 22 80" fill="none" stroke="#7CFC00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M22 90 Q26 85 22 80" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M24 110 Q18 100 22 90" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

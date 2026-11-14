@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Post -->
+  <path d="M110 512 L146 512 L140 480 L136 150 L120 150 L116 480 Z" fill="#B5835A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Swan Neck -->
+  <path d="M128 150 C 128 80, 172 80, 172 130" fill="none" stroke="#B5835A" stroke-width="16" stroke-linecap="round" />
+  <path d="M128 150 C 128 80, 172 80, 172 130" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Lantern -->
+  <!-- Top Cap -->
+  <path d="M162 130 Q 172 110 182 130 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Glass Body -->
+  <rect x="162" y="130" width="20" height="40" rx="4" fill="#FFF9E3" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Bottom Base -->
+  <path d="M162 170 L182 170 L177 185 L167 185 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <path d="M124 450 L124 200" stroke="#D4A373" stroke-width="4" stroke-linecap="round" />
+  <path d="M166 135 L166 165" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Clusters -->
+  <!-- Cluster 1 -->
+  <circle cx="115" cy="420" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="410" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="135" cy="420" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="425" r="6" fill="#B2E2D2" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster 2 -->
+  <circle cx="135" cy="260" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="145" cy="250" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="145" cy="265" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="138" cy="268" r="6" fill="#B2E2D2" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster 3 -->
+  <circle cx="120" cy="160" r="8" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="130" cy="155" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="168" r="6" fill="#B2E2D2" stroke="#3B2A4A" stroke-width="6" />
+</svg>

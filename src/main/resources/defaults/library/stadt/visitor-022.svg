@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs and Shoes -->
+  <path d="M85 480 L85 380 L120 380 L120 480 Q120 512 85 512 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 480 L136 380 L171 380 L171 480 Q171 512 136 512 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M70 512 Q70 470 120 470 L120 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 512 L136 470 L186 470 Q186 512 136 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Torso / Shirt -->
+  <path d="M80 380 L176 380 L176 220 L80 220 Z" fill="#FFF5E1" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Overalls Bib and Straps -->
+  <path d="M90 220 L166 220 L166 320 Q166 350 128 350 Q90 350 90 320 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M90 220 L90 200 L110 200 L110 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M146 220 L146 200 L166 200 L166 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M90 200 L110 200 L110 220 L90 220 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M146 200 L166 200 L166 220 L146 220 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <path d="M80 230 L50 320 Q45 340 60 340 L80 340 L80 230" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 230 L206 320 Q211 340 196 340 L176 340 L176 230" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="150" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M83 150 Q83 100 128 100 Q173 100 173 150 L173 160 Q128 140 83 160 Z" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Ponytail -->
+  <path d="M170 130 Q210 110 200 170 Q190 200 160 170" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="170" cy="140" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Face -->
+  <circle cx="115" cy="145" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="145" r="4" fill="#3B2A4A" />
+  <path d="M120 165 Q128 175 136 165" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Accents -->
+  <circle cx="110" cy="300" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="118" cy="308" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="102" cy="308" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  
+  <circle cx="190" cy="140" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="198" cy="155" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+
+  <!-- Highlights -->
+  <path d="M100 120 Q110 115 120 120" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+  <path d="M95 240 L95 280" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.3" />
+</svg>

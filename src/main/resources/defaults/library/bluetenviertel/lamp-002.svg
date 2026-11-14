@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Base -->
+  <path d="M80 512 L176 512 L165 480 L91 480 Z" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Main Post -->
+  <path d="M118 480 L138 480 L135 120 L121 120 Z" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Left Arm -->
+  <path d="M121 150 Q80 150 60 110" fill="none" stroke="#2D5A27" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M121 150 Q80 150 60 110" fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" /> <!-- Shadow/Outline effect -->
+  
+  <!-- Right Arm -->
+  <path d="M135 150 Q176 150 196 110" fill="none" stroke="#2D5A27" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Left Lantern -->
+  <g transform="translate(40, 60)">
+    <!-- Frame -->
+    <path d="M20 0 L40 0 L50 20 L40 40 L20 40 L10 20 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <!-- Glass -->
+    <path d="M24 6 L36 6 L44 20 L36 34 L24 34 L16 20 Z" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+    <!-- Top Cap -->
+    <path d="M10 10 Q30 -10 50 10 L40 0 L20 0 Z" fill="#F8C8DC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  </g>
+  
+  <!-- Right Lantern -->
+  <g transform="translate(176, 60)">
+    <!-- Frame -->
+    <path d="M20 0 L40 0 L50 20 L40 40 L20 40 L10 20 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <!-- Glass -->
+    <path d="M24 6 L36 6 L44 20 L36 34 L24 34 L16 20 Z" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+    <!-- Top Cap -->
+    <path d="M10 10 Q30 -10 50 10 L40 0 L20 0 Z" fill="#F8C8DC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  </g>
+
+  <!-- Cherry Blossom Vines and Flowers -->
+  <path d="M128 480 Q140 400 120 300 Q100 200 130 120" fill="none" stroke="#2D5A27" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Flower 1 -->
+  <g transform="translate(135, 320)">
+    <circle cx="0" cy="0" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+    <circle cx="0" cy="0" r="4" fill="#FFD700" />
+  </g>
+  
+  <!-- Flower 2 -->
+  <g transform="translate(110, 240)">
+    <circle cx="0" cy="0" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+    <circle cx="0" cy="0" r="4" fill="#FFD700" />
+  </g>
+  
+  <!-- Flower 3 -->
+  <g transform="translate(130, 180)">
+    <circle cx="0" cy="0" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+    <circle cx="0" cy="0" r="4" fill="#FFD700" />
+  </g>
+  
+  <!-- Flower 4 -->
+  <g transform="translate(115, 140)">
+    <circle cx="0" cy="0" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+    <circle cx="0" cy="0" r="4" fill="#FFD700" />
+  </g>
+
+  <!-- Highlights -->
+  <path d="M125 450 L125 200" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.3" />
+</svg>

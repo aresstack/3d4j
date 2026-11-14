@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M110 512 L118 320 Q128 300 138 320 L146 512 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trunk Detail (Wood Grain) -->
+  <path d="M122 480 Q128 460 134 480" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M120 420 Q128 400 136 420" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Crown (Main Green Mass) -->
+  <path d="M128 80 
+           A 60 60 0 0 1 68 140 
+           A 70 70 0 0 1 60 230 
+           A 70 70 0 0 1 128 310 
+           A 70 70 0 0 1 196 230 
+           A 70 70 0 0 1 188 140 
+           A 60 60 0 0 1 128 80 Z" 
+        fill="#76B947" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Leaf Highlights -->
+  <circle cx="100" cy="140" r="25" fill="#A2D17D" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="150" cy="160" r="20" fill="#A2D17D" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="120" cy="220" r="30" fill="#A2D17D" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Cherry Blossom Accents (District Theme) -->
+  <circle cx="80" cy="180" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="190" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="130" cy="120" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="160" cy="260" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="90" cy="260" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+</svg>

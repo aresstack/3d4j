@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Planter -->
+  <rect x="68" y="450" width="120" height="62" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" rx="4" />
+  <!-- Iron Rim -->
+  <rect x="60" y="440" width="136" height="15" fill="#5A5A5A" stroke="#3B2A4A" stroke-width="8" rx="2" />
+  <!-- Rivets on the rim -->
+  <circle cx="70" cy="447" r="3" fill="#3B2A4A" />
+  <circle cx="100" cy="447" r="3" fill="#3B2A4A" />
+  <circle cx="130" cy="447" r="3" fill="#3B2A4A" />
+  <circle cx="160" cy="447" r="3" fill="#3B2A4A" />
+  <circle cx="186" cy="447" r="3" fill="#3B2A4A" />
+  <!-- Rust stain on concrete -->
+  <path d="M68 460 Q 80 470 75 490" fill="none" stroke="#B24C39" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Forked Trunk -->
+  <path d="M110 450 L115 320 L80 220 L100 210 L120 310 L136 310 L156 210 L176 220 L141 320 L146 450 Z" fill="#7B5E4F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Foliage - Back Layer (Darker) -->
+  <circle cx="80" cy="200" r="50" fill="#4A7C44" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="180" r="60" fill="#4A7C44" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="125" cy="120" r="55" fill="#4A7C44" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Foliage - Mid Layer -->
+  <circle cx="60" cy="160" r="40" fill="#6B9E5B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="160" r="45" fill="#6B9E5B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="140" r="45" fill="#6B9E5B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="130" cy="80" r="40" fill="#6B9E5B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="180" cy="220" r="40" fill="#6B9E5B" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Foliage - Highlights (Lighter) -->
+  <circle cx="70" cy="140" r="20" fill="#8DBB7D" />
+  <circle cx="120" cy="100" r="20" fill="#8DBB7D" />
+  <circle cx="170" cy="120" r="20" fill="#8DBB7D" />
+  <circle cx="190" cy="180" r="15" fill="#8DBB7D" />
+
+  <!-- Scruffy Weeds at the base -->
+  <path d="M60 450 Q 50 430 40 440" fill="none" stroke="#6B9E5B" stroke-width="6" stroke-linecap="round" />
+  <path d="M65 450 Q 60 420 70 430" fill="none" stroke="#6B9E5B" stroke-width="6" stroke-linecap="round" />
+  <path d="M190 450 Q 200 430 210 440" fill="none" stroke="#6B9E5B" stroke-width="6" stroke-linecap="round" />
+  <path d="M185 450 Q 190 420 180 430" fill="none" stroke="#6B9E5B" stroke-width="6" stroke-linecap="round" />
+</svg>

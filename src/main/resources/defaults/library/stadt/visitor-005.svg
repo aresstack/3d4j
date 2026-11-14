@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs/Pants (Mint Green) -->
+  <rect x="90" y="360" width="35" height="130" rx="15" fill="#B2D8B2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="360" width="35" height="130" rx="15" fill="#B2D8B2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes (Warm Wood Brown) -->
+  <rect x="85" y="480" width="45" height="25" rx="12" fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="126" y="480" width="45" height="25" rx="12" fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body/Cardigan (Red) -->
+  <rect x="70" y="210" width="116" height="160" rx="30" fill="#E63946" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shirt (Cream White) -->
+  <path d="M100 210 L156 210 L128 270 Z" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Arms (Red) -->
+  <rect x="50" y="220" width="30" height="120" rx="15" fill="#E63946" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" transform="rotate(10 65 220)" />
+  <rect x="176" y="220" width="30" height="120" rx="15" fill="#E63946" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" transform="rotate(-10 191 220)" />
+  
+  <!-- Hands (Skin Tone) -->
+  <circle cx="60" cy="345" r="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="196" cy="345" r="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head/Face (Skin Tone) -->
+  <circle cx="128" cy="150" r="50" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair (Grey) -->
+  <path d="M80 150 Q80 80 128 80 Q176 80 176 150 Q185 130 170 110 Q150 90 128 90 Q106 90 86 110 Q71 130 80 150" fill="#D3D3D3" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 150 C70 160 70 180 80 190" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 150 C186 160 186 180 176 190" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Glasses -->
+  <circle cx="113" cy="155" r="12" fill="none" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="143" cy="155" r="12" fill="none" stroke="#3B2A4A" stroke-width="6" />
+  <line x1="125" y1="155" x2="131" y2="155" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Eyes and Smile -->
+  <circle cx="113" cy="155" r="3" fill="#3B2A4A" />
+  <circle cx="143" cy="155" r="3" fill="#3B2A4A" />
+  <path d="M118 175 Q128 185 138 175" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Pin (Soft Pink) -->
+  <circle cx="160" cy="230" r="10" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="160" cy="230" r="3" fill="#FFFDD0" />
+  
+  <!-- Highlights -->
+  <path d="M100 120 Q110 110 120 120" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+  <path d="M80 230 Q85 230 90 240" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.3" />
+</svg>

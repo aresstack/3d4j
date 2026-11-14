@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M100 512 Q128 450 120 280 L136 280 Q128 450 156 512 Z" 
+        fill="#8B5A2B" 
+        stroke="#3B2A4A" 
+        stroke-width="8" 
+        stroke-linejoin="round" />
+  
+  <!-- Trunk Highlight -->
+  <path d="M115 500 Q122 450 122 300" 
+        fill="none" 
+        stroke="#A67B5B" 
+        stroke-width="6" 
+        stroke-linecap="round" />
+
+  <!-- Blossom Crown -->
+  <path d="M128 320 
+           A 50 50 0 0 0 78 270 
+           A 60 60 0 0 0 60 200 
+           A 60 60 0 0 0 80 130 
+           A 70 70 0 0 0 128 80 
+           A 70 70 0 0 0 176 130 
+           A 60 60 0 0 0 196 200 
+           A 60 60 0 0 0 178 270 
+           A 50 50 0 0 0 128 320 Z" 
+        fill="#FFB7C5" 
+        stroke="#3B2A4A" 
+        stroke-width="8" 
+        stroke-linejoin="round" />
+
+  <!-- Blossom Highlights (Lighter Pink Blobs) -->
+  <circle cx="100" cy="150" r="25" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="150" cy="120" r="30" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="130" cy="180" r="20" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="220" r="25" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="80" cy="210" r="20" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="6" />
+</svg>

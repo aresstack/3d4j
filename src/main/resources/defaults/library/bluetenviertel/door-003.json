@@ -1,0 +1,7 @@
+{
+  "kind": "door",
+  "number": 3,
+  "createdAt": "2026-11-14T01:00:51Z",
+  "model": "google/gemma-4-31B-it",
+  "task": "Draw: a door with a glass pane and a small canopy above it.\nIt belongs to a district of the town with this look, which every part of the district shares: a cheerful old town in cherry blossom season: frames in cream white and warm wood, shutters and doors in soft pink, mint green or sky blue, rounded friendly shapes, flowers wherever they fit."
+}

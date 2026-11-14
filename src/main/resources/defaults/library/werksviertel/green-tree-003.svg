@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base -->
+  <rect x="60" y="480" width="136" height="32" rx="4" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trunk -->
+  <rect x="120" y="60" width="16" height="420" fill="#A55244" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Needle Cloud 1 (Bottom) -->
+  <path d="M68 210 Q 68 180 100 180 Q 128 160 156 180 Q 188 180 188 210 Q 188 240 156 240 Q 128 260 100 240 Q 68 240 68 210" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Needle Cloud 2 (Middle) -->
+  <path d="M83 150 Q 83 120 110 120 Q 128 100 146 120 Q 173 120 173 150 Q 173 180 146 180 Q 128 200 110 180 Q 83 180 83 150" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Needle Cloud 3 (Top) -->
+  <path d="M98 90 Q 98 60 115 60 Q 128 40 141 60 Q 158 60 158 90 Q 158 120 141 120 Q 128 140 115 120 Q 98 120 98 90" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <path d="M100 180 Q 110 170 128 180" fill="none" stroke="#4A8C44" stroke-width="6" stroke-linecap="round" />
+  <path d="M110 120 Q 120 110 128 120" fill="none" stroke="#4A8C44" stroke-width="6" stroke-linecap="round" />
+  <path d="M115 60 Q 120 50 128 60" fill="none" stroke="#4A8C44" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Weeds -->
+  <path d="M70 480 Q 65 460 55 470" fill="none" stroke="#2D5A27" stroke-width="8" stroke-linecap="round" />
+  <path d="M175 480 Q 180 460 190 470" fill="none" stroke="#2D5A27" stroke-width="8" stroke-linecap="round" />
+</svg>

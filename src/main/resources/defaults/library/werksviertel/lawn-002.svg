@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#BDB7B0"/>
+  <circle cx="30" cy="40" r="3" fill="#CFCBCA"/>
+  <circle cx="70" cy="35" r="2" fill="#A8A39E"/>
+  <circle cx="110" cy="50" r="4" fill="#96918C"/>
+  <circle cx="150" cy="45" r="3" fill="#CFCBCA"/>
+  <circle cx="200" cy="60" r="2" fill="#A8A39E"/>
+  <circle cx="40" cy="90" r="3" fill="#96918C"/>
+  <circle cx="80" cy="100" r="4" fill="#CFCBCA"/>
+  <circle cx="130" cy="80" r="2" fill="#A8A39E"/>
+  <circle cx="170" cy="110" r="3" fill="#96918C"/>
+  <circle cx="210" cy="130" r="4" fill="#CFCBCA"/>
+  <circle cx="50" cy="140" r="2" fill="#A8A39E"/>
+  <circle cx="90" cy="160" r="3" fill="#96918C"/>
+  <circle cx="140" cy="150" r="4" fill="#CFCBCA"/>
+  <circle cx="190" cy="170" r="2" fill="#A8A39E"/>
+  <circle cx="220" cy="190" r="3" fill="#96918C"/>
+  <circle cx="60" cy="200" r="4" fill="#CFCBCA"/>
+  <circle cx="110" cy="210" r="2" fill="#A8A39E"/>
+  <circle cx="160" cy="220" r="3" fill="#96918C"/>
+  <circle cx="200" cy="230" r="4" fill="#CFCBCA"/>
+  <circle cx="30" cy="220" r="2" fill="#A8A39E"/>
+  <circle cx="100" cy="130" r="3" fill="#96918C"/>
+  <circle cx="180" cy="80" r="4" fill="#CFCBCA"/>
+  <circle cx="230" cy="50" r="2" fill="#A8A39E"/>
+  <circle cx="150" cy="190" r="3" fill="#96918C"/>
+  <circle cx="70" cy="180" r="4" fill="#CFCBCA"/>
+  <path d="M50 60 L52 54 L54 58 L56 52 L58 58 L60 60 Z" fill="#8B9474"/>
+  <path d="M130 40 L132 34 L134 38 L136 32 L138 38 L140 40 Z" fill="#A3AD8D"/>
+  <path d="M190 100 L192 94 L194 98 L196 92 L198 98 L200 100 Z" fill="#8B9474"/>
+  <path d="M60 120 L62 114 L64 118 L66 112 L68 118 L70 120 Z" fill="#A3AD8D"/>
+  <path d="M110 170 L112 164 L114 168 L116 162 L118 168 L120 170 Z" fill="#8B9474"/>
+  <path d="M170 150 L172 144 L174 148 L176 142 L178 148 L180 150 Z" fill="#A3AD8D"/>
+  <path d="M210 210 L212 204 L214 208 L216 202 L218 208 L220 210 Z" fill="#8B9474"/>
+  <path d="M40 210 L42 204 L44 208 L46 202 L48 208 L50 210 Z" fill="#A3AD8D"/>
+  <path d="M150 70 L152 64 L154 68 L156 62 L158 68 L160 70 Z" fill="#8B9474"/>
+  <path d="M220 110 L222 104 L224 108 L226 102 L228 108 L230 110 Z" fill="#A3AD8D"/>
+</svg>

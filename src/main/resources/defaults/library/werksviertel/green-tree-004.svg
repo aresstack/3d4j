@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base with Industrial Detail -->
+  <rect x="60" y="470" width="136" height="42" fill="#9E9E9E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="80" cy="485" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="176" cy="485" r="4" fill="#8B4513" stroke="#3B2A4A" stroke-width="4" />
+  <path d="M100 470 L110 490 L105 512" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Trunk -->
+  <path d="M110 470 Q115 350 120 250 Q125 350 135 470 Z" fill="#4E342E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Furrows in Trunk -->
+  <path d="M118 440 Q122 420 118 400" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M128 450 Q132 430 128 410" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M122 360 Q126 340 122 320" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Branches -->
+  <path d="M120 250 L90 200" fill="none" stroke="#4E342E" stroke-width="8" stroke-linecap="round" />
+  <path d="M125 280 L160 220" fill="none" stroke="#4E342E" stroke-width="8" stroke-linecap="round" />
+  <path d="M122 220 L122 150" fill="none" stroke="#4E342E" stroke-width="8" stroke-linecap="round" />
+  <path d="M122 200 L80 160" fill="none" stroke="#4E342E" stroke-width="8" stroke-linecap="round" />
+  <path d="M122 200 L160 160" fill="none" stroke="#4E342E" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Loose Crown of Small Leaves -->
+  <!-- Cluster Left -->
+  <circle cx="80" cy="150" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="95" cy="160" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="70" cy="170" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="85" cy="180" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster Right -->
+  <circle cx="160" cy="150" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="145" cy="160" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="170" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="155" cy="180" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster Top -->
+  <circle cx="122" cy="130" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="145" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="134" cy="145" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster Mid-Right -->
+  <circle cx="160" cy="210" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="175" cy="220" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster Mid-Left -->
+  <circle cx="90" cy="210" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="75" cy="220" r="12" fill="#C5E1A5" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Highlights on Leaves -->
+  <circle cx="76" cy="146" r="3" fill="#E8F5E9" />
+  <circle cx="164" cy="146" r="3" fill="#E8F5E9" />
+  <circle cx="118" cy="126" r="3" fill="#E8F5E9" />
+</svg>

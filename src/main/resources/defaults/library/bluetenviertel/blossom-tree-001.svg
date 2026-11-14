@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M100 512 L125 310 L131 310 L156 512 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Crown -->
+  <path d="M128 40 
+           A 50 50 0 0 1 178 40 
+           A 70 70 0 0 1 236 110 
+           A 80 80 0 0 1 236 210 
+           A 70 70 0 0 1 178 290 
+           A 60 60 0 0 1 128 310 
+           A 60 60 0 0 1 78 290 
+           A 70 70 0 0 1 20 210 
+           A 80 80 0 0 1 20 110 
+           A 70 70 0 0 1 78 40 
+           A 50 50 0 0 1 128 40 Z" 
+        fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <circle cx="100" cy="80" r="20" fill="#FFD1DC" />
+  <circle cx="160" cy="100" r="25" fill="#FFD1DC" />
+  <circle cx="130" cy="150" r="15" fill="#FFD1DC" />
+  
+  <!-- Blossom Details -->
+  <circle cx="80" cy="130" r="10" fill="#F08080" />
+  <circle cx="180" cy="140" r="10" fill="#F08080" />
+  <circle cx="120" cy="220" r="10" fill="#F08080" />
+  <circle cx="170" cy="240" r="10" fill="#F08080" />
+  <circle cx="70" cy="200" r="10" fill="#F08080" />
+  
+  <!-- Ground Blossoms -->
+  <circle cx="90" cy="505" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="160" cy="508" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="110" cy="512" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+</svg>

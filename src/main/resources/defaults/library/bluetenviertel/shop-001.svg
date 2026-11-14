@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Awning Base -->
+  <rect x="12" y="18" width="104" height="22" rx="5" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Awning Stripes -->
+  <rect x="25" y="18" width="15" height="22" fill="#FFB7C5" stroke="none" />
+  <rect x="55" y="18" width="15" height="22" fill="#FFB7C5" stroke="none" />
+  <rect x="85" y="18" width="15" height="22" fill="#FFB7C5" stroke="none" />
+  
+  <!-- Awning Valance (Scalloped edge) -->
+  <path d="M12 40 L116 40 L116 50 Q110 55 104 50 Q98 55 92 50 Q86 55 80 50 Q74 55 68 50 Q62 55 56 50 Q50 55 44 50 Q38 55 32 50 Q26 55 20 50 Q14 55 12 50 Z" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Window Frame -->
+  <rect x="16" y="45" width="96" height="60" rx="4" fill="#FFFDD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Window Glass -->
+  <rect x="20" y="50" width="88" height="50" rx="2" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M30 60 L40 70 M80 60 L90 70" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Flower Box -->
+  <rect x="16" y="100" width="96" height="12" rx="2" fill="#C19A6B" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Flowers and Leaves -->
+  <circle cx="25" cy="100" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="35" cy="98" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="45" cy="101" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="65" cy="98" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="75" cy="101" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="85" cy="98" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="95" cy="100" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  
+  <circle cx="30" cy="102" r="3" fill="#98FB98" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="40" cy="102" r="3" fill="#98FB98" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="70" cy="102" r="3" fill="#98FB98" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="80" cy="102" r="3" fill="#98FB98" stroke="#3B2A4A" stroke-width="2" />
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- House Wall -->
+  <rect x="60" y="430" width="136" height="82" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Timber Frames -->
+  <line x1="60" y1="430" x2="60" y2="512" stroke="#DDBB99" stroke-width="8" stroke-linecap="round" />
+  <line x1="128" y1="430" x2="128" y2="512" stroke="#DDBB99" stroke-width="8" stroke-linecap="round" />
+  <line x1="196" y1="430" x2="196" y2="512" stroke="#DDBB99" stroke-width="8" stroke-linecap="round" />
+  <line x1="60" y1="470" x2="196" y2="470" stroke="#DDBB99" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Wave-shaped Roof -->
+  <path d="M 30 440 Q 80 380 128 420 Q 176 460 226 400 L 226 420 Q 176 480 128 440 Q 80 400 30 460 Z" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Cherry Tree Trunk -->
+  <path d="M 70 512 Q 80 250 160 100 L 180 110 Q 100 260 90 512 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Cherry Blossoms -->
+  <circle cx="160" cy="90" r="40" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="200" cy="80" r="35" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="120" cy="100" r="30" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="180" cy="50" r="30" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="220" cy="120" r="30" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="60" r="25" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Blossom Highlights -->
+  <circle cx="150" cy="80" r="10" fill="#FFE4E1" />
+  <circle cx="190" cy="70" r="8" fill="#FFE4E1" />
+  <circle cx="170" cy="40" r="8" fill="#FFE4E1" />
+  <circle cx="130" cy="90" r="7" fill="#FFE4E1" />
+  <circle cx="210" cy="110" r="7" fill="#FFE4E1" />
+</svg>

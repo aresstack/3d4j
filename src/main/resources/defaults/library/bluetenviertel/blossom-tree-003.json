@@ -1,0 +1,10 @@
+{
+  "kind": "blossom-tree",
+  "number": 3,
+  "createdAt": "2026-11-13T23:57:16Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a cherry tree in full pink blossom: brown trunk, big round fluffy pink crown",
+  "width": 256,
+  "height": 512,
+  "importedFrom": "blossom-tree"
+}

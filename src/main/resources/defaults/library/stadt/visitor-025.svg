@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <path d="M 85 512 L 85 480 Q 85 470 95 470 L 120 470 Q 130 470 130 480 L 130 512 Z" fill="#B0C4DE" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 126 512 L 126 480 Q 126 470 136 470 L 161 470 Q 171 470 171 480 L 171 512 Z" fill="#B0C4DE" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Pants -->
+  <path d="M 95 470 L 95 350 Q 95 340 105 340 L 125 340 L 125 470 Z" fill="#FADADD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 131 470 L 131 350 Q 131 340 141 340 L 161 340 L 161 470 Z" fill="#FADADD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Sleeves -->
+  <path d="M 70 220 Q 50 220 50 250 L 50 310 Q 50 330 70 330 L 80 330 L 80 220 Z" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 186 220 Q 206 220 206 250 L 206 310 Q 206 330 186 330 L 176 330 L 176 220 Z" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Body -->
+  <path d="M 70 200 Q 70 190 80 190 L 176 190 Q 186 190 186 200 L 186 360 Q 186 370 176 370 L 80 370 Q 70 370 70 360 Z" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Highlights -->
+  <path d="M 85 210 Q 90 210 95 220" fill="none" stroke="#B19CD9" stroke-width="6" stroke-linecap="round" />
+  <path d="M 160 210 Q 165 210 170 220" fill="none" stroke="#B19CD9" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Hood -->
+  <path d="M 90 180 Q 90 130 128 130 Q 166 130 166 180 L 166 210 Q 166 220 156 220 L 100 220 Q 90 220 90 210 Z" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="128" cy="175" r="30" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Hair -->
+  <path d="M 95 160 Q 90 120 128 110 Q 166 120 161 160 Q 161 150 150 145 Q 140 135 128 145 Q 116 135 106 145 Q 96 150 95 160 Z" fill="#A52A2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="120" cy="170" r="3" fill="#3B2A4A" />
+  <circle cx="136" cy="170" r="3" fill="#3B2A4A" />
+
+  <!-- Mouth -->
+  <path d="M 123 185 Q 128 190 133 185" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Flower on Chest -->
+  <circle cx="128" cy="260" r="6" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="122" cy="255" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="134" cy="255" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="122" cy="265" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="134" cy="265" r="5" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="3" />
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M118,512 L124,350 L132,350 L138,512 Z" fill="#B5835A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Crown -->
+  <path d="M128,30 C145,100 160,200 160,350 L96,350 C96,200 111,100 128,30 Z" fill="#7DBE5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Leaf Highlights -->
+  <ellipse cx="135" cy="120" rx="6" ry="25" fill="#A8E09B" />
+  <ellipse cx="138" cy="220" rx="8" ry="35" fill="#A8E09B" />
+  <ellipse cx="130" cy="310" rx="7" ry="30" fill="#A8E09B" />
+  
+  <!-- Decorative Blossoms on Tree -->
+  <circle cx="142" cy="160" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="118" cy="260" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="145" cy="330" r="7" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Base Blossoms -->
+  <circle cx="105" cy="505" r="9" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="128" cy="500" r="9" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="151" cy="505" r="9" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="6" />
+</svg>

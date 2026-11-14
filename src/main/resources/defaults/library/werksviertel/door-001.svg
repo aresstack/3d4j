@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Door Body -->
+  <rect x="32" y="16" width="64" height="112" rx="2" ry="2" fill="#7A9E7A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Weathering and Highlights -->
+  <rect x="36" y="20" width="6" height="30" fill="#9BBD9B" />
+  <circle cx="34" cy="115" r="3" fill="#A52A2A" />
+  <circle cx="94" cy="45" r="3" fill="#A52A2A" />
+  <circle cx="34" cy="45" r="3" fill="#A52A2A" />
+  
+  <!-- Glass Pane -->
+  <rect x="44" y="30" width="32" height="24" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="48" y="34" width="8" height="4" fill="#E0F0F0" />
+  
+  <!-- Wired Glass Effect -->
+  <line x1="44" y1="38" x2="76" y2="38" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="44" y1="46" x2="76" y2="46" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="52" y1="30" x2="52" y2="54" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="68" y1="30" x2="68" y2="54" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Rivets -->
+  <circle cx="38" cy="22" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="90" cy="22" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="38" cy="45" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="90" cy="45" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="38" cy="68" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="90" cy="68" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="38" cy="95" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="90" cy="95" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="38" cy="122" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="90" cy="122" r="3" fill="#5A7E5A" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Handle -->
+  <rect x="86" y="60" width="8" height="24" rx="2" ry="2" fill="#555555" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="88" y="62" width="2" height="10" fill="#888888" />
+</svg>

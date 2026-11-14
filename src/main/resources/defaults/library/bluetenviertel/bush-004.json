@@ -1,0 +1,53 @@
+{
+  "kind": "bush",
+  "number": 4,
+  "createdAt": "2026-11-14T01:29:46Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a bush of pink peonies. It belongs to a district of the town with this look, which everything in the district shares: a cheerful old town in cherry blossom season: frames in cream white and warm wood, shutters and doors in soft pink, mint green or sky blue, rounded friendly shapes, flowers wherever they fit",
+  "width": 256,
+  "height": 256,
+  "recipe": "flower-bush",
+  "plan": {
+    "layers": [
+      {
+        "id": "outerA",
+        "count": 8,
+        "angleOffset": 15,
+        "sizePercent": 100,
+        "shiftY": -10,
+        "shapeDescription": "A wide teardrop with a wavy bottom edge"
+      },
+      {
+        "id": "outerB",
+        "count": 10,
+        "angleOffset": 10,
+        "sizePercent": 85,
+        "shiftY": -5,
+        "shapeDescription": "An oval petal with a slight notch at the top"
+      },
+      {
+        "id": "inner",
+        "count": 12,
+        "angleOffset": 5,
+        "sizePercent": 70,
+        "shiftY": -2,
+        "shapeDescription": "A small rounded petal with a curved side"
+      },
+      {
+        "id": "center",
+        "count": 1,
+        "angleOffset": 0,
+        "sizePercent": 100,
+        "shiftY": 0,
+        "shapeDescription": "A bumpy circular core with small dots"
+      }
+    ],
+    "colors": {
+      "outerA": "#E91E63",
+      "outerB": "#F06292",
+      "inner": "#F8BBD0",
+      "center": "#FFF176",
+      "leaf": "#8BC34A"
+    }
+  }
+}

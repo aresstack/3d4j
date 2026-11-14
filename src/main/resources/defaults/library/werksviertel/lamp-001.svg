@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base -->
+  <rect x="80" y="460" width="96" height="52" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Steel Mast -->
+  <rect x="120" y="60" width="16" height="400" fill="#5A636A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rivets on Mast -->
+  <circle cx="128" cy="100" r="3" fill="#3B2A4A" />
+  <circle cx="128" cy="120" r="3" fill="#3B2A4A" />
+  <circle cx="128" cy="400" r="3" fill="#3B2A4A" />
+  <circle cx="128" cy="420" r="3" fill="#3B2A4A" />
+
+  <!-- Support Arm -->
+  <rect x="136" y="70" width="40" height="12" fill="#5A636A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Light Glow -->
+  <path d="M 145 95 Q 176 160 207 95 Z" fill="#FFD700" />
+  
+  <!-- Enamel Shade (Weathered Green) -->
+  <path d="M 130 75 L 215 75 L 225 95 L 120 95 Z" fill="#6B8E6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlight on Shade -->
+  <path d="M 140 80 L 180 80" stroke="#A3C1A3" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Small Weed at the base -->
+  <path d="M 85 460 Q 75 440 80 420" fill="none" stroke="#8FBC8F" stroke-width="6" stroke-linecap="round" />
+  <path d="M 80 440 Q 90 435 95 445" fill="none" stroke="#8FBC8F" stroke-width="6" stroke-linecap="round" />
+  <path d="M 80 430 Q 70 425 75 415" fill="none" stroke="#8FBC8F" stroke-width="6" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Shutters -->
+  <rect x="12" y="40" width="12" height="50" fill="#F8BBD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="104" y="40" width="12" height="50" fill="#F8BBD0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Shutter Details -->
+  <line x1="12" y1="50" x2="24" y2="50" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="12" y1="60" x2="24" y2="60" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="12" y1="70" x2="24" y2="70" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="12" y1="80" x2="24" y2="80" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  
+  <line x1="104" y1="50" x2="116" y2="50" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="104" y1="60" x2="116" y2="60" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="104" y1="70" x2="116" y2="70" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="104" y1="80" x2="116" y2="80" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Window Frame -->
+  <path d="M 24 60 A 40 40 0 0 1 104 60 L 104 90 L 24 90 Z" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <path d="M 29 60 A 35 35 0 0 1 99 60 L 99 85 L 29 85 Z" fill="#B0E2FF" stroke="none" />
+  
+  <!-- Window Bars -->
+  <rect x="62" y="20" width="4" height="70" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="2" stroke-linejoin="round" />
+  <rect x="24" y="58" width="80" height="4" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="2" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 35 40 Q 40 35 45 40" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+  <path d="M 80 45 Q 85 40 90 45" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+
+  <!-- Flower Box -->
+  <rect x="24" y="90" width="80" height="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Flowers -->
+  <circle cx="30" cy="88" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="38" cy="84" r="4" fill="white" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="46" cy="88" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="54" cy="84" r="4" fill="white" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="62" cy="88" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="70" cy="84" r="4" fill="white" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="78" cy="88" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="86" cy="84" r="4" fill="white" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="94" cy="88" r="4" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="2" />
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <path d="M80 500 Q80 512 100 512 L120 512 Q125 512 125 500 L125 480 L80 480 Z" fill="#8D6E63" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 500 Q131 512 151 512 L171 512 Q176 512 176 500 L176 480 L131 480 Z" fill="#8D6E63" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Pants (Mint Green) -->
+  <path d="M90 380 L125 380 L125 485 L90 485 Z" fill="#A2D9CE" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 380 L166 380 L166 485 L131 485 Z" fill="#A2D9CE" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Body (Purple) -->
+  <path d="M70 230 Q70 210 90 210 L166 210 Q186 210 186 230 L186 390 Q186 400 176 400 L80 400 Q70 400 70 390 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Sleeves -->
+  <path d="M70 230 L50 320 Q45 330 60 330 L80 330 L80 250 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 230 L206 320 Q211 330 196 330 L176 330 L176 250 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Highlights -->
+  <path d="M90 220 L110 220" stroke="#B388FF" stroke-width="6" stroke-linecap="round" />
+  <path d="M146 220 L166 220" stroke="#B388FF" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Hood -->
+  <path d="M90 210 Q90 140 128 140 Q166 140 166 210" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="128" cy="180" r="35" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Eyes -->
+  <circle cx="118" cy="175" r="4" fill="#3B2A4A" />
+  <circle cx="138" cy="175" r="4" fill="#3B2A4A" />
+  
+  <!-- Smile -->
+  <path d="M120 190 Q128 198 136 190" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Hair (Red-Brown) -->
+  <path d="M93 180 Q90 140 128 135 Q166 140 163 180 Q160 160 145 155 Q128 150 111 155 Q96 160 93 180" fill="#B25D39" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 145 Q128 135 146 145" fill="none" stroke="#D27D5D" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cherry Blossom Flower on Hoodie -->
+  <circle cx="128" cy="260" r="12" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="128" cy="260" r="4" fill="#F8BBD0" stroke="#3B2A4A" stroke-width="2" />
+  <path d="M128 248 L128 252 M128 268 L128 272 M120 260 L124 260 M132 260 L136 260" stroke="#3B2A4A" stroke-width="2" />
+</svg>

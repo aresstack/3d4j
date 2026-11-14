@@ -1,6 +1,7 @@
 package com.aresstack.threed4j.demo;
 
 import com.aresstack.threed4j.assets.AssetStore;
+import com.aresstack.threed4j.assets.DefaultAssets;
 import com.aresstack.threed4j.assets.District;
 import com.aresstack.threed4j.assets.TownLibrary;
 import com.aresstack.threed4j.generator.AiSetup;
@@ -273,6 +274,11 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
      */
     private void loadArtwork(GraphicsDevice graphics) {
         AssetStore store = AssetStore.standard();
+        // What the game brings along: pictures of earlier runs and a planned district, offered once.
+        int installed = DefaultAssets.install(store);
+        if (installed > 0) {
+            System.out.println("Library: installed " + installed + " file(s) the game brings along");
+        }
         town = new TownLibrary(store);
         // Single pictures in the asset folder (earlier versions, the command "generate", a hand) join the collection.
         int taken = town.district(District.BLOSSOM_QUARTER).importSingleAssets(store);

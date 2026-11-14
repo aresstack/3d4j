@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Dark Steel Frame -->
+  <rect x="10" y="18" width="108" height="94" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="5" rx="4" stroke-linejoin="round" />
+  
+  <!-- Roller Shutter Area -->
+  <rect x="15" y="23" width="98" height="84" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Metal Slats -->
+  <line x1="15" y1="33" x2="113" y2="33" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="43" x2="113" y2="43" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="53" x2="113" y2="53" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="63" x2="113" y2="63" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="73" x2="113" y2="73" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="83" x2="113" y2="83" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="93" x2="113" y2="93" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="15" y1="103" x2="113" y2="103" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Rivets on Frame -->
+  <circle cx="14" cy="22" r="2" fill="#707070" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="114" cy="22" r="2" fill="#707070" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="14" cy="110" r="2" fill="#707070" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="114" cy="110" r="2" fill="#707070" stroke="#3B2A4A" stroke-width="1" />
+  
+  <!-- Lock/Handle -->
+  <rect x="59" y="98" width="10" height="12" fill="#606060" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Highlights on metal -->
+  <rect x="18" y="26" width="92" height="4" fill="#D0D0D0" opacity="0.5" />
+  
+  <!-- Industrial Weeds at the bottom -->
+  <path d="M12 112 Q 15 104 18 112" fill="none" stroke="#7BA05B" stroke-width="4" stroke-linecap="round" />
+  <path d="M16 112 Q 19 106 22 112" fill="none" stroke="#7BA05B" stroke-width="4" stroke-linecap="round" />
+  <path d="M110 112 Q 113 106 116 112" fill="none" stroke="#7BA05B" stroke-width="4" stroke-linecap="round" />
+</svg>

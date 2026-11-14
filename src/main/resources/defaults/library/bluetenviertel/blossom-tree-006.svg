@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M110 512 Q128 500 146 512 L138 240 L120 240 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Branches -->
+  <path d="M120 240 Q60 240 40 420" fill="none" stroke="#7A4A28" stroke-width="8" stroke-linecap="round" />
+  <path d="M138 240 Q196 240 216 420" fill="none" stroke="#7A4A28" stroke-width="8" stroke-linecap="round" />
+  <path d="M125 260 Q90 280 100 460" fill="none" stroke="#7A4A28" stroke-width="8" stroke-linecap="round" />
+  <path d="M131 260 Q166 280 156 460" fill="none" stroke="#7A4A28" stroke-width="8" stroke-linecap="round" />
+  <path d="M128 220 Q128 150 128 120" fill="none" stroke="#7A4A28" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Blossom Clusters - Left Branch -->
+  <circle cx="60" cy="260" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="45" cy="300" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="40" cy="360" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="40" cy="420" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="60" cy="340" r="25" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Blossom Clusters - Right Branch -->
+  <circle cx="196" cy="260" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="211" cy="300" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="216" cy="360" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="216" cy="420" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="196" cy="340" r="25" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Blossom Clusters - Mid Left -->
+  <circle cx="100" cy="320" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="380" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="440" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="480" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Blossom Clusters - Mid Right -->
+  <circle cx="156" cy="320" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="146" cy="380" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="156" cy="440" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="156" cy="480" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Top Blossom -->
+  <circle cx="128" cy="120" r="40" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="140" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="156" cy="140" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights -->
+  <circle cx="50" cy="250" r="10" fill="#FFD1DC" />
+  <circle cx="30" cy="300" r="12" fill="#FFD1DC" />
+  <circle cx="30" cy="410" r="10" fill="#FFD1DC" />
+  <circle cx="206" cy="250" r="10" fill="#FFD1DC" />
+  <circle cx="226" cy="300" r="12" fill="#FFD1DC" />
+  <circle cx="226" cy="410" r="10" fill="#FFD1DC" />
+  <circle cx="110" cy="310" r="10" fill="#FFD1DC" />
+  <circle cx="146" cy="310" r="10" fill="#FFD1DC" />
+  <circle cx="128" cy="110" r="15" fill="#FFD1DC" />
+</svg>

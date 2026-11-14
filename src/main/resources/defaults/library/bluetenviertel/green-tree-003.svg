@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M 85 512 L 85 380 Q 128 360 171 380 L 171 512 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Canopy -->
+  <path d="M 50 260 A 40 40 0 0 1 90 220 A 40 40 0 0 1 130 220 A 40 40 0 0 1 170 220 A 40 40 0 0 1 210 260 A 50 50 0 0 1 210 320 A 60 60 0 0 1 128 350 A 60 60 0 0 1 50 320 A 50 50 0 0 1 50 260" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights on Canopy -->
+  <circle cx="100" cy="240" r="15" fill="#A2D149" stroke="none" />
+  <circle cx="160" cy="230" r="15" fill="#A2D149" stroke="none" />
+  <circle cx="128" cy="210" r="12" fill="#A2D149" stroke="none" />
+  
+  <!-- Cherry Blossoms in Canopy -->
+  <circle cx="70" cy="240" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="120" cy="210" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="180" cy="250" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="150" cy="310" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="90" cy="320" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Cherry Blossoms at Base -->
+  <circle cx="100" cy="500" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="150" cy="505" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="128" cy="510" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+</svg>

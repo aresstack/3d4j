@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base -->
+  <path d="M60 470 L196 470 L206 512 L50 512 Z" fill="#BDBDBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Small Industrial Weed -->
+  <path d="M70 470 Q75 450 85 460" fill="none" stroke="#689F38" stroke-width="6" stroke-linecap="round" />
+  <path d="M75 460 Q80 440 90 450" fill="none" stroke="#689F38" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Birch Trunk -->
+  <path d="M122 470 L134 470 L131 180 L125 180 Z" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bark Marks -->
+  <line x1="124" y1="430" x2="132" y2="430" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="125" y1="380" x2="131" y2="380" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="123" y1="330" x2="133" y2="330" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="126" y1="280" x2="130" y2="280" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="124" y1="230" x2="132" y2="230" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="127" y1="190" x2="130" y2="190" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Airy Crown (Leaves) -->
+  <!-- Back layer of leaves -->
+  <circle cx="100" cy="170" r="45" fill="#81C784" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="156" cy="170" r="45" fill="#81C784" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="110" r="50" fill="#81C784" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Front layer of leaves -->
+  <circle cx="128" cy="150" r="60" fill="#C8E6C9" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="140" r="35" fill="#C8E6C9" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="140" r="35" fill="#C8E6C9" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="80" r="40" fill="#C8E6C9" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights -->
+  <circle cx="115" cy="130" r="10" fill="#E8F5E9" />
+  <circle cx="145" cy="130" r="10" fill="#E8F5E9" />
+  <circle cx="120" cy="70" r="8" fill="#E8F5E9" />
+</svg>

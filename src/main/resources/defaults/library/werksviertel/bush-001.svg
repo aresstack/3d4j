@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete base crack -->
+  <path d="M50 512 L206 512 L200 480 L160 490 L120 470 L80 490 L50 480 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Left Stem -->
+  <path d="M100 485 Q90 350 70 220" fill="none" stroke="#4A7C44" stroke-width="12" stroke-linecap="round" />
+  <path d="M100 485 Q90 350 70 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Right Stem -->
+  <path d="M140 485 Q150 350 170 240" fill="none" stroke="#4A7C44" stroke-width="12" stroke-linecap="round" />
+  <path d="M140 485 Q150 350 170 240" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Center Stem -->
+  <path d="M125 485 Q130 300 120 120" fill="none" stroke="#4A7C44" stroke-width="14" stroke-linecap="round" />
+  <path d="M125 485 Q130 300 120 120" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Leaves on Center Stem -->
+  <path d="M128 400 L150 380 L130 370 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M125 320 L100 310 L120 290 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M128 240 L155 230 L130 210 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M122 160 L95 150 L120 130 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Leaves on Left Stem -->
+  <path d="M95 420 L70 410 L90 390 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M85 330 L60 320 L80 300 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Leaves on Right Stem -->
+  <path d="M145 410 L170 400 L150 380 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M155 320 L180 310 L160 290 Z" fill="#76B06B" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Flowers Center Spike -->
+  <circle cx="120" cy="110" r="12" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="132" cy="130" r="10" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="140" r="11" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="160" r="10" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="135" cy="180" r="11" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="115" cy="190" r="9" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="210" r="10" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Flowers Left Spike -->
+  <circle cx="70" cy="210" r="11" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="82" cy="230" r="9" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="65" cy="250" r="10" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="75" cy="270" r="9" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="60" cy="290" r="10" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Flowers Right Spike -->
+  <circle cx="170" cy="230" r="11" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="182" cy="250" r="9" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="165" cy="270" r="10" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="175" cy="290" r="9" fill="#F2A2C8" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="160" cy="310" r="10" fill="#D85A9B" stroke="#3B2A4A" stroke-width="6" />
+</svg>

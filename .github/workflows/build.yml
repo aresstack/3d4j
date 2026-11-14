@@ -96,7 +96,7 @@ jobs:
           </svg>
           SVG
           xvfb-run -a -s "-screen 0 1400x900x24" \
-            java -Dthreed4j.assets=build/assets -jar build/libs/3d4j.jar --benchmark --frames=60 --no-vsync \
+            java -Dthreed4j.assets=build/assets -Dthreed4j.defaults=false -jar build/libs/3d4j.jar --benchmark --frames=60 --no-vsync \
               --screenshot=build/smoke-test-assets.png | tee build/assets.log
           grep -q "Library: took 1 picture" build/assets.log
           grep -q "Sprites: 1 pictures" build/assets.log

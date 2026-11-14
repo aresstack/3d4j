@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="95" y="380" width="30" height="100" rx="15" fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="380" width="30" height="100" rx="15" fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <rect x="80" y="470" width="45" height="25" rx="12" fill="#87CEEB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="470" width="45" height="25" rx="12" fill="#87CEEB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Arms -->
+  <rect x="55" y="220" width="30" height="120" rx="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="171" y="220" width="30" height="120" rx="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Body / Sweater -->
+  <rect x="75" y="200" width="106" height="180" rx="30" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sweater Stripes (Cream White) -->
+  <rect x="75" y="230" width="106" height="25" fill="#FFFDD0" />
+  <rect x="75" y="280" width="106" height="25" fill="#FFFDD0" />
+  <rect x="75" y="330" width="106" height="25" fill="#FFFDD0" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="150" r="40" fill="#FFE5D9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="145" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="145" r="4" fill="#3B2A4A" />
+  <path d="M 120 165 Q 128 175 136 165" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Cap -->
+  <path d="M 88 140 A 40 40 0 0 1 168 140 L 168 140 L 88 140 Z" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="128" y="130" width="50" height="15" rx="7" fill="#B2DFDB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Cherry Blossom Detail on Cap -->
+  <circle cx="105" cy="120" r="8" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="105" cy="120" r="3" fill="#FFFDD0" />
+  
+  <!-- Highlights -->
+  <path d="M 100 110 Q 110 100 120 110" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+  <rect x="85" y="210" width="10" height="30" rx="5" fill="#FFFFFF" opacity="0.3" />
+</svg>

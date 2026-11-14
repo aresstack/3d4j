@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+<defs>
+<g id="outerA"><clipPath id="clip-outerA"><path d="M 0 -10 L -10 -5 L -20 -10 L -30 -5 C -50 -20 -80 -60 -80 -100 C -80 -130 -60 -170 -40 -180 L -30 -170 L -20 -185 L -10 -175 L 0 -160 L 10 -175 L 20 -185 L 30 -170 L 40 -180 C 60 -170 80 -130 80 -100 C 80 -60 50 -20 30 -5 L 20 -10 L 10 -5 Z"/></clipPath><path d="M 0 -10 L -10 -5 L -20 -10 L -30 -5 C -50 -20 -80 -60 -80 -100 C -80 -130 -60 -170 -40 -180 L -30 -170 L -20 -185 L -10 -175 L 0 -160 L 10 -175 L 20 -185 L 30 -170 L 40 -180 C 60 -170 80 -130 80 -100 C 80 -60 50 -20 30 -5 L 20 -10 L 10 -5 Z" fill="#E91E63"/><g clip-path="url(#clip-outerA)" fill-opacity="0.55"><path d="M 0 -10 C -20 -10 -40 -30 -40 -60 C -40 -90 -20 -110 0 -110 C 20 -110 40 -90 40 -60 C 40 -30 20 -10 0 -10 Z" fill="#C2185B"/><path d="M -70 -110 C -70 -140 -50 -160 -30 -150 C -20 -140 -20 -120 -30 -110 C -50 -100 -70 -110 -70 -110 Z M 70 -110 C 70 -140 50 -160 30 -150 C 20 -140 20 -120 30 -110 C 50 -100 70 -110 70 -110 Z" fill="#F06292"/></g><path d="M 0 -10 L -10 -5 L -20 -10 L -30 -5 C -50 -20 -80 -60 -80 -100 C -80 -130 -60 -170 -40 -180 L -30 -170 L -20 -185 L -10 -175 L 0 -160 L 10 -175 L 20 -185 L 30 -170 L 40 -180 C 60 -170 80 -130 80 -100 C 80 -60 50 -20 30 -5 L 20 -10 L 10 -5 Z" fill="none" stroke="#3B2A4A" stroke-width="12" stroke-linejoin="round"/></g>
+<g id="outerB"><clipPath id="clip-outerB"><path d="M 0 0 C -30 0 -60 -30 -65 -70 C -68 -80 -62 -90 -65 -100 C -68 -110 -55 -120 -45 -130 C -35 -140 -25 -150 -15 -145 C -10 -140 0 -120 0 -110 C 0 -120 10 -140 15 -145 C 25 -150 35 -140 45 -130 C 55 -120 68 -110 65 -100 C 62 -90 68 -80 65 -70 C 60 -30 30 0 0 0 Z"/></clipPath><path d="M 0 0 C -30 0 -60 -30 -65 -70 C -68 -80 -62 -90 -65 -100 C -68 -110 -55 -120 -45 -130 C -35 -140 -25 -150 -15 -145 C -10 -140 0 -120 0 -110 C 0 -120 10 -140 15 -145 C 25 -150 35 -140 45 -130 C 55 -120 68 -110 65 -100 C 62 -90 68 -80 65 -70 C 60 -30 30 0 0 0 Z" fill="#F06292"/><g clip-path="url(#clip-outerB)" fill-opacity="0.55"><path d="M -55 -70 C -60 -90 -55 -110 -40 -120 C -40 -100 -45 -80 -55 -70 Z" fill="#C2185B"/><path d="M -10 -110 C -15 -120 -5 -130 0 -115 C 5 -130 15 -120 10 -110 Z" fill="#F8BBD0"/></g><path d="M 0 0 C -30 0 -60 -30 -65 -70 C -68 -80 -62 -90 -65 -100 C -68 -110 -55 -120 -45 -130 C -35 -140 -25 -150 -15 -145 C -10 -140 0 -120 0 -110 C 0 -120 10 -140 15 -145 C 25 -150 35 -140 45 -130 C 55 -120 68 -110 65 -100 C 62 -90 68 -80 65 -70 C 60 -30 30 0 0 0 Z" fill="none" stroke="#3B2A4A" stroke-width="12" stroke-linejoin="round"/></g>
+<g id="inner"><clipPath id="clip-inner"><path d="M 0 0 C -30 -20, -35 -60, -15 -100 C -10 -110, 10 -110, 15 -100 C 35 -60, 30 -20, 0 0 Z"/></clipPath><path d="M 0 0 C -30 -20, -35 -60, -15 -100 C -10 -110, 10 -110, 15 -100 C 35 -60, 30 -20, 0 0 Z" fill="#F8BBD0"/><g clip-path="url(#clip-inner)" fill-opacity="0.55"><path d="M -15 -100 C -20 -80, -20 -40, -12 -20 L -8 -20 C -12 -40, -12 -80, -15 -100 Z" fill="#F48FB1"/><path d="M -8 -95 C -5 -95, 5 -95, 8 -90 C 5 -85, -5 -85, -8 -95 Z" fill="#FCE4EC"/></g><path d="M 0 0 C -30 -20, -35 -60, -15 -100 C -10 -110, 10 -110, 15 -100 C 35 -60, 30 -20, 0 0 Z" fill="none" stroke="#3B2A4A" stroke-width="12" stroke-linejoin="round"/></g>
+<g id="center"><path d="M 0,-20 C 3,-20 5,-18 7,-16 C 9,-14 13,-14 15,-12 C 17,-10 19,-6 19,-2 C 19,2 17,6 15,8 C 13,10 13,14 11,16 C 9,18 5,20 0,20 C -5,20 -9,18 -11,16 C -13,14 -13,10 -15,8 C -17,6 -19,2 -19,-2 C -19,-6 -17,-10 -15,-12 C -13,-14 -9,-14 -7,-16 C -5,-18 -3,-20 0,-20 Z" fill="#FFF176" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><circle cx="6" cy="6" r="4" fill="#E6DB5B" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><circle cx="-8" cy="-4" r="5" fill="#E6DB5B" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><circle cx="3" cy="-10" r="3" fill="#E6DB5B" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><circle cx="-5" cy="8" r="3" fill="#FFF59D" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><circle cx="10" cy="-2" r="4" fill="#FFF59D" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/></g>
+<g id="leaf"><clipPath id="clip-leaf"><path d="M 0 0 C -10 -10 -40 -60 -40 -110 C -40 -140 -10 -165 0 -165 C 10 -165 40 -140 40 -110 C 40 -60 10 -10 0 0 Z"/></clipPath><path d="M 0 0 C -10 -10 -40 -60 -40 -110 C -40 -140 -10 -165 0 -165 C 10 -165 40 -140 40 -110 C 40 -60 10 -10 0 0 Z" fill="#8BC34A"/><g clip-path="url(#clip-leaf)" fill-opacity="0.55"><path d="M -1 -165 L 1 -165 L 1 0 L -1 0 Z" fill="#7CB342"/><path d="M 0 -165 C 5 -140 20 -120 20 -100 C 20 -80 10 -60 0 -40 Z" fill="#AED581"/></g><path d="M 0 0 C -10 -10 -40 -60 -40 -110 C -40 -140 -10 -165 0 -165 C 10 -165 40 -140 40 -110 C 40 -60 10 -10 0 0 Z" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round"/></g>
+<g id="blossom">
+<use xlink:href="#outerA" transform="rotate(12) translate(-3 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(65) translate(2 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(99) translate(0 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(152) translate(4 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(195) translate(-2 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(237) translate(-3 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(290) translate(2 -10) scale(1)"/>
+<use xlink:href="#outerA" transform="rotate(324) translate(0 -10) scale(1)"/>
+<use xlink:href="#outerB" transform="rotate(7) translate(-3 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(51) translate(2 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(76) translate(0 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(120) translate(4 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(154) translate(-2 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(187) translate(-3 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(231) translate(2 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(256) translate(0 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(300) translate(4 -5) scale(0.85)"/>
+<use xlink:href="#outerB" transform="rotate(334) translate(-2 -5) scale(0.85)"/>
+<use xlink:href="#inner" transform="rotate(2) translate(-3 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(40) translate(2 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(59) translate(0 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(97) translate(4 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(125) translate(-2 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(152) translate(-3 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(190) translate(2 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(209) translate(0 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(247) translate(4 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(275) translate(-2 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(302) translate(-3 -2) scale(0.7)"/>
+<use xlink:href="#inner" transform="rotate(340) translate(2 -2) scale(0.7)"/>
+<use xlink:href="#center" transform="rotate(0) translate(0 0) scale(1)"/>
+</g>
+</defs>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(-78) scale(1.2)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(78) scale(1.2)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(-58) scale(1.45)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(58) scale(1.45)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(-38) scale(1.6)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(38) scale(1.6)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(-18) scale(1.7)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(18) scale(1.7)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(0) scale(1.75)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(-66) scale(0.95)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(66) scale(0.95)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(-30) scale(1.05)"/>
+<use xlink:href="#leaf" transform="translate(256 500) rotate(30) scale(1.05)"/>
+<use xlink:href="#blossom" transform="translate(256 176) rotate(0) scale(0.64)"/>
+<use xlink:href="#blossom" transform="translate(124 278) rotate(-24) scale(0.5)"/>
+<use xlink:href="#blossom" transform="translate(392 270) rotate(31) scale(0.5)"/>
+<use xlink:href="#blossom" transform="translate(196 392) rotate(12) scale(0.37)"/>
+<use xlink:href="#blossom" transform="translate(326 398) rotate(-17) scale(0.39)"/>
+</svg>
