@@ -397,9 +397,18 @@ final class Win32Api {
             size.set(JAVA_INT, 0, RAW_INPUT_BYTES);
             // RID_INPUT; the header is 24 bytes: type, size, device, wParam
             int read = (int) GetRawInputData.invokeExact(handle, 0x10000003, buffer, size, 24);
+            if (into.length >= 6) {
+                // For the log: bytes read, kind of device, whether a device sent it (0: a program did), flags
+                into[2] = read;
+                into[3] = read >= 24 ? buffer.get(JAVA_INT, 0) : -1;
+                into[4] = read >= 24 && buffer.get(JAVA_LONG, 8) != 0 ? 1 : 0;
+                into[5] = read >= 48 ? buffer.get(JAVA_SHORT, 24) & 0xFFFF : -1;
+            }
             if (read < 48 || buffer.get(JAVA_INT, 0) != 0) {
                 return false; // nothing read, or not a mouse
             }
+            into[0] = buffer.get(JAVA_INT, 36);
+            into[1] = buffer.get(JAVA_INT, 40);
             // RAWMOUSE after the header: flags at 24, lLastX at 36, lLastY at 40
             if ((buffer.get(JAVA_SHORT, 24) & 1) != 0) {
                 return false; // MOUSE_MOVE_ABSOLUTE

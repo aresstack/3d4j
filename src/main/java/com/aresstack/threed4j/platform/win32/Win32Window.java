@@ -57,7 +57,7 @@ public final class Win32Window implements GLWindow {
     private boolean rawMovementSeen;
     private final MemorySegment rawBuffer = Arena.ofAuto().allocate(RAW_INPUT_BYTES, 8);
     private final MemorySegment rawSize = Arena.ofAuto().allocate(4, 4);
-    private final int[] rawMovement = new int[2];
+    private final int[] rawMovement = new int[6];
     /** Where the captured pointer is kept, in screen coordinates. */
     private final MemorySegment captureRect = Arena.ofAuto().allocate(SIZEOF_RECT, 4);
     /** The middle of the drawable area on the screen, where the captured pointer is put back. */
@@ -243,7 +243,7 @@ public final class Win32Window implements GLWindow {
                 case WM_KILLFOCUS -> focused = false;
                 case WM_SETCURSOR -> {
                     if ((lParam & 0xFFFF) == HTCLIENT) {
-                        showCursor(mouseCaptured ? MemorySegment.NULL : Native.isNull(cursor) ? arrowCursor : cursor);
+                        showCursor(mouseCaptured ? hidden() : Native.isNull(cursor) ? arrowCursor : cursor);
                         return 1;
                     }
                 }
@@ -272,10 +272,14 @@ public final class Win32Window implements GLWindow {
                     // What the mouse itself reports: it keeps coming when the pointer cannot move on,
                     // so the view turns round and round. Windows still wants the message afterwards.
                     boolean movement = rawMouseMovement(lParam, rawBuffer, rawSize, rawMovement);
-                    if (!rawNoted) {
-                        rawNoted = true;
-                        note("first raw input: " + (movement ? "movement" : "a place or no mouse") + ", captured "
-                                + mouseCaptured);
+                    if (rawNotes < 4 || (movement && !rawMovementNoted)) {
+                        rawNotes++;
+                        rawMovementNoted |= movement;
+                        note("raw input: " + (movement ? "movement" : "a place or no mouse") + ", bytes "
+                                + rawMovement[2] + ", kind " + rawMovement[3] + ", from "
+                                + (rawMovement[4] != 0 ? "a device" : "a program (no device)") + ", flags "
+                                + rawMovement[5] + ", values " + rawMovement[0] + ", " + rawMovement[1]
+                                + ", captured " + mouseCaptured);
                     }
                     if (mouseCaptured && movement) {
                         if (!rawMovementSeen) {
@@ -440,7 +444,7 @@ public final class Win32Window implements GLWindow {
             }
             // Windows drops the fence and the hiding on its own now and then.
             clipCursor(captureRect);
-            showCursor(MemorySegment.NULL);
+            showCursor(hidden());
             return;
         }
         if (!inFront) {
@@ -471,7 +475,9 @@ public final class Win32Window implements GLWindow {
             relativeMouse.begin(width / 2, height / 2, width, height);
             relativeMouse.expectAtCenter();
             mouseCaptured = true;
-            showCursor(MemorySegment.NULL);
+            // A change of shape that Windows cannot take for none: at the start no shape was set yet.
+            showCursor(arrowCursor);
+            showCursor(hidden());
             int counter = pointerVisible(false);
             note("captured: area " + width + " x " + height + ", middle " + centerScreenX + ", " + centerScreenY
                     + ", fence " + fenced + ", put in the middle " + centered + ", pointer counter " + counter
@@ -481,7 +487,23 @@ public final class Win32Window implements GLWindow {
     }
 
     private boolean waitingNoted;
-    private boolean rawNoted;
+    private int rawNotes;
+    private boolean rawMovementNoted;
+    /** A pointer nobody sees: one pixel, all but transparent. */
+    private MemorySegment hiddenCursor = MemorySegment.NULL;
+
+    /**
+     * The pointer shape for "no pointer". Setting none at all is not always taken up, most of all
+     * where another program draws the pointer (a virtual machine, remote control), so it is a shape.
+     */
+    private MemorySegment hidden() {
+        if (Native.isNull(hiddenCursor)) {
+            int[] argb = new int[32 * 32];
+            argb[0] = 0x01000000;
+            hiddenCursor = createCursor(deviceContext, argb, 32, 32, 0, 0);
+        }
+        return hiddenCursor;
+    }
     private int notes;
     private static final java.nio.file.Path MOUSE_LOG =
             java.nio.file.Path.of(System.getProperty("user.home"), ".3d4j", "mouse.log");
