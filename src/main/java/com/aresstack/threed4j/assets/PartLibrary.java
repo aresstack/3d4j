@@ -44,7 +44,9 @@ public final class PartLibrary {
     public enum Kind {
         BLOSSOM_TREE(10, 256, 512), GREEN_TREE(6, 256, 512), LAMP(1, 256, 512), VISITOR(50, 256, 512),
         BUSH(6, 256, 256), LAWN(3, 256, 256), STREET(3, 256, 256),
-        WINDOW(8, 128, 128), DOOR(4, 128, 128), SHOP(4, 128, 128);
+        WINDOW(8, 128, 128), DOOR(4, 128, 128), SHOP(4, 128, 128),
+        /** What lives in the sea; new kinds go to the end, so that everything else keeps its picture. */
+        SEA_ANIMAL(12, 256, 512);
 
         private final int defaultTarget;
         private final int width;
@@ -71,10 +73,10 @@ public final class PartLibrary {
 
         /**
          * Whether pictures of this kind belong to the whole town instead of a district:
-         * its people are at home everywhere (see {@link TownLibrary}).
+         * its people are at home everywhere, and the sea is one sea (see {@link TownLibrary}).
          */
         public boolean shared() {
-            return this == VISITOR;
+            return this == VISITOR || this == SEA_ANIMAL;
         }
 
         /** Pixel size a picture of this kind is rendered at. */

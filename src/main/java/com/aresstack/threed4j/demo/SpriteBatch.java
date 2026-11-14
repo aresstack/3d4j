@@ -14,7 +14,7 @@ import java.util.Arrays;
  * the CPU per frame. Layout: center (3), corner (2), texture coordinate (2),
  * motion as radius, speed, phase (3).
  */
-final class SpriteBatch {
+class SpriteBatch {
     private static final int FLOATS_PER_SPRITE = 4 * 10;
     private float[] vertices = new float[FLOATS_PER_SPRITE * 64];
     int count;
@@ -50,6 +50,11 @@ final class SpriteBatch {
      * the scene is what makes it differ from the others.
      */
     void add(Kind kind, float x, float z, float height, float radius, float speed, float phase) {
+        place(kind, x, 0f, z, height, radius, speed, phase);
+    }
+
+    /** As {@link #add}, with the height the figure's foot is at: 0 is the ground, below it e.g. the sea. */
+    final void place(Kind kind, float x, float y, float z, float height, float radius, float speed, float phase) {
         if ((count + 1) * FLOATS_PER_SPRITE > vertices.length) {
             vertices = Arrays.copyOf(vertices, vertices.length * 2);
         }
@@ -74,7 +79,7 @@ final class SpriteBatch {
         int offset = count * FLOATS_PER_SPRITE;
         for (float[] corner : corners) {
             vertices[offset++] = x;
-            vertices[offset++] = 0f;
+            vertices[offset++] = y;
             vertices[offset++] = z;
             vertices[offset++] = corner[0];
             vertices[offset++] = corner[1];

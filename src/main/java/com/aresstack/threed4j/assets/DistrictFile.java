@@ -140,7 +140,7 @@ public final class DistrictFile {
                 motifs.put(kind, new Motif(entry.get("name").getAsString(), entry.get("plural").getAsString(), variations));
             }
             for (Kind kind : TownLibrary.sharedKinds()) {
-                motifs.put(kind, District.people());
+                motifs.put(kind, District.sharedMotif(kind));
             }
             JsonArray plot = root.getAsJsonArray("plot");
             Layout layout = new Layout(plot.get(0).getAsInt(), plot.get(1).getAsInt(),

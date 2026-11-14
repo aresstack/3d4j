@@ -95,6 +95,10 @@ final class DistrictScene implements AutoCloseable {
                 }
                 float x = centerX + dx;
                 float z = centerZ + dz;
+                if (!District.onLand(x + half, z - half, 11f) || !District.onLand(x + half, z + half, 11f)
+                        || !District.onLand(x + half, z, 11f)) {
+                    continue; // nothing is built on the water or on the promenade along it
+                }
                 houses.add(new Facades.House(x, z, half, height, wall, 1000L * ix + iz));
                 float out = half + Facades.PLINTH;
                 obstacles.box(x - out, z - out, x + out, z + out, height);
@@ -114,6 +118,9 @@ final class DistrictScene implements AutoCloseable {
                 }
             }
         }
+        if (District.coastal(layout.plotX())) {
+            promenade(builder, centerZ, Landmarks.color(layout.plaza()));
+        }
         if (landmark != null) {
             Landmarks.build(builder, landmark, centerX, centerZ);
             obstacles.post(centerX, centerZ, foot, landmark.height());
@@ -123,7 +130,32 @@ final class DistrictScene implements AutoCloseable {
         facades = walls.mesh();
         houseCount = houses.size();
 
-        SpriteBatch batch = new SpriteBatch(spriteAtlas, obstacles, district);
+        // Figures stand on land only; what the layout puts on the water is left out.
+        SpriteBatch batch = new SpriteBatch(spriteAtlas, obstacles, district) {
+            @Override
+            void add(Kind kind, float x, float z, float height, float radius, float speed, float phase) {
+                if (District.onLand(x + radius, z, 2f) && District.onLand(x + radius, z + radius, 2f)
+                        && District.onLand(x + radius, z - radius, 2f)) {
+                    super.add(kind, x, z, height, radius, speed, phase);
+                }
+            }
+        };
+        if (District.coastal(layout.plotX())) {
+            // What lives in the sea swims in circles off the shore, its lowest part under water.
+            for (int i = 0; i < 16; i++) {
+                float z = centerZ + (random.nextFloat() * 2 - 1) * (HALF_PLOT - 8f);
+                float radius = 2f + random.nextFloat() * 5f;
+                float x = District.coastX(z) + 4f + radius + random.nextFloat() * 26f;
+                float height = 2.4f + random.nextFloat() * 1.4f;
+                batch.place(Kind.SEA_ANIMAL, x, Sea.LEVEL - height * 0.24f, z, height, radius,
+                        (random.nextBoolean() ? 1 : -1) * (0.08f + random.nextFloat() * 0.2f), random.nextFloat() * 6.28f);
+            }
+            for (float z = centerZ - HALF_PLOT + 6f; z < centerZ + HALF_PLOT; z += 15f) { // lamps along the promenade
+                if (Math.hypot(District.coastX(z) - centerX, z - centerZ) > foot + 5f) {
+                    batch.add(Kind.LAMP, District.coastX(z) - 2.4f, z, 5f);
+                }
+            }
+        }
         for (float along = plaza + 5f; along < HALF_PLOT - 4f; along += 9f) {
             for (int side = -1; side <= 1; side += 2) {
                 float offset = side * (STREET_HALF_WIDTH + 0.6f);
@@ -176,7 +208,7 @@ final class DistrictScene implements AutoCloseable {
                     (random.nextBoolean() ? 1 : -1) * (0.15f + random.nextFloat() * 0.35f), random.nextFloat() * 6.28f);
         }
         sprites = batch.build(graphics);
-        triangles = builder.triangleCount() + walls.triangles() + 50 * 50 * 2;
+        triangles = builder.triangleCount() + walls.triangles() + 50 * 50 * 2; // the ground at most
     }
 
     /** Squares of ground over the whole plot: the square in the middle, the two streets, and the rest. */
@@ -193,6 +225,10 @@ final class DistrictScene implements AutoCloseable {
                 float z = centerZ - HALF_PLOT + iz * tileSize;
                 float dx = x + tileSize / 2 - centerX;
                 float dz = z + tileSize / 2 - centerZ;
+                // No ground on the water; the promenade covers the stepped edge this leaves.
+                if (!District.onLand(x + tileSize, z, 1.5f) || !District.onLand(x + tileSize, z + tileSize, 1.5f)) {
+                    continue;
+                }
                 GroundAtlas.Surface surface = Math.hypot(dx, dz) < plaza ? GroundAtlas.Surface.PLAZA
                         : Math.abs(dx) < STREET_HALF_WIDTH || Math.abs(dz) < STREET_HALF_WIDTH ? GroundAtlas.Surface.STREET
                         : GroundAtlas.Surface.LAWN;
@@ -220,7 +256,34 @@ final class DistrictScene implements AutoCloseable {
                 indices[i++] = first + 3;
             }
         }
-        return graphics.createMesh(vertices, indices, 3, 3, 3);
+        return graphics.createMesh(java.util.Arrays.copyOf(vertices, v), java.util.Arrays.copyOf(indices, i), 3, 3, 3);
+    }
+
+    /**
+     * The promenade of a district at the sea: a paved band that follows the shore
+     * in its curve, with the quay wall down to the water and a low kerb at the edge.
+     */
+    private static void promenade(MeshBuilder builder, float centerZ, Vec3 paving) {
+        float width = 10f;
+        float step = 2f;
+        Vec3 wall = paving.scale(0.78f);
+        Vec3 kerb = paving.scale(0.9f);
+        for (float z = centerZ - HALF_PLOT; z < centerZ + HALF_PLOT; z += step) {
+            float shore0 = District.coastX(z);
+            float shore1 = District.coastX(z + step);
+            float top = 0.06f;
+            builder.quad(new Vec3(shore1 - width, top, z + step), new Vec3(shore1, top, z + step),
+                    new Vec3(shore0, top, z), new Vec3(shore0 - width, top, z), paving);
+            // The kerb: a low step along the edge, its top and the side towards the land.
+            float edge = 0.32f;
+            builder.quad(new Vec3(shore1 - 0.5f, edge, z + step), new Vec3(shore1, edge, z + step),
+                    new Vec3(shore0, edge, z), new Vec3(shore0 - 0.5f, edge, z), kerb);
+            builder.quad(new Vec3(shore0 - 0.5f, top, z), new Vec3(shore1 - 0.5f, top, z + step),
+                    new Vec3(shore1 - 0.5f, edge, z + step), new Vec3(shore0 - 0.5f, edge, z), wall);
+            // The quay wall down to the water.
+            builder.quad(new Vec3(shore1, Sea.LEVEL, z + step), new Vec3(shore0, Sea.LEVEL, z),
+                    new Vec3(shore0, edge, z), new Vec3(shore1, edge, z + step), wall);
+        }
     }
 
     /** How far a place is from the district's plot; 0 inside it. */

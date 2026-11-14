@@ -32,7 +32,7 @@ final class SpriteAtlas {
 
     /** The kinds of the collection that are figures. */
     static final List<PartLibrary.Kind> KINDS = List.of(PartLibrary.Kind.BLOSSOM_TREE, PartLibrary.Kind.GREEN_TREE,
-            PartLibrary.Kind.LAMP, PartLibrary.Kind.VISITOR, PartLibrary.Kind.BUSH);
+            PartLibrary.Kind.LAMP, PartLibrary.Kind.VISITOR, PartLibrary.Kind.BUSH, PartLibrary.Kind.SEA_ANIMAL);
 
     /**
      * One picture in the atlas.
@@ -208,6 +208,14 @@ final class SpriteAtlas {
                 } else {
                     bush(g);
                 }
+            }
+            case SEA_ANIMAL -> {
+                // A duck: what swims until the model has drawn the animals of the sea.
+                outlined(g, new Ellipse2D.Float(18, 150, 92, 70), new Color(0xFFD84A));
+                outlined(g, new Ellipse2D.Float(64, 96, 50, 50), new Color(0xFFD84A));
+                outlined(g, new Ellipse2D.Float(104, 116, 20, 12), new Color(0xF28A2E));
+                g.setColor(OUTLINE);
+                g.fill(new Ellipse2D.Float(90, 110, 7, 7));
             }
             default -> {
                 Color[][] people = {{new Color(0x7B5EA7), new Color(0xB5532F)}, {new Color(0x3F8FC4), new Color(0x3A2C22)},

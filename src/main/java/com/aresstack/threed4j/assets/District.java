@@ -168,9 +168,26 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
         return motifs.get(Kind.BUSH).name().equals("Pfingstrosenbusch");
     }
 
-    /** The people of the town, as every district's motif for them. */
-    public static Motif people() {
-        return visitors();
+    /** What a kind that belongs to the whole town is: the same in every district. */
+    public static Motif sharedMotif(Kind kind) {
+        return kind == Kind.SEA_ANIMAL ? seaAnimals() : visitors();
+    }
+
+    /** What lives in the sea along the town's coast. */
+    private static Motif seaAnimals() {
+        return new Motif("Meerestier", "Meerestiere", List.of(
+                "a dolphin leaping out of the water, grey-blue with a light belly",
+                "a seal looking out of the water, head and shoulders, dark eyes and whiskers",
+                "a white swan swimming, long curved neck, orange beak",
+                "a small blue whale with a fountain of water spouting from its back",
+                "a sea turtle swimming at the surface, green shell, head raised",
+                "a red octopus with its head above the water and two arms waving",
+                "a seagull sitting on a wooden post that stands in the water",
+                "a yellow duck swimming",
+                "an orange crab on a small rock in the water, claws raised",
+                "a pelican swimming, big yellow beak",
+                "a little sailing boat with a striped sail, no people in it",
+                "a red and white buoy with a small lamp on top"));
     }
 
     private static Map<Kind, Motif> blossomMotifs() {
@@ -194,6 +211,7 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
                 "a street lamp with a round white glass globe on a slim post with a decorated foot",
                 "a street lamp with a hanging lantern on a curved swan-neck post")));
         motifs.put(Kind.VISITOR, visitors());
+        motifs.put(Kind.SEA_ANIMAL, seaAnimals());
         motifs.put(Kind.BUSH, new Motif("Pfingstrosenbusch", "Pfingstrosen", List.of("a bush of pink peonies")));
         motifs.put(Kind.LAWN, new Motif("Rasen", "Rasen", List.of(
                 "a mown lawn: base colour #A2D08C, small tufts of grass in slightly darker and lighter greens, a few "
@@ -259,6 +277,7 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
                 "a yard lamp: grey steel mast with a curved arm and a bell-shaped green enamel shade",
                 "a modern slim dark mast with a flat rectangular lamp head")));
         motifs.put(Kind.VISITOR, visitors());
+        motifs.put(Kind.SEA_ANIMAL, seaAnimals());
         motifs.put(Kind.BUSH, new Motif("Wildwuchs", "Wildwuchs", List.of(
                 "tall fireweed growing wild: several upright green stems with spikes of pink-purple flowers",
                 "a butterfly bush growing wild: arching green branches with long purple flower cones",
@@ -318,6 +337,28 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
     /** The districts the game brings along; planned ones are added by {@link TownLibrary}. */
     public static final List<District> ALL = List.of(BLOSSOM_QUARTER, WORKS_QUARTER);
 
+    /**
+     * The coast: east of this line lies the sea. It runs north to south in a wave,
+     * so that in the middle of every plot of the first column to the east a headland
+     * reaches out, with a bay on either side; the Wellenviertel's lighthouse stands
+     * on the tip of the first.
+     *
+     * @return the x of the shore at this z
+     */
+    public static float coastX(float z) {
+        return 170f + 30f * (float) Math.cos(2 * Math.PI * z / PLOT);
+    }
+
+    /** Whether a place is on land, at least this far from the water. */
+    public static boolean onLand(float x, float z, float distance) {
+        return x < coastX(z) - distance;
+    }
+
+    /** Whether a plot lies at the sea: part of it is water, and a promenade runs along its shore. */
+    public static boolean coastal(int plotX) {
+        return plotX == 1;
+    }
+
     /** The plots of the districts the game brings along: plot 0, 0 and the one south of it. */
     public static boolean plotTaken(int plotX, int plotZ) {
         return plotX == 0 && (plotZ == 0 || plotZ == -1);
@@ -329,7 +370,7 @@ public record District(String id, String name, String style, Map<Kind, Motif> mo
      */
     public static List<int[]> plotOrder() {
         List<int[]> plots = new java.util.ArrayList<>();
-        for (int x = -3; x <= 3; x++) {
+        for (int x = -3; x <= 1; x++) { // east of the first column there is only water
             for (int z = -3; z <= 3; z++) {
                 if (!plotTaken(x, z)) {
                     plots.add(new int[] {x, z});

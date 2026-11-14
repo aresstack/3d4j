@@ -38,6 +38,10 @@ final class Artist {
         }
         List<String> variations = district.motif(kind).variations();
         String subject = variations.get(Math.floorMod(number - 1, variations.size()));
+        if (kind == PartLibrary.Kind.SEA_ANIMAL) {
+            return subject + ", seen from the side, friendly. The game shows it in the sea and hides the lowest "
+                    + "quarter of the picture under water, so draw no water and no waves yourself";
+        }
         if (kind.shared()) {
             // People are at home in the whole town; no district lends them its look.
             return "a friendly person standing upright, seen from the front: " + subject;

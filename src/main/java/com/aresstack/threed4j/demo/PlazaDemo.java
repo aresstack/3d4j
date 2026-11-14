@@ -104,6 +104,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     /** The planned districts as pieces of the world, by the district's id. */
     private final java.util.Map<String, DistrictScene> pieces = new java.util.LinkedHashMap<>();
     private TownPlanner townPlanner;
+    private Sea sea;
     private String partsShown;
     private double partsCheckedAt;
     private BackgroundArtist backgroundArtist;
@@ -261,6 +262,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 .scalar("uFogStart")
                 .scalar("uFogEnd")
                 .scalar("uTime"));
+        sea = new Sea(graphics);
         loadArtwork(graphics);
         System.out.printf(Locale.ROOT, "Scene: %d buildings, %d triangles, %d sprites, 6 draw calls%n",
                 scene.buildingCount, scene.cityTriangles + scene.groundTriangles + scene.facadeTriangles,
@@ -640,6 +642,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             for (DistrictScene piece : pieces.values()) {
                 wanted = piece.obstacles.move(from, wanted, 0.7f);
             }
+            wanted = Sea.keepAshore(from, wanted);
         }
         position = wanted;
     }
@@ -713,6 +716,10 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             drawPiece(graphics, scene.city, scene.facades, scene.ground, scene.sprites, facadeTexture,
                     facadeAtlasLayout, groundTexture, groundAtlasLayout, spriteAtlas);
         }
+        boolean seaNear = position.x() > 100f - reach;
+        if (seaNear) {
+            graphics.draw(sea.surface, sceneShader);
+        }
         for (DistrictScene piece : pieces.values()) {
             if (piece.distance(position.x(), position.z()) < reach) {
                 drawPiece(graphics, piece.city, piece.facades, piece.ground, piece.sprites, piece.facadeTexture,
@@ -728,6 +735,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         waterShader.setUniform("uFogEnd", FOG_END);
         waterShader.setUniform("uTime", (float) sceneTime);
         graphics.draw(scene.water, waterShader);
+        if (seaNear) {
+            graphics.draw(sea.rings, waterShader);
+        }
 
         skyShader.setUniform("uViewProjection", projection.multiply(camera.viewRotationMatrix()));
         graphics.draw(scene.sky, skyShader);
@@ -849,6 +859,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             townPlanner.close();
         }
         pieces.values().forEach(DistrictScene::close);
+        if (sea != null) {
+            sea.close();
+        }
         if (setup != null) {
             setup.close();
         }

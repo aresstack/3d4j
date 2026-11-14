@@ -142,7 +142,7 @@ Bilder. Die Sammlungen liegen als Ordner unter dem Asset-Ordner (`TownLibrary`):
 
 ```
 .3d4j/assets/library/<stadtteil>/<art>-<nummer>.svg|.png|.json
-.3d4j/assets/library/stadt/visitor-<nummer>.svg|.png|.json
+.3d4j/assets/library/stadt/visitor-<nummer>.svg|.png|.json     (und sea-animal-<nummer>)
 ```
 
 Zwei Stadtteile bringt das Spiel mit; `District.at(x, z)` zieht ihre Grenze:
@@ -161,6 +161,22 @@ die Sammlungen von Blütenviertel und Werksviertel und ein geplantes Viertel, da
 Jede Datei wird genau einmal angeboten (`library/.defaults` merkt sich, welche): Vorhandenes
 bleibt unberührt, und ein gelöschtes Bild kommt nicht wieder. Abschalten mit
 `-Dthreed4j.defaults=false`.
+
+### Das Meer
+
+Östlich der Stadt liegt das Meer. Die Küste (`District.coastX`) ist eine geschwungene Linie:
+In der Mitte jedes Feldes der ersten Spalte im Osten ragt eine Landzunge vor, dazwischen liegen
+Buchten; der Leuchtturm des Wellenviertels steht auf der Spitze der ersten. Viertel in dieser
+Spalte liegen am Meer: An ihrem Ufer läuft eine Promenade mit Laternen entlang, Häuser, Bäume
+und Besucher stehen nur an Land, und weiter östlich wird nichts mehr geplant. Der Planer
+erfährt in der Frage nach dem Thema, dass das Viertel am Wasser liegt. Zu Fuß bleibt man an
+Land; drüber fliegen geht.
+
+Im Wasser schwimmen **Meerestiere** in Kreisen vor dem Ufer, der untere Teil unter Wasser. Sie
+sind wie die Besucher eine Art der ganzen Stadt (`sea-animal` in `library/stadt`, Vorgabe 12)
+und werden im Hintergrund gezeichnet: Delfin, Robbe, Schwan, Wal, Schildkröte, Krake, Möwe,
+Ente, Krebs, Pelikan, Segelboot, Boje. Bis das erste Bild da ist, schwimmt eine Ente.
+Ringe auf dem Wasser zeichnet der Shader des Brunnenwassers.
 
 ### Die Stadt wächst: geplante Viertel
 

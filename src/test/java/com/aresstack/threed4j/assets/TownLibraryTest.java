@@ -31,8 +31,21 @@ class TownLibraryTest {
         assertSame(town.district(District.WORKS_QUARTER), town.of(District.WORKS_QUARTER, PartLibrary.Kind.WINDOW));
         assertEquals(directory.resolve("library/werksviertel"), town.district(District.WORKS_QUARTER).directory());
         assertEquals(directory.resolve("library/stadt"), town.shared().directory());
-        assertEquals(List.of(PartLibrary.Kind.VISITOR), TownLibrary.sharedKinds());
-        assertEquals(PartLibrary.Kind.values().length - 1, TownLibrary.districtKinds().size());
+        assertEquals(List.of(PartLibrary.Kind.VISITOR, PartLibrary.Kind.SEA_ANIMAL), TownLibrary.sharedKinds());
+        assertEquals(PartLibrary.Kind.values().length - 2, TownLibrary.districtKinds().size());
+    }
+
+    @Test
+    void theSeaLiesEastOfACurvedCoastAndTheTownDoesNotGrowIntoIt() {
+        assertEquals(200f, District.coastX(0f), 0.001f, "a headland in the middle of the plot");
+        assertEquals(140f, District.coastX(100f), 0.001f, "a bay where two plots meet");
+        assertTrue(District.onLand(150f, 0f, 10f));
+        assertTrue(!District.onLand(195f, 0f, 10f), "too near the water");
+        assertTrue(!District.onLand(150f, 100f, 0f), "water in the bay");
+        assertTrue(District.coastal(1) && !District.coastal(0));
+        for (int[] plot : District.plotOrder()) {
+            assertTrue(plot[0] <= 1, "no plot out in the sea");
+        }
     }
 
     @Test

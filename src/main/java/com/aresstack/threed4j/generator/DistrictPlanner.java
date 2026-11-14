@@ -70,7 +70,7 @@ public final class DistrictPlanner {
     public static District plan(FlowerComposer.Model model, String modelName, List<District> existing, int plotX,
                                 int plotZ, Consumer<String> progress) throws IOException, Unusable {
         progress.accept("plant das Thema eines neuen Viertels");
-        JsonObject theme = ask(model, themeTask(existing), DistrictPlanner::checkTheme);
+        JsonObject theme = ask(model, themeTask(existing, District.coastal(plotX)), DistrictPlanner::checkTheme);
         String name = theme.get("name").getAsString().trim();
         String style = theme.get("style").getAsString().trim();
         JsonObject palette = theme.getAsJsonObject("palette");
@@ -97,7 +97,7 @@ public final class DistrictPlanner {
                     variations));
         }
         for (Kind kind : TownLibrary.sharedKinds()) {
-            motifs.put(kind, District.people());
+            motifs.put(kind, District.sharedMotif(kind));
         }
 
         float minHeight = clamp(buildings.get("minHeight").getAsFloat(), 4f, 30f);
@@ -150,10 +150,14 @@ public final class DistrictPlanner {
         return id.equals(TownLibrary.SHARED) || existing.stream().anyMatch(district -> district.id().equals(id));
     }
 
-    static String themeTask(List<District> existing) {
+    static String themeTask(List<District> existing, boolean coastal) {
         StringBuilder task = new StringBuilder("TASK: theme of the next district.\n\nThe town has these districts:\n");
         for (District district : existing) {
             task.append("- ").append(district.name()).append(": ").append(district.style()).append('\n');
+        }
+        if (coastal) {
+            task.append("\nThe new district lies at the sea: a promenade runs along its shore, and its landmark stands "
+                    + "on a headland at the water. Choose a theme that suits the coast.\n");
         }
         return task + "\nInvent the next district. It must differ clearly from all of these in theme, colours and "
                 + "buildings, and still fit a friendly cartoon town. Answer with this JSON object:\n"
