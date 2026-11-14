@@ -797,51 +797,29 @@ final class PauseMenu {
         shownStatus = actions.backgroundStatus();
         g.setColor(INK);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
-        // The progress, and behind it how many failed and why the last one did: on two lines if need be.
+        // The progress and how many failed; the state with every picture in work; why the last one failed.
         String progress = shownStatus[1];
-        int failed = progress.indexOf(" · ");
-        g.drawString(fitted(g, failed < 0 ? progress : progress.substring(0, progress.indexOf(", zuletzt ") < 0
-                ? progress.length() : progress.indexOf(", zuletzt ")), 440), 40, 284);
+        int mark = progress.indexOf(", zuletzt ");
+        String reason = mark < 0 ? null : progress.substring(mark + 10);
+        g.drawString(fitted(g, mark < 0 ? progress : progress.substring(0, mark), 440), 40, 284);
         int drawing = shownStatus.length - 2;
-        if (progress.contains(", zuletzt ")) {
-            // Why the last one failed: on two lines below the state, or on one above the buttons
-            // when the list of pictures in work needs the room.
-            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-            g.setColor(TEXT);
-            String reason = "Zuletzt misslungen: " + progress.substring(progress.indexOf(", zuletzt ") + 10);
-            if (drawing < 2) {
-                java.awt.FontMetrics metrics = g.getFontMetrics();
-                int cut = reason.length();
-                while (cut > 0 && metrics.stringWidth(reason.substring(0, cut)) > 440) {
-                    cut = reason.lastIndexOf(' ', cut - 1);
-                }
-                if (cut <= 0 || cut == reason.length()) {
-                    g.drawString(fitted(g, reason, 440), 40, 332);
-                } else {
-                    g.drawString(reason.substring(0, cut), 40, 332);
-                    g.drawString(fitted(g, reason.substring(cut + 1), 440), 40, 349);
-                }
-            } else {
-                g.drawString(fitted(g, reason, 440), 40, 376);
-            }
-            g.setColor(INK);
-            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
-        }
+        // The reason always gets two whole lines; the list of pictures gives up its third line for it.
+        int listLines = reason == null ? 3 : 2;
         if (drawing < 2) {
             g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 306);
         } else {
-            // Several at the same time: all of them, as many as fit on three lines.
             g.drawString("Stand: zeichnet " + drawing + " Bilder gleichzeitig:", 40, 306);
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
             g.setColor(TEXT);
             java.awt.FontMetrics metrics = g.getFontMetrics();
             int next = 2;
-            for (int line = 0; line < 3 && next < shownStatus.length; line++) {
+            for (int line = 0; line < listLines && next < shownStatus.length; line++) {
+                boolean last = line == listLines - 1;
                 StringBuilder text = new StringBuilder();
                 while (next < shownStatus.length) {
                     int left = shownStatus.length - next - 1;
                     String more = left > 0 ? ", " : "";
-                    String rest = line == 2 && left > 0 ? " … und " + left + " weitere" : "";
+                    String rest = last && left > 0 ? " … und " + left + " weitere" : "";
                     String with = text + shownStatus[next] + more;
                     if (text.length() > 0 && metrics.stringWidth(with + rest) > 440) {
                         break;
@@ -849,11 +827,29 @@ final class PauseMenu {
                     text.append(shownStatus[next]).append(more);
                     next++;
                 }
-                if (line == 2 && next < shownStatus.length) {
+                if (last && next < shownStatus.length) {
                     text.append("… und ").append(shownStatus.length - next).append(" weitere");
                 }
                 g.drawString(fitted(g, text.toString(), 440), 40, 324 + line * 17);
             }
+        }
+        if (reason != null) {
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            g.setColor(new Color(0xB03A6E));
+            java.awt.FontMetrics metrics = g.getFontMetrics();
+            String text = "Zuletzt misslungen: " + reason;
+            int cut = text.length();
+            while (cut > 0 && metrics.stringWidth(text.substring(0, cut)) > 440) {
+                cut = text.lastIndexOf(' ', cut - 1);
+            }
+            if (cut <= 0 || cut == text.length()) {
+                g.drawString(fitted(g, text, 440), 40, 359);
+            } else {
+                g.drawString(text.substring(0, cut), 40, 359);
+                g.drawString(fitted(g, text.substring(cut + 1), 440), 40, 374);
+            }
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
         }
 
         if (town == null) {

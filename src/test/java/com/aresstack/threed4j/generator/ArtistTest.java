@@ -87,4 +87,16 @@ class ArtistTest {
         assertEquals(PartLibrary.Kind.DOOR, door.kind());
         assertEquals(com.aresstack.threed4j.assets.District.WORKS_QUARTER, door.district());
     }
+
+    @Test
+    void aFailureIsToldInFewWordsWithTheTellingPartFirst() {
+        assertEquals("HTTP 504 über den Proxy: Gateway Time-out", BackgroundArtist.inShort(
+                "https://ki.firma.test/v1/chat/completions answered HTTP 504 (through proxy proxy.firma.test/10.0.0.1:8080): "
+                        + "<html><body><h1>Gateway Time-out</h1></body></html>"));
+        assertEquals("keine Verbindung über den Proxy: SocketTimeoutException: Read timed out", BackgroundArtist.inShort(
+                "cannot reach https://ki.firma.test/v1/chat/completions through proxy proxy.firma.test/10.0.0.1:8080 "
+                        + "(SocketTimeoutException: Read timed out)"));
+        assertEquals("the answer was cut off at max_tokens=8192", BackgroundArtist.inShort(
+                "the answer was cut off at max_tokens=8192"));
+    }
 }

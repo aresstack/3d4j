@@ -301,8 +301,8 @@ public final class BackgroundArtist implements AutoCloseable {
                     statuses.put(worker, what + " misslang: " + problem);
                     System.out.println("Background artist: " + what + " failed: " + problem);
                     failures.incrementAndGet();
-                    // Without the address: the line in the settings is short, and the reason comes after it.
-                    lastFailure = what + ": " + problem.replaceAll("https?://\\S+\\s*", "");
+                    lastFailure = what + ": " + inShort(problem);
+                    writeDown(what, problem);
                     if (serviceRefuses(problem)) {
                         // The service itself says no or cannot be reached: nobody hammers it.
                         pauseUntil = System.currentTimeMillis() + 45_000;
@@ -321,6 +321,44 @@ public final class BackgroundArtist implements AutoCloseable {
     /** Whether a failure came from the service (no answer, an error status) and not from an unusable drawing. */
     static boolean serviceRefuses(String problem) {
         return problem.contains("answered HTTP") || problem.contains("cannot reach") || problem.contains("Ollama:");
+    }
+
+    /**
+     * A failure in few words, the telling part first: the settings have two short lines for it.
+     * "HTTP 504: Gateway Time-out", "keine Verbindung: SocketTimeoutException: Read timed out".
+     */
+    static String inShort(String problem) {
+        java.util.regex.Matcher status = java.util.regex.Pattern
+                .compile("answered HTTP (\\d+) \\(([^)]*)\\):?\\s*(.*)", java.util.regex.Pattern.DOTALL).matcher(problem);
+        if (status.find()) {
+            String said = status.group(3).replaceAll("<[^>]*>", " ").replaceAll("\\s+", " ").trim();
+            return "HTTP " + status.group(1) + (status.group(2).startsWith("through proxy") ? " über den Proxy" : "")
+                    + (said.isEmpty() ? "" : ": " + said);
+        }
+        if (problem.startsWith("cannot reach")) {
+            // "cannot reach <address> <way> (<exception>: <message>)": the exception says what happened.
+            int open = problem.lastIndexOf(" (");
+            String cause = open < 0 ? problem : problem.substring(open + 2, problem.endsWith(")")
+                    ? problem.length() - 1 : problem.length());
+            return "keine Verbindung" + (problem.contains("through proxy") ? " über den Proxy" : "") + ": " + cause;
+        }
+        return problem.replaceAll("https?://\\S+\\s*", "");
+    }
+
+    /** Every failure in full, with its time, in {@code .3d4j/background.log}: the settings only show the last. */
+    private static synchronized void writeDown(String what, String problem) {
+        try {
+            java.nio.file.Path log = java.nio.file.Path.of(System.getProperty("user.home"), ".3d4j", "background.log");
+            java.nio.file.Files.createDirectories(log.getParent());
+            if (java.nio.file.Files.exists(log) && java.nio.file.Files.size(log) > 2_000_000) {
+                java.nio.file.Files.delete(log); // not without end
+            }
+            java.nio.file.Files.writeString(log, java.time.LocalDateTime.now().withNano(0) + " " + what + ": "
+                            + problem.replaceAll("\\s+", " ") + System.lineSeparator(),
+                    java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND);
+        } catch (java.io.IOException | RuntimeException ignored) {
+            // then it is not written down
+        }
     }
 
     /** How many pictures failed in this run and why the last one did, in German; empty if none failed. */

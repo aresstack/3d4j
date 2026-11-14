@@ -450,7 +450,9 @@ Hintergrund, die Planung neuer Viertel und `generate`. Bei 1 kommt alles nachein
 es ein lokales Modell auf einer Grafikkarte braucht. Lehnt der Dienst eine Anfrage ab oder ist er nicht
 erreichbar, fangen alle Zeichner 45 Sekunden lang nichts Neues an; liefert das Modell nur eine
 unbrauchbare Zeichnung, wartet allein der betroffene Zeichner fünf Sekunden. Unter „Welt“ steht,
-wie viele Bilder misslungen sind und woran das letzte scheiterte. Das Modell wählt
+wie viele Bilder misslungen sind und woran das letzte scheiterte, das Wesentliche zuerst
+(„HTTP 504 über den Proxy: …“, „keine Verbindung: SocketTimeoutException: …“). Jeder Fehlschlag
+steht ungekürzt mit Uhrzeit in `.3d4j/background.log`. Das Modell wählt
 man im Zugangsmenü.
 
 Dafür mischt der Renderer im Overlay (nach dem Hochskalieren der Szene) durchsichtige Pixel
