@@ -73,6 +73,7 @@ class ArtistTest {
                 town.district(district).add(kind, null, picture, null);
             }
         }
+        town.shared().setTarget(PartLibrary.Kind.SEA_ANIMAL, 0); // the sea is not this test's business
         town.shared().setTarget(PartLibrary.Kind.VISITOR, 2);
         BackgroundArtist.Job people = BackgroundArtist.next(town);
         assertEquals(PartLibrary.Kind.VISITOR, people.kind());
