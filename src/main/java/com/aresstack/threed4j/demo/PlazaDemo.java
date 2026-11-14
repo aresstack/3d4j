@@ -26,6 +26,8 @@ import com.aresstack.threed4j.platform.Key;
 import com.aresstack.threed4j.platform.MouseButton;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -71,6 +73,11 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     // Loading screen
     private Shader imageShader;
+    /** The part of the texture the next image shows (see {@link #showPart}); the whole of it unless set. */
+    private float uvScaleX = 1f;
+    private float uvScaleY = 1f;
+    private float uvOffsetX;
+    private float uvOffsetY;
     private Mesh screenQuad;
     private Texture titleImage;
     private Texture white;
@@ -110,6 +117,27 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private boolean fullscreenKnown;
     /** Whether the mouse is captured and looks around without a button held. */
     private boolean mouseLook;
+
+    // The plan of the town: one picture, shown small in the corner and large on Caps Lock.
+    private TownMap townMap;
+    private Texture townMapTexture;
+    private String townMapSignature = "";
+    private boolean miniMap = GameSettings.miniMap(GameSettings.file());
+    private boolean mapOpen;
+    /** The middle of what the large map shows, and how many metres it shows from left to right. */
+    private float mapCenterX;
+    private float mapCenterZ;
+    private float mapMetres;
+    private int mapDragX;
+    private int mapDragY;
+    private Texture mapFrame;
+    private int mapFrameWidth;
+    private int mapFrameHeight;
+    /** The player on the map: an arrow for each of {@link #HEADINGS} directions. */
+    private final Texture[] mapArrows = new Texture[HEADINGS];
+    private static final int HEADINGS = 32;
+    /** How many metres the small map shows from left to right. */
+    private static final float MINI_MAP_METRES = 120f;
     private int aiParallel = AiSetup.parallel();
     /** In full screen, too, looking around needs a held mouse button. */
     private boolean holdToLook = GameSettings.holdToLook(GameSettings.file());
@@ -217,7 +245,9 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         imageShader = graphics.createShader("image", ShaderLayout.attributes(2, 2)
                 .vec3("uScale")
                 .vec3("uOffset")
-                .vec3("uTint"));
+                .vec3("uTint")
+                .vec3("uUvScale")
+                .vec3("uUvOffset"));
         screenQuad = Meshes.screenQuad(graphics);
         titleImage = Textures.fromResource(graphics, "/images/loading.jpg", true);
         white = graphics.createTexture(1, 1, new int[]{0xFFFFFFFF}, false);
@@ -577,8 +607,18 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             }
             // In full screen the mouse belongs to the game while it is played: the pointer is gone and
             // moving the mouse looks around. Every menu gets the pointer back.
-            mouseLook = fills && playing && pause == null && setup == null && !holdToLook;
+            mouseLook = fills && playing && pause == null && setup == null && !holdToLook && !mapOpen;
             context.window().captureMouse(mouseLook);
+        }
+        if (playing && pause == null && setup == null && !options.benchmark() && scene != null
+                && (input.wasPressed(Key.CAPS_LOCK) || mapOpen && input.wasPressed(Key.ESCAPE))) {
+            mapOpen = !mapOpen;
+            if (mapOpen) {
+                mapCenterX = position.x();
+                mapCenterZ = position.z();
+                mapMetres = 520f;
+            }
+            return;
         }
         if (input.wasPressed(Key.ESCAPE)) {
             if (setup != null && scene != null) {
@@ -619,6 +659,13 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             // The game stands still while the menu is open.
             pause.update(input, context.window().width(), context.window().height());
             return;
+        }
+        if (mapOpen) {
+            updateMap(context, input); // the game stands still while the map is open, as behind the menu
+            return;
+        }
+        if (input.wasPressed(Key.M)) {
+            miniMap(!miniMap);
         }
         if (input.wasPressed(Key.P)) { // not in the menu: there P is a letter to type
             context.requestScreenshot(Path.of("screenshot.png"));
@@ -1010,6 +1057,10 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         if (playing) {
             if (pause != null) {
                 renderPause(context, graphics);
+            } else if (mapOpen) {
+                renderMap(context, graphics);
+            } else if (miniMap && !options.benchmark()) {
+                renderMiniMap(context, graphics);
             }
             return;
         }
@@ -1074,6 +1125,233 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
                 new Vec3(1f, 1f, 1f));
     }
 
+    // ------------------------------------------------------------------- the map
+
+    /** Paints the plan of the town anew when districts came or went or were built. */
+    private void ensureMap(GraphicsDevice graphics) {
+        StringBuilder signature = new StringBuilder();
+        for (District district : town.districts()) {
+            signature.append(district.id()).append(pieces.containsKey(district.id()) ? "+" : "-");
+            if (!district.builtIn()) {
+                signature.append(district.layout().plannedAt())
+                        .append(district.layout().landmark() == null ? "" : district.layout().landmark().name());
+            }
+            signature.append('|');
+        }
+        if (townMapTexture != null && signature.toString().equals(townMapSignature)) {
+            return;
+        }
+        List<TownMap.Piece> parts = new ArrayList<>();
+        // The two districts of the start share one scene: the works lie beyond their border.
+        List<float[]> blossom = new ArrayList<>();
+        List<float[]> works = new ArrayList<>();
+        for (float[] house : scene.obstacles.footprints()) {
+            ((house[1] + house[3]) / 2 < District.WORKS_BORDER_Z ? works : blossom).add(house);
+        }
+        for (District district : town.districts()) {
+            DistrictScene piece = pieces.get(district.id());
+            parts.add(new TownMap.Piece(district, district.equals(District.BLOSSOM_QUARTER) ? blossom
+                    : district.equals(District.WORKS_QUARTER) ? works
+                    : piece == null ? List.of() : piece.obstacles.footprints()));
+        }
+        if (townMapTexture != null) {
+            townMapTexture.close();
+        }
+        townMap = TownMap.paint(parts);
+        townMapTexture = Textures.fromImage(graphics, townMap.image, true);
+        townMapSignature = signature.toString();
+    }
+
+    /** The arrow that stands for the player, pointing the way the player looks. */
+    private Texture mapArrow(GraphicsDevice graphics) {
+        int heading = Math.floorMod(Math.round(yaw / (float) (2 * Math.PI) * HEADINGS), HEADINGS);
+        if (mapArrows[heading] == null) {
+            int size = 64;
+            java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(size, size,
+                    java.awt.image.BufferedImage.TYPE_INT_ARGB);
+            java.awt.Graphics2D g = image.createGraphics();
+            g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+            g.translate(size / 2.0, size / 2.0);
+            g.rotate(heading * 2 * Math.PI / HEADINGS); // 0 looks north, which is up; turning right turns clockwise
+            java.awt.geom.Path2D arrow = new java.awt.geom.Path2D.Double();
+            arrow.moveTo(0, -24);
+            arrow.lineTo(17, 20);
+            arrow.quadTo(0, 8, -17, 20);
+            arrow.closePath();
+            g.setColor(new java.awt.Color(0xD9629C));
+            g.fill(arrow);
+            g.setStroke(new java.awt.BasicStroke(5f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND));
+            g.setColor(java.awt.Color.WHITE);
+            g.draw(arrow);
+            g.setStroke(new java.awt.BasicStroke(2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND));
+            g.setColor(new java.awt.Color(0x3B2A4A));
+            g.draw(arrow);
+            g.dispose();
+            mapArrows[heading] = Textures.fromImage(graphics, image, true);
+        }
+        return mapArrows[heading];
+    }
+
+    /** Shows the part of the map that begins at a place and is so many metres wide and high. */
+    private void showPart(float fromX, float fromZ, float metresX, float metresZ) {
+        uvScaleX = metresX / townMap.width();
+        uvScaleY = metresZ / townMap.height();
+        uvOffsetX = (fromX - townMap.minX) / townMap.width();
+        uvOffsetY = (fromZ - townMap.minZ) / townMap.height();
+    }
+
+    /** The small map in the lower left corner: the surroundings of the player, north at the top. */
+    private void renderMiniMap(EngineContext context, GraphicsDevice graphics) {
+        ensureMap(graphics);
+        float width = context.window().width();
+        float height = context.window().height();
+        float side = Math.round(height * 0.24f);
+        float margin = Math.round(height * 0.025f);
+        float border = Math.max(3f, Math.round(height * 0.004f));
+        float centerX = -1f + (margin + side / 2) * 2f / width;
+        float centerY = -1f + (margin + side / 2) * 2f / height;
+        imageShader.setTexture(white);
+        drawImage(graphics, (side + 2 * border) / width, (side + 2 * border) / height, centerX, centerY,
+                new Vec3(0.85f, 0.39f, 0.62f), 0.95f);
+        imageShader.setTexture(townMapTexture);
+        showPart(position.x() - MINI_MAP_METRES / 2, position.z() - MINI_MAP_METRES / 2, MINI_MAP_METRES,
+                MINI_MAP_METRES);
+        drawImage(graphics, side / width, side / height, centerX, centerY, new Vec3(1f, 1f, 1f), 0.95f);
+        float arrow = side * 0.2f;
+        imageShader.setTexture(mapArrow(graphics));
+        drawImage(graphics, arrow / width, arrow / height, centerX, centerY, new Vec3(1f, 1f, 1f), 1f);
+    }
+
+    /** The drawable part of the large map inside its card, in window pixels: left, top, width, height. */
+    private static float[] mapArea(int width, int height) {
+        float cardWidth = Math.round(width * 0.84f);
+        float cardHeight = Math.round(height * 0.86f);
+        float inset = Math.round(height * 0.022f);
+        float title = Math.round(height * 0.085f);
+        float foot = Math.round(height * 0.055f);
+        return new float[] {(width - cardWidth) / 2 + inset, (height - cardHeight) / 2 + title, cardWidth - 2 * inset,
+                cardHeight - title - foot, cardWidth, cardHeight};
+    }
+
+    /** Keeps what the large map shows inside the picture: not closer than a street corner, not beyond the edge. */
+    private void limitMap(float[] area) {
+        float aspect = area[3] / area[2];
+        mapMetres = Math.max(60f, Math.min(mapMetres, Math.min(townMap.width(), townMap.height() / aspect)));
+        float halfX = mapMetres / 2;
+        float halfZ = mapMetres * aspect / 2;
+        mapCenterX = Math.max(townMap.minX + halfX, Math.min(townMap.maxX - halfX, mapCenterX));
+        mapCenterZ = Math.max(townMap.minZ + halfZ, Math.min(townMap.maxZ - halfZ, mapCenterZ));
+    }
+
+    /** Dragging moves the large map, the wheel zooms it at the pointer. */
+    private void updateMap(EngineContext context, Input input) {
+        if (townMap == null) {
+            return;
+        }
+        float[] area = mapArea(context.window().width(), context.window().height());
+        float metresPerPixel = mapMetres / area[2];
+        if (input.isDown(MouseButton.LEFT) && !input.wasPressed(MouseButton.LEFT)) {
+            mapCenterX -= (input.mouseX() - mapDragX) * metresPerPixel;
+            mapCenterZ -= (input.mouseY() - mapDragY) * metresPerPixel;
+        }
+        mapDragX = input.mouseX();
+        mapDragY = input.mouseY();
+        float turned = input.scroll() + (input.wasPressed(Key.UP) ? 1 : 0) - (input.wasPressed(Key.DOWN) ? 1 : 0);
+        if (turned != 0) {
+            // The place under the pointer stays under the pointer.
+            float pointerX = Math.max(0f, Math.min(1f, (input.mouseX() - area[0]) / area[2])) - 0.5f;
+            float pointerZ = Math.max(0f, Math.min(1f, (input.mouseY() - area[1]) / area[3])) - 0.5f;
+            float aspect = area[3] / area[2];
+            float worldX = mapCenterX + pointerX * mapMetres;
+            float worldZ = mapCenterZ + pointerZ * mapMetres * aspect;
+            mapMetres *= (float) Math.pow(0.85, turned);
+            limitMap(area);
+            mapCenterX = worldX - pointerX * mapMetres;
+            mapCenterZ = worldZ - pointerZ * mapMetres * aspect;
+        }
+        limitMap(area);
+    }
+
+    /** The large map: a card over the standing, darkened game. */
+    private void renderMap(EngineContext context, GraphicsDevice graphics) {
+        ensureMap(graphics);
+        int width = context.window().width();
+        int height = context.window().height();
+        float[] area = mapArea(width, height);
+        limitMap(area);
+        int cardWidth = (int) area[4];
+        int cardHeight = (int) area[5];
+        if (mapFrame == null || mapFrameWidth != cardWidth || mapFrameHeight != cardHeight) {
+            if (mapFrame != null) {
+                mapFrame.close();
+            }
+            mapFrame = Textures.fromImage(graphics, mapCard(cardWidth, cardHeight, height), true);
+            mapFrameWidth = cardWidth;
+            mapFrameHeight = cardHeight;
+        }
+        imageShader.setTexture(white);
+        drawImage(graphics, 1f, 1f, 0f, 0f, new Vec3(0.20f, 0.11f, 0.27f), 0.45f);
+        imageShader.setTexture(mapFrame);
+        drawImage(graphics, (float) cardWidth / width, (float) cardHeight / height, 0f, 0f, new Vec3(1f, 1f, 1f), 1f);
+
+        float aspect = area[3] / area[2];
+        float centerX = -1f + (area[0] + area[2] / 2) * 2f / width;
+        float centerY = 1f - (area[1] + area[3] / 2) * 2f / height;
+        imageShader.setTexture(townMapTexture);
+        showPart(mapCenterX - mapMetres / 2, mapCenterZ - mapMetres * aspect / 2, mapMetres, mapMetres * aspect);
+        drawImage(graphics, area[2] / width, area[3] / height, centerX, centerY, new Vec3(1f, 1f, 1f), 1f);
+
+        // The player, if the part shown holds the place.
+        float atX = (position.x() - mapCenterX) / mapMetres;
+        float atZ = (position.z() - mapCenterZ) / (mapMetres * aspect);
+        if (Math.abs(atX) < 0.48f && Math.abs(atZ) < 0.48f) {
+            float arrow = height * 0.05f;
+            imageShader.setTexture(mapArrow(graphics));
+            drawImage(graphics, arrow / width, arrow / height, centerX + atX * area[2] * 2f / width,
+                    centerY - atZ * area[3] * 2f / height, new Vec3(1f, 1f, 1f), 1f);
+        }
+    }
+
+    /** The card around the large map, in the look of the menus: title above, how to use it below. */
+    private static java.awt.image.BufferedImage mapCard(int width, int height, int windowHeight) {
+        java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(width, height,
+                java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        java.awt.Graphics2D g = image.createGraphics();
+        g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(java.awt.RenderingHints.KEY_TEXT_ANTIALIASING,
+                java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        float unit = windowHeight / 720f;
+        float round = 34f * unit;
+        float rim = 5f * unit;
+        java.awt.Shape card = new java.awt.geom.RoundRectangle2D.Float(rim / 2, rim / 2, width - rim, height - rim, round, round);
+        g.setColor(new java.awt.Color(0xFFFBFD));
+        g.fill(card);
+        g.setColor(new java.awt.Color(0xF29BC4));
+        g.setStroke(new java.awt.BasicStroke(rim));
+        g.draw(card);
+        g.setColor(new java.awt.Color(0x4A2A5E));
+        g.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD | java.awt.Font.ITALIC, Math.round(34 * unit)));
+        String title = "Stadtplan";
+        g.drawString(title, (width - g.getFontMetrics().stringWidth(title)) / 2f, 44f * unit);
+        g.setColor(new java.awt.Color(0x5C4A66));
+        g.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, Math.round(14 * unit)));
+        String hint = "Ziehen: verschieben  ·  Mausrad: zoomen  ·  Caps Lock oder Esc: schließen";
+        g.drawString(hint, (width - g.getFontMetrics().stringWidth(hint)) / 2f, height - 15f * unit);
+        g.dispose();
+        return image;
+    }
+
+    @Override
+    public boolean miniMap() {
+        return miniMap;
+    }
+
+    @Override
+    public void miniMap(boolean shown) {
+        miniMap = shown;
+        GameSettings.saveMiniMap(GameSettings.file(), shown);
+    }
+
     private static float fitX(float windowAspect, float imageAspect) {
         return windowAspect > imageAspect ? imageAspect / windowAspect : 1f;
     }
@@ -1092,7 +1370,13 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         imageShader.setUniform("uScale", new Vec3(scaleX, scaleY, opacity));
         imageShader.setUniform("uOffset", new Vec3(centerX, centerY, 0f));
         imageShader.setUniform("uTint", tint);
+        imageShader.setUniform("uUvScale", new Vec3(uvScaleX, uvScaleY, 0f));
+        imageShader.setUniform("uUvOffset", new Vec3(uvOffsetX, uvOffsetY, 0f));
         graphics.draw(screenQuad, imageShader);
+        uvScaleX = 1f;
+        uvScaleY = 1f;
+        uvOffsetX = 0f;
+        uvOffsetY = 0f;
     }
 
     @Override
@@ -1125,6 +1409,17 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
         }
         if (pauseImage != null) {
             pauseImage.close();
+        }
+        if (townMapTexture != null) {
+            townMapTexture.close();
+        }
+        if (mapFrame != null) {
+            mapFrame.close();
+        }
+        for (Texture arrow : mapArrows) {
+            if (arrow != null) {
+                arrow.close();
+            }
         }
         if (scene != null) {
             scene.close();

@@ -102,6 +102,17 @@ record GameSettings(float renderScale, boolean smoothUpscale, float mouseSpeed) 
         store(file, properties);
     }
 
+    /** Whether the small map in the corner is shown ({@code map.mini}); it is unless switched off. */
+    static boolean miniMap(Path file) {
+        return !"false".equalsIgnoreCase(read(file).getProperty("map.mini"));
+    }
+
+    static void saveMiniMap(Path file, boolean shown) {
+        Properties properties = read(file);
+        properties.setProperty("map.mini", String.valueOf(shown));
+        store(file, properties);
+    }
+
     static void saveFullscreen(Path file, boolean fullscreen) {
         Properties properties = read(file);
         properties.setProperty("window.fullscreen", String.valueOf(fullscreen));

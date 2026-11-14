@@ -24,6 +24,15 @@ final class Obstacles {
     private final List<Box> boxes = new ArrayList<>();
     private final List<Post> posts = new ArrayList<>();
 
+    /** The ground plans of everything boxy, each as minX, minZ, maxX, maxZ: for a map. */
+    List<float[]> footprints() {
+        List<float[]> footprints = new ArrayList<>();
+        for (Box box : boxes) {
+            footprints.add(new float[] {box.minX(), box.minZ(), box.maxX(), box.maxZ()});
+        }
+        return footprints;
+    }
+
     void box(float minX, float minZ, float maxX, float maxZ, float height) {
         boxes.add(new Box(Math.min(minX, maxX), Math.min(minZ, maxZ), Math.max(minX, maxX), Math.max(minZ, maxZ), height));
     }

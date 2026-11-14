@@ -4,6 +4,8 @@ cbuffer Uniforms : register(b0) {
     float3 uScale;
     float3 uOffset;
     float3 uTint;
+    float3 uUvScale;  // x, y: the part of the texture that is shown, as a share of it
+    float3 uUvOffset; // x, y: where that part begins
 };
 
 Texture2D uTexture : register(t0);
@@ -22,7 +24,7 @@ struct VertexOutput {
 VertexOutput vertexMain(VertexInput input) {
     VertexOutput output;
     output.position = float4(input.position * uScale.xy + uOffset.xy, 0.0, 1.0);
-    output.uv = input.uv;
+    output.uv = input.uv * uUvScale.xy + uUvOffset.xy;
     return output;
 }
 

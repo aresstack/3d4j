@@ -104,6 +104,8 @@ und Besuchern.
 | F | Hochskalieren weich oder pixelig |
 | R | Framezeit-Statistik zurücksetzen |
 | P | `screenshot.png` speichern |
+| Caps Lock | Stadtplan öffnen und schließen (ziehen verschiebt, das Mausrad zoomt) |
+| M | Minimap an oder aus |
 | Esc | Pausenmenü (Weiterspielen, Einstellungen, Spiel beenden) |
 
 Das Spiel startet im **Vollbild**: ein rahmenloses Fenster über den ganzen Bildschirm, ohne
@@ -400,7 +402,7 @@ Enter; Esc führt eine Ebene zurück bzw. ins Spiel.
 Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt, gehört dorthin:
 
 - **Bild:** Auflösung (100 bis 25 %, wie die Tasten 1 bis 5), Hochskalieren (weich oder
-  pixelig, wie F), Anzeige (Vollbild oder Fenster, wie Alt+Enter) und, bei mehreren
+  pixelig, wie F), Minimap (an oder aus, wie M; gemerkt als `map.mini`), Anzeige (Vollbild oder Fenster, wie Alt+Enter) und, bei mehreren
   Bildschirmen, auf welchem das Spiel läuft (von links nach rechts nummeriert; gemerkt als
   `window.monitor`).
 - **Steuerung:** Geschwindigkeit der Maus beim Umsehen, als Schieberegler von 0,10 bis 3,00
@@ -420,6 +422,16 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
 Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
 `--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
 (`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`, `chat.parallel`), wo sie auch für `generate` gelten.
+Der Stadtplan ist ein einziges Bild von oben, Norden oben: das Meer im Osten, die Berge im
+Westen, jedes Viertel mit Boden, Straßen, Platz, Häusern (aus den Grundrissen der Hindernisse)
+und Wahrzeichen. `TownMap` malt es neu, wenn Viertel dazukommen oder verschwinden. Die Minimap
+unten links und der große Plan (Caps Lock, über dem angehaltenen, abgedunkelten Spiel, mit
+Mauszeiger) zeigen Ausschnitte desselben Bildes; der Ausschnitt ist eine Sache der
+Texturkoordinaten (`uUvScale`, `uUvOffset` im Bild-Shader), verschieben und zoomen kostet
+also nichts. Der Planer neuer Viertel bekommt denselben Plan in Worten (`TownPlan`): jedes
+Viertel mit Lage, Stil und Wahrzeichen, ein Raster der Grundstücke mit dem neuen Platz und
+dessen Nachbarn, und die Regel, kein Thema und keine Art von Wahrzeichen zu wiederholen.
+
 Neue Bilder holt ein eigener Thread ins Spiel: Er liest einmal pro Sekunde die Sammlungen von
 der Platte und malt die Atlanten neu, wenn sich etwas geändert hat, jedes Teil der Welt höchstens
 alle acht Sekunden. Unter Direct3D baut er auch die Texturen und Meshes selbst (das Device darf,

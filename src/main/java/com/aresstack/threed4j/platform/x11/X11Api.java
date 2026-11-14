@@ -92,6 +92,7 @@ final class X11Api {
     static final int XK_SPACE = 0x0020;
     static final int XK_BACKSPACE = 0xff08;
     static final int XK_TAB = 0xff09;
+    static final int XK_CAPS_LOCK = 0xffe5;
     static final int XK_RETURN = 0xff0d;
     static final int XK_ESCAPE = 0xff1b;
     static final int XK_LEFT = 0xff51;

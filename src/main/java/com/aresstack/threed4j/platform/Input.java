@@ -89,6 +89,19 @@ public final class Input {
         Arrays.fill(mousePressed, false);
         mouseDeltaX = 0;
         mouseDeltaY = 0;
+        scroll = 0;
+    }
+
+    private float scroll;
+
+    /** How far the mouse wheel was turned since the last frame, in notches; away from the user is positive. */
+    public float scroll() {
+        return scroll;
+    }
+
+    /** Called by the platform window when the mouse wheel turns. */
+    public void onScroll(float notches) {
+        scroll += notches;
     }
 
     /** Called by the platform window for every key event; {@code key} may be {@code null} (unmapped). */

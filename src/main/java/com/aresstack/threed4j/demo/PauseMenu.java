@@ -97,6 +97,14 @@ final class PauseMenu {
         default void aiParallel(int parallel) {
         }
 
+        /** Whether the small map in the corner is shown while playing. */
+        default boolean miniMap() {
+            return true;
+        }
+
+        default void miniMap(boolean shown) {
+        }
+
         /** Whether looking around in full screen needs a held mouse button. */
         default boolean holdToLook() {
             return false;
@@ -675,6 +683,10 @@ final class PauseMenu {
 
         // Also switched with Alt+Enter. In full screen the mouse looks around without a button held.
         boolean fills = actions.fullscreen();
+        boolean mini = actions.miniMap();
+        label(g, "Minimap", 364, 330, 16);
+        choice(g, "An", 364, 342, 54, mini, () -> actions.miniMap(true));
+        choice(g, "Aus", 424, 342, 56, !mini, () -> actions.miniMap(false));
         label(g, "Anzeige", 410);
         choice(g, "Vollbild", 40, 422, 106, fills, () -> actions.fullscreen(true));
         choice(g, "Fenster", 152, 422, 106, !fills, () -> actions.fullscreen(false));

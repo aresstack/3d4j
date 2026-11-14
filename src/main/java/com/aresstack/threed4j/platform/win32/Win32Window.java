@@ -332,6 +332,11 @@ public final class Win32Window implements GLWindow {
                     setCapture(hwnd); // a drag keeps working when the pointer leaves the window
                     return 0;
                 }
+                case WM_MOUSEWHEEL -> {
+                    // The turn is the signed upper half of wParam, 120 for one notch.
+                    input.onScroll((short) ((wParam >>> 16) & 0xFFFF) / 120f);
+                    return 0;
+                }
                 case WM_LBUTTONUP, WM_MBUTTONUP, WM_RBUTTONUP -> {
                     input.onMouseButton(mapButton(messageId), false);
                     if (!input.isDown(MouseButton.LEFT) && !input.isDown(MouseButton.MIDDLE)
@@ -635,6 +640,7 @@ public final class Win32Window implements GLWindow {
             case VK_RETURN -> Key.ENTER;
             case VK_SPACE -> Key.SPACE;
             case VK_TAB -> Key.TAB;
+            case VK_CAPITAL -> Key.CAPS_LOCK;
             case VK_BACK -> Key.BACKSPACE;
             case VK_SHIFT -> Key.SHIFT;
             case VK_CONTROL -> Key.CONTROL;

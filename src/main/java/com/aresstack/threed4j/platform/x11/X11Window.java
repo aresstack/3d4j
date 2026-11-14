@@ -221,6 +221,11 @@ public final class X11Window implements GLWindow {
                     if (!mouseCaptured) {
                         input.onMouseMove(event.get(JAVA_INT, POINTER_X), event.get(JAVA_INT, POINTER_Y));
                     }
+                    if (type == BUTTON_PRESS && event.get(JAVA_INT, BUTTON_NUMBER) == 4) {
+                        input.onScroll(1f); // X reports the wheel as buttons 4 (away) and 5 (toward the user)
+                    } else if (type == BUTTON_PRESS && event.get(JAVA_INT, BUTTON_NUMBER) == 5) {
+                        input.onScroll(-1f);
+                    }
                     input.onMouseButton(switch (event.get(JAVA_INT, BUTTON_NUMBER)) {
                         case 1 -> MouseButton.LEFT;
                         case 2 -> MouseButton.MIDDLE;
@@ -318,6 +323,7 @@ public final class X11Window implements GLWindow {
             case XK_RETURN -> Key.ENTER;
             case XK_SPACE -> Key.SPACE;
             case XK_TAB -> Key.TAB;
+            case XK_CAPS_LOCK -> Key.CAPS_LOCK;
             case XK_BACKSPACE -> Key.BACKSPACE;
             case XK_SHIFT_L, XK_SHIFT_R -> Key.SHIFT;
             case XK_CONTROL_L, XK_CONTROL_R -> Key.CONTROL;

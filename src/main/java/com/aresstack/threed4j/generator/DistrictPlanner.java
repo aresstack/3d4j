@@ -70,7 +70,7 @@ public final class DistrictPlanner {
     public static District plan(FlowerComposer.Model model, String modelName, List<District> existing, int plotX,
                                 int plotZ, Consumer<String> progress) throws IOException, Unusable {
         progress.accept("plant das Thema eines neuen Viertels");
-        JsonObject theme = ask(model, themeTask(existing, District.coastal(plotX)), DistrictPlanner::checkTheme);
+        JsonObject theme = ask(model, themeTask(existing, plotX, plotZ), DistrictPlanner::checkTheme);
         String name = theme.get("name").getAsString().trim();
         String style = theme.get("style").getAsString().trim();
         JsonObject palette = theme.getAsJsonObject("palette");
@@ -151,16 +151,24 @@ public final class DistrictPlanner {
     }
 
     static String themeTask(List<District> existing, boolean coastal) {
-        StringBuilder task = new StringBuilder("TASK: theme of the next district.\n\nThe town has these districts:\n");
-        for (District district : existing) {
-            task.append("- ").append(district.name()).append(": ").append(district.style()).append('\n');
-        }
-        if (coastal) {
+        return themeTask(existing, coastal ? 1 : 0, 0);
+    }
+
+    /** The task with the plan of the town: what there is, where, and where the new district will lie. */
+    static String themeTask(List<District> existing, int plotX, int plotZ) {
+        StringBuilder task = new StringBuilder("TASK: theme of the next district.\n\n")
+                .append(com.aresstack.threed4j.assets.TownPlan.describe(existing, plotX, plotZ));
+        if (District.coastal(plotX)) {
             task.append("\nThe new district lies at the sea: a promenade runs along its shore, and its landmark stands "
-                    + "on a headland at the water. Choose a theme that suits the coast.\n");
+                    + "on a headland at the water. Choose a theme that suits the coast, but a different one from the "
+                    + "other districts at the sea.\n");
         }
         return task + "\nInvent the next district. It must differ clearly from all of these in theme, colours and "
-                + "buildings, and still fit a friendly cartoon town. Answer with this JSON object:\n"
+                + "buildings, and still fit a friendly cartoon town. Neither its theme nor its name nor its landmark "
+                + "may repeat what the town already has: the landmark must be a different kind of thing from every "
+                + "landmark listed above (if there is a lighthouse, then no second lighthouse, beacon or sea tower; "
+                + "if there is a fountain, no second fountain; and so on). Let it suit its neighbours on the map. "
+                + "Answer with this JSON object:\n"
                 + "{\n"
                 + "  \"name\": \"German name of the district, one word, e.g. ending in 'viertel'\",\n"
                 + "  \"style\": \"one or two English sentences on materials, colours, shapes and mood; an illustrator "
