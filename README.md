@@ -480,6 +480,10 @@ selbst zuständig. Die folgenden Einstellungen gelten für beide.
   man in die Konsole tippt; die Kopplung liegt danach in `.3d4j/keepass.properties` und gilt
   auch für das Menü. Ist die Umgebungsvariable `THREED4J_API_KEY` gesetzt, wird sie statt
   KeePass verwendet; dann muss die Adresse angegeben sein.
+- **Gestreamt:** Antworten werden als Stream angefordert (`stream: true`) und beim Lesen wieder
+  zusammengesetzt. So fließen Daten, während das Modell schreibt, und kein Proxy oder Gateway
+  auf dem Weg bricht eine stille Verbindung mit HTTP 504 ab. Ein Dienst, der das nicht kann,
+  wird für den Rest des Laufs wie früher gefragt; `chat.stream=false` schaltet es ganz ab.
 - **Antwortlänge:** Jede Anfrage sendet `max_tokens` (Standard 16384, sonst `chat.maxTokens` aus
   `.3d4j/generator.properties` oder dem Enterprise AI Client). Meldet der Dienst
   `finish_reason=length`, gilt die Antwort als abgeschnitten und wird nicht verwendet.

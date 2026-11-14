@@ -181,7 +181,7 @@ final class ChatClient {
             }
             connection.setConnectTimeout(20_000);
             connection.setReadTimeout(readTimeoutMillis);
-            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Accept", "application/json, text/event-stream");
             connection.setRequestProperty("User-Agent", "3d4j");
             if (apiKey != null && !apiKey.isBlank()) {
                 connection.setRequestProperty("Authorization", "Bearer " + apiKey);
@@ -259,7 +259,11 @@ final class ChatClient {
         messages.add(message("system", systemPrompt));
         messages.add(message("user", userPrompt));
         body.add("messages", messages);
-        body.addProperty("stream", false);
+        // Streamed: the answer arrives piece by piece while the model writes. A proxy or gateway on
+        // the way gives up on a connection that stays silent (HTTP 504), and a long drawing keeps
+        // a connection silent for minutes when the answer only comes at the end.
+        boolean stream = !STREAMING_REFUSED.contains(endpoint) && AiSetup.streaming();
+        body.addProperty("stream", stream);
         // Without a limit of its own the service may cut a long drawing short.
         body.addProperty("max_tokens", maxTokens);
         if (reasoningEffort != null) {
@@ -267,7 +271,32 @@ final class ChatClient {
             body.addProperty("reasoning_effort", reasoningEffort);
         }
 
-        String response = exchange(endpoint, body.toString(), 5 * 60_000);
+        String response;
+        try {
+            response = exchange(endpoint, body.toString(), 5 * 60_000);
+        } catch (IOException e) {
+            String problem = String.valueOf(e.getMessage());
+            if (!stream || !(problem.contains("answered HTTP 400") || problem.contains("answered HTTP 404")
+                    || problem.contains("answered HTTP 415") || problem.contains("answered HTTP 422")
+                    || problem.contains("answered HTTP 501"))) {
+                throw e;
+            }
+            // A service that does not stream: asked the old way, now and for the rest of this run.
+            STREAMING_REFUSED.add(endpoint);
+            body.addProperty("stream", false);
+            response = exchange(endpoint, body.toString(), 5 * 60_000);
+        }
+        if (response.stripLeading().startsWith("data:") || response.stripLeading().startsWith(":")) {
+            Streamed streamed = streamed(response);
+            if (streamed.cutOff()) {
+                throw new IOException("the answer was cut off at max_tokens=" + maxTokens
+                        + "; raise the answer length in the settings (chat.maxTokens)");
+            }
+            if (streamed.text().isEmpty()) {
+                throw new IOException("the answer has no text: " + abbreviate(response));
+            }
+            return streamed.text();
+        }
         try {
             JsonObject json = JsonParser.parseString(response).getAsJsonObject();
             JsonElement content = json.getAsJsonArray("choices").get(0).getAsJsonObject()
@@ -284,6 +313,58 @@ final class ChatClient {
         } catch (RuntimeException e) {
             throw new IOException("unexpected answer format: " + abbreviate(response), e);
         }
+    }
+
+    private static final java.util.Set<URI> STREAMING_REFUSED = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
+    /** What a streamed answer adds up to: its text, and whether it ended because it reached the length limit. */
+    record Streamed(String text, boolean cutOff) {
+    }
+
+    /**
+     * Puts a streamed answer together: lines {@code data: {...}} with a piece of text each in
+     * {@code choices[0].delta.content}, ended by {@code data: [DONE]}. Thinking arrives in other
+     * fields and is left out.
+     *
+     * @throws IOException if the stream carries an error or cannot be read
+     */
+    static Streamed streamed(String body) throws IOException {
+        StringBuilder text = new StringBuilder();
+        boolean cutOff = false;
+        for (String line : body.split("\\R")) {
+            if (!line.startsWith("data:")) {
+                continue; // empty lines between events, comments that keep the connection alive
+            }
+            String data = line.substring(5).trim();
+            if (data.isEmpty() || data.equals("[DONE]")) {
+                continue;
+            }
+            try {
+                JsonObject event = JsonParser.parseString(data).getAsJsonObject();
+                if (event.has("error")) {
+                    throw new IOException("the service reported: " + abbreviate(event.get("error").toString()));
+                }
+                JsonArray choices = event.getAsJsonArray("choices");
+                if (choices == null || choices.isEmpty()) {
+                    continue; // e.g. the usage at the end
+                }
+                JsonObject choice = choices.get(0).getAsJsonObject();
+                JsonElement delta = choice.get("delta");
+                if (delta != null && delta.isJsonObject()) {
+                    JsonElement content = delta.getAsJsonObject().get("content");
+                    if (content != null && content.isJsonPrimitive()) {
+                        text.append(content.getAsString());
+                    }
+                }
+                JsonElement finish = choice.get("finish_reason");
+                if (finish != null && finish.isJsonPrimitive() && finish.getAsString().equals("length")) {
+                    cutOff = true;
+                }
+            } catch (RuntimeException e) {
+                throw new IOException("unexpected answer format: " + abbreviate(data), e);
+            }
+        }
+        return new Streamed(text.toString(), cutOff);
     }
 
     /**

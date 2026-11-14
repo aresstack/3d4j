@@ -474,6 +474,14 @@ public final class AiSetup {
         }
     }
 
+    /**
+     * Whether answers are asked for as a stream ({@code chat.stream}); they are unless switched off.
+     * A stream keeps the connection busy, so that no proxy on the way gives up waiting.
+     */
+    public static boolean streaming() {
+        return !"false".equalsIgnoreCase(read(settingsFile()).getProperty("chat.stream"));
+    }
+
     public static void saveBackgroundEnabled(boolean enabled) throws IOException {
         Properties own = read(settingsFile());
         own.setProperty("background.enabled", String.valueOf(enabled));
