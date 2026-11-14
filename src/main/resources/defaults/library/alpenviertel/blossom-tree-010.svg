@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <rect x="122" y="460" width="12" height="52" fill="#7B5E4B" stroke="#3B2A4A" stroke-width="8" rx="4" />
+  
+  <!-- Bottom Tier -->
+  <path d="M 20 470 L 128 320 L 236 470 Z" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Middle Tier -->
+  <path d="M 50 370 L 128 220 L 206 370 Z" fill="#3A7D32" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Top Tier -->
+  <path d="M 80 280 L 128 150 L 176 280 Z" fill="#4A9D41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Snow Clumps Top -->
+  <circle cx="128" cy="165" r="18" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Snow Clumps Middle -->
+  <circle cx="90" cy="240" r="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="230" r="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="240" r="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Snow Clumps Bottom -->
+  <circle cx="60" cy="340" r="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="330" r="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="196" cy="340" r="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Festive Ornaments -->
+  <circle cx="100" cy="360" r="8" fill="#D32F2F" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="150" cy="290" r="8" fill="#D32F2F" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="120" cy="210" r="8" fill="#D32F2F" stroke="#3B2A4A" stroke-width="6" />
+</svg>

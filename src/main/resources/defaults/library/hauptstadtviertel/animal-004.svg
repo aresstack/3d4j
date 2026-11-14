@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="80" y="430" width="35" height="82" rx="15" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="141" y="430" width="35" height="82" rx="15" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="70" y="410" width="35" height="102" rx="15" fill="#7A4F25" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="151" y="410" width="35" height="102" rx="15" fill="#7A4F25" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Body -->
+  <ellipse cx="128" cy="340" rx="75" ry="110" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Stripes on Body -->
+  <path d="M 65 310 Q 128 290 191 310" fill="none" stroke="#C19A6B" stroke-width="12" stroke-linecap="round" />
+  <path d="M 60 340 Q 128 320 196 340" fill="none" stroke="#C19A6B" stroke-width="12" stroke-linecap="round" />
+  <path d="M 65 370 Q 128 350 191 370" fill="none" stroke="#C19A6B" stroke-width="12" stroke-linecap="round" />
+  <path d="M 75 400 Q 128 380 181 400" fill="none" stroke="#C19A6B" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="210" r="65" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M 80 170 Q 60 120 90 140 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M 176 170 Q 196 120 166 140 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Snout -->
+  <ellipse cx="128" cy="240" rx="35" ry="25" fill="#C19A6B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="118" cy="240" r="5" fill="#3B2A4A" />
+  <circle cx="138" cy="240" r="5" fill="#3B2A4A" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="200" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="108" cy="202" r="5" fill="#3B2A4A" />
+  <circle cx="151" cy="200" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="148" cy="202" r="5" fill="#3B2A4A" />
+
+  <!-- Highlights -->
+  <path d="M 100 180 Q 115 170 130 180" fill="none" stroke="#A67C52" stroke-width="6" stroke-linecap="round" />
+  <ellipse cx="110" cy="320" rx="15" ry="30" fill="#A67C52" opacity="0.4" />
+</svg>

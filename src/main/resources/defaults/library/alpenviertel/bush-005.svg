@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trough Body -->
+  <path d="M 50 512 L 206 512 L 220 320 L 36 320 Z" fill="#6D4C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trough Rim -->
+  <path d="M 30 320 L 226 320 L 226 290 L 30 290 Z" fill="#8D6E63" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Carved Details on Trough -->
+  <path d="M 80 350 L 80 480 M 128 350 L 128 480 M 176 350 L 176 480" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <circle cx="80" cy="380" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="380" r="6" fill="#3B2A4A" />
+  <circle cx="176" cy="380" r="6" fill="#3B2A4A" />
+  <circle cx="80" cy="430" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="430" r="6" fill="#3B2A4A" />
+  <circle cx="176" cy="430" r="6" fill="#3B2A4A" />
+
+  <!-- Soil -->
+  <ellipse cx="128" cy="290" rx="90" ry="15" fill="#3E2723" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Leaves (Greenery) -->
+  <path d="M 60 290 Q 40 240 80 230 Q 100 260 80 290" fill="#4CAF50" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M 196 290 Q 216 240 176 230 Q 156 260 176 290" fill="#4CAF50" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M 128 290 Q 100 200 140 180 Q 160 230 140 290" fill="#66BB6A" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M 100 290 Q 70 210 110 190 Q 130 240 110 290" fill="#4CAF50" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M 156 290 Q 186 210 146 190 Q 126 240 146 290" fill="#4CAF50" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Pink Flowers -->
+  <!-- Cluster 1 -->
+  <circle cx="70" cy="230" r="12" fill="#E91E63" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="85" cy="220" r="12" fill="#F06292" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="80" cy="240" r="12" fill="#E91E63" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="70" cy="220" r="6" fill="#FFB2DD" /> <!-- Highlight -->
+
+  <!-- Cluster 2 -->
+  <circle cx="186" cy="230" r="12" fill="#E91E63" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="171" cy="220" r="12" fill="#F06292" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="176" cy="240" r="12" fill="#E91E63" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="186" cy="220" r="6" fill="#FFB2DD" /> <!-- Highlight -->
+
+  <!-- Cluster 3 (Top) -->
+  <circle cx="128" cy="170" r="12" fill="#E91E63" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="140" cy="160" r="12" fill="#F06292" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="116" cy="160" r="12" fill="#F06292" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="128" cy="155" r="6" fill="#FFB2DD" /> <!-- Highlight -->
+
+  <!-- White Flowers -->
+  <!-- Cluster 4 -->
+  <circle cx="110" cy="210" r="12" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="200" r="12" fill="#F5F5F5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="120" cy="220" r="12" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="200" r="6" fill="#E0E0E0" /> <!-- Shadow/Highlight -->
+
+  <!-- Cluster 5 -->
+  <circle cx="146" cy="210" r="12" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="131" cy="200" r="12" fill="#F5F5F5" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="136" cy="220" r="12" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="146" cy="200" r="6" fill="#E0E0E0" /> <!-- Shadow/Highlight -->
+</svg>

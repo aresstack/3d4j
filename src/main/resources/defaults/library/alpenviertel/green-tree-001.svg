@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M80,512 L100,350 Q128,330 156,350 L176,512 Z" fill="#7B5E43" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trunk Detail/Texture -->
+  <path d="M115,480 Q120,450 110,420" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M140,460 Q135,430 145,400" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Crown - Base Layers -->
+  <circle cx="80" cy="220" r="70" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="176" cy="220" r="70" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="160" r="80" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="230" r="90" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Crown Highlights -->
+  <circle cx="110" cy="140" r="30" fill="#4E8B44" stroke="none" />
+  <circle cx="160" cy="180" r="25" fill="#4E8B44" stroke="none" />
+  <circle cx="70" cy="200" r="20" fill="#4E8B44" stroke="none" />
+
+  <!-- Blossom Candles (White Spikes) -->
+  <rect x="110" y="110" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="140" y="120" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="170" y="150" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="190" y="200" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="150" y="210" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="120" y="220" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="80" y="210" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="60" y="170" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="90" y="150" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="130" y="180" width="12" height="25" rx="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Bavarian Flag Decoration -->
+  <path d="M160,230 L180,250" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <rect x="180" y="250" width="40" height="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <!-- Blue Lozenges (Simplified as stripes for flat style) -->
+  <path d="M180,250 L190,265 L180,280 Z" fill="#0091FF" />
+  <path d="M200,250 L210,265 L200,280 Z" fill="#0091FF" />
+  <path d="M190,250 L200,265 L190,280 Z" fill="#0091FF" />
+  <path d="M210,250 L220,265 L210,280 Z" fill="#0091FF" />
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Post Base -->
+  <rect x="110" y="500" width="36" height="12" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Post Shaft -->
+  <rect x="120" y="150" width="16" height="350" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Post Decorative Rings -->
+  <rect x="115" y="300" width="26" height="10" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="115" y="200" width="26" height="10" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bracket Outline -->
+  <path d="M136 200 Q170 200 170 250" fill="none" stroke="#3B2A4A" stroke-width="14" stroke-linecap="round" />
+  <!-- Bracket Fill -->
+  <path d="M136 200 Q170 200 170 250" fill="none" stroke="#4A4A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Basket -->
+  <path d="M140 250 L140 270 A30 15 0 0 0 200 270 L200 250 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Leaves -->
+  <circle cx="145" cy="245" r="7" fill="#7FB069" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="195" cy="245" r="7" fill="#7FB069" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="235" r="7" fill="#7FB069" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Geraniums -->
+  <circle cx="150" cy="240" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="160" cy="230" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="220" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="180" cy="230" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="190" cy="240" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="240" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="160" cy="245" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="180" cy="245" r="8" fill="#E63946" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Lamp Base -->
+  <rect x="94" y="150" width="68" height="10" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Lamp Glass/Light -->
+  <path d="M98 80 L158 80 L162 150 L94 150 Z" fill="#FFF7B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Lamp Cap -->
+  <path d="M94 80 L162 80 L128 50 Z" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <path d="M110 90 Q115 90 115 100" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M160 265 Q170 270 180 265" fill="none" stroke="#C49A6C" stroke-width="4" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M110 512 L146 512 L138 220 L118 220 Z" fill="#8B735B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Graffiti on trunk -->
+  <path d="M120 420 Q125 410 130 420 T135 420" fill="none" stroke="#FF6B6B" stroke-width="4" stroke-linecap="round" />
+  <rect x="122" y="425" width="10" height="6" fill="#FFD93D" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Canopy - Back layers -->
+  <circle cx="128" cy="160" r="80" fill="#6A9A55" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="80" cy="180" r="60" fill="#6A9A55" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="176" cy="180" r="60" fill="#6A9A55" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Canopy - Main layers -->
+  <circle cx="128" cy="130" r="70" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="85" cy="150" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="171" cy="150" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="100" r="50" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Canopy - Highlights -->
+  <circle cx="110" cy="110" r="20" fill="#A3C991" />
+  <circle cx="150" cy="140" r="15" fill="#A3C991" />
+  <circle cx="90" cy="160" r="18" fill="#A3C991" />
+
+  <!-- Bicycle -->
+  <!-- Wheels -->
+  <circle cx="70" cy="460" r="30" fill="none" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="70" cy="460" r="24" fill="none" stroke="#B0B0B0" stroke-width="2" />
+  
+  <circle cx="120" cy="460" r="30" fill="none" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="120" cy="460" r="24" fill="none" stroke="#B0B0B0" stroke-width="2" />
+
+  <!-- Frame -->
+  <path d="M70 460 L95 460 L115 410 L80 410 Z" fill="none" stroke="#D65D5D" stroke-width="8" stroke-linejoin="round" />
+  <path d="M95 460 L90 390" fill="none" stroke="#D65D5D" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Handlebars -->
+  <path d="M115 410 L125 380 L135 380" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Seat -->
+  <path d="M85 390 L95 390" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs/Pants -->
+  <path d="M90 320 L122 320 L122 480 L90 480 Z" fill="#5D5D5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M134 320 L166 320 L166 480 L134 480 Z" fill="#5D5D5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shoes -->
+  <path d="M80 480 L125 480 L125 512 L75 512 Z" fill="#333333" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 480 L176 480 L181 512 L131 512 Z" fill="#333333" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms/Sleeves -->
+  <path d="M80 150 L50 280 L75 290 L100 160 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 150 L206 280 L181 290 L156 160 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Jacket Body -->
+  <path d="M80 145 L176 145 L185 330 L71 330 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Jacket Highlight -->
+  <path d="M90 155 L110 155 L110 200 L90 200 Z" fill="#BEE3F8" />
+
+  <!-- Head/Face -->
+  <circle cx="128" cy="100" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair -->
+  <path d="M83 100 Q83 50 128 50 Q173 50 173 100 Q173 80 160 70 Q140 60 128 75 Q110 60 90 70 Q83 80 83 100" fill="#2D2D2D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Eyes -->
+  <circle cx="115" cy="100" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="100" r="4" fill="#3B2A4A" />
+  
+  <!-- Smile -->
+  <path d="M120 115 Q128 125 136 115" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

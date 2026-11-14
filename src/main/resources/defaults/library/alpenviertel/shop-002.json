@@ -1,0 +1,7 @@
+{
+  "kind": "shop",
+  "number": 2,
+  "createdAt": "2026-11-14T18:27:43Z",
+  "model": "google/gemma-4-31B-it",
+  "task": "Draw: a bakery window with pretzels and loaves on a shelf and a striped blue-and-white awning.\nIt belongs to a district of the town with this look, which every part of the district shares: An alpine Bavarian village: white plastered houses with dark carved wooden balconies full of red geraniums, green shutters, painted frames around the windows, wooden shingle roofs, blue-and-white lozenge flags; cosy and festive.."
+}

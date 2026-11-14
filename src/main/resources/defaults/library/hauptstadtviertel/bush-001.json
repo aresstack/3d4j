@@ -1,0 +1,9 @@
+{
+  "kind": "bush",
+  "number": 1,
+  "createdAt": "2026-11-14T03:41:20Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "an advertising column covered in colourful posters, with a small pointed roof. It belongs to a district of the town with this look, which everything in the district shares: A big-city quarter like Berlin: tall old town houses with stucco and balconies beside plain slab blocks of the sixties, pale plaster in cream, grey and washed-out pastel, posters and a little graffiti, tram wires, kiosks; busy, a bit rough, friendly.",
+  "width": 256,
+  "height": 512
+}

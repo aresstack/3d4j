@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Wrought Iron Sign Bracket -->
+  <path d="M64 30 L85 30 Q90 30 90 35 L90 45" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M85 30 L85 45" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Golden Pretzel Sign -->
+  <path d="M82 45 Q82 65 92 65 Q102 65 102 45 Q102 35 92 35 Q82 35 82 45 M85 45 Q85 55 92 55 Q99 55 99 45" fill="#FFD700" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="92" cy="40" r="2" fill="#FFF" />
+
+  <!-- Window Frame (Painted) -->
+  <rect x="24" y="50" width="80" height="45" rx="2" fill="#F5E6C8" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass Area -->
+  <rect x="30" y="56" width="68" height="33" rx="2" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Bull's-eye Panes -->
+  <circle cx="42" cy="65" r="6" fill="#FFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="42" cy="65" r="2" fill="#BDE0FE" />
+  
+  <circle cx="64" cy="65" r="6" fill="#FFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="64" cy="65" r="2" fill="#BDE0FE" />
+  
+  <circle cx="86" cy="65" r="6" fill="#FFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="86" cy="65" r="2" fill="#BDE0FE" />
+  
+  <circle cx="42" cy="82" r="6" fill="#FFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="42" cy="82" r="2" fill="#BDE0FE" />
+  
+  <circle cx="64" cy="82" r="6" fill="#FFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="64" cy="82" r="2" fill="#BDE0FE" />
+  
+  <circle cx="86" cy="82" r="6" fill="#FFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="86" cy="82" r="2" fill="#BDE0FE" />
+
+  <!-- Green Shutters -->
+  <rect x="14" y="50" width="12" height="45" rx="2" fill="#4A7C44" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  <rect x="102" y="50" width="12" height="45" rx="2" fill="#4A7C44" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Shutter Details (slats) -->
+  <line x1="16" y1="60" x2="24" y2="60" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="16" y1="70" x2="24" y2="70" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="16" y1="80" x2="24" y2="80" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  
+  <line x1="102" y1="60" x2="110" y2="60" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="102" y1="70" x2="110" y2="70" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <line x1="102" y1="80" x2="110" y2="80" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Flower Box -->
+  <rect x="24" y="95" width="80" height="12" rx="2" fill="#5D4037" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Red Geraniums -->
+  <circle cx="30" cy="95" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="35" cy="92" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="40" cy="95" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="50" cy="92" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="60" cy="95" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="70" cy="92" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="80" cy="95" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="90" cy="92" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="96" cy="95" r="5" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+</svg>

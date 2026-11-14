@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk: Twisted sandy beige shape -->
+  <path d="M100,512 
+           C100,512 140,480 130,440 
+           C120,400 160,370 150,330 
+           C140,290 110,270 128,250 
+           L145,250 
+           C145,250 160,270 170,290 
+           C180,330 140,370 150,400 
+           C160,440 120,480 120,512 Z" 
+        fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Canopy: Pastel blue-green foliage clusters -->
+  <!-- Left cluster -->
+  <circle cx="90" cy="230" r="50" fill="#A3C1AD" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Right cluster -->
+  <circle cx="160" cy="230" r="55" fill="#A3C1AD" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Top cluster -->
+  <circle cx="125" cy="180" r="60" fill="#A3C1AD" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Bottom center cluster -->
+  <circle cx="125" cy="260" r="45" fill="#A3C1AD" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights on foliage -->
+  <path d="M100,160 Q125,140 150,160" fill="none" stroke="#C1D7C9" stroke-width="6" stroke-linecap="round" />
+  <path d="M70,210 Q85,200 100,210" fill="none" stroke="#C1D7C9" stroke-width="6" stroke-linecap="round" />
+  <path d="M150,210 Q165,200 180,210" fill="none" stroke="#C1D7C9" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Ripe Olives: Dark olive green/purple ovals -->
+  <ellipse cx="110" cy="210" rx="6" ry="9" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="140" cy="220" rx="6" ry="9" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="100" cy="250" rx="6" ry="9" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="150" cy="260" rx="6" ry="9" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="130" cy="170" rx="6" ry="9" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="170" cy="240" rx="6" ry="9" fill="#556B2F" stroke="#3B2A4A" stroke-width="4" />
+</svg>

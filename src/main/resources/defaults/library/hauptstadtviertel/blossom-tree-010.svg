@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tree Canopy -->
+  <circle cx="128" cy="220" r="70" fill="#5E8C4D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="90" cy="250" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="166" cy="250" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="170" r="60" fill="#9BCE8B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="100" cy="180" r="40" fill="#9BCE8B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="156" cy="180" r="40" fill="#9BCE8B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Tree Trunk -->
+  <path d="M115 512 Q120 400 125 300 L135 300 Q140 400 145 512 Z" fill="#8B7355" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Urban Details on Trunk -->
+  <rect x="130" y="340" width="12" height="18" fill="#F4D03F" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M122 420 Q128 410 134 420 Q130 430 122 420" fill="#FF69B4" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Bicycle -->
+  <!-- Wheels -->
+  <circle cx="70" cy="460" r="22" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="120" cy="460" r="22" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="70" cy="460" r="12" fill="#D1D1D1" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="120" cy="460" r="12" fill="#D1D1D1" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Bike Frame -->
+  <path d="M70 460 L100 460 L95 410 L120 420 L120 460 M100 460 L120 460" fill="none" stroke="#D16B6B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Handlebars -->
+  <path d="M120 420 L125 400 L135 400" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Seat -->
+  <path d="M95 410 L85 405" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <ellipse cx="90" cy="408" rx="10" ry="5" fill="#3B2A4A" stroke="#3B2A4A" stroke-width="4" />
+</svg>

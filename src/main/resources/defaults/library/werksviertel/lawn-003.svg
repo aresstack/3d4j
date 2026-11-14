@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#BDB7B0"/>
+  <polygon points="30,40 36,38 38,44 32,46" fill="#CFCBC5"/>
+  <polygon points="60,110 66,108 68,114 62,116" fill="#A8A29D"/>
+  <polygon points="100,30 106,28 108,34 102,36" fill="#A68B7C"/>
+  <polygon points="150,80 156,78 158,84 152,86" fill="#CFCBC5"/>
+  <polygon points="200,50 206,48 208,54 202,56" fill="#A8A29D"/>
+  <polygon points="220,120 226,118 228,124 222,126" fill="#8C6D5E"/>
+  <polygon points="180,160 186,158 188,164 182,166" fill="#CFCBC5"/>
+  <polygon points="120,200 126,198 128,204 122,206" fill="#A8A29D"/>
+  <polygon points="50,210 56,208 58,214 52,216" fill="#A68B7C"/>
+  <polygon points="30,160 36,158 38,164 32,166" fill="#CFCBC5"/>
+  <polygon points="80,80 86,78 88,84 82,86" fill="#A8A29D"/>
+  <polygon points="130,130 136,128 138,134 132,136" fill="#CFCBC5"/>
+  <polygon points="170,100 176,98 178,104 172,106" fill="#8C6D5E"/>
+  <polygon points="210,180 216,178 218,184 212,186" fill="#A8A29D"/>
+  <polygon points="190,220 196,218 198,224 192,226" fill="#CFCBC5"/>
+  <polygon points="110,170 116,168 118,174 112,176" fill="#A68B7C"/>
+  <polygon points="60,190 66,188 68,194 62,196" fill="#A8A29D"/>
+  <polygon points="40,90 46,88 48,94 42,96" fill="#CFCBC5"/>
+  <polygon points="140,50 146,48 148,54 142,56" fill="#A8A29D"/>
+  <polygon points="230,70 236,68 238,74 232,76" fill="#8C6D5E"/>
+  <polygon points="210,140 216,138 218,144 212,146" fill="#CFCBC5"/>
+  <polygon points="160,210 166,208 168,214 162,216" fill="#A8A29D"/>
+  <polygon points="100,110 106,108 108,114 102,116" fill="#CFCBC5"/>
+  <polygon points="70,150 76,148 78,154 72,156" fill="#A68B7C"/>
+  <polygon points="120,60 126,58 128,64 122,66" fill="#A8A29D"/>
+  <polygon points="180,30 186,28 188,34 182,36" fill="#CFCBC5"/>
+  <polygon points="230,200 236,198 238,204 232,206" fill="#8C6D5E"/>
+  <polygon points="150,180 156,178 158,184 152,186" fill="#A8A29D"/>
+  <polygon points="40,130 46,128 48,134 42,136" fill="#CFCBC5"/>
+  <polygon points="90,230 96,228 98,234 92,236" fill="#A8A29D"/>
+  <path d="M50,60 Q52,55 54,60 Q56,55 58,60" stroke="#9BA88A" stroke-width="2" fill="none"/>
+  <path d="M170,140 Q172,135 174,140 Q176,135 178,140" stroke="#8A9B7A" stroke-width="2" fill="none"/>
+  <path d="M210,90 Q212,85 214,90 Q216,85 218,90" stroke="#9BA88A" stroke-width="2" fill="none"/>
+  <path d="M110,220 Q112,215 114,220 Q116,215 118,220" stroke="#8A9B7A" stroke-width="2" fill="none"/>
+  <path d="M30,200 Q32,195 34,200 Q36,195 38,200" stroke="#9BA88A" stroke-width="2" fill="none"/>
+</svg>

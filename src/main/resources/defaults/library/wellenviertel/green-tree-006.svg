@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Planter Body -->
+  <path d="M70 420 L190 420 L180 512 L80 512 Z" fill="#E8D5B5" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Decorative Pastel Blue Band -->
+  <path d="M72 440 L188 440 L186 460 L74 460 Z" fill="#AEC6CF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Planter Rim -->
+  <path d="M60 400 L200 400 L190 420 L70 420 Z" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Young Olive Trunk (Breezy Curve) -->
+  <path d="M122 410 Q125 300 145 200 L155 200 Q135 300 130 410 Z" fill="#BCA88E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Leaf Clusters (Olive Green) -->
+  <path d="M145 200 Q170 150 210 170 Q220 210 180 220 Q150 210 145 200" fill="#8A9A5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M130 210 Q100 180 110 140 Q150 160 130 210" fill="#8A9A5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M160 220 Q200 220 220 250 Q180 270 160 220" fill="#8A9A5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Leaf Highlights (Lighter Olive) -->
+  <path d="M160 170 Q180 160 200 175 Q190 185 160 170" fill="#A9B87A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M115 150 Q130 140 140 155 Q130 165 115 150" fill="#A9B87A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Floating Breezy Leaves -->
+  <path d="M220 160 Q230 150 240 160 Q230 170 220 160" fill="#8A9A5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M230 210 Q240 200 250 210 Q240 220 230 210" fill="#8A9A5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+</svg>

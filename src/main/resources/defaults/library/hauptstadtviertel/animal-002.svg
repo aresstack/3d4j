@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M 140 480 Q 240 480 230 320 Q 220 220 160 280 Q 120 320 140 480" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 230 320 Q 240 280 210 260 Q 180 250 170 300" fill="#FFF5E1" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Body -->
+  <path d="M 70 480 Q 70 300 128 300 Q 186 300 186 480 Z" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Chest Patch -->
+  <path d="M 90 480 Q 90 350 128 350 Q 166 350 166 480 Z" fill="#FFF5E1" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Paws -->
+  <ellipse cx="90" cy="490" rx="25" ry="15" fill="#3B2A4A" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="166" cy="490" rx="25" ry="15" fill="#3B2A4A" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Head -->
+  <path d="M 80 200 Q 80 120 128 120 Q 176 120 176 200 Q 176 260 128 260 Q 80 260 80 200" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Ears -->
+  <path d="M 90 140 L 70 60 L 120 130 Z" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 166 140 L 186 60 L 136 130 Z" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 95 130 L 80 80 L 110 120 Z" fill="#FFB380" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M 161 130 L 176 80 L 146 120 Z" fill="#FFB380" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Face Details -->
+  <circle cx="110" cy="180" r="8" fill="#3B2A4A" />
+  <circle cx="146" cy="180" r="8" fill="#3B2A4A" />
+  <circle cx="112" cy="177" r="3" fill="#FFF" />
+  <circle cx="148" cy="177" r="3" fill="#FFF" />
+  
+  <path d="M 120 210 Q 128 220 136 210" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <ellipse cx="128" cy="205" rx="7" ry="5" fill="#3B2A4A" />
+  
+  <!-- Highlights -->
+  <path d="M 100 150 Q 110 140 120 150" fill="none" stroke="#FFB380" stroke-width="6" stroke-linecap="round" />
+  <path d="M 136 150 Q 146 140 156 150" fill="none" stroke="#FFB380" stroke-width="6" stroke-linecap="round" />
+</svg>

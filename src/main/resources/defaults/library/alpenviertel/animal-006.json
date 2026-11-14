@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 6,
+  "createdAt": "2026-11-14T18:49:00Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a chamois with curved horns standing on a small rock. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

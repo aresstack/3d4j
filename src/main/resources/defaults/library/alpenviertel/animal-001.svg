@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Back Legs -->
+  <rect x="85" y="360" width="35" height="152" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="136" y="360" width="35" height="152" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body -->
+  <path d="M60 220 Q60 180 128 180 Q196 180 196 220 L196 380 Q196 420 128 420 Q60 420 60 380 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Brown Patches on Body -->
+  <path d="M60 220 Q80 200 110 230 Q130 210 160 240 Q180 220 196 250 L196 320 Q160 300 128 330 Q90 310 60 340 Z" fill="#A67C52" stroke="none" />
+  <path d="M140 350 Q160 340 196 360 L196 380 Q170 380 140 350" fill="#A67C52" stroke="none" />
+
+  <!-- Front Legs -->
+  <rect x="95" y="380" width="35" height="132" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="126" y="380" width="35" height="132" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Hooves -->
+  <path d="M95 490 L130 490 L130 512 L95 512 Z" fill="#3B2A4A" />
+  <path d="M126 490 L161 490 L161 512 L126 512 Z" fill="#3B2A4A" />
+
+  <!-- Head -->
+  <path d="M88 120 Q88 80 128 80 Q168 80 168 120 L168 220 Q168 260 128 260 Q88 260 88 220 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head Patch -->
+  <path d="M88 120 Q110 100 130 130 Q140 110 168 130 L168 170 Q140 160 128 180 Q110 160 88 170 Z" fill="#A67C52" stroke="none" />
+
+  <!-- Ears -->
+  <path d="M88 110 Q70 80 60 110 Q70 120 88 130" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M168 110 Q186 80 196 110 Q186 120 168 130" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Horns -->
+  <path d="M105 85 Q100 60 115 50" fill="none" stroke="#E6D5B8" stroke-width="12" stroke-linecap="round" />
+  <path d="M151 85 Q156 60 141 50" fill="none" stroke="#E6D5B8" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Muzzle -->
+  <path d="M100 190 Q100 170 128 170 Q156 170 156 190 L156 240 Q156 260 128 260 Q100 260 100 240 Z" fill="#FCE4EC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Nostrils -->
+  <circle cx="118" cy="215" r="4" fill="#3B2A4A" />
+  <circle cx="138" cy="215" r="4" fill="#3B2A4A" />
+
+  <!-- Eyes -->
+  <circle cx="110" cy="145" r="7" fill="#3B2A4A" />
+  <circle cx="146" cy="145" r="7" fill="#3B2A4A" />
+  <circle cx="112" cy="142" r="2" fill="#FFFFFF" />
+  <circle cx="148" cy="142" r="2" fill="#FFFFFF" />
+
+  <!-- Collar -->
+  <path d="M95 220 Q128 240 161 220 L161 245 Q128 265 95 245 Z" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Bell -->
+  <path d="M115 250 L141 250 L145 290 Q128 305 111 290 Z" fill="#FFD700" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Bell Highlight -->
+  <path d="M120 260 Q125 255 130 260" fill="none" stroke="#FFF176" stroke-width="4" stroke-linecap="round" />
+  <!-- Bell Clapper -->
+  <circle cx="128" cy="295" r="6" fill="#B8860B" stroke="#3B2A4A" stroke-width="4" />
+</svg>

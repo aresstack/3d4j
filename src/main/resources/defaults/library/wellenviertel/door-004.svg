@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Door Body -->
+  <path d="M 32 128 V 40 Q 64 20 96 40 V 128 Z" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Wooden Panels -->
+  <rect x="40" y="50" width="20" height="60" rx="8" fill="#98B8C8" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="68" y="50" width="20" height="60" rx="8" fill="#98B8C8" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Seashell Knob -->
+  <path d="M 84 76 Q 88 70 92 76 L 88 82 Z" fill="#E6C200" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="88" y1="72" x2="88" y2="82" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Highlights -->
+  <path d="M 38 45 Q 45 35 55 40" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.5" />
+  <circle cx="90" cy="74" r="1" fill="#FFFFFF" />
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M105 512 L125 350 L131 350 L151 512 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Main Heart Crown -->
+  <path d="M128 400 C 60 380, 40 240, 80 180 C 110 140, 128 160, 128 160 C 128 160, 146 140, 176 180 C 216 240, 196 380, 128 400" fill="#A8D67A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shadow Detail -->
+  <path d="M128 400 C 80 380, 70 300, 100 280 A 30 30 0 0 1 156 280 C 186 300, 176 380, 128 400" fill="#8BBF5E" />
+  
+  <!-- Highlights -->
+  <circle cx="100" cy="200" r="15" fill="#C5E8A5" />
+  <circle cx="156" cy="200" r="15" fill="#C5E8A5" />
+  <circle cx="128" cy="240" r="12" fill="#C5E8A5" />
+</svg>

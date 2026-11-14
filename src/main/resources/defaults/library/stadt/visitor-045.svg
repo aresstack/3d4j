@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <rect x="80" y="470" width="45" height="42" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="470" width="45" height="42" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Legs/Pants -->
+  <rect x="90" y="360" width="35" height="120" rx="10" fill="#4682B4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="360" width="35" height="120" rx="10" fill="#4682B4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Body -->
+  <rect x="70" y="220" width="116" height="160" rx="30" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Sleeves -->
+  <rect x="50" y="220" width="30" height="130" rx="15" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="176" y="220" width="30" height="130" rx="15" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Highlights -->
+  <rect x="80" y="240" width="15" height="60" rx="7" fill="#B19CD9" />
+  <rect x="160" y="240" width="15" height="60" rx="7" fill="#B19CD9" />
+
+  <!-- Hood (around neck) -->
+  <path d="M80 220 Q80 170 128 170 Q176 170 176 220" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="150" r="40" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hair -->
+  <path d="M88 150 Q88 100 128 100 Q168 100 168 150 L175 140 Q180 110 150 100 Q128 90 100 100 Q70 110 75 140 Z" fill="#A52A2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="110" cy="115" r="8" fill="#C04040" /> <!-- Hair highlight -->
+
+  <!-- Face -->
+  <circle cx="118" cy="150" r="4" fill="#3B2A4A" />
+  <circle cx="138" cy="150" r="4" fill="#3B2A4A" />
+  <path d="M120 165 Q128 175 136 165" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

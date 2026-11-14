@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Shutters -->
+  <rect x="12" y="30" width="12" height="70" fill="#4A7C44" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="104" y="30" width="12" height="70" fill="#4A7C44" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Shutter details -->
+  <line x1="16" y1="30" x2="16" y2="100" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="20" y1="30" x2="20" y2="100" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="108" y1="30" x2="108" y2="100" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="112" y1="30" x2="112" y2="100" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Window Frame -->
+  <rect x="24" y="30" width="80" height="70" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <rect x="28" y="34" width="72" height="62" fill="#BEE3F8" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlight -->
+  <path d="M35 40 L50 55" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Curtain -->
+  <rect x="28" y="65" width="72" height="31" fill="#E53E3E" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Curtain Checks -->
+  <rect x="28" y="65" width="10" height="10" fill="#FFFFFF" />
+  <rect x="38" y="65" width="10" height="10" fill="#FFFFFF" />
+  <rect x="48" y="65" width="10" height="10" fill="#FFFFFF" />
+  <rect x="58" y="65" width="10" height="10" fill="#FFFFFF" />
+  <rect x="68" y="65" width="10" height="10" fill="#FFFFFF" />
+  <rect x="78" y="65" width="10" height="10" fill="#FFFFFF" />
+  <rect x="88" y="65" width="10" height="10" fill="#FFFFFF" />
+  
+  <rect x="28" y="75" width="10" height="10" fill="#FFFFFF" />
+  <rect x="38" y="75" width="10" height="10" fill="#FFFFFF" />
+  <rect x="48" y="75" width="10" height="10" fill="#FFFFFF" />
+  <rect x="58" y="75" width="10" height="10" fill="#FFFFFF" />
+  <rect x="68" y="75" width="10" height="10" fill="#FFFFFF" />
+  <rect x="78" y="75" width="10" height="10" fill="#FFFFFF" />
+  <rect x="88" y="75" width="10" height="10" fill="#FFFFFF" />
+  
+  <rect x="28" y="85" width="10" height="10" fill="#FFFFFF" />
+  <rect x="38" y="85" width="10" height="10" fill="#FFFFFF" />
+  <rect x="48" y="85" width="10" height="10" fill="#FFFFFF" />
+  <rect x="58" y="85" width="10" height="10" fill="#FFFFFF" />
+  <rect x="68" y="85" width="10" height="10" fill="#FFFFFF" />
+  <rect x="78" y="85" width="10" height="10" fill="#FFFFFF" />
+  <rect x="88" y="85" width="10" height="10" fill="#FFFFFF" />
+
+  <!-- Carved Lintel -->
+  <rect x="16" y="12" width="96" height="18" fill="#5D3A1A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Carving details -->
+  <circle cx="26" cy="21" r="3" fill="#3B2A4A" />
+  <circle cx="46" cy="21" r="3" fill="#3B2A4A" />
+  <circle cx="66" cy="21" r="3" fill="#3B2A4A" />
+  <circle cx="86" cy="21" r="3" fill="#3B2A4A" />
+  <circle cx="106" cy="21" r="3" fill="#3B2A4A" />
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Body -->
+  <path d="M60 512 C60 272 196 272 196 512 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly -->
+  <path d="M80 512 C80 332 176 332 176 512 Z" fill="#FFC87A" stroke="none" />
+  
+  <!-- Tail -->
+  <path d="M180 512 C240 512 240 432 180 432 C120 432 80 472 80 512 L100 512 C100 472 120 452 180 452 C220 452 220 492 180 492 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Paws -->
+  <path d="M90 512 Q90 482 110 482 Q130 482 130 512 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M126 512 Q126 482 146 482 Q166 482 166 512 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <path d="M80 212 C80 112 176 112 176 212 C176 292 80 292 80 212 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Ears -->
+  <path d="M90 162 Q100 112 120 162 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M95 157 Q100 122 115 157 Z" fill="#FFB6C1" stroke="none" />
+  
+  <path d="M136 162 Q146 112 166 162 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M141 157 Q146 122 161 157 Z" fill="#FFB6C1" stroke="none" />
+  
+  <!-- Eyes -->
+  <circle cx="110" cy="192" r="8" fill="#3B2A4A" />
+  <circle cx="146" cy="192" r="8" fill="#3B2A4A" />
+  <circle cx="112" cy="190" r="3" fill="#FFFFFF" />
+  <circle cx="148" cy="190" r="3" fill="#FFFFFF" />
+  
+  <!-- Nose and Mouth -->
+  <ellipse cx="128" cy="212" rx="6" ry="4" fill="#FFB6C1" stroke="#3B2A4A" stroke-width="3" />
+  <path d="M122 220 Q128 228 134 220" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M110 140 Q128 130 146 140" fill="none" stroke="#FFC87A" stroke-width="6" stroke-linecap="round" />
+</svg>

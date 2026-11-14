@@ -1,0 +1,9 @@
+{
+  "kind": "bush",
+  "number": 4,
+  "createdAt": "2026-11-14T18:31:26Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "low evergreen shrub trimmed into a smooth dome, dotted with tiny white flowers. It belongs to a district of the town with this look, which everything in the district shares: Bright pastel blues and sandy beiges dominate, with curved, wave‑shaped houses, light timber frames, whitewashed walls, and a breezy, relaxed seaside mood.",
+  "width": 256,
+  "height": 512
+}

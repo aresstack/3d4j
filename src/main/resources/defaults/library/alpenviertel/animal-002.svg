@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Back Legs -->
+  <rect x="75" y="380" width="30" height="132" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="151" y="380" width="30" height="132" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Body -->
+  <ellipse cx="128" cy="280" rx="65" ry="90" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Body Highlight -->
+  <ellipse cx="110" cy="250" rx="20" ry="30" fill="#F0F0F0" />
+
+  <!-- Front Legs -->
+  <rect x="95" y="380" width="30" height="132" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="131" y="380" width="30" height="132" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Neck -->
+  <rect x="108" y="180" width="40" height="60" rx="20" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Head -->
+  <ellipse cx="128" cy="150" rx="45" ry="50" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Ears -->
+  <path d="M85 140 Q60 130 60 160 Q60 180 85 170" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M171 140 Q196 130 196 160 Q196 180 171 170" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Horns -->
+  <path d="M110 110 Q105 80 115 70" fill="none" stroke="#D2B48C" stroke-width="12" stroke-linecap="round" />
+  <path d="M146 110 Q151 80 141 70" fill="none" stroke="#D2B48C" stroke-width="12" stroke-linecap="round" />
+  <path d="M110 110 Q105 80 115 70" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M146 110 Q151 80 141 70" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Beard -->
+  <path d="M118 195 L128 220 L138 195 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="115" cy="145" r="6" fill="#3B2A4A" />
+  <circle cx="141" cy="145" r="6" fill="#3B2A4A" />
+  <circle cx="117" cy="143" r="2" fill="#FFFFFF" />
+  <circle cx="143" cy="143" r="2" fill="#FFFFFF" />
+
+  <!-- Nose/Mouth -->
+  <path d="M123 165 Q128 170 133 165" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base -->
+  <path d="M60 512 L60 470 L200 470 L200 512 Z" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M70 480 L90 480 L85 495 Z" fill="#B24C39" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Weeds at base -->
+  <path d="M50 512 Q40 480 60 470" fill="none" stroke="#6B8E23" stroke-width="8" stroke-linecap="round" />
+  <path d="M210 512 Q220 480 200 470" fill="none" stroke="#6B8E23" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Forked Trunk -->
+  <path d="M110 470 L115 350 Q120 300 80 250 L70 230 L90 220 L110 260 Q130 300 140 350 L150 470 Z" fill="#6D4C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M130 320 Q150 280 180 240 L190 220 L210 230 L190 250 Q170 290 150 330" fill="#6D4C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Scruffy Crown - Darker Green Base -->
+  <circle cx="80" cy="200" r="50" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="130" cy="180" r="60" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="190" cy="200" r="55" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="130" r="50" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Scruffy Crown - Mid Green -->
+  <circle cx="60" cy="180" r="40" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="150" r="45" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="160" r="40" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="210" cy="180" r="45" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="130" cy="110" r="40" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Scruffy Crown - Highlights -->
+  <circle cx="70" cy="160" r="20" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="120" cy="130" r="25" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="150" r="20" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="140" cy="90" r="20" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" />
+</svg>

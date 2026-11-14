@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 1,
+  "createdAt": "2026-11-14T03:22:15Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a ginger cat sitting upright, tail curled around its paws. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

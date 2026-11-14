@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Body -->
+  <ellipse cx="128" cy="442" rx="80" ry="70" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Neck -->
+  <path d="M110 410 Q80 360 100 300 L130 300 Q150 360 130 410" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <circle cx="115" cy="280" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Beak -->
+  <path d="M100 280 L20 290 Q10 360 100 350 Z" fill="#FFD700" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Beak Highlight -->
+  <path d="M90 290 Q60 295 50 300" fill="none" stroke="#FFE44D" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Eye -->
+  <circle cx="105" cy="275" r="5" fill="#3B2A4A" />
+  <circle cx="106" cy="274" r="1.5" fill="#FFFFFF" />
+  
+  <!-- Wing -->
+  <path d="M130 400 Q180 400 170 480 Q130 500 110 460 Z" fill="#F8F8F8" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+</svg>

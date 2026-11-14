@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M150 480 C 230 480, 240 350, 200 280 C 170 230, 130 250, 130 300 C 130 350, 160 400, 160 480" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M200 280 C 220 300, 220 350, 200 380" fill="none" stroke="#FFF5E1" stroke-width="20" stroke-linecap="round" />
+  <path d="M180 260 Q 210 260, 220 300" fill="none" stroke="#FFF5E1" stroke-width="30" stroke-linecap="round" />
+
+  <!-- Back Legs/Hips -->
+  <ellipse cx="100" cy="460" rx="40" ry="30" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="156" cy="460" rx="40" ry="30" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body -->
+  <path d="M80 460 Q 80 280, 128 280 Q 176 280, 176 460 Z" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Chest Patch -->
+  <path d="M100 320 Q 128 300, 156 320 Q 160 400, 128 430 Q 96 400, 100 320" fill="#FFF5E1" stroke="#3B2A4A" stroke-width="0" />
+
+  <!-- Front Paws -->
+  <rect x="100" y="440" width="25" height="60" rx="12" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="440" width="25" height="60" rx="12" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <path d="M70 220 Q 70 130, 128 130 Q 186 130, 186 220 Q 186 280, 128 280 Q 70 280, 70 220" fill="#FF8C42" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Cheeks -->
+  <circle cx="85" cy="230" r="15" fill="#FFF5E1" stroke="#3B2A4A" stroke-width="0" />
+  <circle cx="171" cy="230" r="15" fill="#FFF5E1" stroke="#3B2A4A" stroke-width="0" />
+
+  <!-- Ears -->
+  <path d="M85 145 L 70 80 L 115 135 Z" fill="#5C4033" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M171 145 L 186 80 L 141 135 Z" fill="#5C4033" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M90 140 L 80 100 L 105 130 Z" fill="#FF8C42" stroke="#3B2A4A" stroke-width="0" />
+  <path d="M166 140 L 176 100 L 151 130 Z" fill="#FF8C42" stroke="#3B2A4A" stroke-width="0" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="190" r="8" fill="#3B2A4A" />
+  <circle cx="151" cy="190" r="8" fill="#3B2A4A" />
+  <circle cx="107" cy="187" r="3" fill="#FFF5E1" />
+  <circle cx="153" cy="187" r="3" fill="#FFF5E1" />
+
+  <!-- Nose/Muzzle -->
+  <ellipse cx="128" cy="220" rx="12" ry="8" fill="#3B2A4A" />
+  <path d="M120 230 Q 128 240, 136 230" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M110 150 Q 128 140, 146 150" fill="none" stroke="#FFB380" stroke-width="6" stroke-linecap="round" />
+  <path d="M180 320 Q 190 350, 180 380" fill="none" stroke="#FFB380" stroke-width="6" stroke-linecap="round" />
+</svg>

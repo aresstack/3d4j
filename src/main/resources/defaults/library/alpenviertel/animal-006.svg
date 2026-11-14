@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Rock -->
+  <path d="M50 512 Q128 450 206 512 Z" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Back Legs -->
+  <path d="M90 380 L80 480" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+  <path d="M110 390 L100 470" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+  
+  <!-- Front Legs -->
+  <path d="M146 390 L156 470" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+  <path d="M166 380 L176 480" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+
+  <!-- Body -->
+  <path d="M128 240 Q190 240 190 350 Q190 420 128 420 Q66 420 66 350 Q66 240 128 240" fill="#B58B5F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Chest/Belly Highlight -->
+  <path d="M128 260 Q170 260 170 350 Q170 400 128 400 Q76 400 76 350 Q76 260 128 260" fill="#D9C5B2" />
+
+  <!-- Neck and Head -->
+  <path d="M128 240 L128 200 Q160 200 160 160 Q160 120 128 120 Q96 120 96 160 Q96 200 128 200" fill="#B58B5F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Horns -->
+  <path d="M110 130 Q80 80 120 60" fill="none" stroke="#5D5D5D" stroke-width="12" stroke-linecap="round" />
+  <path d="M146 130 Q176 80 136 60" fill="none" stroke="#5D5D5D" stroke-width="12" stroke-linecap="round" />
+  <path d="M110 130 Q80 80 120 60" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <path d="M146 130 Q176 80 136 60" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Face Details -->
+  <circle cx="115" cy="155" r="6" fill="#3B2A4A" />
+  <circle cx="141" cy="155" r="6" fill="#3B2A4A" />
+  <circle cx="117" cy="153" r="2" fill="white" />
+  <circle cx="143" cy="153" r="2" fill="white" />
+  
+  <!-- Nose/Muzzle -->
+  <path d="M120 175 Q128 185 136 175" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Forehead Highlight -->
+  <path d="M120 130 Q128 125 136 130" fill="none" stroke="#D9C5B2" stroke-width="6" stroke-linecap="round" />
+</svg>

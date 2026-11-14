@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Back Legs -->
+  <path d="M60 512 Q30 450 60 350 Q90 350 90 450 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M196 512 Q226 450 196 350 Q166 350 166 450 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Body -->
+  <path d="M80 512 Q80 320 128 320 Q176 320 176 512 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Front Legs -->
+  <path d="M95 512 L95 320 L115 320 L115 512 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M141 512 L141 320 L161 320 L161 512 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="160" r="85" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M60 140 Q30 140 30 220 Q30 260 70 240 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M196 140 Q226 140 226 220 Q226 260 186 240 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Collar -->
+  <path d="M75 210 Q128 240 181 210 L181 225 Q128 255 75 225 Z" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="105" cy="150" r="7" fill="#3B2A4A" />
+  <circle cx="151" cy="150" r="7" fill="#3B2A4A" />
+  <ellipse cx="128" cy="180" rx="12" ry="8" fill="#3B2A4A" />
+  <path d="M120 190 Q120 230 128 230 Q136 230 136 190 Z" fill="#FF80AB" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <path d="M100 130 Q110 120 120 130" fill="none" stroke="#F0F0F0" stroke-width="6" stroke-linecap="round" />
+  <path d="M110 350 Q128 340 146 350" fill="none" stroke="#F0F0F0" stroke-width="6" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Pediment -->
+  <path d="M22 32 L64 18 L106 32 Z" fill="#E8E2D0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Stucco Frame -->
+  <rect x="22" y="32" width="84" height="84" fill="#E8E2D0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Area -->
+  <rect x="28" y="38" width="72" height="72" fill="#AEE2FF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Window Muntins (Bars) -->
+  <line x1="64" y1="38" x2="64" y2="110" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="28" y1="74" x2="100" y2="74" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M35 45 L45 55 M40 45 L50 55" stroke="#DDF7FF" stroke-width="4" stroke-linecap="round" />
+</svg>

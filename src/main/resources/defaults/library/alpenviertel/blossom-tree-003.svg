@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M 122 512 L 122 100 L 134 100 L 134 512 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 1 (Bottom) -->
+  <g>
+    <path d="M 60 430 Q 60 390 90 390 Q 100 370 128 370 Q 156 370 166 390 Q 196 390 196 430 Q 196 470 166 470 Q 156 490 128 490 Q 100 490 90 470 Q 60 470 60 430" fill="#B4E197" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <circle cx="90" cy="410" r="12" fill="#D4F1B8" />
+    <circle cx="140" cy="390" r="15" fill="#D4F1B8" />
+  </g>
+  
+  <!-- Tier 2 -->
+  <g>
+    <path d="M 80 350 Q 80 310 110 310 Q 120 290 128 290 Q 136 290 146 310 Q 176 310 176 350 Q 176 390 146 390 Q 136 410 128 410 Q 120 410 110 390 Q 80 390 80 350" fill="#B4E197" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <circle cx="110" cy="330" r="12" fill="#D4F1B8" />
+    <circle cx="150" cy="310" r="12" fill="#D4F1B8" />
+  </g>
+  
+  <!-- Tier 3 -->
+  <g>
+    <path d="M 100 270 Q 100 230 120 230 Q 125 210 128 210 Q 131 210 136 230 Q 156 230 156 270 Q 156 310 136 310 Q 131 330 128 330 Q 125 330 120 310 Q 100 310 100 270" fill="#B4E197" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <circle cx="120" cy="250" r="10" fill="#D4F1B8" />
+    <circle cx="140" cy="230" r="10" fill="#D4F1B8" />
+  </g>
+  
+  <!-- Tier 4 -->
+  <g>
+    <path d="M 110 190 Q 110 150 120 150 Q 125 130 128 130 Q 131 130 136 150 Q 146 150 146 190 Q 146 230 136 230 Q 131 250 128 250 Q 125 250 120 230 Q 110 230 110 190" fill="#B4E197" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <circle cx="125" cy="170" r="8" fill="#D4F1B8" />
+  </g>
+  
+  <!-- Tier 5 (Top) -->
+  <g>
+    <path d="M 120 110 Q 120 70 125 70 Q 128 50 128 50 Q 131 50 131 70 Q 136 70 136 110 Q 136 150 131 150 Q 128 170 128 170 Q 125 170 120 150 Q 120 150 120 110" fill="#B4E197" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+    <circle cx="128" cy="90" r="8" fill="#D4F1B8" />
+  </g>
+  
+  <!-- Cones -->
+  <ellipse cx="110" cy="440" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="145" cy="420" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="130" cy="360" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="115" cy="340" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="140" cy="280" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="120" cy="260" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="135" cy="200" rx="5" ry="8" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" />
+</svg>

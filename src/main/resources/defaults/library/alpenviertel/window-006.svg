@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Shutters -->
+  <rect x="12" y="24" width="12" height="80" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="104" y="24" width="12" height="80" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Window Frame -->
+  <rect x="24" y="24" width="80" height="80" fill="#FFF9C4" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Panes -->
+  <rect x="28" y="28" width="36" height="72" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="64" y="28" width="36" height="72" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <rect x="32" y="32" width="10" height="20" fill="#E1F5FE" stroke="none" />
+  <rect x="68" y="32" width="10" height="20" fill="#E1F5FE" stroke="none" />
+  
+  <!-- Balcony Railing -->
+  <rect x="20" y="60" width="88" height="8" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="20" y="96" width="88" height="8" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Railing Slats -->
+  <rect x="32" y="68" width="6" height="28" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="46" y="68" width="6" height="28" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="60" y="68" width="6" height="28" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="74" y="68" width="6" height="28" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="88" y="68" width="6" height="28" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Carved Details (Circles in the wood) -->
+  <circle cx="30" cy="64" r="2" fill="#3B2A4A" stroke="none" />
+  <circle cx="98" cy="64" r="2" fill="#3B2A4A" stroke="none" />
+  <circle cx="30" cy="100" r="2" fill="#3B2A4A" stroke="none" />
+  <circle cx="98" cy="100" r="2" fill="#3B2A4A" stroke="none" />
+  
+  <!-- Geranium Leaves -->
+  <circle cx="30" cy="60" r="10" fill="#388E3C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="45" cy="60" r="10" fill="#388E3C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="60" cy="60" r="10" fill="#388E3C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="75" cy="60" r="10" fill="#388E3C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="90" cy="60" r="10" fill="#388E3C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Geranium Flowers -->
+  <circle cx="25" cy="55" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="35" cy="52" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="45" cy="58" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="55" cy="53" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="65" cy="57" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="75" cy="52" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="85" cy="58" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="95" cy="53" r="5" fill="#F44336" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+</svg>

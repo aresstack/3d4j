@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Ponytail -->
+  <path d="M165 80 C 210 60, 210 140, 170 140" fill="#634133" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Legs/Shoes -->
+  <ellipse cx="100" cy="490" rx="25" ry="15" fill="#4A3728" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="156" cy="490" rx="25" ry="15" fill="#4A3728" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Overalls Pants -->
+  <path d="M90 230 L166 230 L176 480 L135 480 L128 300 L121 480 L80 480 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Arms -->
+  <path d="M86 160 L60 280" fill="none" stroke="#FFDBAC" stroke-width="24" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M86 160 L60 280" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M170 160 L196 280" fill="none" stroke="#FFDBAC" stroke-width="24" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M170 160 L196 280" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- Shirt -->
+  <path d="M86 145 L170 145 L175 230 L81 230 Z" fill="#FFF4BD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Overalls Bib and Straps -->
+  <rect x="100" y="160" width="56" height="70" rx="10" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="105" y="145" width="12" height="20" rx="4" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="139" y="145" width="12" height="20" rx="4" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="100" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M83 100 A 45 45 0 0 1 173 100 L173 80 Q128 60 83 80 Z" fill="#634133" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="95" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="95" r="4" fill="#3B2A4A" />
+  <path d="M118 115 Q128 125 138 115" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M110 75 Q120 70 130 75" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+  <path d="M105 170 Q105 180 110 180" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+</svg>

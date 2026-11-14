@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tree Trunk (drawn first to be behind the house) -->
+  <path d="M 220 512 Q 230 300 190 200 T 130 60 L 120 70 T 180 210 Q 220 310 230 512 Z" 
+        fill="#C19A6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- House Wall -->
+  <path d="M 50 400 Q 128 360 206 400 L 206 512 L 50 512 Z" 
+        fill="#FDFDFD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- Timber Frames -->
+  <line x1="90" y1="400" x2="90" y2="512" stroke="#EEDC82" stroke-width="8" stroke-linecap="round" />
+  <line x1="166" y1="400" x2="166" y2="512" stroke="#EEDC82" stroke-width="8" stroke-linecap="round" />
+  <line x1="60" y1="440" x2="200" y2="440" stroke="#EEDC82" stroke-width="8" stroke-linecap="round" />
+  <line x1="60" y1="480" x2="200" y2="480" stroke="#EEDC82" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Wave-shaped Roof -->
+  <path d="M 40 380 Q 80 320 128 380 T 208 380 L 208 400 Q 128 360 40 400 Z" 
+        fill="#A2D2FF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- Cherry Blossoms (drawn last to overlap the roof) -->
+  <circle cx="130" cy="60" r="45" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="100" r="40" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="100" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="150" r="35" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="190" cy="150" r="40" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="190" r="30" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="50" r="30" fill="#FFD1DC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="50" r="30" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Blossom Highlights -->
+  <circle cx="120" cy="50" r="10" fill="#FFE4E1" />
+  <circle cx="150" cy="90" r="10" fill="#FFE4E1" />
+  <circle cx="180" cy="140" r="10" fill="#FFE4E1" />
+  <circle cx="110" cy="110" r="10" fill="#FFE4E1" />
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#CFC8BC" />
+  <ellipse cx="42" cy="38" rx="12" ry="8" fill="#DED8CC" />
+  <ellipse cx="85" cy="32" rx="14" ry="9" fill="#BDB5A7" />
+  <ellipse cx="128" cy="45" rx="11" ry="7" fill="#DED8CC" />
+  <ellipse cx="170" cy="30" rx="13" ry="8" fill="#BDB5A7" />
+  <ellipse cx="215" cy="52" rx="10" ry="7" fill="#DED8CC" />
+  <ellipse cx="35" cy="75" rx="13" ry="9" fill="#BDB5A7" />
+  <ellipse cx="72" cy="92" rx="9" ry="6" fill="#DED8CC" />
+  <ellipse cx="115" cy="85" rx="12" ry="8" fill="#BDB5A7" />
+  <ellipse cx="155" cy="105" rx="11" ry="7" fill="#DED8CC" />
+  <ellipse cx="195" cy="78" rx="14" ry="8" fill="#BDB5A7" />
+  <ellipse cx="228" cy="115" rx="10" ry="6" fill="#DED8CC" />
+  <ellipse cx="48" cy="130" rx="12" ry="8" fill="#BDB5A7" />
+  <ellipse cx="88" cy="155" rx="11" ry="7" fill="#DED8CC" />
+  <ellipse cx="132" cy="125" rx="13" ry="9" fill="#BDB5A7" />
+  <ellipse cx="168" cy="162" rx="9" ry="6" fill="#DED8CC" />
+  <ellipse cx="205" cy="140" rx="12" ry="7" fill="#BDB5A7" />
+  <ellipse cx="38" cy="195" rx="11" ry="8" fill="#DED8CC" />
+  <ellipse cx="75" cy="220" rx="13" ry="7" fill="#BDB5A7" />
+  <ellipse cx="118" cy="190" rx="10" ry="6" fill="#DED8CC" />
+  <ellipse cx="152" cy="230" rx="12" ry="8" fill="#BDB5A7" />
+  <ellipse cx="198" cy="205" rx="11" ry="7" fill="#DED8CC" />
+  <ellipse cx="232" cy="175" rx="13" ry="9" fill="#BDB5A7" />
+  <ellipse cx="55" cy="105" rx="8" ry="5" fill="#DED8CC" />
+  <ellipse cx="95" cy="125" rx="11" ry="7" fill="#BDB5A7" />
+  <ellipse cx="135" cy="65" rx="10" ry="8" fill="#DED8CC" />
+  <ellipse cx="175" cy="85" rx="12" ry="7" fill="#BDB5A7" />
+  <ellipse cx="210" cy="35" rx="9" ry="6" fill="#DED8CC" />
+  <ellipse cx="65" cy="175" rx="11" ry="8" fill="#BDB5A7" />
+  <ellipse cx="105" cy="205" rx="10" ry="7" fill="#DED8CC" />
+  <ellipse cx="145" cy="145" rx="12" ry="9" fill="#BDB5A7" />
+  <ellipse cx="185" cy="120" rx="9" ry="6" fill="#DED8CC" />
+</svg>

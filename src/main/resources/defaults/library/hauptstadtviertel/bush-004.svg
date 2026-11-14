@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Base Plate -->
+  <ellipse cx="128" cy="500" rx="70" ry="12" fill="#4A6332" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Main Column -->
+  <rect x="104" y="180" width="48" height="320" rx="10" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Column Highlight -->
+  <rect x="112" y="190" width="8" height="300" rx="4" fill="#8FBC8F" />
+  
+  <!-- Top Cap -->
+  <rect x="98" y="160" width="60" height="30" rx="8" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Spout -->
+  <path d="M 152 210 Q 190 210 190 260" fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 152 210 Q 190 210 190 260" fill="none" stroke="#6B8E23" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Handle Pivot -->
+  <circle cx="128" cy="175" r="12" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Handle Arm -->
+  <path d="M 128 175 L 70 300" fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 128 175 L 70 300" fill="none" stroke="#6B8E23" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Handle Grip -->
+  <rect x="60" y="290" width="20" height="30" rx="5" fill="#556B2F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Urban Details: Graffiti/Sticker -->
+  <rect x="115" y="350" width="25" height="15" rx="2" fill="#FF69B4" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="118" y="353" width="10" height="3" rx="1" fill="#FFFF00" />
+  
+  <!-- Bolts -->
+  <circle cx="112" cy="480" r="4" fill="#3B2A4A" />
+  <circle cx="144" cy="480" r="4" fill="#3B2A4A" />
+  <circle cx="112" cy="220" r="4" fill="#3B2A4A" />
+  <circle cx="144" cy="220" r="4" fill="#3B2A4A" />
+</svg>

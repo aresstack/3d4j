@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <path d="M80 470 L120 470 L120 512 L70 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 470 L176 470 L186 512 L136 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat -->
+  <path d="M70 220 L186 220 L196 470 L60 470 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Highlights -->
+  <path d="M80 240 L95 240 L95 400 L80 400 Z" fill="#A06A3B" />
+  
+  <!-- Buttons -->
+  <circle cx="128" cy="270" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="310" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="350" r="6" fill="#3B2A4A" />
+
+  <!-- Arms -->
+  <path d="M70 220 L50 380 L80 380 L80 220 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 220 L206 380 L176 380 L176 220 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="160" r="40" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Face -->
+  <circle cx="118" cy="155" r="3" fill="#3B2A4A" />
+  <circle cx="138" cy="155" r="3" fill="#3B2A4A" />
+  <path d="M120 175 Q128 185 136 175" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Hat -->
+  <path d="M88 140 Q88 80 128 80 Q168 80 168 140 Z" fill="#C0392B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 80 L128 60 L136 80" fill="#C0392B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Scarf -->
+  <path d="M100 190 L156 190 L156 230 L100 230 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 230 L120 230 L120 330 L110 330 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 230 L146 230 L146 310 L136 310 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+</svg>

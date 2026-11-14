@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Industrial Base: Concrete and Rust -->
+  <path d="M60 460 L196 460 L200 512 L56 512 Z" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 460 L156 460 L156 480 L100 480 Z" fill="#B24C39" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Stems -->
+  <path d="M128 460 Q120 300 130 100" fill="none" stroke="#5A8C4A" stroke-width="12" stroke-linecap="round" />
+  <path d="M128 460 Q150 300 160 180" fill="none" stroke="#5A8C4A" stroke-width="12" stroke-linecap="round" />
+  <path d="M128 460 Q100 300 90 150" fill="none" stroke="#5A8C4A" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Outlines for Stems (to maintain the thick dark look) -->
+  <path d="M128 460 Q120 300 130 100" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M128 460 Q150 300 160 180" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M128 460 Q100 300 90 150" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Leaves -->
+  <ellipse cx="115" cy="350" rx="15" ry="6" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="6" transform="rotate(-30 115 350)" />
+  <ellipse cx="140" cy="320" rx="15" ry="6" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="6" transform="rotate(20 140 320)" />
+  <ellipse cx="105" cy="250" rx="15" ry="6" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="6" transform="rotate(-40 105 250)" />
+  <ellipse cx="150" cy="220" rx="15" ry="6" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="6" transform="rotate(30 150 220)" />
+  <ellipse cx="120" cy="180" rx="15" ry="6" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="6" transform="rotate(-20 120 180)" />
+
+  <!-- Flower Spikes - Center -->
+  <circle cx="130" cy="100" r="12" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="135" cy="120" r="10" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="140" r="10" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="132" cy="160" r="9" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="138" cy="180" r="8" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="130" cy="100" r="4" fill="#E8A2D1" /> <!-- Highlight -->
+
+  <!-- Flower Spikes - Right -->
+  <circle cx="160" cy="180" r="12" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="165" cy="200" r="10" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="155" cy="220" r="10" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="162" cy="240" r="9" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="168" cy="260" r="8" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="160" cy="180" r="4" fill="#E8A2D1" /> <!-- Highlight -->
+
+  <!-- Flower Spikes - Left -->
+  <circle cx="90" cy="150" r="12" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="95" cy="170" r="10" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="85" cy="190" r="10" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="92" cy="210" r="9" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="98" cy="230" r="8" fill="#D65DB1" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="90" cy="150" r="4" fill="#E8A2D1" /> <!-- Highlight -->
+</svg>

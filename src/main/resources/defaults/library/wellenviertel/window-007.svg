@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Window Frame -->
+  <path d="M 19 109 L 19 64 A 45 45 0 0 1 109 64 L 109 109 Z" fill="#EEDCB2" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <path d="M 24 104 L 24 64 A 40 40 0 0 1 104 64 L 104 104 Z" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Window Panes -->
+  <line x1="64" y1="64" x2="64" y2="104" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  <line x1="24" y1="84" x2="104" y2="84" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 35 35 L 45 45 M 35 55 L 45 65" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Fluttering Curtains -->
+  <path d="M 24 40 Q 50 50 40 70 Q 50 90 40 104 L 24 104 Z" fill="#C1E1C1" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  <path d="M 104 40 Q 78 50 88 70 Q 78 90 88 104 L 104 104 Z" fill="#C1E1C1" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Curtain Highlights -->
+  <path d="M 30 45 Q 40 55 30 65" fill="none" stroke="#E0F2E0" stroke-width="4" stroke-linecap="round" />
+  <path d="M 98 45 Q 88 55 98 65" fill="none" stroke="#E0F2E0" stroke-width="4" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M160 480 Q220 480 210 400 Q200 320 170 350" fill="none" stroke="#3B2A4A" stroke-width="14" stroke-linecap="round" />
+  <path d="M160 480 Q220 480 210 400 Q200 320 170 350" fill="none" stroke="#9B9B9B" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Body (Scruffy Pear Shape) -->
+  <path d="M128 180 
+           C 80 180, 60 300, 60 400 
+           L 60 512 L 196 512 L 196 400 
+           C 196 300, 176 180, 128 180 Z" 
+        fill="#9B9B9B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Scruffy Fur Tufts on Body -->
+  <path d="M60 350 L50 360 L60 370 M196 340 L206 350 L196 360" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Front Paws -->
+  <ellipse cx="90" cy="500" rx="25" ry="15" fill="#9B9B9B" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="166" cy="500" rx="25" ry="15" fill="#9B9B9B" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Head -->
+  <path d="M128 80 
+           C 80 80, 70 140, 70 170 
+           C 70 220, 186 220, 186 170 
+           C 186 140, 176 80, 128 80 Z" 
+        fill="#9B9B9B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Left Ear (Pointy) -->
+  <path d="M85 100 L70 40 L110 85 Z" fill="#9B9B9B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M88 90 L75 55 L100 80 Z" fill="#FFB6C1" />
+
+  <!-- Right Ear (Bent) -->
+  <path d="M160 90 L180 60 L190 100 L170 110 Z" fill="#9B9B9B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M165 95 L175 75 L185 100 Z" fill="#FFB6C1" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="150" r="12" fill="#D4E157" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="107" cy="148" r="4" fill="#3B2A4A" />
+  
+  <circle cx="151" cy="150" r="12" fill="#D4E157" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="153" cy="148" r="4" fill="#3B2A4A" />
+
+  <!-- Nose and Mouth -->
+  <path d="M120 175 L136 175 L128 185 Z" fill="#FFB6C1" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M120 190 Q128 200 136 190" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Whiskers -->
+  <line x1="90" y1="175" x2="60" y2="170" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="90" y1="185" x2="60" y2="190" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="166" y1="175" x2="196" y2="170" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="166" y1="185" x2="196" y2="190" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M110 110 Q128 100 146 110" fill="none" stroke="#C0C0C0" stroke-width="6" stroke-linecap="round" />
+  <path d="M80 300 Q70 350 80 400" fill="none" stroke="#C0C0C0" stroke-width="6" stroke-linecap="round" />
+</svg>

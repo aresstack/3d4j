@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="95" y="320" width="30" height="170" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="320" width="30" height="170" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <rect x="80" y="480" width="45" height="32" rx="10" fill="#333333" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="480" width="45" height="32" rx="10" fill="#333333" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <rect x="65" y="160" width="30" height="160" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="161" y="160" width="30" height="160" rx="15" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Hands -->
+  <circle cx="80" cy="320" r="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="175" cy="320" r="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Torso (Shirt) -->
+  <rect x="85" y="150" width="86" height="180" rx="20" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tie -->
+  <path d="M120 150 L136 150 L136 170 L120 170 Z" fill="#2C3E50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 170 L136 170 L140 260 L128 280 L116 260 Z" fill="#2C3E50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="100" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair -->
+  <path d="M83 100 Q83 50 128 50 Q173 50 173 100 L173 80 Q128 60 83 80 Z" fill="#1A1A1A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 65 Q115 55 130 65" fill="none" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="95" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="95" r="4" fill="#3B2A4A" />
+  <path d="M118 115 Q128 125 138 115" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Shirt Highlights -->
+  <path d="M95 170 L95 220" fill="none" stroke="#E0E0E0" stroke-width="6" stroke-linecap="round" />
+</svg>

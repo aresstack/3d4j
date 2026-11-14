@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Bicycle Stand -->
+  <path d="M 70 512 L 70 360 C 70 330 186 330 186 360 L 186 512" 
+        fill="#B2BABB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Graffiti on stand -->
+  <path d="M 75 420 Q 85 410 95 425 T 110 415" 
+        fill="none" stroke="#FF80AB" stroke-width="6" stroke-linecap="round" />
+  <rect x="170" y="380" width="10" height="15" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Bike 1 (Left - Pale Mint) -->
+  <g>
+    <!-- Wheels -->
+    <circle cx="60" cy="460" r="40" fill="#455A64" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="60" cy="460" r="30" fill="#B2BABB" stroke="#3B2A4A" stroke-width="4" />
+    <circle cx="120" cy="460" r="40" fill="#455A64" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="120" cy="460" r="30" fill="#B2BABB" stroke="#3B2A4A" stroke-width="4" />
+    
+    <!-- Frame -->
+    <path d="M 60 460 L 90 380 L 120 460 M 90 380 L 80 350" 
+          fill="none" stroke="#C5E1A5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 60 460 L 90 380 L 120 460 M 90 380 L 80 350" 
+          fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" />
+    <!-- Redrawing frame with outline first for better layering -->
+    <path d="M 60 460 L 90 380 L 120 460 M 90 380 L 80 350" 
+          fill="none" stroke="#3B2A4A" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 60 460 L 90 380 L 120 460 M 90 380 L 80 350" 
+          fill="none" stroke="#C5E1A5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Handlebars & Seat -->
+    <path d="M 80 350 Q 70 340 60 350" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+    <ellipse cx="95" cy="370" rx="12" ry="6" fill="#795548" stroke="#3B2A4A" stroke-width="6" />
+  </g>
+
+  <!-- Bike 2 (Right - Pale Red) -->
+  <g>
+    <!-- Wheels -->
+    <circle cx="136" cy="460" r="40" fill="#455A64" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="136" cy="460" r="30" fill="#B2BABB" stroke="#3B2A4A" stroke-width="4" />
+    <circle cx="196" cy="460" r="40" fill="#455A64" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="196" cy="460" r="30" fill="#B2BABB" stroke="#3B2A4A" stroke-width="4" />
+    
+    <!-- Frame -->
+    <path d="M 136 460 L 166 380 L 196 460 M 166 380 L 176 350" 
+          fill="none" stroke="#3B2A4A" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 136 460 L 166 380 L 196 460 M 166 380 L 176 350" 
+          fill="none" stroke="#EF9A9A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Handlebars & Seat -->
+    <path d="M 176 350 Q 186 340 196 350" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+    <ellipse cx="151" cy="370" rx="12" ry="6" fill="#333333" stroke="#3B2A4A" stroke-width="6" />
+  </g>
+
+  <!-- Locks -->
+  <path d="M 110 380 Q 115 360 120 380" fill="none" stroke="#FFEB3B" stroke-width="10" stroke-linecap="round" />
+  <path d="M 146 380 Q 141 360 136 380" fill="none" stroke="#FFEB3B" stroke-width="10" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M 75 350 Q 128 335 181 350" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+</svg>

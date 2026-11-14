@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Spines (Back) -->
+  <path d="M60,320 L40,270 L70,260 L50,210 L90,200 L80,150 L128,130 L176,150 L166,200 L206,210 L186,260 L216,270 L196,320 Z" 
+        fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Body -->
+  <path d="M80,320 Q80,460 128,460 Q176,460 176,320" 
+        fill="#C19A6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly -->
+  <path d="M100,340 Q100,440 128,440 Q156,440 156,340" 
+        fill="#F5E1C0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <path d="M100,280 Q100,210 128,210 Q156,210 156,280" 
+        fill="#C19A6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Snout -->
+  <path d="M128,240 Q145,240 145,260 Q145,275 128,275 Q111,275 111,260 Q111,240 128,240" 
+        fill="#C19A6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Nose -->
+  <circle cx="128" cy="250" r="6" fill="#5D3A1A" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Eyes -->
+  <circle cx="115" cy="235" r="6" fill="#3B2A4A" />
+  <circle cx="141" cy="235" r="6" fill="#3B2A4A" />
+  <circle cx="117" cy="233" r="2" fill="white" />
+  <circle cx="143" cy="233" r="2" fill="white" />
+  
+  <!-- Arms -->
+  <path d="M90,340 Q70,360 80,380" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M166,340 Q186,360 176,380" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Legs -->
+  <path d="M110,460 L110,512" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M146,460 L146,512" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M115,220 Q128,215 141,220" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+</svg>

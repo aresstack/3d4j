@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Roof -->
+  <path d="M24 24 L104 24 L88 12 L40 12 Z" fill="#6B4226" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Roof Shingle Details -->
+  <line x1="40" y1="18" x2="88" y2="18" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="50" y1="15" x2="78" y2="15" stroke="#8B5A2B" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Door -->
+  <rect x="32" y="24" width="64" height="104" fill="#4A7C44" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Carved Sunburst Pattern -->
+  <circle cx="64" cy="52" r="18" fill="#3A6337" stroke="#3B2A4A" stroke-width="3" />
+  <!-- Rays -->
+  <g stroke="#3B2A4A" stroke-width="3" stroke-linecap="round">
+    <line x1="64" y1="52" x2="64" y2="38" />
+    <line x1="64" y1="52" x2="64" y2="66" />
+    <line x1="64" y1="52" x2="50" y2="52" />
+    <line x1="64" y1="52" x2="78" y2="52" />
+    <line x1="64" y1="52" x2="54" y2="42" />
+    <line x1="64" y1="52" x2="74" y2="42" />
+    <line x1="64" y1="52" x2="54" y2="62" />
+    <line x1="64" y1="52" x2="74" y2="62" />
+  </g>
+
+  <!-- Door Handle -->
+  <circle cx="88" cy="75" r="3" fill="#D4AF37" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Door Highlight -->
+  <path d="M38 30 L38 120" stroke="#5A8C54" stroke-width="3" stroke-linecap="round" />
+</svg>

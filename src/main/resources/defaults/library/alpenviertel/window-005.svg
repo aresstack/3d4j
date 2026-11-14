@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Shutters -->
+  <rect x="14" y="24" width="14" height="80" rx="2" fill="#558B2F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="100" y="24" width="14" height="80" rx="2" fill="#558B2F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Window Frame -->
+  <rect x="28" y="24" width="72" height="80" rx="2" fill="#F5F5DC" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <rect x="33" y="29" width="62" height="70" rx="2" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 38 35 L 50 35 M 38 42 L 45 42" stroke="white" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Flower Box -->
+  <rect x="33" y="94" width="62" height="12" rx="2" fill="#4E342E" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="38" cy="92" r="5" fill="#D32F2F" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="48" cy="94" r="5" fill="#D32F2F" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="58" cy="92" r="5" fill="#D32F2F" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="68" cy="94" r="5" fill="#D32F2F" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="78" cy="92" r="5" fill="#D32F2F" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="88" cy="94" r="5" fill="#D32F2F" stroke="#3B2A4A" stroke-width="3" />
+  
+  <!-- Wrought-Iron Basket Grille -->
+  <path d="M 35 45 Q 64 35 93 45 L 93 75 Q 64 85 35 75 Z" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  <path d="M 35 45 Q 64 25 93 45" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  <line x1="45" y1="45" x2="45" y2="77" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  <line x1="55" y1="45" x2="55" y2="80" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  <line x1="64" y1="45" x2="64" y2="82" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  <line x1="73" y1="45" x2="73" y2="80" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  <line x1="83" y1="45" x2="83" y2="77" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+</svg>

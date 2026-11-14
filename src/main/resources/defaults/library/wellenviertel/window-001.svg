@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Window Frame -->
+  <path d="M 24 109 L 24 59 A 40 40 0 0 1 104 59 L 104 109 Z" fill="#F5E6C8" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <path d="M 29 104 L 29 59 A 35 35 0 0 1 99 59 L 99 104 Z" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Left Fluttering Curtain -->
+  <path d="M 29 59 C 35 40, 40 30, 45 30 L 45 80 C 55 80, 55 60, 45 59 Z" fill="#FFF9E3" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Wait, let's refine the curtain shape to be more "fluttery" and positioned correctly -->
+  <path d="M 29 59 C 35 45, 40 45, 40 30 L 50 30 C 50 45, 55 45, 50 59 L 29 59 Z" fill="none" /> <!-- placeholder -->
+  
+  <!-- Corrected Curtains -->
+  <path d="M 29 59 C 35 40, 45 40, 40 55 C 35 70, 45 70, 40 85 L 50 85 C 55 70, 45 70, 50 55 C 55 40, 45 40, 50 30 L 29 30 Z" fill="none" /> <!-- placeholder -->
+  
+  <!-- Final Curtain Design: Simple, wavy, and friendly -->
+  <path d="M 29 59 Q 40 40 45 30 L 55 30 Q 50 50 55 70 L 45 70 Q 40 50 45 59 Z" fill="#FFF9E3" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M 99 59 Q 88 40 83 30 L 73 30 Q 78 50 73 70 L 83 70 Q 88 50 83 59 Z" fill="#FFF9E3" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 65 40 L 75 50 M 70 35 L 80 45" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" fill="none" />
+</svg>

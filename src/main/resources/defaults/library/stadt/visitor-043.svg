@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <path d="M80 470 L120 470 L125 512 L75 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 470 L176 470 L181 512 L131 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Body -->
+  <path d="M70 220 L186 220 L196 470 L60 470 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Arms -->
+  <path d="M70 220 L40 380 L70 390 L90 250 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 220 L216 380 L186 390 L166 250 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Highlights -->
+  <path d="M80 240 L90 450" stroke="#A67C52" stroke-width="6" stroke-linecap="round" />
+  <path d="M176 240 L166 450" stroke="#A67C52" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="160" r="40" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Face -->
+  <circle cx="118" cy="155" r="4" fill="#3B2A4A" />
+  <circle cx="138" cy="155" r="4" fill="#3B2A4A" />
+  <path d="M120 175 Q128 185 136 175" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Scarf -->
+  <path d="M90 190 Q128 210 166 190 L170 230 Q128 250 90 230 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 220 L115 330 L130 320 L115 220 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M140 220 L155 330 L170 320 L155 220 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hat -->
+  <path d="M88 140 A40 40 0 0 1 168 140 L172 120 Q128 80 84 120 Z" fill="#C0392B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 100 Q128 90 136 100" fill="none" stroke="#E74C3C" stroke-width="6" stroke-linecap="round" />
+</svg>

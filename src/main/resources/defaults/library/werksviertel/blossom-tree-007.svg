@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base with Industrial Rust -->
+  <rect x="60" y="460" width="136" height="52" rx="8" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M60 470 Q 80 465 100 475 L 100 490 Q 80 480 60 485 Z" fill="#B7410E" />
+  <path d="M160 460 L 196 460 L 196 480 L 170 480 Z" fill="#8B4513" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Weeds growing from concrete -->
+  <path d="M75 460 L 70 440 L 80 450" fill="none" stroke="#6B8E23" stroke-width="6" stroke-linecap="round" />
+  <path d="M185 460 L 195 435 L 180 450" fill="none" stroke="#6B8E23" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Birch Trunk -->
+  <path d="M115 460 L125 120 L135 120 L145 460 Z" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Birch Black Marks -->
+  <rect x="122" y="150" width="15" height="6" rx="3" fill="#3B2A4A" />
+  <rect x="130" y="200" width="12" height="5" rx="3" fill="#3B2A4A" />
+  <rect x="120" y="260" width="18" height="7" rx="3" fill="#3B2A4A" />
+  <rect x="132" y="320" width="10" height="6" rx="3" fill="#3B2A4A" />
+  <rect x="125" y="380" width="14" height="5" rx="3" fill="#3B2A4A" />
+  <rect x="135" y="420" width="12" height="8" rx="3" fill="#3B2A4A" />
+
+  <!-- Hanging Branches/Leaf Clusters -->
+  <!-- Top Cluster -->
+  <path d="M130 120 Q 130 60 180 80 Q 210 110 160 140 Q 130 130 130 120" fill="#B2D3A4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M150 85 Q 160 75 170 85" fill="none" stroke="#DDF2E1" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Left Hanging Cluster 1 -->
+  <path d="M125 160 Q 70 150 60 210 Q 70 260 110 230 Q 120 200 125 160" fill="#B2D3A4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 180 Q 90 170 100 180" fill="none" stroke="#DDF2E1" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Right Hanging Cluster 1 -->
+  <path d="M135 180 Q 180 170 190 230 Q 180 280 140 250 Q 130 220 135 180" fill="#B2D3A4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M150 200 Q 160 190 170 200" fill="none" stroke="#DDF2E1" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Left Hanging Cluster 2 -->
+  <path d="M122 280 Q 80 270 70 330 Q 80 380 120 350 Q 130 320 122 280" fill="#B2D3A4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M90 300 Q 100 290 110 300" fill="none" stroke="#DDF2E1" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Right Hanging Cluster 2 -->
+  <path d="M138 310 Q 180 300 190 360 Q 180 410 140 380 Q 130 350 138 310" fill="#B2D3A4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M150 330 Q 160 320 170 330" fill="none" stroke="#DDF2E1" stroke-width="4" stroke-linecap="round" />
+</svg>

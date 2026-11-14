@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Body/Head -->
+  <path d="M 60 384 C 60 200 196 200 196 384 L 196 512 L 60 512 Z" 
+        fill="#FF5C5C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head Highlight -->
+  <path d="M 90 260 Q 110 230 140 240" 
+        fill="none" stroke="#FF8C8C" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Eye -->
+  <circle cx="150" cy="280" r="22" fill="white" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="280" r="8" fill="#3B2A4A" />
+  <circle cx="164" cy="276" r="3" fill="white" />
+
+  <!-- Waving Arm Left -->
+  <path d="M 80 360 Q 30 300 60 200 Q 80 160 100 200" 
+        fill="none" stroke="#FF5C5C" stroke-width="30" stroke-linecap="round" />
+  <path d="M 80 360 Q 30 300 60 200 Q 80 160 100 200" 
+        fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Waving Arm Right -->
+  <path d="M 176 360 Q 226 300 196 200 Q 176 160 156 200" 
+        fill="none" stroke="#FF5C5C" stroke-width="30" stroke-linecap="round" />
+  <path d="M 176 360 Q 226 300 196 200 Q 176 160 156 200" 
+        fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Small blush -->
+  <circle cx="175" cy="310" r="10" fill="#FF8C8C" />
+</svg>

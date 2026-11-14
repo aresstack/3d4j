@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 4,
+  "createdAt": "2026-11-14T18:33:20Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a big brown guard dog sitting, leather collar. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

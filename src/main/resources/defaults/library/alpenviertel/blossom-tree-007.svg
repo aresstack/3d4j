@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M115 512 L115 120 Q128 110 141 120 L141 512 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Foliage Tiers - Bottom Tier -->
+  <g>
+    <circle cx="128" cy="420" r="60" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="80" cy="430" r="45" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="176" cy="430" r="45" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <!-- Highlights -->
+    <circle cx="110" cy="410" r="15" fill="#C5F08D" />
+    <circle cx="145" cy="420" r="12" fill="#C5F08D" />
+  </g>
+
+  <!-- Foliage Tiers - Middle Lower -->
+  <g>
+    <circle cx="128" cy="320" r="50" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="90" cy="330" r="35" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="166" cy="330" r="35" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <!-- Highlights -->
+    <circle cx="120" cy="310" r="12" fill="#C5F08D" />
+    <circle cx="150" cy="320" r="10" fill="#C5F08D" />
+  </g>
+
+  <!-- Foliage Tiers - Middle Upper -->
+  <g>
+    <circle cx="128" cy="220" r="40" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="100" cy="230" r="30" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="156" cy="230" r="30" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <!-- Highlights -->
+    <circle cx="125" cy="210" r="10" fill="#C5F08D" />
+  </g>
+
+  <!-- Foliage Tiers - Top -->
+  <g>
+    <circle cx="128" cy="140" r="30" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="115" cy="150" r="20" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <circle cx="141" cy="150" r="20" fill="#A8E063" stroke="#3B2A4A" stroke-width="8" />
+    <!-- Highlights -->
+    <circle cx="128" cy="130" r="8" fill="#C5F08D" />
+  </g>
+</svg>

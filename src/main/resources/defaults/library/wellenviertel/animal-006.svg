@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Feet -->
+  <ellipse cx="80" cy="480" rx="45" ry="30" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="176" cy="480" rx="45" ry="30" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Tail -->
+  <circle cx="190" cy="420" r="20" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body -->
+  <ellipse cx="128" cy="340" rx="75" ry="110" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly -->
+  <ellipse cx="128" cy="350" rx="45" ry="80" fill="#D2B48C" stroke="#3B2A4A" stroke-width="0" />
+
+  <!-- Arms -->
+  <ellipse cx="85" cy="330" rx="18" ry="30" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" transform="rotate(20, 85, 330)" />
+  <ellipse cx="171" cy="330" rx="18" ry="30" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" transform="rotate(-20, 171, 330)" />
+
+  <!-- Ears -->
+  <ellipse cx="95" cy="80" rx="22" ry="80" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="95" cy="90" rx="12" ry="60" fill="#D2B48C" stroke="#3B2A4A" stroke-width="0" />
+  
+  <ellipse cx="161" cy="80" rx="22" ry="80" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="161" cy="90" rx="12" ry="60" fill="#D2B48C" stroke="#3B2A4A" stroke-width="0" />
+
+  <!-- Head -->
+  <circle cx="128" cy="180" r="65" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face Details -->
+  <circle cx="110" cy="170" r="7" fill="#3B2A4A" />
+  <circle cx="146" cy="170" r="7" fill="#3B2A4A" />
+  
+  <!-- Eye Highlights -->
+  <circle cx="112" cy="167" r="2" fill="white" />
+  <circle cx="148" cy="167" r="2" fill="white" />
+
+  <ellipse cx="128" cy="195" rx="10" ry="7" fill="#FFB6C1" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <path d="M 120 205 Q 128 215 136 205" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M 100 150 Q 110 140 120 150" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.3" />
+</svg>

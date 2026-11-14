@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#CFC8BC"/>
+  <path d="M30 30 L50 30 L55 50 L35 55 Z" fill="#DED8CC"/>
+  <path d="M70 20 L90 25 L85 45 L65 40 Z" fill="#BDB5A7"/>
+  <path d="M120 30 L140 20 L150 40 L130 50 Z" fill="#DED8CC"/>
+  <path d="M170 40 L190 35 L200 60 L180 65 Z" fill="#BDB5A7"/>
+  <path d="M210 20 L230 30 L220 50 L200 40 Z" fill="#DED8CC"/>
+  <path d="M40 80 L60 75 L65 100 L45 105 Z" fill="#BDB5A7"/>
+  <path d="M80 90 L100 85 L105 110 L85 115 Z" fill="#DED8CC"/>
+  <path d="M120 80 L140 75 L145 100 L125 105 Z" fill="#BDB5A7"/>
+  <path d="M160 90 L180 85 L185 110 L165 115 Z" fill="#DED8CC"/>
+  <path d="M200 80 L220 75 L225 100 L205 105 Z" fill="#BDB5A7"/>
+  <path d="M30 130 L50 125 L55 150 L35 155 Z" fill="#DED8CC"/>
+  <path d="M70 140 L90 135 L95 160 L75 165 Z" fill="#BDB5A7"/>
+  <path d="M110 130 L130 125 L135 150 L115 155 Z" fill="#DED8CC"/>
+  <path d="M150 140 L170 135 L175 160 L155 165 Z" fill="#BDB5A7"/>
+  <path d="M190 130 L210 125 L215 150 L195 155 Z" fill="#DED8CC"/>
+  <path d="M220 140 L240 135 L240 160 L220 165 Z" fill="#BDB5A7"/>
+  <path d="M40 180 L60 175 L65 200 L45 205 Z" fill="#DED8CC"/>
+  <path d="M80 190 L100 185 L105 210 L85 215 Z" fill="#BDB5A7"/>
+  <path d="M120 180 L140 175 L145 200 L125 205 Z" fill="#DED8CC"/>
+  <path d="M160 190 L180 185 L185 210 L165 215 Z" fill="#BDB5A7"/>
+  <path d="M200 180 L220 175 L225 200 L205 205 Z" fill="#DED8CC"/>
+  <path d="M220 190 L240 185 L240 210 L220 215 Z" fill="#BDB5A7"/>
+  <path d="M50 60 L70 65 L65 85 L45 80 Z" fill="#DED8CC"/>
+  <path d="M110 60 L130 65 L125 85 L105 80 Z" fill="#BDB5A7"/>
+  <path d="M170 60 L190 65 L185 85 L165 80 Z" fill="#DED8CC"/>
+  <path d="M60 110 L80 115 L75 135 L55 130 Z" fill="#BDB5A7"/>
+  <path d="M120 110 L140 115 L135 135 L115 130 Z" fill="#DED8CC"/>
+  <path d="M180 110 L200 115 L195 135 L175 130 Z" fill="#BDB5A7"/>
+  <path d="M70 160 L90 165 L85 185 L65 180 Z" fill="#DED8CC"/>
+  <path d="M130 160 L150 165 L145 185 L125 180 Z" fill="#BDB5A7"/>
+  <path d="M190 160 L210 165 L205 185 L185 180 Z" fill="#DED8CC"/>
+  <path d="M50 220 L70 225 L65 240 L45 235 Z" fill="#BDB5A7"/>
+  <path d="M110 220 L130 225 L125 240 L105 235 Z" fill="#DED8CC"/>
+  <path d="M170 220 L190 225 L185 240 L165 235 Z" fill="#BDB5A7"/>
+  <path d="M210 220 L230 225 L225 240 L205 235 Z" fill="#DED8CC"/>
+</svg>

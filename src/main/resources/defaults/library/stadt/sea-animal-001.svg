@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail Fluke -->
+  <path d="M 128 512 C 100 512, 70 480, 70 450 C 70 430, 110 460, 128 480 C 146 460, 186 430, 186 450 C 186 480, 156 512, 128 512 Z" 
+        fill="#7A9EBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Main Body -->
+  <path d="M 128 512 C 80 400, 80 120, 160 120 C 230 120, 250 200, 210 250 C 170 290, 150 350, 128 512 Z" 
+        fill="#7A9EBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly -->
+  <path d="M 135 512 C 140 400, 160 300, 210 250 C 190 260, 160 360, 135 512 Z" 
+        fill="#D1E8FF" />
+  
+  <!-- Dorsal Fin -->
+  <path d="M 140 130 Q 150 60, 180 130 Z" 
+        fill="#7A9EBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Pectoral Fin -->
+  <path d="M 170 260 Q 190 300, 180 320 Q 160 300, 170 260 Z" 
+        fill="#7A9EBD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Eye -->
+  <circle cx="190" cy="220" r="7" fill="#3B2A4A" />
+  <circle cx="192" cy="218" r="2" fill="#FFFFFF" />
+</svg>

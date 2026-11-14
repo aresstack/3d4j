@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Barrel Body -->
+  <path d="M 60 480 Q 128 500 196 480 L 210 240 Q 128 260 46 240 Z" 
+        fill="#EEDCB2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Barrel Hoops -->
+  <path d="M 52 300 Q 128 320 204 300" fill="none" stroke="#D2B48C" stroke-width="12" stroke-linecap="round" />
+  <path d="M 56 420 Q 128 440 200 420" fill="none" stroke="#D2B48C" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Sand Mound -->
+  <path d="M 50 250 Q 128 180 206 250 Q 206 260 128 270 Q 50 260 50 250" 
+        fill="#F5DEB3" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sea Lavender Stem -->
+  <path d="M 135 230 Q 145 180 120 130" 
+        fill="none" stroke="#8FBC8F" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Sea Lavender Flowers -->
+  <circle cx="120" cy="130" r="8" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="112" cy="145" r="7" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="128" cy="145" r="7" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="115" cy="160" r="6" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="130" cy="165" r="6" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="122" cy="175" r="5" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Highlights -->
+  <path d="M 75 270 Q 85 270 85 350" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.5" />
+  <path d="M 180 270 Q 190 270 190 350" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.3" />
+</svg>

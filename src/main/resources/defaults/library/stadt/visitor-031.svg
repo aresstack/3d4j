@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="100" y="400" width="25" height="112" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="131" y="400" width="25" height="112" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <path d="M90 500 Q90 512 125 512 L125 490 Z" fill="#3B2A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 500 Q131 512 166 512 L166 490 Z" fill="#3B2A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hair (Back) -->
+  <path d="M80 140 Q80 80 128 80 Q176 80 176 140 L185 320 Q128 300 71 320 Z" fill="#C68E5F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Body -->
+  <path d="M70 180 L186 180 L195 420 L61 420 Z" fill="#FF85B2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Highlights -->
+  <path d="M80 200 L100 200 L100 400 L80 400 Z" fill="#FFB2D1" />
+
+  <!-- Arms -->
+  <rect x="50" y="190" width="30" height="150" rx="15" fill="#FF85B2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="176" y="190" width="30" height="150" rx="15" fill="#FF85B2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hands -->
+  <circle cx="65" cy="340" r="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="191" cy="340" r="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="130" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hair (Front/Bangs) -->
+  <path d="M83 130 Q83 85 128 85 Q173 85 173 130 Q173 110 150 110 Q128 100 106 110 Q83 110 83 130" fill="#C68E5F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="130" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="130" r="4" fill="#3B2A4A" />
+  <path d="M118 145 Q128 155 138 145" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Coat Details (Buttons) -->
+  <circle cx="128" cy="220" r="5" fill="#3B2A4A" />
+  <circle cx="128" cy="260" r="5" fill="#3B2A4A" />
+  <circle cx="128" cy="300" r="5" fill="#3B2A4A" />
+</svg>

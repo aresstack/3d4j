@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <ellipse cx="70" cy="480" rx="45" ry="30" fill="#966F33" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="186" cy="480" rx="45" ry="30" fill="#966F33" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Body -->
+  <ellipse cx="128" cy="350" rx="85" ry="130" fill="#966F33" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Belly -->
+  <ellipse cx="128" cy="370" rx="55" ry="80" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Resting Arm -->
+  <path d="M 60 280 Q 30 320 70 380" fill="none" stroke="#966F33" stroke-width="40" stroke-linecap="round" />
+  <path d="M 60 280 Q 30 320 70 380" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Waving Arm -->
+  <path d="M 196 280 Q 240 240 220 160" fill="none" stroke="#966F33" stroke-width="40" stroke-linecap="round" />
+  <path d="M 196 280 Q 240 240 220 160" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="160" r="75" fill="#966F33" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <circle cx="65" cy="110" r="25" fill="#966F33" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="191" cy="110" r="25" fill="#966F33" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="65" cy="110" r="12" fill="#D2B48C" />
+  <circle cx="191" cy="110" r="12" fill="#D2B48C" />
+  
+  <!-- Muzzle -->
+  <ellipse cx="128" cy="190" rx="35" ry="28" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Nose -->
+  <ellipse cx="128" cy="180" rx="12" ry="8" fill="#3B2A4A" />
+  
+  <!-- Eyes -->
+  <circle cx="105" cy="150" r="7" fill="#3B2A4A" />
+  <circle cx="151" cy="150" r="7" fill="#3B2A4A" />
+  
+  <!-- Smile -->
+  <path d="M 118 200 Q 128 210 138 200" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M 100 130 Q 110 120 120 130" fill="none" stroke="#B88B5A" stroke-width="6" stroke-linecap="round" />
+  <circle cx="110" cy="340" r="10" fill="#B88B5A" opacity="0.5" />
+</svg>

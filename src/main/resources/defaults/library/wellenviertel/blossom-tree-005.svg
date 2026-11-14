@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk: Slender, sandy beige, leaning with the wind -->
+  <path d="M 110 512 Q 120 350 160 220" 
+        fill="none" 
+        stroke="#3B2A4A" 
+        stroke-width="12" 
+        stroke-linecap="round" />
+  <path d="M 110 512 Q 120 350 160 220" 
+        fill="none" 
+        stroke="#E6D2B5" 
+        stroke-width="6" 
+        stroke-linecap="round" />
+
+  <!-- Branches -->
+  <path d="M 140 320 Q 170 300 190 280" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 155 260 Q 180 240 210 230" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 160 220 Q 180 180 200 160" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Canopy: Wind-swept clusters of white and pastel blue blossoms -->
+  <!-- Back layer (Pastel Blue) -->
+  <circle cx="170" cy="260" r="35" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="200" cy="220" r="40" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="180" cy="170" r="35" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="210" cy="140" r="30" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Front layer (White) -->
+  <circle cx="150" cy="270" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="190" cy="250" r="35" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="220" cy="210" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="200" r="35" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="200" cy="160" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="230" cy="130" r="25" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Floating Petals to emphasize breeze -->
+  <ellipse cx="240" cy="280" rx="6" ry="4" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" transform="rotate(45 240 280)" />
+  <ellipse cx="260" cy="200" rx="6" ry="4" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="4" transform="rotate(-20 260 200)" />
+  <ellipse cx="230" cy="350" rx="6" ry="4" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" transform="rotate(110 230 350)" />
+</svg>

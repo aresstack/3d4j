@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Pole -->
+  <path d="M115 512 L141 512 C160 300 160 200 138 150 L118 150 C100 200 100 300 115 512 Z" fill="#F2D9B1" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Lamp Shade -->
+  <path d="M110 150 Q110 210 128 210 Q146 210 146 150 Z" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Lamp Cap -->
+  <path d="M110 150 Q128 130 146 150 Z" fill="#F2D9B1" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Wave Motif on Pole -->
+  <path d="M125 450 Q130 440 135 450 M130 380 Q135 370 140 380 M135 310 Q140 300 145 310 M140 240 Q145 230 150 240" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Shade Highlight -->
+  <path d="M120 160 Q120 180 128 180" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+</svg>

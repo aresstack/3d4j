@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M180,420 Q230,420 230,360 Q230,330 210,330 Q190,330 190,360" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M180,420 Q220,420 220,360 Q220,340 200,340 Q180,340 180,360" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body -->
+  <path d="M60,512 L60,320 Q60,220 128,220 Q196,220 196,320 L196,512 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly Highlight -->
+  <path d="M90,512 L90,350 Q90,280 128,280 Q166,280 166,350 L166,512 Z" fill="#C4A484" />
+
+  <!-- Paws -->
+  <path d="M50,512 Q50,460 110,460 L110,512 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M146,512 Q146,460 206,460 L206,512 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <path d="M70,180 Q70,80 128,80 Q186,80 186,180 Q186,250 128,250 Q70,250 70,180 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Ears -->
+  <path d="M75,130 Q40,130 40,200 Q40,240 80,220 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M181,130 Q216,130 216,200 Q216,240 176,220 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Muzzle -->
+  <path d="M100,180 Q100,240 128,240 Q156,240 156,180 Z" fill="#C4A484" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Nose -->
+  <path d="M118,185 Q128,175 138,185 Q138,195 128,195 Q118,195 118,185 Z" fill="#4A3728" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="150" r="12" fill="white" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="108" cy="152" r="5" fill="#3B2A4A" />
+  
+  <circle cx="151" cy="150" r="12" fill="white" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="148" cy="152" r="5" fill="#3B2A4A" />
+
+  <!-- Collar -->
+  <path d="M78,210 Q128,240 178,210 L178,235 Q128,265 78,235 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Collar Tag -->
+  <circle cx="128" cy="255" r="10" fill="#FFD700" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Highlights -->
+  <path d="M100,110 Q110,100 120,110" fill="none" stroke="#C4A484" stroke-width="6" stroke-linecap="round" />
+  <path d="M160,300 Q170,310 170,330" fill="none" stroke="#C4A484" stroke-width="6" stroke-linecap="round" />
+</svg>

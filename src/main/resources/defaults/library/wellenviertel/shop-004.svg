@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Support Beams -->
+  <rect x="24" y="45" width="6" height="55" fill="#E6C9A8" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="98" y="45" width="6" height="55" fill="#E6C9A8" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Main Counter -->
+  <rect x="18" y="70" width="92" height="40" rx="6" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Ice Bed on Counter -->
+  <rect x="22" y="74" width="84" height="12" rx="3" fill="#E0F7FA" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Fish on Ice -->
+  <ellipse cx="35" cy="78" rx="6" ry="3" fill="#FFB347" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <ellipse cx="50" cy="78" rx="6" ry="3" fill="#B0C4DE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <ellipse cx="65" cy="78" rx="6" ry="3" fill="#FFB347" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <ellipse cx="80" cy="78" rx="6" ry="3" fill="#B0C4DE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Wave-shaped Awning -->
+  <path d="M 14 45 Q 30 20 64 30 Q 98 20 114 45 L 114 55 Q 64 45 14 55 Z" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Hanging Lanterns -->
+  <line x1="22" y1="50" x2="22" y2="60" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <circle cx="22" cy="65" r="6" fill="#FFD966" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="24" cy="63" r="2" fill="#FFF" />
+  
+  <line x1="106" y1="50" x2="106" y2="60" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <circle cx="106" cy="65" r="6" fill="#FFD966" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="108" cy="63" r="2" fill="#FFF" />
+
+  <!-- Fishing Nets (Draped) -->
+  <path d="M 14 45 Q 10 60 18 80" fill="none" stroke="#FAF3E0" stroke-width="5" stroke-linecap="round" />
+  <path d="M 114 45 Q 118 60 110 80" fill="none" stroke="#FAF3E0" stroke-width="5" stroke-linecap="round" />
+  
+  <!-- Net Details (Cross-hatching) -->
+  <path d="M 12 55 L 18 65 M 14 65 L 10 75" fill="none" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <path d="M 116 55 L 110 65 M 114 65 L 118 75" fill="none" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+</svg>

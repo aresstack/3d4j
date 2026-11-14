@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Awning Base -->
+  <path d="M 10 28 Q 64 18 118 28 L 118 42 Q 64 32 10 42 Z" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Awning Stripes -->
+  <rect x="15" y="22" width="10" height="20" fill="#A2D2FF" />
+  <rect x="35" y="22" width="10" height="20" fill="#A2D2FF" />
+  <rect x="55" y="22" width="10" height="20" fill="#A2D2FF" />
+  <rect x="75" y="22" width="10" height="20" fill="#A2D2FF" />
+  <rect x="95" y="22" width="10" height="20" fill="#A2D2FF" />
+  <rect x="115" y="22" width="3" height="20" fill="#A2D2FF" />
+
+  <!-- Window Frame -->
+  <path d="M 12 42 Q 64 32 116 42 L 116 95 L 12 95 Z" fill="#E6D2B5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <path d="M 17 45 Q 64 35 111 45 L 111 90 L 17 90 Z" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Timber Beam -->
+  <rect x="62" y="42" width="4" height="53" fill="#E6D2B5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 25 55 L 35 65 M 30 55 L 40 65" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  <path d="M 75 55 L 85 65 M 80 55 L 90 65" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Table Legs -->
+  <rect x="27" y="100" width="6" height="12" fill="#E6D2B5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="95" y="100" width="6" height="12" fill="#E6D2B5" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Table Tops -->
+  <circle cx="30" cy="100" r="10" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="98" cy="100" r="10" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Pastel Mugs -->
+  <circle cx="27" cy="97" r="4" fill="#FFC8DD" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="95" cy="97" r="4" fill="#B9FBC0" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#E0E0E0"/>
+  
+  <!-- Row 1 -->
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(42, 65)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(72, 62)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(102, 68)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(132, 63)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(162, 67)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(192, 61)"/>
+  
+  <!-- Row 2 -->
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(57, 87)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(87, 84)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(117, 90)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(147, 85)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(177, 89)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(207, 83)"/>
+  
+  <!-- Row 3 -->
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(40, 113)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(70, 110)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(100, 116)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(130, 111)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(160, 115)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(190, 109)"/>
+  
+  <!-- Row 4 -->
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(55, 135)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(85, 132)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(115, 138)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(145, 133)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(175, 137)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(205, 131)"/>
+  
+  <!-- Row 5 -->
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(45, 161)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(75, 158)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#F2F2F2" transform="translate(105, 164)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#D8D8D8" transform="translate(135, 159)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#DDEBEE" transform="translate(165, 163)"/>
+  <path d="M 15 0 L 30 8 L 30 22 L 15 30 L 0 22 L 0 8 Z" fill="#EAE3D2" transform="translate(195, 157)"/>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail (behind body) -->
+  <path d="M170 460 Q230 460 220 380 Q210 300 160 320" fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+  <path d="M170 460 Q230 460 220 380 Q210 300 160 320" fill="none" stroke="#F9A63C" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Body -->
+  <path d="M60 480 Q60 220 128 220 Q196 220 196 480 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly Patch -->
+  <path d="M85 480 Q85 300 128 300 Q171 300 171 480 Z" fill="#FFC87A" />
+
+  <!-- Head -->
+  <circle cx="128" cy="160" r="65" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M80 120 L70 60 L115 110 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 120 L186 60 L141 110 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Inner Ears -->
+  <path d="M85 115 L78 75 L110 110 Z" fill="#FFC87A" />
+  <path d="M171 115 L178 75 L146 110 Z" fill="#FFC87A" />
+
+  <!-- Muzzle/Cheeks -->
+  <circle cx="110" cy="180" r="20" fill="#FFC87A" />
+  <circle cx="146" cy="180" r="20" fill="#FFC87A" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="155" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="108" cy="155" r="6" fill="#3B2A4A" />
+  
+  <circle cx="151" cy="155" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="148" cy="155" r="6" fill="#3B2A4A" />
+
+  <!-- Nose -->
+  <path d="M122 170 L134 170 L128 178 Z" fill="#FF8C94" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Mouth -->
+  <path d="M120 185 Q128 195 136 185" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Paws -->
+  <ellipse cx="100" cy="490" rx="25" ry="15" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="156" cy="490" rx="25" ry="15" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Tail (front wrap) -->
+  <path d="M196 460 Q220 480 160 495 Q100 510 60 470" fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+  <path d="M196 460 Q220 480 160 495 Q100 510 60 470" fill="none" stroke="#F9A63C" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M110 130 Q120 120 130 130" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+  <path d="M80 350 Q70 380 80 410" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.3" />
+</svg>

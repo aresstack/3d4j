@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Main Kiosk Body -->
+  <rect x="10" y="18" width="108" height="94" fill="#E8E2D0" stroke="#3B2A4A" stroke-width="4" rx="4" />
+  
+  <!-- Serving Hatch Interior -->
+  <rect x="24" y="40" width="80" height="30" fill="#5D546D" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Serving Counter -->
+  <rect x="20" y="65" width="88" height="10" fill="#D1C7B7" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Awning -->
+  <path d="M10 18 L118 18 L110 35 L18 35 Z" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="25" y="18" width="12" height="17" fill="#FFD93D" />
+  <rect x="45" y="18" width="12" height="17" fill="#FFD93D" />
+  <rect x="65" y="18" width="12" height="17" fill="#FFD93D" />
+  <rect x="85" y="18" width="12" height="17" fill="#FFD93D" />
+  <rect x="105" y="18" width="5" height="17" fill="#FFD93D" />
+
+  <!-- Painting: Sausage -->
+  <rect x="25" y="85" width="24" height="10" rx="5" fill="#B5651D" stroke="#3B2A4A" stroke-width="4" />
+  <path d="M28 90 Q32 86 36 90 T44 90" fill="none" stroke="#FFD700" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Painting: Chips Tray -->
+  <path d="M75 95 L98 95 L95 85 L78 85 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="80" y="82" width="4" height="10" fill="#F4D03F" stroke="#3B2A4A" stroke-width="3" />
+  <rect x="85" y="80" width="4" height="12" fill="#F4D03F" stroke="#3B2A4A" stroke-width="3" />
+  <rect x="90" y="82" width="4" height="10" fill="#F4D03F" stroke="#3B2A4A" stroke-width="3" />
+  <rect x="87" y="84" width="4" height="8" fill="#F4D03F" stroke="#3B2A4A" stroke-width="3" />
+
+  <!-- Highlights -->
+  <rect x="28" y="44" width="10" height="4" fill="#FFFFFF" fill-opacity="0.2" />
+  <rect x="22" y="67" width="30" height="3" fill="#FFFFFF" fill-opacity="0.3" />
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- House Wall -->
+  <rect x="60" y="300" width="136" height="212" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Timber Frames -->
+  <line x1="60" y1="360" x2="196" y2="360" stroke="#D2B48C" stroke-width="8" stroke-linecap="round" />
+  <line x1="128" y1="300" x2="128" y2="512" stroke="#D2B48C" stroke-width="8" stroke-linecap="round" />
+  <line x1="60" y1="430" x2="196" y2="430" stroke="#D2B48C" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Blue Accent Window -->
+  <rect x="85" y="380" width="30" height="40" rx="10" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="141" y="380" width="30" height="40" rx="10" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Wave Roof -->
+  <path d="M 30 300 Q 80 200 128 260 Q 176 320 226 200 L 226 300 Z" fill="#F5DEB3" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 30 300 Q 80 200 128 260 Q 176 320 226 200" fill="none" stroke="#D2B48C" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Tree Trunk -->
+  <path d="M 40 512 Q 60 300 110 180 L 130 190 Q 80 310 60 512 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Tree Branches -->
+  <path d="M 115 220 L 150 180" stroke="#8B5A2B" stroke-width="12" stroke-linecap="round" />
+  <path d="M 110 250 L 80 220" stroke="#8B5A2B" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Blossom Clusters -->
+  <circle cx="130" cy="160" r="50" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="130" r="45" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="140" r="40" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="90" r="40" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="180" cy="180" r="35" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="80" cy="180" r="30" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Blossom Highlights -->
+  <circle cx="140" cy="150" r="15" fill="#FFF0F5" />
+  <circle cx="180" cy="120" r="12" fill="#FFF0F5" />
+  <circle cx="110" cy="130" r="10" fill="#FFF0F5" />
+  <circle cx="150" cy="80" r="15" fill="#FFF0F5" />
+  <circle cx="190" cy="170" r="10" fill="#FFF0F5" />
+</svg>

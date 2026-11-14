@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Wooden Tub Body -->
+  <path d="M60 512 L80 260 L176 260 L196 512 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tub Bottom Curve -->
+  <path d="M60 512 Q128 530 196 512" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tub Rim -->
+  <ellipse cx="128" cy="260" rx="60" ry="20" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Wood Slats/Details -->
+  <line x1="100" y1="265" x2="100" y2="512" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <line x1="156" y1="265" x2="156" y2="512" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Metal Bands -->
+  <path d="M72 320 Q128 335 184 320" fill="none" stroke="#5D6D7E" stroke-width="10" stroke-linecap="round" />
+  <path d="M66 430 Q128 445 190 430" fill="none" stroke="#5D6D7E" stroke-width="10" stroke-linecap="round" />
+
+  <!-- Foliage (Green Leaves) -->
+  <path d="M70 260 Q40 220 80 180 Q110 160 130 200 Q150 150 180 180 Q220 220 190 260 Z" fill="#4CAF50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 250 Q60 200 100 160 Q130 140 150 180 Q170 130 200 160 Q230 200 210 250 Z" fill="#66BB6A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Spilling Leaves -->
+  <path d="M70 260 Q50 280 60 310 Q80 300 90 270 Z" fill="#4CAF50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 260 Q206 280 196 310 Q176 300 166 270 Z" fill="#4CAF50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Red Geranium Flowers (Clusters) -->
+  <!-- Cluster 1 -->
+  <circle cx="90" cy="180" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="105" cy="170" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="190" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster 2 -->
+  <circle cx="140" cy="150" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="155" cy="160" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="145" cy="175" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster 3 -->
+  <circle cx="170" cy="190" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="185" cy="180" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="190" cy="200" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cluster 4 (Top Center) -->
+  <circle cx="128" cy="130" r="18" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="140" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="146" cy="140" r="15" fill="#E53935" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Highlights -->
+  <circle cx="120" cy="120" r="5" fill="#FFCDD2" />
+  <circle cx="150" cy="150" r="5" fill="#FFCDD2" />
+  <circle cx="95" cy="170" r="5" fill="#FFCDD2" />
+  <path d="M85 400 Q90 410 100 400" fill="none" stroke="#D2B48C" stroke-width="4" stroke-linecap="round" />
+</svg>

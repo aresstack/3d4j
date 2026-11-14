@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk: Sandy Beige, Wave-shaped -->
+  <path d="M 110 512 Q 110 450 80 380 T 130 280 T 100 180 T 130 100" 
+        fill="none" stroke="#3B2A4A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 110 512 Q 110 450 80 380 T 130 280 T 100 180 T 130 100" 
+        fill="none" stroke="#E6D5B8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Side Branches -->
+  <path d="M 85 360 Q 60 340 50 310" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 85 360 Q 60 340 50 310" fill="none" stroke="#E6D5B8" stroke-width="3" stroke-linecap="round" />
+  
+  <path d="M 130 280 Q 160 260 170 230" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 130 280 Q 160 260 170 230" fill="none" stroke="#E6D5B8" stroke-width="3" stroke-linecap="round" />
+
+  <path d="M 105 200 Q 70 180 60 150" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 105 200 Q 70 180 60 150" fill="none" stroke="#E6D5B8" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Silvery Leaves (Clumps) -->
+  <!-- Top Canopy -->
+  <ellipse cx="130" cy="90" rx="40" ry="30" fill="#B2C2B2" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="110" cy="70" rx="30" ry="20" fill="#C8D6C8" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="150" cy="80" rx="30" ry="20" fill="#C8D6C8" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Mid Canopy -->
+  <ellipse cx="60" cy="140" rx="30" ry="20" fill="#B2C2B2" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="50" cy="120" rx="20" ry="15" fill="#C8D6C8" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Lower Canopy -->
+  <ellipse cx="170" cy="220" rx="35" ry="25" fill="#B2C2B2" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="180" cy="200" rx="25" ry="15" fill="#C8D6C8" stroke="#3B2A4A" stroke-width="6" />
+  
+  <ellipse cx="50" cy="300" rx="30" ry="20" fill="#B2C2B2" stroke="#3B2A4A" stroke-width="6" />
+  <ellipse cx="40" cy="280" rx="20" ry="15" fill="#C8D6C8" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Highlights on leaves -->
+  <path d="M 120 80 Q 130 70 140 80" fill="none" stroke="#DDE8DD" stroke-width="4" stroke-linecap="round" />
+  <path d="M 50 130 Q 60 120 70 130" fill="none" stroke="#DDE8DD" stroke-width="4" stroke-linecap="round" />
+  <path d="M 160 210 Q 170 200 180 210" fill="none" stroke="#DDE8DD" stroke-width="4" stroke-linecap="round" />
+</svg>

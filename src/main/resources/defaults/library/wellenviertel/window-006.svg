@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Window Frame -->
+  <path d="M 20 108 V 64 A 44 44 0 0 1 108 64 V 108 H 20 Z" 
+        fill="#F5E6CA" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <path d="M 25 103 V 64 A 39 39 0 0 1 103 64 V 103 H 25 Z" 
+        fill="#BDE0FE" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 60 50 L 65 60 M 70 55 L 75 65 M 65 70 L 70 80" 
+        stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" fill="none" />
+  
+  <!-- Fluttering Curtains -->
+  <path d="M 25 45 Q 50 45 45 60 Q 60 75 45 90 Q 55 100 25 103 Z" 
+        fill="#D1E9FF" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  <path d="M 103 45 Q 78 45 83 60 Q 68 75 83 90 Q 73 100 103 103 Z" 
+        fill="#D1E9FF" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+</svg>

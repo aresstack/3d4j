@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shoes -->
+  <path d="M80 480 Q80 460 110 460 L120 460 Q120 480 120 512 L80 512 Z" fill="#34495E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 480 Q136 460 166 460 L176 460 Q176 480 176 512 L136 512 Z" fill="#34495E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Legs/Pants -->
+  <path d="M90 350 L120 350 L120 470 L90 470 Z" fill="#5D6D7E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 350 L166 350 L166 470 L136 470 Z" fill="#5D6D7E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Body -->
+  <path d="M70 180 Q70 160 128 160 Q186 160 186 180 L190 360 Q190 370 180 370 L76 370 Q66 370 66 360 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hoodie Pocket -->
+  <path d="M95 270 Q95 260 105 260 L151 260 Q161 260 161 270 L161 320 Q161 330 151 330 L105 330 Q95 330 95 320 Z" fill="#8E44AD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Sleeves -->
+  <path d="M70 180 L40 300 Q35 310 45 310 L65 310 Q75 310 75 300 L85 180 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 180 L216 300 Q221 310 211 310 L191 310 Q181 310 181 300 L171 180 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Hoodie Hood (Back/Sides) -->
+  <path d="M80 160 Q80 80 128 80 Q176 80 176 160" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 160 Q80 80 128 80 Q176 80 176 160 L176 180 L80 180 Z" fill="#9B59B6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="128" cy="130" r="40" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Hair -->
+  <path d="M88 130 Q88 80 128 80 Q168 80 168 130 Q168 110 150 110 Q140 110 135 120 Q128 110 121 120 Q116 110 106 110 Q96 110 88 130" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="115" cy="135" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="135" r="4" fill="#3B2A4A" />
+
+  <!-- Smile -->
+  <path d="M120 145 Q128 155 136 145" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Highlights -->
+  <path d="M100 190 Q110 185 120 190" fill="none" stroke="#B39DDB" stroke-width="6" stroke-linecap="round" />
+  <path d="M160 200 Q170 195 180 200" fill="none" stroke="#B39DDB" stroke-width="6" stroke-linecap="round" />
+</svg>

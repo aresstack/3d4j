@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Ponytail -->
+  <path d="M160,80 Q200,60 210,120 Q210,180 170,160 Z" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Arms -->
+  <rect x="75" y="160" width="30" height="140" rx="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="151" y="160" width="30" height="140" rx="15" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Legs/Pants -->
+  <path d="M90,240 L90,480 Q90,490 100,490 L120,490 Q128,490 128,470 L128,260 L128,470 Q128,490 136,490 L156,490 Q166,490 166,480 L166,240 Z" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shirt -->
+  <rect x="90" y="140" width="76" height="110" rx="20" fill="#FFFACD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Overalls Bib -->
+  <rect x="100" y="160" width="56" height="80" rx="10" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Overalls Straps -->
+  <rect x="105" y="140" width="12" height="25" rx="6" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="139" y="140" width="12" height="25" rx="6" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="100" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair (Top) -->
+  <path d="M83,100 Q83,55 128,55 Q173,55 173,100 L173,90 Q173,60 128,60 Q83,60 83,90 Z" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="95" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="95" r="4" fill="#3B2A4A" />
+  <path d="M118,115 Q128,125 138,115" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Shoes -->
+  <rect x="85" y="480" width="45" height="32" rx="10" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="126" y="480" width="45" height="32" rx="10" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Highlights -->
+  <path d="M110,75 Q120,70 130,75" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+  <rect x="110" y="170" width="10" height="20" rx="5" fill="white" opacity="0.3" />
+</svg>

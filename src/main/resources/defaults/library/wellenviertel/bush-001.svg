@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Main Shrub Body -->
+  <path d="M30,512 Q30,300 128,300 Q226,300 226,512 Z" 
+        fill="#76C893" 
+        stroke="#3B2A4A" 
+        stroke-width="8" 
+        stroke-linejoin="round" />
+  
+  <!-- Highlights for volume -->
+  <path d="M60,400 Q80,340 120,330" 
+        fill="none" 
+        stroke="#9BDBB2" 
+        stroke-width="12" 
+        stroke-linecap="round" />
+  <path d="M140,350 Q160,360 180,380" 
+        fill="none" 
+        stroke="#9BDBB2" 
+        stroke-width="8" 
+        stroke-linecap="round" />
+
+  <!-- Tiny White Flowers -->
+  <circle cx="70" cy="420" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="110" cy="360" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="150" cy="340" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="190" cy="410" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="100" cy="460" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="160" cy="470" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="60" cy="470" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="130" cy="410" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="180" cy="370" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="80" cy="370" r="6" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="3" />
+</svg>

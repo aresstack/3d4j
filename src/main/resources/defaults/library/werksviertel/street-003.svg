@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#A8A3AD" />
+  <rect x="40" y="30" width="25" height="12" fill="#BDB7C2" />
+  <rect x="100" y="30" width="25" height="12" fill="#9A95A0" />
+  <rect x="160" y="30" width="25" height="12" fill="#BDB7C2" />
+  <rect x="210" y="30" width="25" height="12" fill="#9A95A0" />
+  <rect x="30" y="60" width="25" height="12" fill="#9A95A0" />
+  <rect x="90" y="60" width="25" height="12" fill="#BDB7C2" />
+  <rect x="150" y="60" width="25" height="12" fill="#9A95A0" />
+  <rect x="200" y="60" width="25" height="12" fill="#BDB7C2" />
+  <rect x="40" y="90" width="25" height="12" fill="#BDB7C2" />
+  <rect x="100" y="90" width="25" height="12" fill="#9A95A0" />
+  <rect x="160" y="90" width="25" height="12" fill="#BDB7C2" />
+  <rect x="210" y="90" width="25" height="12" fill="#9A95A0" />
+  <rect x="30" y="120" width="25" height="12" fill="#9A95A0" />
+  <rect x="90" y="120" width="25" height="12" fill="#BDB7C2" />
+  <rect x="150" y="120" width="25" height="12" fill="#9A95A0" />
+  <rect x="200" y="120" width="25" height="12" fill="#BDB7C2" />
+  <rect x="40" y="150" width="25" height="12" fill="#BDB7C2" />
+  <rect x="100" y="150" width="25" height="12" fill="#9A95A0" />
+  <rect x="160" y="150" width="25" height="12" fill="#BDB7C2" />
+  <rect x="210" y="150" width="25" height="12" fill="#9A95A0" />
+  <rect x="30" y="180" width="25" height="12" fill="#9A95A0" />
+  <rect x="90" y="180" width="25" height="12" fill="#BDB7C2" />
+  <rect x="150" y="180" width="25" height="12" fill="#9A95A0" />
+  <rect x="200" y="180" width="25" height="12" fill="#BDB7C2" />
+  <rect x="40" y="210" width="25" height="12" fill="#BDB7C2" />
+  <rect x="100" y="210" width="25" height="12" fill="#9A95A0" />
+  <rect x="160" y="210" width="25" height="12" fill="#BDB7C2" />
+  <rect x="210" y="210" width="25" height="12" fill="#9A95A0" />
+  <circle cx="50" cy="70" r="4" fill="#BCCB9B" />
+  <circle cx="130" cy="110" r="4" fill="#BCCB9B" />
+  <circle cx="180" cy="160" r="4" fill="#BCCB9B" />
+  <circle cx="70" cy="200" r="4" fill="#BCCB9B" />
+  <circle cx="220" cy="50" r="4" fill="#BCCB9B" />
+</svg>

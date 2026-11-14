@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Wooden Post -->
+  <rect x="103" y="220" width="50" height="292" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" rx="4" />
+  
+  <!-- Feet -->
+  <path d="M 115 215 L 110 225 L 125 225 L 125 215 Z" fill="#FFB800" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 135 215 L 130 225 L 145 225 L 145 215 Z" fill="#FFB800" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Body -->
+  <ellipse cx="128" cy="200" rx="40" ry="25" fill="#F0F0F0" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Wing -->
+  <path d="M 110 195 Q 130 180 145 210 Q 120 220 110 195" fill="#E0E0E0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <circle cx="155" cy="170" r="22" fill="#F0F0F0" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Beak -->
+  <path d="M 172 165 L 195 175 L 172 185 Z" fill="#FFB800" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Eye -->
+  <circle cx="160" cy="165" r="4" fill="#3B2A4A" />
+</svg>

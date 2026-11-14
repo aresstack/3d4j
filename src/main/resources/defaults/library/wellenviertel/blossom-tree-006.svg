@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Pot -->
+  <path d="M 50 380 Q 50 490 128 490 Q 206 490 206 380 Z" fill="#E6D5B8" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sand -->
+  <path d="M 50 380 Q 128 360 206 380 Z" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trunk -->
+  <path d="M 124 370 Q 120 280 124 200 L 132 200 Q 136 280 132 370 Z" fill="#C4A484" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Curling Branches -->
+  <path d="M 128 320 Q 70 320 70 270 Q 70 220 110 220" fill="none" stroke="#C4A484" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 128 320 Q 70 320 70 270 Q 70 220 110 220" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <path d="M 128 260 Q 180 260 180 210 Q 180 160 140 160" fill="none" stroke="#C4A484" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 128 260 Q 180 260 180 210 Q 180 160 140 160" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <path d="M 128 200 Q 128 150 170 150 Q 210 150 200 110" fill="none" stroke="#C4A484" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 128 200 Q 128 150 170 150 Q 210 150 200 110" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Cherry Blossoms Cluster 1 -->
+  <circle cx="110" cy="220" r="18" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="100" cy="230" r="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="120" cy="230" r="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cherry Blossoms Cluster 2 -->
+  <circle cx="140" cy="160" r="18" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="130" cy="170" r="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="150" cy="170" r="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Cherry Blossoms Cluster 3 -->
+  <circle cx="200" cy="110" r="18" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="190" cy="120" r="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="210" cy="120" r="15" fill="#FFC0CB" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Highlights -->
+  <path d="M 70 400 Q 70 430 80 430" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+  <circle cx="115" cy="215" r="4" fill="#FFFFFF" />
+  <circle cx="145" cy="155" r="4" fill="#FFFFFF" />
+  <circle cx="205" cy="105" r="4" fill="#FFFFFF" />
+</svg>

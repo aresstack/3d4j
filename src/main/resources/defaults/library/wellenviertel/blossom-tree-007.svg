@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Roof Structure -->
+  <!-- Main Roof Body (Sandy Beige) -->
+  <path d="M 20 512 L 236 512 L 236 420 C 200 360 56 360 20 420 Z" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Roof Trim (Pastel Blue) -->
+  <path d="M 20 420 C 56 360 200 360 236 420 L 236 435 C 200 375 56 375 20 435 Z" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Timber Frames (Light Wood) -->
+  <path d="M 60 410 L 60 512 M 128 380 L 128 512 M 196 410 L 196 512" stroke="#D2B48C" stroke-width="12" stroke-linecap="round" />
+  <path d="M 60 410 Q 128 370 196 410" fill="none" stroke="#D2B48C" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Cherry Tree Trunk -->
+  <path d="M 170 512 Q 160 300 100 200" fill="none" stroke="#7D5C4C" stroke-width="18" stroke-linecap="round" />
+  
+  <!-- Tree Branches -->
+  <path d="M 130 300 Q 150 250 170 230" fill="none" stroke="#7D5C4C" stroke-width="10" stroke-linecap="round" />
+  <path d="M 110 250 Q 80 220 60 230" fill="none" stroke="#7D5C4C" stroke-width="10" stroke-linecap="round" />
+
+  <!-- Blossom Canopy (Pastel Pink) -->
+  <!-- Main Blobs -->
+  <circle cx="100" cy="180" r="50" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="160" r="45" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="60" cy="170" r="40" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="130" r="45" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="190" r="40" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="70" cy="210" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="130" cy="210" r="35" fill="#FFB7C5" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights (Lighter Pink) -->
+  <circle cx="80" cy="160" r="15" fill="#FFE4E1" />
+  <circle cx="120" cy="120" r="12" fill="#FFE4E1" />
+  <circle cx="150" cy="150" r="15" fill="#FFE4E1" />
+  <circle cx="100" cy="190" r="10" fill="#FFE4E1" />
+</svg>

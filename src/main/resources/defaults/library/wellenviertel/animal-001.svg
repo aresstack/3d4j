@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M170 440 C220 440 220 480 160 480 C100 480 80 440 120 430" 
+        fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Body -->
+  <path d="M60 460 Q60 250 128 250 Q196 250 196 460 Z" 
+        fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Belly Patch -->
+  <path d="M85 460 Q85 300 128 300 Q171 300 171 460 Z" 
+        fill="#FFD18C" stroke="none" />
+
+  <!-- Paws -->
+  <ellipse cx="100" cy="470" rx="25" ry="15" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="156" cy="470" rx="25" ry="15" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="160" r="65" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Ears -->
+  <path d="M80 120 L70 60 L110 100 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M176 120 L186 60 L146 100 Z" fill="#F9A63C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Inner Ears -->
+  <path d="M85 110 L78 75 L105 100 Z" fill="#FFD18C" stroke="none" />
+  <path d="M171 110 L178 75 L151 100 Z" fill="#FFD18C" stroke="none" />
+
+  <!-- Muzzle -->
+  <ellipse cx="128" cy="185" rx="30" ry="20" fill="#FFD18C" stroke="none" />
+  
+  <!-- Nose -->
+  <path d="M120 175 L136 175 L128 185 Z" fill="#FF8C94" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Mouth -->
+  <path d="M120 195 Q128 205 136 195" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="150" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="108" cy="147" r="4" fill="#3B2A4A" />
+  
+  <circle cx="151" cy="150" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="154" cy="147" r="4" fill="#3B2A4A" />
+
+  <!-- Whiskers -->
+  <line x1="90" y1="180" x2="60" y2="175" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="90" y1="190" x2="60" y2="195" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="166" y1="180" x2="196" y2="175" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="166" y1="190" x2="196" y2="195" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+</svg>

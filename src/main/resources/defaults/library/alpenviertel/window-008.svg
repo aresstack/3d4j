@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Main Ochre Frame -->
+  <rect x="19" y="19" width="90" height="90" rx="4" fill="#D4A017" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Blue Baroque Painted Details -->
+  <!-- Top Ornament -->
+  <path d="M54 19 Q64 8 74 19 L74 26 Q64 17 54 26 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Bottom Ornament -->
+  <path d="M54 109 Q64 120 74 109 L74 102 Q64 111 54 102 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Left Scroll -->
+  <path d="M26 40 Q20 50 26 60" fill="none" stroke="#4A90E2" stroke-width="6" stroke-linecap="round" />
+  <path d="M26 40 Q20 50 26 60" fill="none" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <!-- Right Scroll -->
+  <path d="M98 40 Q104 50 98 60" fill="none" stroke="#4A90E2" stroke-width="6" stroke-linecap="round" />
+  <path d="M98 40 Q104 50 98 60" fill="none" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <!-- Corner Accents -->
+  <circle cx="26" cy="26" r="4" fill="#4A90E2" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="98" cy="26" r="4" fill="#4A90E2" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="26" cy="98" r="4" fill="#4A90E2" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="98" cy="98" r="4" fill="#4A90E2" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Window Glass -->
+  <rect x="27" y="27" width="74" height="74" rx="2" fill="#BEE3F8" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M35 35 L45 35" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M35 42 L40 42" stroke="white" stroke-width="4" stroke-linecap="round" />
+</svg>

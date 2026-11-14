@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Post -->
+  <rect x="118" y="100" width="20" height="412" fill="#888888" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="122" y="100" width="4" height="412" fill="#AAAAAA" />
+
+  <!-- Bin Body -->
+  <rect x="70" y="200" width="116" height="200" rx="10" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bin Bottom Curve -->
+  <ellipse cx="128" cy="400" rx="58" ry="15" fill="#CC7000" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bin Top Rim -->
+  <ellipse cx="128" cy="200" rx="58" ry="15" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bin Opening -->
+  <ellipse cx="128" cy="200" rx="48" ry="10" fill="#3B2A4A" />
+  
+  <!-- Highlights -->
+  <rect x="80" y="210" width="12" height="180" rx="6" fill="#FFB347" />
+  
+  <!-- Sticker/Graffiti -->
+  <rect x="140" y="250" width="25" height="25" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  <path d="M145 260 Q152 250 160 270" stroke="#D12D2D" stroke-width="4" fill="none" stroke-linecap="round" />
+  
+  <!-- Small smudge for "rough" look -->
+  <ellipse cx="90" cy="360" rx="12" ry="6" fill="#777777" opacity="0.6" />
+</svg>

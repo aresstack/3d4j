@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Wooden Trough Body -->
+  <path d="M60 350 L196 350 L186 512 L70 512 Z" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trough Rim -->
+  <rect x="50" y="330" width="156" height="30" rx="10" fill="#966341" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Carved Details on Trough -->
+  <path d="M90 380 L90 430 M128 380 L128 450 M166 380 L166 430" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M80 460 L176 460" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Foliage Base -->
+  <path d="M60 340 Q30 300 70 260 Q128 220 186 260 Q226 300 196 340 Z" fill="#4CAF50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Individual Leaves for Texture -->
+  <ellipse cx="70" cy="310" rx="20" ry="10" fill="#66BB6A" stroke="#3B2A4A" stroke-width="6" transform="rotate(-30 70 310)" />
+  <ellipse cx="186" cy="310" rx="20" ry="10" fill="#66BB6A" stroke="#3B2A4A" stroke-width="6" transform="rotate(30 186 310)" />
+  <ellipse cx="128" cy="260" rx="25" ry="12" fill="#66BB6A" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Pink Flowers -->
+  <circle cx="80" cy="280" r="15" fill="#FF69B4" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="250" r="15" fill="#FF69B4" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="150" cy="270" r="15" fill="#FF69B4" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="180" cy="290" r="15" fill="#FF69B4" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="128" cy="310" r="15" fill="#FF69B4" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- White Flowers -->
+  <circle cx="100" cy="300" r="15" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="140" cy="240" r="15" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="170" cy="320" r="15" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="70" cy="330" r="15" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Flower Centers -->
+  <circle cx="80" cy="280" r="4" fill="#FFD700" />
+  <circle cx="110" cy="250" r="4" fill="#FFD700" />
+  <circle cx="150" cy="270" r="4" fill="#FFD700" />
+  <circle cx="180" cy="290" r="4" fill="#FFD700" />
+  <circle cx="128" cy="310" r="4" fill="#FFD700" />
+  <circle cx="100" cy="300" r="4" fill="#FFD700" />
+  <circle cx="140" cy="240" r="4" fill="#FFD700" />
+  <circle cx="170" cy="320" r="4" fill="#FFD700" />
+  <circle cx="70" cy="330" r="4" fill="#FFD700" />
+  
+  <!-- Highlights -->
+  <path d="M65 345 L191 345" stroke="#BCAAA4" stroke-width="4" stroke-linecap="round" />
+  <path d="M75 270 Q85 260 95 270" stroke="#A5D6A7" stroke-width="4" fill="none" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs -->
+  <rect x="85" y="380" width="30" height="132" fill="#6B4FBB" stroke="#3B2A4A" stroke-width="8" rx="15" />
+  <rect x="141" y="380" width="30" height="132" fill="#6B4FBB" stroke="#3B2A4A" stroke-width="8" rx="15" />
+  
+  <!-- Feet -->
+  <rect x="70" y="500" width="45" height="12" fill="#3B2A4A" rx="6" />
+  <rect x="141" y="500" width="45" height="12" fill="#3B2A4A" rx="6" />
+
+  <!-- Arms -->
+  <rect x="35" y="210" width="30" height="120" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="8" rx="15" />
+  <rect x="191" y="210" width="30" height="120" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="8" rx="15" />
+
+  <!-- Sweater Body -->
+  <rect x="60" y="200" width="136" height="180" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="8" rx="20" />
+  
+  <!-- Sweater Stripes -->
+  <rect x="60" y="240" width="136" height="30" fill="#FFE66D" />
+  <rect x="60" y="300" width="136" height="30" fill="#FFE66D" />
+  
+  <!-- Sweater Highlight -->
+  <rect x="75" y="215" width="10" height="40" fill="#FFFFFF" fill-opacity="0.3" rx="5" />
+
+  <!-- Head -->
+  <circle cx="128" cy="150" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="150" r="5" fill="#3B2A4A" />
+  <circle cx="141" cy="150" r="5" fill="#3B2A4A" />
+  <path d="M118 165 Q128 175 138 165" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cap -->
+  <path d="M83 130 Q83 80 128 80 Q173 80 173 130 Z" fill="#4D96FF" stroke="#3B2A4A" stroke-width="8" />
+  <rect x="130" y="120" width="60" height="15" fill="#4D96FF" stroke="#3B2A4A" stroke-width="8" rx="7" />
+  
+  <!-- Cap Highlight -->
+  <path d="M100 100 Q110 90 120 100" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+</svg>

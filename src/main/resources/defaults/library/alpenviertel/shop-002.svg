@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Awning -->
+  <path d="M10 18 L118 18 L118 40 Q113 45 108 40 Q103 35 98 40 Q93 45 88 40 Q83 35 78 40 Q73 45 68 40 Q63 35 58 40 Q53 45 48 40 Q43 35 38 40 Q33 45 28 40 Q23 35 18 40 Q13 45 10 40 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M20 18 L30 18 L30 40 L20 40 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M40 18 L50 18 L50 40 L40 40 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M60 18 L70 18 L70 40 L60 40 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M80 18 L90 18 L90 40 L80 40 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M100 18 L110 18 L110 40 L100 40 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Window Frame (Dark Carved Wood) -->
+  <rect x="14" y="40" width="100" height="72" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <rect x="18" y="44" width="92" height="52" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass Highlight -->
+  <path d="M25 50 L40 50 L30 60 Z" fill="#FFFFFF" opacity="0.4" />
+
+  <!-- Shelf -->
+  <rect x="18" y="88" width="92" height="8" fill="#8D6E63" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Bakery Items -->
+  <!-- Loaf 1 -->
+  <rect x="25" y="76" width="20" height="12" rx="4" fill="#F4A460" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="30" y1="78" x2="30" y2="86" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="35" y1="78" x2="35" y2="86" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Pretzel 1 -->
+  <path d="M55 88 Q55 75 65 75 Q75 75 75 88 Q75 95 65 95 Q55 95 55 88 M60 82 Q65 88 70 82" fill="none" stroke="#D2691E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M55 88 Q55 75 65 75 Q75 75 75 88 Q75 95 65 95 Q55 95 55 88 M60 82 Q65 88 70 82" fill="none" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Loaf 2 -->
+  <rect x="85" y="76" width="20" height="12" rx="4" fill="#F4A460" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="90" y1="78" x2="90" y2="86" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="95" y1="78" x2="95" y2="86" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Flower Box -->
+  <rect x="14" y="96" width="100" height="16" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Geraniums -->
+  <circle cx="25" cy="96" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="35" cy="94" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="45" cy="96" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="55" cy="94" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="65" cy="96" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="75" cy="94" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="85" cy="96" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="95" cy="94" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="105" cy="96" r="5" fill="#E91E63" stroke="#3B2A4A" stroke-width="3" />
+  
+  <!-- Leaves -->
+  <circle cx="28" cy="98" r="3" fill="#4CAF50" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="48" cy="98" r="3" fill="#4CAF50" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="68" cy="98" r="3" fill="#4CAF50" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="88" cy="98" r="3" fill="#4CAF50" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="108" cy="98" r="3" fill="#4CAF50" stroke="#3B2A4A" stroke-width="2" />
+</svg>

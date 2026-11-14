@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 5,
+  "createdAt": "2026-11-14T18:36:58Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a grey pigeon standing, seen from the front. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

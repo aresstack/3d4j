@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Back Legs/Hips -->
+  <path d="M60 400 Q40 400 40 460 Q40 512 80 512" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M196 400 Q216 400 216 460 Q216 512 176 512" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- Main Body -->
+  <path d="M60 350 Q60 512 128 512 Q196 512 196 350 L196 280 Q128 240 60 280 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Front Legs -->
+  <path d="M90 400 L90 512" stroke="#3B2A4A" stroke-width="30" stroke-linecap="round" />
+  <path d="M90 400 L90 512" stroke="#FFFFFF" stroke-width="22" stroke-linecap="round" />
+  
+  <path d="M166 400 L166 512" stroke="#3B2A4A" stroke-width="30" stroke-linecap="round" />
+  <path d="M166 400 L166 512" stroke="#FFFFFF" stroke-width="22" stroke-linecap="round" />
+
+  <!-- Collar -->
+  <path d="M75 250 Q128 280 181 250 L181 270 Q128 300 75 270 Z" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="180" r="75" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M65 150 Q40 150 40 230 Q40 270 75 250" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M191 150 Q216 150 216 230 Q216 270 181 250" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Face -->
+  <circle cx="110" cy="170" r="8" fill="#3B2A4A" />
+  <circle cx="146" cy="170" r="8" fill="#3B2A4A" />
+  <ellipse cx="128" cy="200" rx="12" ry="8" fill="#3B2A4A" />
+  
+  <!-- Tongue -->
+  <path d="M120 215 Q128 250 136 215 Z" fill="#FF80AB" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Highlights -->
+  <path d="M100 150 Q110 140 120 150" fill="none" stroke="#F0F0F0" stroke-width="6" stroke-linecap="round" />
+  <path d="M80 320 Q90 310 100 320" fill="none" stroke="#F0F0F0" stroke-width="6" stroke-linecap="round" />
+</svg>

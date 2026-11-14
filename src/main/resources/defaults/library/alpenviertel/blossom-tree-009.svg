@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M120 410 L136 410 L140 512 L116 512 Z" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 1 (Bottom) -->
+  <path d="M30 430 Q128 460 226 430 L128 320 Z" fill="#1B4D2E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 2 -->
+  <path d="M60 340 Q128 370 196 340 L128 240 Z" fill="#265C36" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 3 -->
+  <path d="M90 250 Q128 280 166 250 L128 160 Z" fill="#316B3E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 4 (Top) -->
+  <path d="M110 170 Q128 200 146 170 L128 80 Z" fill="#3C7A46" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <circle cx="70" cy="390" r="6" fill="#5DA363" />
+  <circle cx="100" cy="310" r="6" fill="#5DA363" />
+  <circle cx="120" cy="230" r="6" fill="#5DA363" />
+  <circle cx="128" cy="140" r="6" fill="#5DA363" />
+  
+  <!-- Festive Berries -->
+  <circle cx="60" cy="410" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="190" cy="400" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="100" cy="320" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="150" cy="310" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="120" cy="230" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="135" cy="220" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="128" cy="140" r="7" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="4" />
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Fanlight (Transom Window) -->
+  <path d="M 32 24 L 32 20 Q 32 16 36 16 L 92 16 Q 96 16 96 20 L 96 24 Z" fill="#AEE2FF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="38" y1="18" x2="48" y2="18" stroke="white" stroke-width="2" stroke-linecap="round" />
+  <line x1="48" y1="16" x2="48" y2="24" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="80" y1="16" x2="80" y2="24" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Main Double Door -->
+  <rect x="32" y="24" width="64" height="104" fill="#5A7D7C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="64" y1="24" x2="64" y2="128" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Carved Panels Left -->
+  <rect x="38" y="34" width="20" height="26" fill="#4A6D6C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="38" y="72" width="20" height="36" fill="#4A6D6C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Carved Panels Right -->
+  <rect x="70" y="34" width="20" height="26" fill="#4A6D6C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="70" y="72" width="20" height="36" fill="#4A6D6C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Brass Bell Plates -->
+  <rect x="24" y="40" width="6" height="12" fill="#D4AF37" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="104" y="40" width="6" height="12" fill="#D4AF37" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="25" y1="42" x2="25" y2="48" stroke="white" stroke-width="1" stroke-linecap="round" />
+  <line x1="105" y1="42" x2="105" y2="48" stroke="white" stroke-width="1" stroke-linecap="round" />
+
+  <!-- Door Handle -->
+  <rect x="62" y="60" width="4" height="12" rx="2" fill="#D4AF37" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+</svg>

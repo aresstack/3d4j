@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs/Pants -->
+  <path d="M90 320 L120 320 L120 480 L90 480 Z" fill="#5D76A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 320 L166 320 L166 480 L136 480 Z" fill="#5D76A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <path d="M80 480 Q80 512 120 512 L120 480 Z" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 480 Q136 512 176 512 L176 480 Z" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <path d="M70 220 L60 310 Q60 320 70 320 L80 320 L80 220 Z" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 220 L196 310 Q196 320 186 320 L176 320 L176 220 Z" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- T-Shirt Body -->
+  <path d="M80 160 L176 160 L180 320 L76 320 Z" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- T-Shirt Sleeves -->
+  <path d="M80 160 L60 220 L80 230 Z" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 160 L196 220 L176 230 Z" fill="#FF8C00" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Shirt Highlight -->
+  <path d="M90 170 L110 170 L110 280 L90 280 Z" fill="#FFA500" />
+
+  <!-- Head/Neck -->
+  <path d="M118 160 L138 160 L138 150 L118 150 Z" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="120" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Curly Hair -->
+  <circle cx="100" cy="90" r="20" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="70" r="20" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="156" cy="90" r="20" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="120" r="20" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="120" r="20" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="100" r="20" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Hair Highlight -->
+  <circle cx="128" cy="75" r="8" fill="#A67B5B" />
+
+  <!-- Face -->
+  <circle cx="115" cy="115" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="115" r="4" fill="#3B2A4A" />
+  <path d="M118 135 Q128 145 138 135" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

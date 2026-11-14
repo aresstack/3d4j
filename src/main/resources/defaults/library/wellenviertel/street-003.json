@@ -1,0 +1,9 @@
+{
+  "kind": "street",
+  "number": 3,
+  "createdAt": "2026-11-14T18:51:02Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "long, narrow rectangles laid out in a flowing, sinusoidal line: base colour #E0E0E0, the shapes in slightly lighter and darker shades of the base colour. It belongs to a district of the town with this look, which everything in the district shares: Bright pastel blues and sandy beiges dominate, with curved, wave‑shaped houses, light timber frames, whitewashed walls, and a breezy, relaxed seaside mood.",
+  "width": 256,
+  "height": 256
+}

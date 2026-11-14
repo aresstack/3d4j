@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Legs/Pants -->
+  <path d="M90 300 L110 300 L115 500 L85 500 Z" fill="#34495E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M146 300 L166 300 L171 500 L141 500 Z" fill="#34495E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <path d="M85 500 Q85 512 115 512 L120 500 Z" fill="#222222" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M141 500 Q141 512 171 512 L176 500 Z" fill="#222222" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Arms -->
+  <path d="M70 160 L50 280 Q45 300 60 300 L80 300 L90 160 Z" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 160 L206 280 Q211 300 196 300 L176 300 L166 160 Z" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Shirt Body -->
+  <path d="M70 150 L186 150 L190 310 L66 310 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Collar -->
+  <path d="M100 150 L128 180 L156 150" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 150 L110 165 L128 180 L146 165 L156 150" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Tie -->
+  <path d="M120 175 L136 175 L138 230 L145 250 L128 270 L111 250 L118 230 Z" fill="#2C3E50" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M122 175 L134 175 L132 200 L124 200 Z" fill="#34495E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <ellipse cx="128" cy="100" rx="45" ry="50" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair -->
+  <path d="M83 100 Q83 50 128 45 Q173 50 173 100 Q173 80 150 80 Q128 70 106 80 Q83 80 83 100" fill="#1A1A1A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 55 Q120 50 130 55" fill="none" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="100" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="100" r="4" fill="#3B2A4A" />
+  <path d="M118 120 Q128 135 138 120" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <ellipse cx="145" cy="85" rx="8" ry="4" fill="#FFFFFF" fill-opacity="0.3" />
+</svg>

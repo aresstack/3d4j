@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Glass Background -->
+  <rect x="14" y="18" width="100" height="94" fill="#AEE2FF" />
+  
+  <!-- Glass Highlights -->
+  <rect x="22" y="26" width="12" height="10" fill="#D0F0FF" />
+  <rect x="68" y="64" width="15" height="8" fill="#D0F0FF" />
+  <rect x="94" y="30" width="8" height="12" fill="#D0F0FF" />
+  
+  <!-- Horizontal Steel Bars (Behind Vertical) -->
+  <rect x="22" y="40" width="84" height="6" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="22" y="60" width="84" height="6" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="22" y="80" width="84" height="6" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Vertical Steel Bars (Folding Panels) -->
+  <rect x="37" y="26" width="6" height="86" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="61" y="26" width="6" height="86" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="85" y="26" width="6" height="86" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Outer Steel Frame -->
+  <rect x="14" y="18" width="100" height="8" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="14" y="104" width="100" height="8" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="14" y="18" width="8" height="94" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="106" y="18" width="8" height="94" fill="#4B533F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Final Outer Outline -->
+  <rect x="14" y="18" width="100" height="94" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Rivets -->
+  <circle cx="18" cy="22" r="2" fill="#6B7363" />
+  <circle cx="110" cy="22" r="2" fill="#6B7363" />
+  <circle cx="18" cy="110" r="2" fill="#6B7363" />
+  <circle cx="110" cy="110" r="2" fill="#6B7363" />
+  <circle cx="40" cy="22" r="2" fill="#6B7363" />
+  <circle cx="40" cy="110" r="2" fill="#6B7363" />
+  <circle cx="64" cy="22" r="2" fill="#6B7363" />
+  <circle cx="64" cy="110" r="2" fill="#6B7363" />
+  <circle cx="88" cy="22" r="2" fill="#6B7363" />
+  <circle cx="88" cy="110" r="2" fill="#6B7363" />
+  
+  <!-- Weeds at the bottom -->
+  <path d="M 112 112 Q 114 106 116 112" fill="none" stroke="#7BA35B" stroke-width="4" stroke-linecap="round" />
+  <path d="M 116 112 Q 118 104 120 112" fill="none" stroke="#7BA35B" stroke-width="4" stroke-linecap="round" />
+</svg>

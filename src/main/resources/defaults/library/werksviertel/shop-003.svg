@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Lamp -->
+  <rect x="60" y="24" width="8" height="10" fill="#5A636A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="50" y="18" width="28" height="14" rx="4" fill="#5A636A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="54" y="20" width="20" height="10" rx="2" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="56" y="22" width="4" height="3" fill="#E0F7FA" />
+
+  <!-- Gate Frame -->
+  <rect x="14" y="34" width="100" height="78" fill="#5A636A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Gate Door -->
+  <rect x="18" y="38" width="92" height="74" fill="#7A8B7A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Warning Stripes -->
+  <rect x="18" y="94" width="9.2" height="18" fill="#FFD700" />
+  <rect x="27.2" y="94" width="9.2" height="18" fill="#222222" />
+  <rect x="36.4" y="94" width="9.2" height="18" fill="#FFD700" />
+  <rect x="45.6" y="94" width="9.2" height="18" fill="#222222" />
+  <rect x="54.8" y="94" width="9.2" height="18" fill="#FFD700" />
+  <rect x="64" y="94" width="9.2" height="18" fill="#222222" />
+  <rect x="73.2" y="94" width="9.2" height="18" fill="#FFD700" />
+  <rect x="82.4" y="94" width="9.2" height="18" fill="#222222" />
+  <rect x="91.6" y="94" width="9.2" height="18" fill="#FFD700" />
+  <rect x="100.8" y="94" width="9.2" height="18" fill="#222222" />
+  
+  <!-- Rivets -->
+  <circle cx="22" cy="42" r="2" fill="#3B2A4A" />
+  <circle cx="106" cy="42" r="2" fill="#3B2A4A" />
+  <circle cx="22" cy="73" r="2" fill="#3B2A4A" />
+  <circle cx="106" cy="73" r="2" fill="#3B2A4A" />
+  <circle cx="22" cy="106" r="2" fill="#3B2A4A" />
+  <circle cx="106" cy="106" r="2" fill="#3B2A4A" />
+
+  <!-- Door Detail (Handle/Latch) -->
+  <rect x="100" y="65" width="6" height="12" rx="2" fill="#5A636A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Weeds -->
+  <path d="M14 112 Q16 104 18 112" fill="none" stroke="#4CAF50" stroke-width="4" stroke-linecap="round" />
+  <path d="M18 112 Q20 106 22 112" fill="none" stroke="#4CAF50" stroke-width="4" stroke-linecap="round" />
+</svg>

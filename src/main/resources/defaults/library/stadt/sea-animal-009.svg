@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Mast -->
+  <rect x="124" y="152" width="12" height="250" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hull -->
+  <path d="M 60,402 L 196,402 C 196,480 170,512 128,512 C 86,512 60,480 60,402 Z" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sail Base -->
+  <path d="M 136,162 Q 230,252 136,392 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sail Stripes -->
+  <path d="M 136,212 Q 180,242 136,262 Z" fill="#4D96FF" />
+  <path d="M 136,312 Q 190,342 136,362 Z" fill="#4D96FF" />
+  
+  <!-- Hull Details -->
+  <circle cx="100" cy="430" r="10" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 80,420 Q 100,420 110,440" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+</svg>

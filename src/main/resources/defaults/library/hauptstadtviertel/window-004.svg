@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Window Frame -->
+  <rect x="20" y="20" width="88" height="90" fill="#EAEAEA" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Glass -->
+  <rect x="25" y="25" width="78" height="80" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" rx="1" />
+  
+  <!-- Lace Curtains (Left) -->
+  <rect x="25" y="25" width="30" height="80" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="32" cy="35" r="2" fill="#BDE0FE" />
+  <circle cx="40" cy="35" r="2" fill="#BDE0FE" />
+  <circle cx="48" cy="35" r="2" fill="#BDE0FE" />
+  <circle cx="32" cy="45" r="2" fill="#BDE0FE" />
+  <circle cx="40" cy="45" r="2" fill="#BDE0FE" />
+  <circle cx="48" cy="45" r="2" fill="#BDE0FE" />
+  <circle cx="32" cy="55" r="2" fill="#BDE0FE" />
+  <circle cx="40" cy="55" r="2" fill="#BDE0FE" />
+  <circle cx="48" cy="55" r="2" fill="#BDE0FE" />
+  <circle cx="32" cy="65" r="2" fill="#BDE0FE" />
+  <circle cx="40" cy="65" r="2" fill="#BDE0FE" />
+  <circle cx="48" cy="65" r="2" fill="#BDE0FE" />
+  
+  <!-- Lace Curtains (Right) -->
+  <rect x="73" y="25" width="30" height="80" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="76" cy="35" r="2" fill="#BDE0FE" />
+  <circle cx="84" cy="35" r="2" fill="#BDE0FE" />
+  <circle cx="92" cy="35" r="2" fill="#BDE0FE" />
+  <circle cx="76" cy="45" r="2" fill="#BDE0FE" />
+  <circle cx="84" cy="45" r="2" fill="#BDE0FE" />
+  <circle cx="92" cy="45" r="2" fill="#BDE0FE" />
+  <circle cx="76" cy="55" r="2" fill="#BDE0FE" />
+  <circle cx="84" cy="55" r="2" fill="#BDE0FE" />
+  <circle cx="92" cy="55" r="2" fill="#BDE0FE" />
+  <circle cx="76" cy="65" r="2" fill="#BDE0FE" />
+  <circle cx="84" cy="65" r="2" fill="#BDE0FE" />
+  <circle cx="92" cy="65" r="2" fill="#BDE0FE" />
+
+  <!-- Glass Highlights -->
+  <rect x="60" y="30" width="10" height="40" fill="#FFFFFF" fill-opacity="0.4" />
+
+  <!-- Flower Box -->
+  <rect x="22" y="95" width="84" height="18" fill="#7B5E57" stroke="#3B2A4A" stroke-width="4" rx="2" />
+  
+  <!-- Plants and Flowers -->
+  <circle cx="35" cy="92" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="45" cy="90" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="55" cy="92" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="65" cy="90" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="75" cy="92" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="85" cy="90" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="95" cy="92" r="6" fill="#6BCB77" stroke="#3B2A4A" stroke-width="3" />
+  
+  <circle cx="38" cy="88" r="4" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="52" cy="86" r="4" fill="#FFD93D" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="68" cy="88" r="4" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="82" cy="86" r="4" fill="#FFD93D" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="96" cy="88" r="4" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Small "Rough" Detail: A tiny sticker on the frame -->
+  <rect x="102" y="30" width="6" height="6" fill="#FFD93D" stroke="#3B2A4A" stroke-width="2" />
+</svg>

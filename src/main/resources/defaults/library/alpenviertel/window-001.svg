@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Left Shutter -->
+  <rect x="19" y="20" width="15" height="70" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" rx="2" />
+  <line x1="24.5" y1="25" x2="24.5" y2="85" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="29.5" y1="25" x2="29.5" y2="85" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Right Shutter -->
+  <rect x="94" y="20" width="15" height="70" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" rx="2" />
+  <line x1="98.5" y1="25" x2="98.5" y2="85" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <line x1="103.5" y1="25" x2="103.5" y2="85" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Window Frame -->
+  <rect x="34" y="20" width="60" height="70" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" rx="2" />
+  
+  <!-- Glass -->
+  <rect x="38" y="24" width="52" height="62" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" rx="2" />
+  
+  <!-- Glass Highlights -->
+  <line x1="42" y1="30" x2="55" y2="30" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  <line x1="42" y1="36" x2="48" y2="36" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Flower Box -->
+  <rect x="34" y="90" width="60" height="18" fill="#795548" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" rx="2" />
+
+  <!-- Leaves -->
+  <circle cx="40" cy="90" r="6" fill="#66BB6A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="50" cy="92" r="6" fill="#66BB6A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="60" cy="90" r="6" fill="#66BB6A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="70" cy="92" r="6" fill="#66BB6A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="80" cy="90" r="6" fill="#66BB6A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="90" cy="92" r="6" fill="#66BB6A" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Geraniums -->
+  <circle cx="40" cy="85" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="45" cy="82" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="52" cy="86" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="60" cy="83" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="68" cy="86" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="75" cy="82" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="82" cy="86" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="88" cy="83" r="5" fill="#FF5252" stroke="#3B2A4A" stroke-width="2" />
+</svg>

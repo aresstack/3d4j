@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Paws -->
+  <ellipse cx="80" cy="480" rx="40" ry="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="176" cy="480" rx="40" ry="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Body -->
+  <path d="M70 470 Q60 300 128 300 Q196 300 186 470 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Brown patches on body -->
+  <path d="M70 470 Q60 300 100 300 Q120 350 100 470 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 470 Q196 300 156 300 Q136 350 156 470 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="200" r="80" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Brown patches on face -->
+  <path d="M70 160 Q80 120 110 140 Q110 180 80 180 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 160 Q176 120 146 140 Q146 180 176 180 Z" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Ears -->
+  <path d="M60 170 Q40 170 40 230 Q40 270 70 240" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M196 170 Q216 170 216 230 Q216 270 186 240" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Muzzle -->
+  <ellipse cx="128" cy="230" rx="40" ry="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="128" cy="220" rx="15" ry="10" fill="#333333" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Eyes -->
+  <circle cx="100" cy="170" r="8" fill="#333333" />
+  <circle cx="102" cy="167" r="3" fill="#FFFFFF" />
+  <circle cx="156" cy="170" r="8" fill="#333333" />
+  <circle cx="158" cy="167" r="3" fill="#FFFFFF" />
+
+  <!-- Collar -->
+  <path d="M85 260 Q128 290 171 260" fill="none" stroke="#8B4513" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Barrel -->
+  <rect x="118" y="275" width="20" height="30" rx="5" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" />
+  <line x1="118" y1="285" x2="138" y2="285" stroke="#707070" stroke-width="4" />
+  <line x1="118" y1="295" x2="138" y2="295" stroke="#707070" stroke-width="4" />
+  
+  <!-- Highlights -->
+  <path d="M122 278 Q125 276 128 278" fill="none" stroke="#C69C6D" stroke-width="3" stroke-linecap="round" />
+  <ellipse cx="110" cy="150" rx="10" ry="5" fill="#FFFFFF" fill-opacity="0.4" />
+</svg>

@@ -1,0 +1,9 @@
+{
+  "kind": "visitor",
+  "number": 46,
+  "createdAt": "2026-11-14T19:03:48Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a friendly person standing upright, seen from the front: blue jacket, dark hair",
+  "width": 256,
+  "height": 512
+}

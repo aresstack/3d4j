@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base -->
+  <path d="M60 470 L196 470 L206 512 L50 512 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rusty Iron Grate/Ring -->
+  <path d="M80 470 Q 128 460 176 470 L180 480 Q 128 470 76 480 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Weeds poking through concrete -->
+  <path d="M70 475 Q 65 460 60 465" fill="none" stroke="#7CB342" stroke-width="6" stroke-linecap="round" />
+  <path d="M75 475 Q 78 455 82 460" fill="none" stroke="#7CB342" stroke-width="6" stroke-linecap="round" />
+  <path d="M185 475 Q 190 460 195 465" fill="none" stroke="#7CB342" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Crooked Birch Trunk -->
+  <path d="M128 470 Q 130 300 170 150 Q 175 120 160 100" fill="none" stroke="#F5F5F5" stroke-width="24" stroke-linecap="round" />
+  <path d="M128 470 Q 130 300 170 150 Q 175 120 160 100" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Bark Markings -->
+  <line x1="130" y1="400" x2="138" y2="400" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+  <line x1="135" y1="340" x2="143" y2="340" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+  <line x1="145" y1="280" x2="153" y2="280" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+  <line x1="155" y1="220" x2="163" y2="220" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+  <line x1="165" y1="180" x2="173" y2="180" stroke="#555555" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Branches -->
+  <path d="M140 320 Q 110 300 100 310" fill="none" stroke="#F5F5F5" stroke-width="12" stroke-linecap="round" />
+  <path d="M140 320 Q 110 300 100 310" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <path d="M160 240 Q 190 220 200 230" fill="none" stroke="#F5F5F5" stroke-width="12" stroke-linecap="round" />
+  <path d="M160 240 Q 190 220 200 230" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <path d="M170 160 Q 150 140 140 150" fill="none" stroke="#F5F5F5" stroke-width="12" stroke-linecap="round" />
+  <path d="M170 160 Q 150 140 140 150" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Sparse Yellow-Green Crown -->
+  <!-- Top cluster -->
+  <circle cx="160" cy="90" r="25" fill="#D4E157" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="175" cy="105" r="20" fill="#D4E157" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="145" cy="100" r="18" fill="#D4E157" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Branch clusters -->
+  <circle cx="100" cy="310" r="15" fill="#D4E157" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="200" cy="230" r="15" fill="#D4E157" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="150" r="15" fill="#D4E157" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Highlights -->
+  <circle cx="155" cy="80" r="6" fill="#E6EE9C" />
+  <circle cx="170" cy="100" r="5" fill="#E6EE9C" />
+  <circle cx="95" cy="305" r="4" fill="#E6EE9C" />
+  <circle cx="195" cy="225" r="4" fill="#E6EE9C" />
+</svg>

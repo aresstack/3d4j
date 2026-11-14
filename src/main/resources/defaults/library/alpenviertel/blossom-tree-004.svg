@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <rect x="116" y="440" width="24" height="72" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bottom Tier -->
+  <path d="M40 450 Q128 380 216 450 L200 460 Q128 430 56 460 Z" fill="#4A7C44" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M60 440 Q128 400 196 440" fill="none" stroke="#76B06B" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Middle Tier -->
+  <path d="M60 380 Q128 320 196 380 L180 390 Q128 360 76 390 Z" fill="#4A7C44" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 370 Q128 330 176 370" fill="none" stroke="#76B06B" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Top Tier -->
+  <path d="M80 320 Q128 240 176 320 L160 330 Q128 300 96 330 Z" fill="#4A7C44" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 310 Q128 270 156 310" fill="none" stroke="#76B06B" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cones -->
+  <ellipse cx="100" cy="430" rx="6" ry="10" fill="#634121" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="150" cy="420" rx="6" ry="10" fill="#634121" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="120" cy="370" rx="6" ry="10" fill="#634121" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="160" cy="350" rx="6" ry="10" fill="#634121" stroke="#3B2A4A" stroke-width="4" />
+  <ellipse cx="130" cy="310" rx="6" ry="10" fill="#634121" stroke="#3B2A4A" stroke-width="4" />
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#E0E0E0" />
+  <rect x="50" y="113" width="4" height="30" fill="#F2F2F2" transform="rotate(20, 52, 128)" />
+  <rect x="70" y="120" width="4" height="30" fill="#D2D2D2" transform="rotate(30, 72, 135)" />
+  <rect x="90" y="125" width="4" height="30" fill="#E5E8EB" transform="rotate(40, 92, 140)" />
+  <rect x="110" y="125" width="4" height="30" fill="#EBE5DF" transform="rotate(30, 112, 140)" />
+  <rect x="130" y="120" width="4" height="30" fill="#F2F2F2" transform="rotate(20, 132, 135)" />
+  <rect x="150" y="113" width="4" height="30" fill="#D2D2D2" transform="rotate(10, 152, 128)" />
+  <rect x="170" y="105" width="4" height="30" fill="#E5E8EB" transform="rotate(0, 172, 120)" />
+  <rect x="190" y="100" width="4" height="30" fill="#EBE5DF" transform="rotate(-10, 192, 115)" />
+  <rect x="210" y="100" width="4" height="30" fill="#F2F2F2" transform="rotate(-20, 212, 115)" />
+  <rect x="50" y="45" width="4" height="30" fill="#D2D2D2" transform="rotate(-20, 52, 60)" />
+  <rect x="70" y="40" width="4" height="30" fill="#E5E8EB" transform="rotate(-30, 72, 55)" />
+  <rect x="90" y="35" width="4" height="30" fill="#EBE5DF" transform="rotate(-40, 92, 50)" />
+  <rect x="110" y="35" width="4" height="30" fill="#F2F2F2" transform="rotate(-30, 112, 50)" />
+  <rect x="130" y="40" width="4" height="30" fill="#D2D2D2" transform="rotate(-20, 132, 55)" />
+  <rect x="150" y="45" width="4" height="30" fill="#E5E8EB" transform="rotate(-10, 152, 60)" />
+  <rect x="170" y="50" width="4" height="30" fill="#EBE5DF" transform="rotate(0, 172, 65)" />
+  <rect x="190" y="55" width="4" height="30" fill="#F2F2F2" transform="rotate(10, 192, 70)" />
+  <rect x="210" y="55" width="4" height="30" fill="#D2D2D2" transform="rotate(20, 212, 70)" />
+  <rect x="50" y="175" width="4" height="30" fill="#E5E8EB" transform="rotate(20, 52, 190)" />
+  <rect x="70" y="170" width="4" height="30" fill="#EBE5DF" transform="rotate(30, 72, 185)" />
+  <rect x="90" y="165" width="4" height="30" fill="#F2F2F2" transform="rotate(40, 92, 180)" />
+  <rect x="110" y="165" width="4" height="30" fill="#D2D2D2" transform="rotate(30, 112, 180)" />
+  <rect x="130" y="170" width="4" height="30" fill="#E5E8EB" transform="rotate(20, 132, 185)" />
+  <rect x="150" y="175" width="4" height="30" fill="#EBE5DF" transform="rotate(10, 152, 190)" />
+  <rect x="170" y="180" width="4" height="30" fill="#F2F2F2" transform="rotate(0, 172, 195)" />
+  <rect x="190" y="185" width="4" height="30" fill="#D2D2D2" transform="rotate(-10, 192, 200)" />
+  <rect x="210" y="185" width="4" height="30" fill="#E5E8EB" transform="rotate(-20, 212, 200)" />
+</svg>

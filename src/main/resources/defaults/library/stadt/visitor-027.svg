@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <path d="M85 460 Q85 512 110 512 L125 512 L125 460 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M131 460 Q131 512 156 512 L171 512 L171 460 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Raincoat Body -->
+  <path d="M75 220 L181 220 L195 460 L61 460 Z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Raincoat Sleeves -->
+  <path d="M75 230 L45 360 L70 370 L90 260 Z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M181 230 L211 360 L186 370 L166 260 Z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Raincoat Hood (around neck) -->
+  <path d="M85 220 Q128 180 171 220 L165 245 L91 245 Z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Raincoat Details (Buttons) -->
+  <circle cx="128" cy="270" r="5" fill="#3B2A4A" />
+  <circle cx="128" cy="310" r="5" fill="#3B2A4A" />
+  <circle cx="128" cy="350" r="5" fill="#3B2A4A" />
+  
+  <!-- Raincoat Highlights -->
+  <path d="M85 240 L100 440" stroke="#FFF176" stroke-width="6" stroke-linecap="round" />
+  <path d="M171 240 L156 440" stroke="#FFF176" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="160" r="42" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Hair -->
+  <path d="M86 160 Q86 100 128 100 Q170 100 170 160 L178 175 Q128 150 78 175 Z" fill="#F4D03F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 110 Q128 90 146 110" fill="none" stroke="#FFF176" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Face -->
+  <circle cx="115" cy="160" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="160" r="4" fill="#3B2A4A" />
+  <path d="M118 178 Q128 188 138 178" fill="none" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+</svg>

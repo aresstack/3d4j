@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Ground patch -->
+  <ellipse cx="128" cy="505" rx="70" ry="15" fill="#7D6B5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Wooden Stakes -->
+  <path d="M80 505 L70 220 L86 220 L96 505 Z" fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 505 L186 220 L170 220 L160 505 Z" fill="#A67B5B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trunk -->
+  <path d="M120 505 L125 180 L131 180 L136 505 Z" fill="#C4A484" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Ties -->
+  <rect x="86" y="280" width="42" height="12" rx="6" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <rect x="128" y="280" width="42" height="12" rx="6" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Canopy -->
+  <circle cx="128" cy="120" r="60" fill="#6BA33B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="100" cy="150" r="50" fill="#6BA33B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="156" cy="150" r="50" fill="#6BA33B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="80" r="45" fill="#6BA33B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="180" r="40" fill="#6BA33B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <circle cx="110" cy="100" r="12" fill="#98DF8A" />
+  <circle cx="140" cy="130" r="15" fill="#98DF8A" />
+  <circle cx="100" cy="160" r="10" fill="#98DF8A" />
+  <circle cx="120" cy="60" r="10" fill="#98DF8A" />
+  
+  <!-- Small Graffiti on stake -->
+  <path d="M172 360 Q 178 350 184 360 T 178 370" fill="none" stroke="#E63946" stroke-width="5" stroke-linecap="round" />
+</svg>

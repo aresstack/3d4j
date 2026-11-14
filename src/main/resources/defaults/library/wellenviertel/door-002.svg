@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Door Frame/Body -->
+  <rect x="32" y="16" width="64" height="112" fill="#FDFDFD" stroke="#3B2A4A" stroke-width="4" rx="2" stroke-linejoin="round" />
+  
+  <!-- Lintel Wave Carving -->
+  <path d="M 40 26 Q 48 20 56 26 T 72 26 T 88 26" fill="none" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Door Handle -->
+  <circle cx="88" cy="64" r="3" fill="#BDB76B" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Door Sill -->
+  <rect x="30" y="120" width="68" height="8" fill="#E6C9A8" stroke="#3B2A4A" stroke-width="4" rx="2" stroke-linejoin="round" />
+  
+  <!-- Wicker Basket -->
+  <path d="M 42 120 L 42 110 Q 42 105 50 105 L 60 105 Q 68 105 68 110 L 68 120 Z" fill="#D2B48C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Basket Rim -->
+  <rect x="40" y="105" width="28" height="4" rx="2" fill="#C2B280" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+  <!-- Woven Texture -->
+  <path d="M 46 109 L 64 118 M 64 109 L 46 118 M 50 109 L 50 118 M 58 109 L 58 118" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  <!-- Basket Highlight -->
+  <path d="M 46 112 Q 48 110 50 112" fill="none" stroke="#F5F5DC" stroke-width="2" stroke-linecap="round" />
+</svg>

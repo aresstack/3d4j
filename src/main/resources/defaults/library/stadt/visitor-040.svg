@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <path d="M90 470 h30 v42 h-30 z" fill="#424242" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 470 h30 v42 h-30 z" fill="#424242" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Legs -->
+  <path d="M100 420 h20 v50 h-20 z" fill="#5C6BC0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 420 h20 v50 h-20 z" fill="#5C6BC0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Raincoat Body -->
+  <path d="M70 220 h116 v210 h-116 z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Raincoat Highlights -->
+  <path d="M80 230 v100" stroke="#FFF176" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Raincoat Buttons -->
+  <circle cx="128" cy="270" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="310" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="350" r="6" fill="#3B2A4A" />
+  
+  <!-- Sleeves -->
+  <path d="M70 240 l-30 100 h30 z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 240 l30 100 h-30 z" fill="#FFEB3B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hands -->
+  <circle cx="45" cy="345" r="12" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="211" cy="345" r="12" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Neck -->
+  <rect x="118" y="200" width="20" height="20" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="160" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Hair -->
+  <path d="M83 160 a45 45 0 0 1 90 0 a45 45 0 0 1 -90 0 z" fill="#F4D03F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M83 160 q0 -50 45 -50 q45 0 45 50" fill="#F4D03F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="160" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="160" r="4" fill="#3B2A4A" />
+  <path d="M118 180 q10 10 20 0" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

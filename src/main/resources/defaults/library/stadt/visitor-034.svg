@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <path d="M80 460 L120 460 L125 512 L75 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 460 L176 460 L181 512 L131 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Body -->
+  <path d="M70 200 L186 200 L196 460 L60 460 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Arms -->
+  <path d="M70 210 L40 350 L70 360 L85 250 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M186 210 L216 350 L186 360 L171 250 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Details (Buttons) -->
+  <circle cx="128" cy="260" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="300" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="340" r="6" fill="#3B2A4A" />
+
+  <!-- Head -->
+  <circle cx="128" cy="150" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Face -->
+  <circle cx="115" cy="145" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="145" r="4" fill="#3B2A4A" />
+  <path d="M118 165 Q128 175 138 165" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Hat -->
+  <path d="M83 140 Q83 80 128 80 Q173 80 173 140 Z" fill="#C0392B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M120 80 L128 60 L136 80" fill="#C0392B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Hat Highlight -->
+  <path d="M100 110 Q110 100 120 110" fill="none" stroke="#E74C3C" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Scarf -->
+  <path d="M90 175 Q128 200 166 175 L170 210 Q128 235 90 210 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 210 L110 320 Q115 330 120 320 L120 220 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 220 L136 320 Q141 330 146 320 L156 210 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Highlight -->
+  <path d="M80 220 L90 440" fill="none" stroke="#A0522D" stroke-width="8" stroke-linecap="round" />
+</svg>

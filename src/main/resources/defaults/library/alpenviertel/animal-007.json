@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 7,
+  "createdAt": "2026-11-14T19:00:09Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a St. Bernard dog sitting, a small barrel on its collar. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

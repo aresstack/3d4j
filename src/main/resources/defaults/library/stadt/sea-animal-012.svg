@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Mast -->
+  <rect x="124" y="140" width="8" height="280" fill="#B8860B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hull -->
+  <path d="M 30 400 Q 128 380 226 400 Q 226 512 128 512 Q 30 512 30 400 Z" fill="#E74C3C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sail -->
+  <path d="M 132 150 Q 230 250 132 390 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Sail Stripes -->
+  <path d="M 132 210 Q 170 230 160 250 L 132 230 Z" fill="#E74C3C" />
+  <path d="M 132 270 Q 190 290 180 310 L 132 290 Z" fill="#E74C3C" />
+  <path d="M 132 330 Q 200 350 190 370 L 132 350 Z" fill="#E74C3C" />
+  
+  <!-- Flag -->
+  <path d="M 128 140 L 150 150 L 128 160 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hull Highlight -->
+  <path d="M 50 410 Q 128 420 206 410" stroke="#FFFFFF" stroke-width="4" fill="none" stroke-linecap="round" />
+</svg>

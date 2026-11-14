@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M150,400 Q160,200 140,120" fill="none" stroke="#3B2A4A" stroke-width="16" stroke-linecap="round" />
+  <path d="M150,400 Q160,200 140,120" fill="none" stroke="#222222" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Body -->
+  <rect x="88" y="240" width="80" height="240" rx="40" fill="#222222" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Body Highlight -->
+  <path d="M105,280 Q110,350 105,420" fill="none" stroke="#444444" stroke-width="12" stroke-linecap="round" />
+
+  <!-- Paws -->
+  <ellipse cx="105" cy="490" rx="25" ry="15" fill="#222222" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="151" cy="490" rx="25" ry="15" fill="#222222" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Head -->
+  <circle cx="128" cy="180" r="70" fill="#222222" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M75,140 L90,80 L120,130 Z" fill="#222222" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M181,140 L166,80 L136,130 Z" fill="#222222" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Inner Ears -->
+  <path d="M85,130 L95,100 L110,125 Z" fill="#444444" />
+  <path d="M171,130 L161,100 L146,125 Z" fill="#444444" />
+
+  <!-- Eyes -->
+  <circle cx="105" cy="175" r="18" fill="#D4FF00" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="151" cy="175" r="18" fill="#D4FF00" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Pupils -->
+  <rect x="103" y="165" width="4" height="20" rx="2" fill="#3B2A4A" />
+  <rect x="149" y="165" width="4" height="20" rx="2" fill="#3B2A4A" />
+
+  <!-- Nose -->
+  <path d="M122,195 L134,195 L128,205 Z" fill="#FFB6C1" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Mouth -->
+  <path d="M120,210 Q128,220 136,210" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Head Highlight -->
+  <path d="M100,140 Q110,120 130,130" fill="none" stroke="#444444" stroke-width="8" stroke-linecap="round" />
+</svg>

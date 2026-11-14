@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M 110 512 Q 128 450 120 350 L 136 350 Q 128 450 146 512 Z" 
+        fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bavarian Ribbon Bow -->
+  <path d="M 115 420 Q 128 410 141 420 L 141 435 Q 128 425 115 435 Z" 
+        fill="#0091D4" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="128" cy="425" r="8" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <path d="M 128 430 L 110 450 L 120 460 L 128 440 Z" fill="#0091D4" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M 128 430 L 146 450 L 136 460 L 128 440 Z" fill="#0091D4" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Canopy (Layered circles for a fluffy look) -->
+  <circle cx="80" cy="230" r="70" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="176" cy="230" r="70" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="170" r="80" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="250" r="70" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Apples -->
+  <!-- Apple 1 -->
+  <circle cx="90" cy="180" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 87 175 A 4 4 0 0 1 91 172" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Apple 2 -->
+  <circle cx="160" cy="160" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 157 155 A 4 4 0 0 1 161 152" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Apple 3 -->
+  <circle cx="120" cy="210" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 117 205 A 4 4 0 0 1 121 202" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Apple 4 -->
+  <circle cx="180" cy="240" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 177 235 A 4 4 0 0 1 181 232" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Apple 5 -->
+  <circle cx="70" cy="260" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 67 255 A 4 4 0 0 1 71 252" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Apple 6 -->
+  <circle cx="130" cy="280" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 127 275 A 4 4 0 0 1 131 272" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Apple 7 -->
+  <circle cx="110" cy="140" r="12" fill="#E3242B" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M 107 135 A 4 4 0 0 1 111 132" fill="none" stroke="#FFB3B3" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Highlights on Canopy -->
+  <path d="M 100 150 Q 110 140 120 150" fill="none" stroke="#A2D97D" stroke-width="6" stroke-linecap="round" />
+  <path d="M 150 210 Q 160 200 170 210" fill="none" stroke="#A2D97D" stroke-width="6" stroke-linecap="round" />
+</svg>

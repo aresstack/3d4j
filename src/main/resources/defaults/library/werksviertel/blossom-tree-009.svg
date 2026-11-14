@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Industrial Concrete Planter -->
+  <path d="M50 420 L206 420 L220 512 L36 512 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rust-Red Steel Rim -->
+  <path d="M40 410 L216 410 L216 430 L40 430 Z" fill="#A54A3A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rivets on the rim -->
+  <circle cx="55" cy="420" r="4" fill="#5A5A5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="85" cy="420" r="4" fill="#5A5A5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="128" cy="420" r="4" fill="#5A5A5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="171" cy="420" r="4" fill="#5A5A5A" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="201" cy="420" r="4" fill="#5A5A5A" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Birch Trunk 1 (Left) -->
+  <path d="M110 410 Q105 300 90 200 L105 200 Q120 300 125 410 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Bark marks Trunk 1 -->
+  <line x1="95" y1="250" x2="110" y2="250" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="100" y1="310" x2="115" y2="310" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="110" y1="370" x2="125" y2="370" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Birch Trunk 2 (Right) -->
+  <path d="M135 410 Q140 300 150 200 L165 200 Q150 300 140 410 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Bark marks Trunk 2 -->
+  <line x1="145" y1="260" x2="160" y2="260" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="140" y1="320" x2="155" y2="320" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="135" y1="380" x2="150" y2="380" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Crown 1 (Left) -->
+  <circle cx="80" cy="180" r="30" fill="#C5E384" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="110" cy="170" r="35" fill="#C5E384" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="210" r="25" fill="#C5E384" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Highlights Crown 1 -->
+  <circle cx="85" cy="170" r="8" fill="#E2F5B8" />
+  <circle cx="115" cy="160" r="8" fill="#E2F5B8" />
+
+  <!-- Crown 2 (Right) -->
+  <circle cx="150" cy="170" r="35" fill="#C5E384" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="180" cy="180" r="30" fill="#C5E384" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="210" r="25" fill="#C5E384" stroke="#3B2A4A" stroke-width="8" />
+  <!-- Highlights Crown 2 -->
+  <circle cx="155" cy="160" r="8" fill="#E2F5B8" />
+  <circle cx="185" cy="170" r="8" fill="#E2F5B8" />
+
+  <!-- Weeds at the base -->
+  <path d="M45 512 L55 480 L65 512" fill="none" stroke="#8DB600" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M210 512 L220 470 L230 512" fill="none" stroke="#8DB600" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M200 512 L210 490 L220 512" fill="none" stroke="#8DB600" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

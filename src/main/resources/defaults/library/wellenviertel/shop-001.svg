@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Support Beams -->
+  <rect x="16" y="50" width="6" height="30" fill="#D4A373" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="110" y="50" width="6" height="30" fill="#D4A373" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Counter -->
+  <rect x="14" y="80" width="100" height="32" fill="#F5E6CA" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Ice Bed -->
+  <rect x="18" y="80" width="92" height="12" fill="#E0F2F1" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Fish on Ice -->
+  <ellipse cx="30" cy="84" rx="6" ry="3" fill="#A8DADC" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+  <ellipse cx="45" cy="86" rx="6" ry="3" fill="#FFB347" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+  <ellipse cx="60" cy="84" rx="6" ry="3" fill="#A8DADC" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+  <ellipse cx="75" cy="86" rx="6" ry="3" fill="#A8DADC" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+  <ellipse cx="90" cy="84" rx="6" ry="3" fill="#FFB347" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+  <ellipse cx="102" cy="86" rx="6" ry="3" fill="#A8DADC" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round" />
+
+  <!-- Wave-shaped Awning -->
+  <path d="M 10 45 Q 10 20 30 20 Q 50 20 64 30 Q 78 20 98 20 Q 118 20 118 45 L 118 55 Q 64 45 10 55 Z" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Awning Stripes -->
+  <path d="M 30 20 Q 40 25 40 45 L 40 52 Q 30 48 30 20" fill="#FFFFFF" />
+  <path d="M 64 30 Q 74 35 74 45 L 74 52 Q 64 48 64 30" fill="#FFFFFF" />
+  <path d="M 98 20 Q 108 25 108 45 L 108 52 Q 98 48 98 20" fill="#FFFFFF" />
+
+  <!-- Hanging Lanterns -->
+  <line x1="14" y1="45" x2="14" y2="55" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="14" cy="60" r="6" fill="#FFD93D" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="14" cy="58" r="2" fill="#FFFFFF" />
+  
+  <line x1="114" y1="45" x2="114" y2="55" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="114" cy="60" r="6" fill="#FFD93D" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="114" cy="58" r="2" fill="#FFFFFF" />
+
+  <!-- Fishing Net -->
+  <path d="M 14 80 Q 5 90 14 112" fill="none" stroke="#C2B280" stroke-width="5" stroke-linecap="round" />
+  <path d="M 10 85 L 18 105 M 14 90 L 10 100 M 18 95 L 12 110" stroke="#C2B280" stroke-width="2" />
+</svg>

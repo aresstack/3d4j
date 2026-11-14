@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Weathered Green Industrial Sill -->
+  <rect x="14" y="105" width="100" height="8" rx="2" fill="#7A8B7A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Dark Steel Outer Frame -->
+  <rect x="19" y="19" width="90" height="90" rx="2" fill="#333333" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Main Glass Pane -->
+  <rect x="24" y="24" width="56" height="82" fill="#AEE2FF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Narrow Opening Wing Glass -->
+  <rect x="80" y="24" width="26" height="82" fill="#BCEBFF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Frame Divider -->
+  <rect x="76" y="24" width="4" height="82" fill="#333333" stroke="none" />
+  
+  <!-- Rivets on the frame -->
+  <circle cx="22" cy="22" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="106" cy="22" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="22" cy="106" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="106" cy="106" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  
+  <!-- Window Handle on the wing -->
+  <rect x="102" y="60" width="4" height="10" rx="1" fill="#666666" stroke="#3B2A4A" stroke-width="2" stroke-linejoin="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 32 32 L 52 52" stroke="#DDF5FF" stroke-width="6" stroke-linecap="round" />
+  <path d="M 85 32 L 95 42" stroke="#DDF5FF" stroke-width="6" stroke-linecap="round" />
+</svg>

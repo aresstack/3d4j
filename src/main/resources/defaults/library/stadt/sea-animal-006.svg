@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Body (mostly hidden under water) -->
+  <path d="M 70 340 Q 128 320 186 340 L 210 512 L 46 512 Z" fill="#FF5C5C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Waving Arms -->
+  <path d="M 160 320 C 220 320, 240 200, 210 150 C 200 130, 180 140, 180 160 C 180 200, 160 320, 160 320" fill="#FF5C5C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M 100 320 C 40 320, 20 250, 50 200 C 60 180, 80 190, 80 210 C 80 250, 100 320, 100 320" fill="#FF5C5C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <ellipse cx="128" cy="280" rx="70" ry="80" fill="#FF5C5C" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Eye -->
+  <circle cx="150" cy="260" r="18" fill="white" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="155" cy="260" r="7" fill="#3B2A4A" />
+  
+  <!-- Smile -->
+  <path d="M 130 310 Q 140 320 150 310" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Highlights and Blush -->
+  <ellipse cx="110" cy="240" rx="20" ry="10" fill="#FF8C8C" />
+  <circle cx="170" cy="290" r="8" fill="#FF8C8C" />
+  <ellipse cx="200" cy="170" rx="10" ry="5" fill="#FF8C8C" />
+  <ellipse cx="60" cy="210" rx="10" ry="5" fill="#FF8C8C" />
+</svg>

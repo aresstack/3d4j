@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Lantern -->
+  <rect x="56" y="12" width="16" height="10" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" rx="2" ry="2" stroke-linejoin="round" />
+  <rect x="58" y="14" width="12" height="6" fill="#A2D2FF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="60" y="15" width="8" height="4" fill="#FFD700" />
+  <rect x="59" y="14" width="3" height="2" fill="white" opacity="0.5" />
+  <rect x="62" y="22" width="4" height="2" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Double Door -->
+  <rect x="32" y="24" width="64" height="104" fill="#FDF5E6" stroke="#3B2A4A" stroke-width="4" rx="2" ry="2" stroke-linejoin="round" />
+  <line x1="64" y1="24" x2="64" y2="128" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Painted Flowers - Left Door -->
+  <circle cx="40" cy="40" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="46" cy="44" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="40" cy="48" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="36" cy="44" r="3" fill="#52B788" stroke="#3B2A4A" stroke-width="3" />
+  
+  <circle cx="40" cy="100" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="46" cy="104" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="40" cy="108" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="36" cy="104" r="3" fill="#52B788" stroke="#3B2A4A" stroke-width="3" />
+
+  <!-- Painted Flowers - Right Door -->
+  <circle cx="88" cy="40" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="82" cy="44" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="88" cy="48" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="92" cy="44" r="3" fill="#52B788" stroke="#3B2A4A" stroke-width="3" />
+
+  <circle cx="88" cy="100" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="82" cy="104" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="88" cy="108" r="4" fill="#E63946" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="92" cy="104" r="3" fill="#52B788" stroke="#3B2A4A" stroke-width="3" />
+
+  <!-- Door Handles -->
+  <circle cx="60" cy="64" r="3" fill="#D4AF37" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="68" cy="64" r="3" fill="#D4AF37" stroke="#3B2A4A" stroke-width="3" />
+  <circle cx="59" cy="63" r="1" fill="white" />
+  <circle cx="67" cy="63" r="1" fill="white" />
+</svg>

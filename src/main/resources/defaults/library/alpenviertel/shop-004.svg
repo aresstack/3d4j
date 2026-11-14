@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Carved Wooden Sign -->
+  <path d="M20 20 h88 v16 q0 4 -4 4 h-10 q-2 0 -2 -2 v-2 q0 -2 -2 -2 h-60 q0 0 0 2 v2 q0 2 -2 2 h-10 q-4 0 -4 -4 z" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M26 24 h76 v4 h-76 z" fill="#8D6E63" stroke="#3B2A4A" stroke-width="2" stroke-linejoin="round" />
+
+  <!-- Green Shutters -->
+  <rect x="16" y="40" width="15" height="60" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="21" y1="40" x2="21" y2="100" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="26" y1="40" x2="26" y2="100" stroke="#3B2A4A" stroke-width="2" />
+  
+  <rect x="97" y="40" width="15" height="60" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="102" y1="40" x2="102" y2="100" stroke="#3B2A4A" stroke-width="2" />
+  <line x1="107" y1="40" x2="107" y2="100" stroke="#3B2A4A" stroke-width="2" />
+
+  <!-- Window Frame -->
+  <rect x="31" y="40" width="66" height="60" fill="#FFF9C4" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Glass -->
+  <rect x="35" y="44" width="58" height="52" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Glass Highlights -->
+  <path d="M40 48 l8 8 M52 48 l8 8" stroke="white" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Sausage Hanging Bar -->
+  <rect x="35" y="44" width="58" height="6" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Sausages -->
+  <rect x="40" y="50" width="8" height="22" rx="4" fill="#A52A2A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="52" y="50" width="8" height="28" rx="4" fill="#A52A2A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="64" y="50" width="8" height="22" rx="4" fill="#A52A2A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="76" y="50" width="8" height="28" rx="4" fill="#A52A2A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Sausage Highlights -->
+  <path d="M42 54 q1 -1 2 0" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" />
+  <path d="M54 54 q1 -1 2 0" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" />
+  <path d="M66 54 q1 -1 2 0" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" />
+  <path d="M78 54 q1 -1 2 0" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" />
+
+  <!-- Window Sill -->
+  <rect x="20" y="100" width="88" height="8" rx="2" fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Geraniums in Pot -->
+  <rect x="40" y="92" width="16" height="8" fill="#8D6E63" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="43" cy="88" r="4" fill="#E91E63" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="48" cy="84" r="4" fill="#E91E63" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="53" cy="88" r="4" fill="#E91E63" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="48" cy="90" r="3" fill="#C2185B" stroke="#3B2A4A" stroke-width="2" />
+</svg>

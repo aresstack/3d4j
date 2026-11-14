@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Outer Steel Frame -->
+  <rect x="19" y="19" width="90" height="90" rx="2" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Main Glass Area -->
+  <rect x="26" y="26" width="76" height="76" fill="#AEE2FF" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Narrow Opening Wing Divider -->
+  <line x1="78" y1="26" x2="78" y2="102" stroke="#3B2A4A" stroke-width="5" stroke-linecap="round" />
+  
+  <!-- Glass Highlights -->
+  <path d="M35 35 L55 55" stroke="#DDFCFF" stroke-width="6" stroke-linecap="round" />
+  <path d="M45 35 L65 55" stroke="#DDFCFF" stroke-width="6" stroke-linecap="round" />
+  <path d="M85 40 L92 47" stroke="#DDFCFF" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Industrial Rivets -->
+  <circle cx="23" cy="23" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="105" cy="23" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="23" cy="105" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="105" cy="105" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="64" cy="23" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+  <circle cx="64" cy="105" r="2" fill="#666666" stroke="#3B2A4A" stroke-width="1" />
+</svg>

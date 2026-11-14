@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tree Trunk -->
+  <path d="M110 512 L120 280 L136 280 L146 512 Z" fill="#8D7B6D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Graffiti on Trunk -->
+  <path d="M122 420 Q128 410 134 420" fill="none" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round" />
+  <path d="M125 430 Q130 425 135 430" fill="none" stroke="#FFB8B8" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Tree Canopy (Linden style - rounded clusters) -->
+  <circle cx="128" cy="160" r="70" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="210" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="210" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="230" r="65" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Canopy Highlights -->
+  <circle cx="110" cy="140" r="20" fill="#9BCE8B" />
+  <circle cx="150" cy="180" r="15" fill="#9BCE8B" />
+  <circle cx="80" cy="200" r="18" fill="#9BCE8B" />
+
+  <!-- Bicycle leaning against trunk -->
+  <!-- Wheels -->
+  <circle cx="85" cy="460" r="32" fill="none" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="85" cy="460" r="26" fill="none" stroke="#4A4A4A" stroke-width="4" />
+  
+  <circle cx="130" cy="440" r="32" fill="none" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="130" cy="440" r="26" fill="none" stroke="#4A4A4A" stroke-width="4" />
+
+  <!-- Bike Frame (Pale Blue) -->
+  <path d="M85 460 L110 400 L140 400 L130 440" fill="none" stroke="#A8DADC" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M110 400 L110 460" fill="none" stroke="#A8DADC" stroke-width="10" stroke-linecap="round" />
+  
+  <!-- Handlebars and Seat -->
+  <path d="M110 400 L110 370 L125 370" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M110 400 L120 390" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M115 390 L125 390" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Pedals -->
+  <circle cx="110" cy="430" r="6" fill="#3B2A4A" />
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Back Flipper -->
+  <path d="M 80 350 Q 30 380 40 512 Q 90 490 100 360 Z" fill="#C5E063" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Front Flipper -->
+  <path d="M 160 350 Q 210 380 200 512 Q 150 490 140 360 Z" fill="#C5E063" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly -->
+  <ellipse cx="128" cy="360" rx="70" ry="40" fill="#E2F0B5" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Shell -->
+  <ellipse cx="128" cy="300" rx="100" ry="70" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Shell Patterns -->
+  <path d="M 128 230 L 128 370" fill="none" stroke="#5A8C36" stroke-width="6" stroke-linecap="round" />
+  <path d="M 60 300 Q 128 270 196 300" fill="none" stroke="#5A8C36" stroke-width="6" stroke-linecap="round" />
+  <path d="M 80 330 Q 128 300 176 330" fill="none" stroke="#5A8C36" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Shell Highlight -->
+  <path d="M 70 280 Q 128 250 180 280" fill="none" stroke="#A2D181" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Neck -->
+  <path d="M 170 300 Q 200 280 210 250 L 230 260 Q 220 310 190 320 Z" fill="#C5E063" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <ellipse cx="235" cy="230" rx="35" ry="25" fill="#C5E063" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Eye -->
+  <circle cx="245" cy="225" r="6" fill="#3B2A4A" />
+  <circle cx="247" cy="223" r="2" fill="white" />
+  
+  <!-- Head Highlight -->
+  <path d="M 240 215 Q 250 215 255 225" fill="none" stroke="#E2F0B5" stroke-width="4" stroke-linecap="round" />
+</svg>

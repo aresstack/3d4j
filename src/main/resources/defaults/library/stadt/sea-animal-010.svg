@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Buoy Body - Bottom Red Section -->
+  <path d="M50 512 L206 512 L190 340 L66 340 Z" fill="#E63946" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Buoy Body - Middle White Section -->
+  <path d="M66 340 L190 340 L175 230 L81 230 Z" fill="#F1FAEE" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Buoy Body - Top Red Section -->
+  <path d="M81 230 L175 230 L160 140 Q128 120 96 140 Z" fill="#E63946" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights for depth -->
+  <path d="M75 480 Q85 450 85 400" fill="none" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round" />
+  <path d="M90 210 Q100 190 100 160" fill="none" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Lamp Base -->
+  <rect x="120" y="120" width="16" height="20" fill="#A8DADC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Lamp Glass -->
+  <circle cx="128" cy="95" r="28" fill="#FFD166" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Lamp Highlight -->
+  <path d="M115 85 Q120 75 130 80" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" />
+</svg>

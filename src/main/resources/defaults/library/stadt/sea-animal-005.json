@@ -1,0 +1,9 @@
+{
+  "kind": "sea-animal",
+  "number": 5,
+  "createdAt": "2026-11-14T18:33:15Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a sea turtle swimming at the surface, green shell, head raised, seen from the side, friendly. The game shows it in the sea and hides the lowest quarter of the picture under water, so draw no water and no waves yourself",
+  "width": 256,
+  "height": 512
+}

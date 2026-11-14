@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Shrub Base -->
+  <circle cx="128" cy="300" r="70" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="100" cy="330" r="60" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="156" cy="330" r="60" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="250" r="60" fill="#6B8E23" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shrub Highlights -->
+  <circle cx="120" cy="240" r="15" fill="#9ACD32" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="140" cy="270" r="15" fill="#9ACD32" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="100" cy="310" r="15" fill="#9ACD32" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Flowers -->
+  <circle cx="110" cy="270" r="8" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="140" cy="290" r="8" fill="#FFD700" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="120" cy="330" r="8" fill="#B19CD9" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="150" cy="310" r="8" fill="#FF4D4D" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="100" cy="340" r="8" fill="#FFD700" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Planter Body -->
+  <path d="M60 410 L196 410 L210 512 L46 512 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Planter Rim -->
+  <path d="M50 390 L206 390 L206 410 L50 410 Z" fill="#C0C0C0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Graffiti and Stickers -->
+  <path d="M80 440 Q 90 430, 100 450 T 120 440" fill="none" stroke="#FF69B4" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <rect x="160" y="440" width="15" height="20" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="167.5" cy="450" r="3" fill="#FF4D4D" />
+</svg>

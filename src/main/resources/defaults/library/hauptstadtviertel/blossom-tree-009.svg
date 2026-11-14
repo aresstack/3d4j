@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tree Trunk -->
+  <path d="M110 512 L115 320 Q128 310 140 320 L145 512 Z" fill="#8B7355" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Graffiti on trunk -->
+  <path d="M120 420 Q125 410 130 420 T140 420" fill="none" stroke="#FFD700" stroke-width="4" stroke-linecap="round" />
+  <path d="M122 430 Q128 425 135 430" fill="none" stroke="#FF69B4" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Tree Canopy (Linden leaves) -->
+  <path d="M128 60 Q180 60 210 120 Q240 180 210 250 Q180 300 128 300 Q76 300 46 250 Q16 180 46 120 Q76 60 128 60 Z" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Canopy Highlights -->
+  <circle cx="100" cy="120" r="25" fill="#9BCE8C" />
+  <circle cx="150" cy="100" r="30" fill="#9BCE8C" />
+  <circle cx="170" cy="180" r="20" fill="#9BCE8C" />
+  <circle cx="80" cy="200" r="20" fill="#9BCE8C" />
+
+  <!-- Bicycle -->
+  <!-- Wheels -->
+  <circle cx="100" cy="460" r="30" fill="none" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="100" cy="460" r="24" fill="none" stroke="#555" stroke-width="2" />
+  
+  <circle cx="160" cy="460" r="30" fill="none" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="160" cy="460" r="24" fill="none" stroke="#555" stroke-width="2" />
+
+  <!-- Frame (Faded Red) -->
+  <path d="M100 460 L130 460 L150 410 L110 410 Z" fill="none" stroke="#D65A5A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M130 460 L130 400" fill="none" stroke="#D65A5A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Handlebars and Seat -->
+  <path d="M130 400 L140 380 L150 380" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M110 410 L115 400 L125 400" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+  
+  <!-- Pedal/Chain area -->
+  <circle cx="130" cy="460" r="8" fill="#3B2A4A" />
+</svg>

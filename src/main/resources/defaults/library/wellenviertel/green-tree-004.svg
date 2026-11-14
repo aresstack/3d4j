@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk: Sandy Beige, Wave-shaped -->
+  <path d="M110 512 
+           C 140 450, 180 380, 130 320 
+           C 80 260, 120 200, 130 150 
+           L 140 150 
+           C 150 200, 190 260, 140 320 
+           C 190 380, 150 450, 180 512 Z" 
+        fill="#E6C9A8" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Foliage Clusters: Silvery Green -->
+  <!-- Top Cluster -->
+  <ellipse cx="135" cy="130" rx="45" ry="30" fill="#B8C9B8" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="145" cy="120" rx="20" ry="12" fill="#D1E0D1" />
+
+  <!-- Mid-Upper Cluster -->
+  <ellipse cx="110" cy="180" rx="35" ry="25" fill="#B8C9B8" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="100" cy="175" rx="15" ry="8" fill="#D1E0D1" />
+
+  <!-- Mid-Lower Cluster -->
+  <ellipse cx="160" cy="230" rx="35" ry="25" fill="#B8C9B8" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="170" cy="225" rx="15" ry="8" fill="#D1E0D1" />
+
+  <!-- Bottom Cluster -->
+  <ellipse cx="120" cy="280" rx="30" ry="20" fill="#B8C9B8" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="110" cy="275" rx="12" ry="6" fill="#D1E0D1" />
+
+  <!-- Small Branch Details -->
+  <path d="M130 320 Q 160 300 170 280" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M130 220 Q 100 200 90 180" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+</svg>

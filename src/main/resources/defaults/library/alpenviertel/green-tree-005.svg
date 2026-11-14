@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M90 512 L110 320 L146 320 L166 512 Z" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Main Crown Base -->
+  <circle cx="128" cy="220" r="110" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="70" cy="260" r="70" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="186" cy="260" r="70" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="150" r="80" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights on Leaves -->
+  <path d="M80 160 Q128 120 176 160" fill="none" stroke="#5A8B55" stroke-width="12" stroke-linecap="round" />
+  <path d="M60 230 Q80 210 100 230" fill="none" stroke="#5A8B55" stroke-width="10" stroke-linecap="round" />
+  <path d="M156 230 Q176 210 196 230" fill="none" stroke="#5A8B55" stroke-width="10" stroke-linecap="round" />
+
+  <!-- White Blossom Candles -->
+  <g fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round">
+    <rect x="110" y="130" width="12" height="25" rx="6" />
+    <rect x="134" y="120" width="12" height="25" rx="6" />
+    <rect x="158" y="140" width="12" height="25" rx="6" />
+    <rect x="80" y="160" width="12" height="25" rx="6" />
+    <rect x="60" y="210" width="12" height="25" rx="6" />
+    <rect x="180" y="210" width="12" height="25" rx="6" />
+    <rect x="140" y="200" width="12" height="25" rx="6" />
+    <rect x="100" y="220" width="12" height="25" rx="6" />
+    <rect x="160" y="240" width="12" height="25" rx="6" />
+    <rect x="120" y="260" width="12" height="25" rx="6" />
+    <rect x="70" y="270" width="12" height="25" rx="6" />
+    <rect x="180" y="280" width="12" height="25" rx="6" />
+  </g>
+
+  <!-- Grass Tufts at Base -->
+  <path d="M70 512 L80 490 L90 512" fill="#5A8B55" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M166 512 L176 485 L186 512" fill="#5A8B55" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M110 512 L120 495 L130 512" fill="#5A8B55" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+</svg>

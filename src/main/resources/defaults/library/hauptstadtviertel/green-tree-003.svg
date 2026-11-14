@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tram wire crossing the scene -->
+  <path d="M0 100 L256 140" stroke="#3B2A4A" stroke-width="4" fill="none" stroke-linecap="round" />
+
+  <!-- Trunk -->
+  <path d="M110 512 L146 512 L138 320 L120 320 Z" fill="#8D7B6D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Graffiti on trunk -->
+  <path d="M122 420 Q130 410 135 425 T142 415" fill="none" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round" />
+  <path d="M125 430 Q132 420 138 435" fill="none" stroke="#4ECDC4" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Canopy Layers -->
+  <!-- Back layer -->
+  <circle cx="128" cy="220" r="90" fill="#5C8A4B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="80" cy="260" r="70" fill="#5C8A4B" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="176" cy="260" r="70" fill="#5C8A4B" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Middle layer -->
+  <circle cx="128" cy="180" r="80" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="70" cy="220" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="186" cy="220" r="60" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Front layer -->
+  <circle cx="128" cy="140" r="70" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="180" r="50" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="180" r="50" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Spiky Fruit (Conkers) -->
+  <!-- Fruit 1 -->
+  <g transform="translate(100, 240)">
+    <circle cx="0" cy="0" r="12" fill="#4A6D3B" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-15 -5 L-12 -2 M-15 5 L-12 2 M5 -15 L2 -12 M2 15 L-2 12 M15 -5 L12 -2 M15 5 L12 2" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+  
+  <!-- Fruit 2 -->
+  <g transform="translate(150, 210)">
+    <circle cx="0" cy="0" r="12" fill="#4A6D3B" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-15 -5 L-12 -2 M-15 5 L-12 2 M5 -15 L2 -12 M2 15 L-2 12 M15 -5 L12 -2 M15 5 L12 2" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+  
+  <!-- Fruit 3 -->
+  <g transform="translate(120, 280)">
+    <circle cx="0" cy="0" r="12" fill="#4A6D3B" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-15 -5 L-12 -2 M-15 5 L-12 2 M5 -15 L2 -12 M2 15 L-2 12 M15 -5 L12 -2 M15 5 L12 2" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+
+  <!-- Highlights -->
+  <path d="M110 120 Q128 110 146 120" fill="none" stroke="#D4F1B4" stroke-width="8" stroke-linecap="round" />
+  <path d="M70 200 Q85 190 100 200" fill="none" stroke="#D4F1B4" stroke-width="8" stroke-linecap="round" />
+  <path d="M156 200 Q171 190 186 200" fill="none" stroke="#D4F1B4" stroke-width="8" stroke-linecap="round" />
+</svg>

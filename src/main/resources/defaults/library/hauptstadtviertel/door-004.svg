@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Stucco Arch -->
+  <path d="M28 128 V30 Q28 12 64 12 Q100 12 100 30 V128" fill="#EFE6D5" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Door -->
+  <rect x="34" y="22" width="60" height="106" fill="#6B9E6B" stroke="#3B2A4A" stroke-width="5" rx="2" />
+  
+  <!-- House Number Sign -->
+  <rect x="54" y="14" width="20" height="8" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" rx="1" />
+  <path d="M58 16 V20 M62 16 V20 M66 16 V20" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Door Handle -->
+  <circle cx="86" cy="65" r="3" fill="#D4AF37" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Highlights -->
+  <rect x="38" y="26" width="8" height="30" fill="#8BBA8B" opacity="0.6" />
+  <path d="M32 30 Q30 20 64 20 Q98 20 96 30" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.4" stroke-linecap="round" />
+  
+  <!-- Berlin District Details (Rough/Friendly) -->
+  <!-- Small graffiti scribble -->
+  <path d="M92 80 Q95 75 98 80 T102 80" fill="none" stroke="#FF69B4" stroke-width="3" stroke-linecap="round" />
+  <!-- Torn poster remnant -->
+  <rect x="28" y="70" width="6" height="15" fill="#D2B48C" stroke="#3B2A4A" stroke-width="2" />
+  <!-- Stucco crack -->
+  <path d="M30 60 L35 65 L32 70" fill="none" stroke="#3B2A4A" stroke-width="2" stroke-linecap="round" />
+</svg>

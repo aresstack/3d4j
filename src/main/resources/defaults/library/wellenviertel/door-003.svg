@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Frame with wave motif -->
+  <path d="M 28 32 Q 64 12 100 32 L 100 128 L 28 128 Z" fill="#EEDCB4" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Soft beige door -->
+  <path d="M 34 32 Q 64 20 94 32 L 94 128 L 34 128 Z" fill="#F5E6C4" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Glass panel -->
+  <rect x="44" y="37" width="40" height="40" rx="8" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Glass highlight -->
+  <path d="M 48 42 Q 52 40 56 42" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Decorative wave detail on door -->
+  <path d="M 34 90 Q 64 80 94 90" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Door handle -->
+  <circle cx="86" cy="77" r="4" fill="#EEDCB4" stroke="#3B2A4A" stroke-width="3" />
+</svg>

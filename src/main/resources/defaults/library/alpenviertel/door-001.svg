@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Main Door Shape -->
+  <path d="M 32 128 V 48 A 32 32 0 0 1 96 48 V 128 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Small Arched Window -->
+  <path d="M 54 42 V 34 A 10 10 0 0 1 74 34 V 42 Z" fill="#BDE0FE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M 58 36 L 62 36" stroke="white" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Carved Panels -->
+  <path d="M 40 55 H 88 V 80 H 40 Z" fill="#5D3A1A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M 40 85 H 88 V 115 H 40 Z" fill="#5D3A1A" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Carving Details (X shapes) -->
+  <path d="M 45 60 L 55 70 M 55 60 L 45 70" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <path d="M 73 60 L 83 70 M 83 60 L 73 70" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <path d="M 45 90 L 55 100 M 55 90 L 45 100" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  <path d="M 73 90 L 83 100 M 83 90 L 73 100" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Iron Fittings (Hinges/Straps) -->
+  <rect x="32" y="62" width="25" height="8" rx="2" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="4" />
+  <rect x="32" y="92" width="25" height="8" rx="2" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Iron Ring Handle -->
+  <circle cx="64" cy="75" r="7" fill="#4A4A4A" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="64" cy="75" r="3" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Wood Highlight -->
+  <path d="M 37 48 A 25 25 0 0 1 48 32" fill="none" stroke="#A67C52" stroke-width="3" stroke-linecap="round" />
+</svg>

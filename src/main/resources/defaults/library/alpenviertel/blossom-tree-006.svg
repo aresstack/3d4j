@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <rect x="118" y="450" width="20" height="62" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" rx="4" />
+  
+  <!-- Bottom Tier -->
+  <path d="M 40 460 L 128 320 L 216 460 Z" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Bottom Tier Highlights -->
+  <path d="M 80 420 L 128 360 L 176 420" fill="none" stroke="#5A8B54" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Middle Tier -->
+  <path d="M 70 360 L 128 240 L 186 360 Z" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Middle Tier Highlights -->
+  <path d="M 100 320 L 128 280 L 156 320" fill="none" stroke="#5A8B54" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Top Tier -->
+  <path d="M 95 280 L 128 160 L 161 280 Z" fill="#3A6B35" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Top Tier Highlights -->
+  <path d="M 115 240 L 128 210 L 141 240" fill="none" stroke="#5A8B54" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Snow on Top Tier -->
+  <path d="M 110 180 Q 128 140 146 180 L 138 195 L 120 195 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Snow on Middle Tier (Left) -->
+  <path d="M 80 310 Q 100 280 120 310 L 110 325 L 90 325 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Snow on Middle Tier (Right) -->
+  <path d="M 136 310 Q 156 280 176 310 L 166 325 L 146 325 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Snow on Bottom Tier (Left) -->
+  <path d="M 60 410 Q 80 380 100 410 L 90 425 L 70 425 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <!-- Snow on Bottom Tier (Right) -->
+  <path d="M 156 410 Q 176 380 196 410 L 186 425 L 166 425 Z" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+</svg>

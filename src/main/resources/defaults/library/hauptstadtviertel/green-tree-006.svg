@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M105 512 L151 512 L140 320 L116 320 Z" fill="#8B7355" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Urban Detail: Graffiti on trunk -->
+  <path d="M120 420 Q130 410 135 430 Q130 440 120 430 Z" fill="#FF69B4" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <path d="M125 440 L130 450" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Canopy Layers -->
+  <circle cx="170" cy="260" r="70" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="86" cy="260" r="70" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="200" r="85" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="140" r="60" fill="#76B947" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Leaf Highlights -->
+  <path d="M100 160 Q110 140 130 150" fill="none" stroke="#A2D149" stroke-width="6" stroke-linecap="round" />
+  <path d="M150 220 Q160 200 180 210" fill="none" stroke="#A2D149" stroke-width="6" stroke-linecap="round" />
+  <path d="M80 230 Q70 210 90 220" fill="none" stroke="#A2D149" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Spiky Fruit 1 -->
+  <g transform="translate(110, 240)">
+    <circle cx="0" cy="0" r="14" fill="#A2C11C" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-18 -5 L-14 -2 M-15 8 L-11 5 M5 12 L8 18 M15 5 L18 -2 M10 -15 L12 -20" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+
+  <!-- Spiky Fruit 2 -->
+  <g transform="translate(150, 280)">
+    <circle cx="0" cy="0" r="14" fill="#A2C11C" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-18 -5 L-14 -2 M-15 8 L-11 5 M5 12 L8 18 M15 5 L18 -2 M10 -15 L12 -20" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+
+  <!-- Spiky Fruit 3 -->
+  <g transform="translate(90, 290)">
+    <circle cx="0" cy="0" r="14" fill="#A2C11C" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-18 -5 L-14 -2 M-15 8 L-11 5 M5 12 L8 18 M15 5 L18 -2 M10 -15 L12 -20" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+
+  <!-- Spiky Fruit 4 -->
+  <g transform="translate(130, 170)">
+    <circle cx="0" cy="0" r="14" fill="#A2C11C" stroke="#3B2A4A" stroke-width="6" />
+    <path d="M-18 -5 L-14 -2 M-15 8 L-11 5 M5 12 L8 18 M15 5 L18 -2 M10 -15 L12 -20" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  </g>
+</svg>

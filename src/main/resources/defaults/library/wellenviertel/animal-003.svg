@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Feet -->
+  <path d="M100,470 L85,512 L120,512 L120,470" fill="#FFB347" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M156,470 L136,512 L171,512 L171,470" fill="#FFB347" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body -->
+  <path d="M70,300 C70,220 186,220 186,300 C186,450 160,480 128,480 C96,480 70,450 70,300" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Wings -->
+  <path d="M85,310 Q50,330 65,410 Q80,430 100,400" fill="#808080" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M171,310 Q206,330 191,410 Q176,430 156,400" fill="#808080" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Chest Highlight -->
+  <path d="M100,320 Q128,300 156,320 Q156,380 128,400 Q100,380 100,320" fill="#C0C0C0" />
+
+  <!-- Head -->
+  <path d="M128,80 C90,80 80,110 80,140 C80,170 100,190 128,190 C156,190 176,170 176,140 C176,110 166,80 128,80" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head Highlight -->
+  <path d="M110,100 Q128,90 146,100" fill="none" stroke="#C0C0C0" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Beak -->
+  <path d="M120,145 Q128,140 136,145 L128,165 Z" fill="#FFB347" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="110" cy="130" r="12" fill="white" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="130" r="5" fill="#3B2A4A" />
+  
+  <circle cx="146" cy="130" r="12" fill="white" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="146" cy="130" r="5" fill="#3B2A4A" />
+</svg>

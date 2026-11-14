@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Boots -->
+  <path d="M90 470 L120 470 L125 512 L85 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M136 470 L166 470 L171 512 L131 512 Z" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Body -->
+  <path d="M80 200 L176 200 L185 470 L71 470 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Coat Highlights -->
+  <path d="M90 220 L100 220 L100 400 L90 400 Z" fill="#A06A3B" />
+  
+  <!-- Arms -->
+  <path d="M80 210 Q60 250 65 350" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M176 210 Q196 250 191 350" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M80 210 L60 340 L80 350 L100 220 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 210 L196 340 L176 350 L156 220 Z" fill="#8B5A2B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coat Buttons -->
+  <circle cx="128" cy="260" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="300" r="6" fill="#3B2A4A" />
+  <circle cx="128" cy="340" r="6" fill="#3B2A4A" />
+
+  <!-- Head -->
+  <circle cx="128" cy="150" r="35" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Face -->
+  <circle cx="118" cy="145" r="3" fill="#3B2A4A" />
+  <circle cx="138" cy="145" r="3" fill="#3B2A4A" />
+  <path d="M120 160 Q128 170 136 160" fill="none" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Hat -->
+  <path d="M93 140 Q93 90 128 90 Q163 90 163 140 Z" fill="#C0392B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M115 100 Q128 95 141 100" fill="none" stroke="#E74C3C" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Scarf -->
+  <path d="M100 175 Q128 195 156 175 L160 210 Q128 230 96 210 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M110 210 L110 310 Q110 320 120 320 L125 210 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M146 210 L146 310 Q146 320 136 320 L131 210 Z" fill="#F1C40F" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+</svg>

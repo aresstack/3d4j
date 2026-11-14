@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M150 450 C 240 450, 240 100, 130 100 C 100 100, 110 200, 130 250" 
+        fill="#E65C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M140 150 C 180 150, 180 250, 140 280" 
+        fill="none" stroke="#F28D7B" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Feet -->
+  <ellipse cx="90" cy="500" rx="30" ry="15" fill="#E65C41" stroke="#3B2A4A" stroke-width="8" />
+  <ellipse cx="166" cy="500" rx="30" ry="15" fill="#E65C41" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Body -->
+  <path d="M80 512 Q 80 250, 128 250 Q 176 250, 176 512 Z" 
+        fill="#E65C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Belly -->
+  <path d="M100 512 Q 100 300, 128 300 Q 156 300, 156 512 Z" 
+        fill="#FAD4C0" stroke="none" />
+
+  <!-- Head -->
+  <circle cx="128" cy="180" r="60" fill="#E65C41" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M90 140 L 80 80 L 115 130 Z" fill="#E65C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M166 140 L 176 80 L 141 130 Z" fill="#E65C41" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="110" cy="170" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="112" cy="170" r="6" fill="#3B2A4A" />
+  <circle cx="146" cy="170" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="144" cy="170" r="6" fill="#3B2A4A" />
+
+  <!-- Nose -->
+  <circle cx="128" cy="195" r="6" fill="#3B2A4A" />
+
+  <!-- Arms -->
+  <path d="M100 320 Q 110 350, 120 340" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M156 320 Q 146 350, 136 340" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Nut -->
+  <ellipse cx="128" cy="340" rx="18" ry="22" fill="#A67C52" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M120 330 Q 128 320, 136 330" fill="none" stroke="#C4A484" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Paws holding nut -->
+  <circle cx="115" cy="345" r="10" fill="#E65C41" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="141" cy="345" r="10" fill="#E65C41" stroke="#3B2A4A" stroke-width="6" />
+</svg>

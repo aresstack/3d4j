@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Main Ochre Frame -->
+  <rect x="16" y="16" width="96" height="96" fill="#D4A017" stroke="#3B2A4A" stroke-width="5" rx="4" />
+  
+  <!-- Blue Baroque Accents - Top -->
+  <path d="M 44 16 Q 64 0 84 16 L 84 24 Q 64 10 44 24 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Blue Baroque Accents - Bottom -->
+  <path d="M 44 112 Q 64 128 84 112 L 84 104 Q 64 118 44 104 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Blue Baroque Accents - Left -->
+  <path d="M 16 44 Q 0 64 16 84 L 24 84 Q 10 64 24 44 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Blue Baroque Accents - Right -->
+  <path d="M 112 44 Q 128 64 112 84 L 104 84 Q 118 64 104 44 Z" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  
+  <!-- Corner Curls -->
+  <circle cx="22" cy="22" r="6" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="106" cy="22" r="6" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="22" cy="106" r="6" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="106" cy="106" r="6" fill="#4A90E2" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Glass -->
+  <rect x="24" y="24" width="80" height="80" fill="#B0E0E6" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Glass Highlights -->
+  <path d="M 32 32 L 50 32 L 32 50 Z" fill="#E0F7FA" />
+  <rect x="85" y="85" width="10" height="10" fill="#E0F7FA" rx="2" />
+  <rect x="80" y="35" width="4" height="20" fill="#E0F7FA" rx="2" />
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Hair Back/Ponytail -->
+  <path d="M160 80 Q210 60 200 140 Q190 180 150 140 Z" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Legs/Pants -->
+  <path d="M90 230 L70 490 L115 490 L128 280 L141 490 L186 490 L166 230 Z" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shoes -->
+  <ellipse cx="92" cy="495" rx="25" ry="15" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="164" cy="495" rx="25" ry="15" fill="#5D4037" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Shirt -->
+  <rect x="85" y="145" width="86" height="100" rx="10" fill="#FFFACD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="60" y="145" width="30" height="70" rx="10" fill="#FFFACD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="166" y="145" width="30" height="70" rx="10" fill="#FFFACD" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Overalls Bib -->
+  <rect x="100" y="160" width="56" height="80" rx="5" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="100" y="145" width="12" height="20" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="144" y="145" width="12" height="20" fill="#ADD8E6" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="100" r="45" fill="#FFDBAC" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Hair Top -->
+  <path d="M83 100 Q83 45 128 45 Q173 45 173 100" fill="#A0522D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Face -->
+  <circle cx="115" cy="95" r="4" fill="#3B2A4A" />
+  <circle cx="141" cy="95" r="4" fill="#3B2A4A" />
+  <path d="M118 115 Q128 125 138 115" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Highlights -->
+  <path d="M110 60 Q128 55 145 60" fill="none" stroke="#C07040" stroke-width="4" stroke-linecap="round" />
+  <rect x="105" y="165" width="8" height="40" rx="4" fill="#B0E0EE" />
+</svg>

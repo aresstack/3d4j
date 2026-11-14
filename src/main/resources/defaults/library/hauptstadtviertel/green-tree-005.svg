@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M 105 512 L 115 320 L 141 320 L 151 512 Z" fill="#9B8E7E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Main Knobbly Branches -->
+  <!-- Left Knob -->
+  <circle cx="90" cy="300" r="35" fill="#8B7D6B" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M 115 320 L 90 300" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Right Knob -->
+  <circle cx="166" cy="300" r="35" fill="#8B7D6B" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M 141 320 L 166 300" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Top Knob -->
+  <circle cx="128" cy="260" r="40" fill="#8B7D6B" stroke="#3B2A4A" stroke-width="8" />
+  <path d="M 128 320 L 128 260" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Highlights on Knobs -->
+  <path d="M 80 280 A 20 20 0 0 1 100 280" fill="none" stroke="#BDB7AB" stroke-width="6" stroke-linecap="round" />
+  <path d="M 156 280 A 20 20 0 0 1 176 280" fill="none" stroke="#BDB7AB" stroke-width="6" stroke-linecap="round" />
+  <path d="M 118 240 A 20 20 0 0 1 138 240" fill="none" stroke="#BDB7AB" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Fresh Shoots - Left -->
+  <path d="M 80 275 L 60 210" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  <path d="M 90 265 L 90 190" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  <path d="M 100 275 L 110 220" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Fresh Shoots - Right -->
+  <path d="M 176 275 L 196 210" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  <path d="M 166 265 L 166 190" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  <path d="M 156 275 L 146 220" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Fresh Shoots - Top -->
+  <path d="M 120 230 L 110 150" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  <path d="M 136 230 L 146 150" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+  <path d="M 128 220 L 128 130" stroke="#7CFC00" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Leaves/Clusters -->
+  <circle cx="60" cy="210" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="90" cy="190" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="110" cy="220" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  
+  <circle cx="196" cy="210" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="166" cy="190" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="146" cy="220" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  
+  <circle cx="110" cy="150" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="146" cy="150" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="128" cy="130" r="12" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" />
+</svg>

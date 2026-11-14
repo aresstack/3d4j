@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#E0E0E0" />
+  <!-- Inner Circle -->
+  <ellipse cx="168" cy="128" rx="8" ry="6" fill="#F2F2F2" />
+  <ellipse cx="88" cy="128" rx="7" ry="5" fill="#D8D8D8" />
+  <ellipse cx="128" cy="168" rx="9" ry="7" fill="#E8E8E8" />
+  <ellipse cx="128" cy="88" rx="6" ry="8" fill="#F2F2F2" />
+  <ellipse cx="156" cy="156" rx="8" ry="6" fill="#D8D8D8" />
+  <ellipse cx="100" cy="100" rx="7" ry="7" fill="#E8E8E8" />
+  <ellipse cx="156" cy="100" rx="6" ry="5" fill="#F2F2F2" />
+  <ellipse cx="100" cy="156" rx="9" ry="7" fill="#D8D8D8" />
+  <!-- Middle Circle -->
+  <ellipse cx="208" cy="128" rx="8" ry="6" fill="#E8E8E8" />
+  <ellipse cx="48" cy="128" rx="7" ry="5" fill="#F2F2F2" />
+  <ellipse cx="128" cy="208" rx="9" ry="7" fill="#D8D8D8" />
+  <ellipse cx="128" cy="48" rx="6" ry="8" fill="#E8E8E8" />
+  <ellipse cx="184" cy="184" rx="8" ry="6" fill="#F2F2F2" />
+  <ellipse cx="72" cy="72" rx="7" ry="7" fill="#D8D8D8" />
+  <ellipse cx="184" cy="72" rx="6" ry="5" fill="#E8E8E8" />
+  <ellipse cx="72" cy="184" rx="9" ry="7" fill="#F2F2F2" />
+  <ellipse cx="188" cy="178" rx="7" ry="6" fill="#D8D8D8" />
+  <ellipse cx="68" cy="78" rx="8" ry="5" fill="#E8E8E8" />
+  <ellipse cx="188" cy="78" rx="6" ry="7" fill="#F2F2F2" />
+  <ellipse cx="68" cy="178" rx="7" ry="8" fill="#D8D8D8" />
+  <!-- Outer Circle -->
+  <ellipse cx="233" cy="128" rx="8" ry="6" fill="#F2F2F2" />
+  <ellipse cx="23" cy="128" rx="7" ry="5" fill="#D8D8D8" />
+  <ellipse cx="128" cy="233" rx="9" ry="7" fill="#E8E8E8" />
+  <ellipse cx="128" cy="23" rx="6" ry="8" fill="#F2F2F2" />
+  <ellipse cx="202" cy="202" rx="8" ry="6" fill="#D8D8D8" />
+  <ellipse cx="54" cy="54" rx="7" ry="7" fill="#E8E8E8" />
+  <ellipse cx="202" cy="54" rx="6" ry="5" fill="#F2F2F2" />
+  <ellipse cx="54" cy="202" rx="9" ry="7" fill="#D8D8D8" />
+  <ellipse cx="223" cy="168" rx="7" ry="6" fill="#E8E8E8" />
+  <ellipse cx="33" cy="88" rx="8" ry="5" fill="#F2F2F2" />
+  <ellipse cx="223" cy="88" rx="6" ry="7" fill="#D8D8D8" />
+  <ellipse cx="33" cy="168" rx="7" ry="8" fill="#E8E8E8" />
+  <ellipse cx="168" cy="223" rx="8" ry="6" fill="#F2F2F2" />
+  <ellipse cx="88" cy="33" rx="7" ry="5" fill="#D8D8D8" />
+  <ellipse cx="168" cy="33" rx="9" ry="7" fill="#E8E8E8" />
+  <ellipse cx="88" cy="223" rx="6" ry="8" fill="#F2F2F2" />
+</svg>

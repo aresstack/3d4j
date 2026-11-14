@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk: Slender and slightly curved by the wind -->
+  <path d="M 115 512 Q 125 350 150 200" 
+        fill="none" 
+        stroke="#3B2A4A" 
+        stroke-width="12" 
+        stroke-linecap="round" />
+  <path d="M 115 512 Q 125 350 150 200" 
+        fill="none" 
+        stroke="#E6D5B8" 
+        stroke-width="6" 
+        stroke-linecap="round" />
+
+  <!-- Branches -->
+  <path d="M 135 320 Q 160 300 180 280" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 135 320 Q 160 300 180 280" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" />
+  
+  <path d="M 145 250 Q 170 230 200 220" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 145 250 Q 170 230 200 220" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" />
+
+  <path d="M 150 200 Q 160 150 190 130" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M 150 200 Q 160 150 190 130" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Wind-swept Canopy: Clusters of white and pastel blue blossoms -->
+  <!-- Back layer (Pastel Blue) -->
+  <circle cx="170" cy="180" r="40" fill="#D1E9FF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="200" cy="160" r="35" fill="#D1E9FF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="150" cy="140" r="30" fill="#D1E9FF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="190" cy="120" r="45" fill="#D1E9FF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Front layer (White) -->
+  <circle cx="160" cy="190" r="35" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="190" cy="170" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="140" cy="150" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="210" cy="140" r="35" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="180" cy="110" r="30" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights/Small blossoms for detail -->
+  <circle cx="145" cy="130" r="10" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="220" cy="160" r="12" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="170" cy="100" r="8" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="200" cy="110" r="10" fill="#FFFFFF" stroke="#3B2A4A" stroke-width="4" />
+</svg>

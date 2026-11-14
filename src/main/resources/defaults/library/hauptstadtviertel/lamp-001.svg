@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Base of the lantern -->
+  <path d="M70 512 L186 512 L175 470 L81 470 Z" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M85 470 L171 470 L165 450 L91 450 Z" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Fluted Post -->
+  <rect x="113" y="150" width="30" height="300" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Fluting details (lighter green lines) -->
+  <line x1="122" y1="160" x2="122" y2="440" stroke="#2D5A27" stroke-width="4" stroke-linecap="round" />
+  <line x1="134" y1="160" x2="134" y2="440" stroke="#2D5A27" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Lantern Glass Area -->
+  <path d="M100 260 L156 260 L145 160 L111 160 Z" fill="#FFF9C4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Glass Highlight -->
+  <path d="M115 170 L125 170 L120 240 L110 240 Z" fill="#FFFFFF" opacity="0.5" />
+
+  <!-- Lantern Frame Bottom -->
+  <path d="M95 260 L161 260 L161 275 L95 275 Z" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Lantern Frame Top/Cap -->
+  <path d="M100 160 L156 160 L140 130 L116 130 Z" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- The Crown Top -->
+  <path d="M116 130 L140 130 L128 110 Z" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="128" cy="105" r="6" fill="#1B3D1B" stroke="#3B2A4A" stroke-width="6" />
+  
+  <!-- Post Highlight -->
+  <rect x="118" y="150" width="4" height="300" fill="#2D5A27" opacity="0.6" />
+</svg>

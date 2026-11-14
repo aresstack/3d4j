@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 8,
+  "createdAt": "2026-11-14T19:04:59Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a brown bear sitting upright and waving one paw, friendly. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

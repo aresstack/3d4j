@@ -1,0 +1,9 @@
+{
+  "kind": "bush",
+  "number": 2,
+  "createdAt": "2026-11-14T03:01:03Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "weathered wooden crate stacked with seashells and driftwood, placed between houses. It belongs to a district of the town with this look, which everything in the district shares: Bright pastel blues and sandy beiges dominate, with curved, wave‑shaped houses, light timber frames, whitewashed walls, and a breezy, relaxed seaside mood.",
+  "width": 256,
+  "height": 512
+}

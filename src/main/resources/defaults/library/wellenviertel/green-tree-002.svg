@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Twisted Trunk -->
+  <path d="M 90 512 L 166 512 C 170 460 130 460 140 380 C 150 300 110 300 120 240 L 100 240 C 110 300 70 300 80 380 C 90 460 150 460 90 512 Z" 
+        fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Trunk Highlight -->
+  <path d="M 110 400 Q 115 390 120 400" fill="none" stroke="#E5DCC3" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Olive Canopy -->
+  <path d="M 128 110 C 160 110 190 130 200 170 C 210 210 190 250 160 260 C 130 270 100 260 70 250 C 40 240 30 200 40 160 C 50 120 80 110 128 110 Z" 
+        fill="#A2AD91" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Canopy Highlight -->
+  <path d="M 110 140 Q 120 130 130 140" fill="none" stroke="#B8C9A8" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Ripe Olives -->
+  <circle cx="110" cy="170" r="7" fill="#4A3B52" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="140" cy="190" r="7" fill="#4A3B52" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="100" cy="230" r="7" fill="#4A3B52" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="150" cy="240" r="7" fill="#4A3B52" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="120" cy="260" r="7" fill="#4A3B52" stroke="#3B2A4A" stroke-width="4" />
+</svg>

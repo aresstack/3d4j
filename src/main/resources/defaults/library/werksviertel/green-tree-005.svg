@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Concrete Base -->
+  <rect x="60" y="470" width="136" height="42" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Rust patch on concrete -->
+  <path d="M70 480 Q 85 475 100 485 L 95 495 Q 80 490 70 490 Z" fill="#A55233" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Trunk -->
+  <rect x="120" y="160" width="16" height="310" fill="#8C8C8C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Crown (Narrow Pointed Shape) -->
+  <path d="M128 30 C 160 150 170 280 128 380 C 86 280 96 150 128 30" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Highlights on Crown -->
+  <path d="M128 60 C 140 150 145 220 128 280" fill="none" stroke="#4A8C43" stroke-width="8" stroke-linecap="round" />
+  <path d="M115 120 Q 120 140 110 160" fill="none" stroke="#4A8C43" stroke-width="6" stroke-linecap="round" />
+  <path d="M135 200 Q 140 220 130 240" fill="none" stroke="#4A8C43" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Industrial Weed -->
+  <path d="M190 470 Q 195 450 205 460 Q 210 440 220 465" fill="none" stroke="#7BA05B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M205 460 Q 210 450 215 460" fill="none" stroke="#7BA05B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Awning -->
+  <path d="M10 20 L118 20 L114 35 L14 35 Z" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="20" y="20" width="12" height="15" fill="#FFFFFF" />
+  <rect x="40" y="20" width="12" height="15" fill="#FFFFFF" />
+  <rect x="60" y="20" width="12" height="15" fill="#FFFFFF" />
+  <rect x="80" y="20" width="12" height="15" fill="#FFFFFF" />
+  <rect x="100" y="20" width="12" height="15" fill="#FFFFFF" />
+
+  <!-- Window Frame -->
+  <rect x="14" y="40" width="50" height="50" fill="#D2B48C" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <!-- Glass -->
+  <rect x="18" y="44" width="42" height="42" fill="#AEEEEE" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- Bakery Items in Window -->
+  <!-- Rolls -->
+  <circle cx="25" cy="75" r="5" fill="#CD853F" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="35" cy="78" r="5" fill="#CD853F" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="45" cy="74" r="5" fill="#CD853F" stroke="#3B2A4A" stroke-width="2" />
+  <!-- Doughnuts -->
+  <circle cx="25" cy="58" r="6" fill="#FFB6C1" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="25" cy="58" r="2" fill="#AEEEEE" />
+  <circle cx="40" cy="55" r="6" fill="#FFB6C1" stroke="#3B2A4A" stroke-width="2" />
+  <circle cx="40" cy="55" r="2" fill="#AEEEEE" />
+  
+  <!-- Glass Highlights -->
+  <rect x="22" y="48" width="6" height="3" fill="#FFFFFF" opacity="0.6" />
+  <rect x="25" y="51" width="3" height="3" fill="#FFFFFF" opacity="0.6" />
+
+  <!-- Door -->
+  <rect x="66" y="40" width="48" height="72" fill="#8B4513" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <circle cx="105" cy="76" r="3" fill="#FFD700" stroke="#3B2A4A" stroke-width="2" />
+  
+  <!-- Berlin-style details (roughness) -->
+  <path d="M110 100 Q112 105 114 100" fill="none" stroke="#708090" stroke-width="3" stroke-linecap="round" />
+  <path d="M105 105 Q107 108 109 105" fill="none" stroke="#708090" stroke-width="3" stroke-linecap="round" />
+  <rect x="68" y="100" width="10" height="4" fill="#BDB76B" opacity="0.5" />
+</svg>

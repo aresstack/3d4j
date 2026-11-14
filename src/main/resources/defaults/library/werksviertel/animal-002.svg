@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Feet -->
+  <path d="M90 470 L70 512 M110 470 L110 512 M130 470 L130 512 M150 470 L170 512" 
+        fill="none" stroke="#3B2A4A" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Body -->
+  <ellipse cx="128" cy="330" rx="80" ry="120" fill="#2D2D2D" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Wings -->
+  <path d="M60 300 Q30 350 60 420" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M196 300 Q226 350 196 420" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Head -->
+  <circle cx="128" cy="170" r="65" fill="#2D2D2D" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Beak -->
+  <path d="M118 180 L138 180 L128 230 Z" fill="#FFB800" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Eyes -->
+  <circle cx="110" cy="160" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="110" cy="160" r="5" fill="#3B2A4A" />
+  
+  <circle cx="146" cy="160" r="12" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="146" cy="160" r="5" fill="#3B2A4A" />
+  
+  <!-- Highlights -->
+  <path d="M100 140 Q120 120 140 140" fill="none" stroke="#4A4A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M80 320 Q70 350 80 380" fill="none" stroke="#4A4A4A" stroke-width="6" stroke-linecap="round" />
+  <path d="M176 320 Q186 350 176 380" fill="none" stroke="#4A4A4A" stroke-width="6" stroke-linecap="round" />
+</svg>

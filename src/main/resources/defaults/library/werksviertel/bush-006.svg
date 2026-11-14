@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Industrial Base: Cracked Concrete and Rusted Iron -->
+  <path d="M40 512 L40 460 L60 440 L100 450 L150 430 L200 450 L216 460 L216 512 Z" fill="#A0A0A0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M70 460 L110 460 L110 480 L70 480 Z" fill="#8B4513" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M160 440 L180 470" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" fill="none" />
+  
+  <!-- Main Stems -->
+  <path d="M128 440 Q128 300 80 200" fill="none" stroke="#6B8E23" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M128 440 Q140 300 180 220" fill="none" stroke="#6B8E23" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M128 440 Q110 350 130 250" fill="none" stroke="#6B8E23" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Leaves - Left Branch -->
+  <ellipse cx="110" cy="320" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(-30 110 320)" />
+  <ellipse cx="90" cy="280" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(-40 90 280)" />
+  <ellipse cx="120" cy="260" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(20 120 260)" />
+  
+  <!-- Leaves - Right Branch -->
+  <ellipse cx="140" cy="330" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(30 140 330)" />
+  <ellipse cx="160" cy="290" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(40 160 290)" />
+  <ellipse cx="150" cy="250" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(10 150 250)" />
+  
+  <!-- Leaves - Center Branch -->
+  <ellipse cx="120" cy="300" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(-20 120 300)" />
+  <ellipse cx="140" cy="270" rx="15" ry="8" fill="#8FBC8F" stroke="#3B2A4A" stroke-width="6" transform="rotate(20 140 270)" />
+
+  <!-- Flower Cones - Purple Spikes -->
+  <!-- Left Cone -->
+  <path d="M80 200 Q70 150 80 100 Q90 150 80 200" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M80 120 Q85 130 80 140" stroke="#B19CD9" stroke-width="4" stroke-linecap="round" fill="none" />
+  <path d="M75 160 Q80 170 75 180" stroke="#B19CD9" stroke-width="4" stroke-linecap="round" fill="none" />
+  
+  <!-- Right Cone -->
+  <path d="M180 220 Q190 170 180 120 Q170 170 180 220" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M175 140 Q180 150 175 160" stroke="#B19CD9" stroke-width="4" stroke-linecap="round" fill="none" />
+  <path d="M185 180 Q180 190 185 200" stroke="#B19CD9" stroke-width="4" stroke-linecap="round" fill="none" />
+  
+  <!-- Center Cone -->
+  <path d="M130 250 Q120 200 130 150 Q140 200 130 250" fill="#9370DB" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M130 170 Q135 180 130 190" stroke="#B19CD9" stroke-width="4" stroke-linecap="round" fill="none" />
+  <path d="M125 210 Q130 220 125 230" stroke="#B19CD9" stroke-width="4" stroke-linecap="round" fill="none" />
+</svg>

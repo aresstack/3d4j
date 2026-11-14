@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Tail -->
+  <path d="M160 420 Q220 420 220 320 Q220 240 170 240 Q140 240 140 280" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M160 380 Q210 380 210 350 L170 350 Z" fill="#5D5D5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M160 340 Q210 340 210 310 L170 310 Z" fill="#5D5D5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M160 300 Q200 300 200 270 L170 270 Z" fill="#5D5D5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Legs -->
+  <path d="M100 440 L90 512 L120 512 L130 440 Z" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M156 440 L156 512 L186 512 L176 440 Z" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Body -->
+  <path d="M80 450 Q60 300 128 200 Q196 300 176 450 Z" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 420 Q128 380 156 420" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Arms -->
+  <path d="M90 300 Q60 320 70 360" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M70 360 A15 15 0 1 0 85 375 A15 15 0 1 0 70 360" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <path d="M166 300 Q196 320 186 360" fill="none" stroke="#3B2A4A" stroke-width="8" stroke-linecap="round" />
+  <path d="M186 360 A15 15 0 1 0 171 375 A15 15 0 1 0 186 360" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Head -->
+  <circle cx="128" cy="140" r="60" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Ears -->
+  <path d="M80 110 Q70 70 100 80" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M176 110 Q186 70 156 80" fill="#A9A9A9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Mask -->
+  <path d="M80 130 Q80 110 110 120 Q128 125 146 120 Q176 110 176 130 Q176 160 146 150 Q128 155 110 150 Q80 160 80 130" fill="#5D5D5D" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Eyes -->
+  <circle cx="110" cy="135" r="8" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="112" cy="135" r="3" fill="#3B2A4A" />
+  <circle cx="146" cy="135" r="8" fill="white" stroke="#3B2A4A" stroke-width="4" />
+  <circle cx="144" cy="135" r="3" fill="#3B2A4A" />
+
+  <!-- Nose/Muzzle -->
+  <path d="M118 160 Q128 180 138 160" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+  <circle cx="128" cy="155" r="7" fill="#3B2A4A" />
+
+  <!-- Highlights -->
+  <path d="M110 100 Q120 90 130 100" fill="none" stroke="#D3D3D3" stroke-width="6" stroke-linecap="round" />
+  <path d="M110 250 Q120 240 130 250" fill="none" stroke="#D3D3D3" stroke-width="6" stroke-linecap="round" />
+</svg>

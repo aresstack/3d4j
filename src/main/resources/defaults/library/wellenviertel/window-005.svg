@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Outer Timber Frame -->
+  <circle cx="64" cy="64" r="45" fill="#F2D9B1" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Glass Area -->
+  <circle cx="64" cy="64" r="37" fill="#AEE2FF" stroke="#3B2A4A" stroke-width="5" />
+  
+  <!-- Sea-glass Reflections -->
+  <path d="M45 45 Q 55 35 65 45" fill="none" stroke="#DDF5FF" stroke-width="6" stroke-linecap="round" />
+  <path d="M40 55 Q 50 45 60 55" fill="none" stroke="#DDF5FF" stroke-width="6" stroke-linecap="round" />
+  <circle cx="75" cy="50" r="4" fill="#DDF5FF" />
+  <circle cx="82" cy="60" r="2" fill="#DDF5FF" />
+</svg>

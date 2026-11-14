@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M90 512 L110 280 L146 280 L166 512 Z" fill="#A8A8A8" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Bark Patches - Cream -->
+  <path d="M115 450 Q125 440 130 455 T135 470" fill="none" stroke="#F5F5DC" stroke-width="12" stroke-linecap="round" />
+  <path d="M120 350 Q130 340 135 355" fill="none" stroke="#F5F5DC" stroke-width="10" stroke-linecap="round" />
+  <path d="M105 310 Q115 300 120 315" fill="none" stroke="#F5F5DC" stroke-width="8" stroke-linecap="round" />
+  <path d="M140 410 Q150 400 155 415" fill="none" stroke="#F5F5DC" stroke-width="10" stroke-linecap="round" />
+  
+  <!-- Bark Patches - Greenish Grey -->
+  <path d="M110 400 Q120 390 125 405" fill="none" stroke="#B2C2A2" stroke-width="12" stroke-linecap="round" />
+  <path d="M130 320 Q140 310 145 325" fill="none" stroke="#B2C2A2" stroke-width="10" stroke-linecap="round" />
+  <path d="M110 370 Q120 360 125 375" fill="none" stroke="#B2C2A2" stroke-width="8" stroke-linecap="round" />
+  <path d="M135 460 Q145 450 150 465" fill="none" stroke="#B2C2A2" stroke-width="10" stroke-linecap="round" />
+
+  <!-- Crown - Back Layer (Darker Green) -->
+  <circle cx="128" cy="180" r="110" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="60" cy="220" r="80" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="196" cy="220" r="80" fill="#5A8C4A" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Crown - Middle Layer (Main Green) -->
+  <circle cx="128" cy="150" r="90" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="80" cy="190" r="70" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="176" cy="190" r="70" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="230" r="80" fill="#7FB069" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Crown - Top Layer (Highlights) -->
+  <circle cx="110" cy="120" r="40" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="150" cy="130" r="35" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="80" cy="150" r="30" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="170" cy="160" r="30" fill="#A8D68D" stroke="#3B2A4A" stroke-width="8" />
+</svg>

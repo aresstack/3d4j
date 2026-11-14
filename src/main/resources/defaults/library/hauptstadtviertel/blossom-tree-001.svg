@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Iron Grate at the foot -->
+  <ellipse cx="128" cy="500" rx="70" ry="15" fill="#606060" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <path d="M100 490 L100 510 M120 490 L120 510 M140 490 L140 510 M160 490 L160 510 M180 490 L180 510" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <path d="M60 500 L196 500" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Trunk -->
+  <path d="M115 500 L118 260 Q128 250 138 260 L141 500 Z" fill="#B0B0B0" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Small graffiti detail on trunk -->
+  <rect x="122" y="380" width="12" height="8" rx="2" fill="#FF6B6B" stroke="#3B2A4A" stroke-width="4" />
+
+  <!-- Crown - Layered circles for a fluffy look -->
+  <!-- Back layer -->
+  <circle cx="80" cy="230" r="70" fill="#8DBB3D" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="176" cy="230" r="70" fill="#8DBB3D" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Middle layer -->
+  <circle cx="128" cy="200" r="90" fill="#A2D149" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="70" cy="180" r="60" fill="#A2D149" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="186" cy="180" r="60" fill="#A2D149" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Top layer -->
+  <circle cx="128" cy="140" r="70" fill="#B8E060" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="130" r="50" fill="#B8E060" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="130" r="50" fill="#B8E060" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Highlights -->
+  <circle cx="110" cy="120" r="15" fill="#DFFFA0" />
+  <circle cx="145" cy="110" r="12" fill="#DFFFA0" />
+  <circle cx="80" cy="160" r="10" fill="#DFFFA0" />
+</svg>

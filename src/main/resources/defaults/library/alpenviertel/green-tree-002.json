@@ -1,0 +1,9 @@
+{
+  "kind": "green-tree",
+  "number": 2,
+  "createdAt": "2026-11-14T16:17:57Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a linden tree: grey trunk, heart-shaped light green crown. It belongs to a district of the town with this look, which everything in the district shares: An alpine Bavarian village: white plastered houses with dark carved wooden balconies full of red geraniums, green shutters, painted frames around the windows, wooden shingle roofs, blue-and-white lozenge flags; cosy and festive.",
+  "width": 256,
+  "height": 512
+}

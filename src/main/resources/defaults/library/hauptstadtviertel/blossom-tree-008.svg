@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Ground patch -->
+  <ellipse cx="128" cy="500" rx="80" ry="20" fill="#8B7D6B" stroke="#3B2A4A" stroke-width="8" />
+
+  <!-- Wooden Stakes -->
+  <rect x="60" y="220" width="18" height="280" rx="4" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="180" y="220" width="18" height="280" rx="4" fill="#D2B48C" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Graffiti on stake -->
+  <path d="M184 350 q 4 -5 8 0 t 8 0" fill="none" stroke="#FF69B4" stroke-width="4" stroke-linecap="round" />
+  <path d="M184 360 q 4 -5 8 0 t 8 0" fill="none" stroke="#00FFFF" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Tree Trunk -->
+  <path d="M120 500 L124 250 Q128 230 132 250 L136 500 Z" fill="#BCAAA4" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Ties/Ropes -->
+  <path d="M79 320 L124 330" fill="none" stroke="#708090" stroke-width="8" stroke-linecap="round" />
+  <path d="M198 320 L132 330" fill="none" stroke="#708090" stroke-width="8" stroke-linecap="round" />
+  <path d="M79 420 L124 430" fill="none" stroke="#708090" stroke-width="8" stroke-linecap="round" />
+  <path d="M198 420 L132 430" fill="none" stroke="#708090" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Foliage (Linden heart-shaped clusters) -->
+  <!-- Main mass -->
+  <circle cx="128" cy="180" r="70" fill="#8DBE9C" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="90" cy="210" r="50" fill="#8DBE9C" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="166" cy="210" r="50" fill="#8DBE9C" stroke="#3B2A4A" stroke-width="8" />
+  <circle cx="128" cy="230" r="60" fill="#8DBE9C" stroke="#3B2A4A" stroke-width="8" />
+  
+  <!-- Lighter highlights -->
+  <circle cx="110" cy="160" r="30" fill="#A8D5BA" />
+  <circle cx="145" cy="170" r="25" fill="#A8D5BA" />
+  <circle cx="100" cy="200" r="20" fill="#A8D5BA" />
+  <circle cx="150" cy="220" r="20" fill="#A8D5BA" />
+
+  <!-- Individual leaf accents -->
+  <path d="M128 110 Q135 100 140 110 Q140 120 128 130 Q116 120 116 110 Q121 100 128 110" fill="#A8D5BA" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M80 170 Q87 160 92 170 Q92 180 80 190 Q68 180 68 170 Q73 160 80 170" fill="#A8D5BA" stroke="#3B2A4A" stroke-width="6" />
+  <path d="M176 170 Q183 160 188 170 Q188 180 176 190 Q164 180 164 170 Q169 160 176 170" fill="#A8D5BA" stroke="#3B2A4A" stroke-width="6" />
+</svg>

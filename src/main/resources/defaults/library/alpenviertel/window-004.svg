@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Lintel: Carved dark wood -->
+  <path d="M 15 15 H 113 V 30 L 103 35 L 93 30 L 83 35 L 73 30 L 63 35 L 53 30 L 43 35 L 33 30 L 23 35 L 15 30 Z" 
+        fill="#5D4037" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Left Shutter: Green -->
+  <rect x="15" y="30" width="15" height="60" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="20" y1="30" x2="20" y2="90" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="25" y1="30" x2="25" y2="90" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Right Shutter: Green -->
+  <rect x="98" y="30" width="15" height="60" fill="#4CAF50" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <line x1="103" y1="30" x2="103" y2="90" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+  <line x1="108" y1="30" x2="108" y2="90" stroke="#3B2A4A" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Window Frame: Painted Cream -->
+  <rect x="30" y="30" width="68" height="60" fill="#FFF9C4" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Glass: Light Blue -->
+  <rect x="34" y="34" width="60" height="52" fill="#B3E5FC" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Curtain: Red and White Checked -->
+  <rect x="34" y="60" width="60" height="26" fill="#D32F2F" stroke="#3B2A4A" stroke-width="4" stroke-linejoin="round" />
+  <rect x="34" y="60" width="15" height="13" fill="#FFFFFF" />
+  <rect x="64" y="60" width="15" height="13" fill="#FFFFFF" />
+  <rect x="49" y="73" width="15" height="13" fill="#FFFFFF" />
+  <rect x="79" y="73" width="15" height="13" fill="#FFFFFF" />
+
+  <!-- Glass Highlights -->
+  <path d="M 40 40 L 50 50 M 45 40 L 55 50" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+</svg>

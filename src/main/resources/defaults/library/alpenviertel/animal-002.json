@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 2,
+  "createdAt": "2026-11-14T16:15:12Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a white goat with small horns and a beard, standing, seen from the front. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

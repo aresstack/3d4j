@@ -1,0 +1,9 @@
+{
+  "kind": "animal",
+  "number": 3,
+  "createdAt": "2026-11-14T18:27:30Z",
+  "model": "google/gemma-4-31B-it",
+  "description": "a fox sitting upright, bushy tail, curious look. A friendly cartoon animal; it fills the tall picture, so draw it upright and large",
+  "width": 256,
+  "height": 512
+}

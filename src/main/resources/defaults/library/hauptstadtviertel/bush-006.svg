@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Main Column Body -->
+  <rect x="68" y="100" width="120" height="412" rx="10" fill="#DCD7C9" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Pointed Roof -->
+  <path d="M50 100 L128 40 L206 100 Z" fill="#5D6D7E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  <rect x="50" y="90" width="156" height="15" rx="5" fill="#5D6D7E" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Posters -->
+  <!-- Poster 1: Yellow, top -->
+  <rect x="75" y="120" width="50" height="80" fill="#FFD966" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" transform="rotate(-2 100 160)" />
+  
+  <!-- Poster 2: Blue, overlapping -->
+  <rect x="110" y="140" width="60" height="100" fill="#74B9FF" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" transform="rotate(3 140 190)" />
+  
+  <!-- Poster 3: Pink, middle -->
+  <rect x="80" y="220" width="70" height="90" fill="#FF85A1" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" transform="rotate(-1 115 265)" />
+  
+  <!-- Poster 4: Green, bottom -->
+  <rect x="115" y="300" width="55" height="110" fill="#A2D149" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" transform="rotate(2 142 355)" />
+  
+  <!-- Poster 5: Orange, torn look -->
+  <path d="M75 330 L130 330 L130 420 L75 420 Z" fill="#FFB347" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <path d="M130 360 L140 370 L130 380" fill="none" stroke="#3B2A4A" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Graffiti scribbles -->
+  <path d="M150 430 Q160 420 170 440 T180 430" fill="none" stroke="#B19CD9" stroke-width="6" stroke-linecap="round" />
+  <path d="M155 450 Q165 440 175 460" fill="none" stroke="#B19CD9" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Highlights for 3D feel -->
+  <rect x="80" y="110" width="15" height="390" rx="7" fill="white" fill-opacity="0.3" />
+</svg>

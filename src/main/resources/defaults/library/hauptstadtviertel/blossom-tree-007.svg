@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <path d="M110 512 L118 300 L138 300 L146 512 Z" fill="#795548" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Poster wrapped around trunk -->
+  <path d="M114 360 Q128 355 142 360 L143 430 Q128 425 113 430 Z" fill="#F5F5DC" stroke="#3B2A4A" stroke-width="6" stroke-linejoin="round" />
+  <!-- Poster details (abstract graphics) -->
+  <rect x="120" y="370" width="15" height="5" fill="#E53935" />
+  <rect x="120" y="380" width="20" height="3" fill="#1E88E5" />
+  <rect x="120" y="390" width="12" height="3" fill="#43A047" />
+  <path d="M132 400 L138 410 L132 415" fill="none" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Canopy - Back Layer (Darker Yellow-Green) -->
+  <path d="M128 100 C80 100 50 150 50 220 C50 280 80 320 128 320 C176 320 206 280 206 220 C206 150 176 100 128 100 Z" fill="#C0CA33" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Canopy - Middle Layer (Bright Yellow) -->
+  <path d="M128 120 C100 120 80 160 80 210 C80 260 110 290 128 290 C146 290 176 260 176 210 C176 160 156 120 128 120 Z" fill="#FDD835" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Canopy - Top Highlights (Pale Yellow) -->
+  <circle cx="110" cy="160" r="20" fill="#FFF176" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="145" cy="180" r="15" fill="#FFF176" stroke="#3B2A4A" stroke-width="6" />
+  <circle cx="125" cy="140" r="12" fill="#FFF176" stroke="#3B2A4A" stroke-width="6" />
+
+  <!-- Small leaf clusters for texture -->
+  <path d="M70 240 Q60 230 70 220 Q80 230 70 240" fill="#C0CA33" stroke="#3B2A4A" stroke-width="4" />
+  <path d="M186 250 Q196 240 186 230 Q176 240 186 250" fill="#C0CA33" stroke="#3B2A4A" stroke-width="4" />
+</svg>

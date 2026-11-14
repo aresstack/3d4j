@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect x="0" y="0" width="256" height="256" fill="#9BC98A" />
+  
+  <!-- Grass Tufts -->
+  <path d="M30 40 L32 35 L34 40 L36 35 L38 40" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M60 180 L62 175 L64 180 L66 175 L68 180" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M100 50 L102 45 L104 50 L106 45 L108 50" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M150 120 L152 115 L154 120 L156 115 L158 120" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M200 60 L202 55 L204 60 L206 55 L208 60" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M220 150 L222 145 L224 150 L226 145 L228 150" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M40 210 L42 205 L44 210 L46 205 L48 210" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M110 200 L112 195 L114 200 L116 195 L118 200" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M180 220 L182 215 L184 220 L186 215 L188 220" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M140 30 L142 25 L144 30 L146 25 L148 30" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M70 110 L72 105 L74 110 L76 105 L78 110" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M130 160 L132 155 L134 160 L136 155 L138 160" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M190 100 L192 95 L194 100 L196 95 L198 100" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M50 140 L52 135 L54 140 L56 135 L58 140" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M210 40 L212 35 L214 40 L216 35 L218 40" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M160 210 L162 205 L164 210 L166 205 L168 210" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M90 130 L92 125 L94 130 L96 125 L98 130" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M30 90 L32 85 L34 90 L36 85 L38 90" stroke="#8BB57A" stroke-width="2" fill="none" />
+  <path d="M170 170 L172 165 L174 170 L176 165 L178 170" stroke="#A8D69B" stroke-width="2" fill="none" />
+  <path d="M230 110 L232 105 L234 110 L236 105 L238 110" stroke="#8BB57A" stroke-width="2" fill="none" />
+
+  <!-- Linden Leaves -->
+  <ellipse cx="50" cy="60" rx="6" ry="4" fill="#D4E157" transform="rotate(15 50 60)" />
+  <ellipse cx="120" cy="80" rx="6" ry="4" fill="#C0CA33" transform="rotate(45 120 80)" />
+  <ellipse cx="180" cy="40" rx="6" ry="4" fill="#D4E157" transform="rotate(-20 180 40)" />
+  <ellipse cx="210" cy="180" rx="6" ry="4" fill="#C0CA33" transform="rotate(110 210 180)" />
+  <ellipse cx="140" cy="220" rx="6" ry="4" fill="#D4E157" transform="rotate(60 140 220)" />
+  <ellipse cx="80" cy="230" rx="6" ry="4" fill="#C0CA33" transform="rotate(-40 80 230)" />
+  <ellipse cx="40" cy="160" rx="6" ry="4" fill="#D4E157" transform="rotate(180 40 160)" />
+  <ellipse cx="110" cy="140" rx="6" ry="4" fill="#C0CA33" transform="rotate(30 110 140)" />
+  <ellipse cx="160" cy="150" rx="6" ry="4" fill="#D4E157" transform="rotate(-70 160 150)" />
+  <ellipse cx="230" cy="200" rx="6" ry="4" fill="#C0CA33" transform="rotate(15 230 200)" />
+  <ellipse cx="70" cy="20" rx="6" ry="4" fill="#D4E157" transform="rotate(100 70 20)" />
+  <ellipse cx="190" cy="130" rx="6" ry="4" fill="#C0CA33" transform="rotate(-15 190 130)" />
+  <ellipse cx="130" cy="110" rx="6" ry="4" fill="#D4E157" transform="rotate(200 130 110)" />
+  <ellipse cx="60" cy="120" rx="6" ry="4" fill="#C0CA33" transform="rotate(40 60 120)" />
+  <ellipse cx="200" cy="80" rx="6" ry="4" fill="#D4E157" transform="rotate(-110 200 80)" />
+</svg>

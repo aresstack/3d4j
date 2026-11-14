@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+  <!-- Trunk -->
+  <rect x="116" y="420" width="24" height="92" fill="#7B4B2A" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 1 (Bottom) -->
+  <path d="M 40 430 Q 128 470 216 430 L 128 310 Z" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 2 -->
+  <path d="M 60 350 Q 128 390 196 350 L 128 230 Z" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 3 -->
+  <path d="M 80 270 Q 128 310 176 270 L 128 150 Z" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Tier 4 (Top) -->
+  <path d="M 100 190 Q 128 230 156 190 L 128 50 Z" fill="#2D5A27" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round" />
+  
+  <!-- Highlights -->
+  <circle cx="80" cy="410" r="6" fill="#4A8B45" />
+  <circle cx="170" cy="410" r="6" fill="#4A8B45" />
+  <circle cx="90" cy="330" r="5" fill="#4A8B45" />
+  <circle cx="160" cy="330" r="5" fill="#4A8B45" />
+  <circle cx="100" cy="250" r="4" fill="#4A8B45" />
+  <circle cx="150" cy="250" r="4" fill="#4A8B45" />
+  <circle cx="115" cy="170" r="3" fill="#4A8B45" />
+  <circle cx="140" cy="170" r="3" fill="#4A8B45" />
+</svg>
