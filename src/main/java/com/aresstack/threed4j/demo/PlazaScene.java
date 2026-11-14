@@ -42,6 +42,8 @@ final class PlazaScene implements AutoCloseable {
     final Mesh facades;
     /** The houses of the town, for building {@link #facades}. */
     final List<Facades.House> houses = new ArrayList<>();
+    /** What the player cannot walk through: houses, the fountain, tree trunks and lamp posts. */
+    final Obstacles obstacles = new Obstacles();
     final int facadeTriangles;
     final Mesh sprites;
     final Mesh sky;
@@ -61,6 +63,7 @@ final class PlazaScene implements AutoCloseable {
         ground = ground(graphics, groundAtlas);
         MeshBuilder builder = new MeshBuilder();
         fountain(builder);
+        obstacles.post(0f, 0f, FOUNTAIN_RADIUS, 5.4f);
         buildingCount = buildings(builder, random) + 3;
         westSide(builder);
         city = builder.build(graphics);
@@ -69,7 +72,7 @@ final class PlazaScene implements AutoCloseable {
         facades = walls.mesh();
         facadeTriangles = walls.triangles();
 
-        SpriteBatch batch = new SpriteBatch(spriteAtlas);
+        SpriteBatch batch = new SpriteBatch(spriteAtlas, obstacles);
         plants(batch, random);
         visitors(batch, random);
         bushes(batch, random); // after the rest, so that everything before keeps its place
@@ -93,16 +96,19 @@ final class PlazaScene implements AutoCloseable {
      * Bonn: the old building at the open side, a dark hall to the left, housing
      * blocks with red-brown roofs to the right.
      */
-    private static void westSide(MeshBuilder builder) {
+    private void westSide(MeshBuilder builder) {
         WestSide.build(builder, WEST_SIDE_FRONT);
+        WestSide.obstacles(obstacles, WEST_SIDE_FRONT);
 
         Vec3 oldWall = new Vec3(0.86f, 0.80f, 0.68f);
         Vec3 oldRoof = new Vec3(0.52f, 0.40f, 0.36f);
         builder.box(9f, 0f, WEST_SIDE_FRONT + 3f, 21f, 6.5f, WEST_SIDE_FRONT + 12f, oldWall, oldRoof);
+        obstacles.box(9f, WEST_SIDE_FRONT + 3f, 21f, WEST_SIDE_FRONT + 12f, 6.5f);
         builder.pyramid(15f, 6.5f, WEST_SIDE_FRONT + 7.5f, 6.6f, 3.2f, oldRoof);
 
         Vec3 hall = new Vec3(0.40f, 0.41f, 0.46f);
         builder.box(-86f, 0f, WEST_SIDE_FRONT - 52f, -58f, 8f, WEST_SIDE_FRONT - 8f, hall, hall.scale(0.8f));
+        obstacles.box(-86f, WEST_SIDE_FRONT - 52f, -58f, WEST_SIDE_FRONT - 8f, 8f);
 
         Vec3 housing = new Vec3(0.93f, 0.90f, 0.86f);
         Vec3 housingRoof = new Vec3(0.66f, 0.42f, 0.38f);
@@ -112,6 +118,7 @@ final class PlazaScene implements AutoCloseable {
             float z = WEST_SIDE_FRONT + block[1];
             builder.box(block[0] - block[2] / 2, 0f, z - block[3] / 2, block[0] + block[2] / 2, 12f, z + block[3] / 2,
                     housing, housingRoof);
+            obstacles.box(block[0] - block[2] / 2, z - block[3] / 2, block[0] + block[2] / 2, z + block[3] / 2, 12f);
             builder.box(block[0] - block[2] / 2 + 1.5f, 12f, z - block[3] / 2 + 1.5f, block[0] + block[2] / 2 - 1.5f,
                     14.6f, z + block[3] / 2 - 1.5f, housing, housingRoof);
         }
@@ -298,29 +305,6 @@ final class PlazaScene implements AutoCloseable {
 
     /** Outer radius of the fountain's basin; it stands in the middle of the square. */
     static final float FOUNTAIN_RADIUS = 5.2f;
-    /** Up to this height the fountain and its water are in the way. */
-    static final float FOUNTAIN_HEIGHT = 7.5f;
-
-    /**
-     * Where somebody ends up who wants to go to this place: the fountain is solid, so
-     * a place inside it is moved out to its edge. Walking against it at an angle
-     * therefore slides along the basin. Above the fountain the way is free.
-     *
-     * @param distance how far from the basin the place has to stay
-     */
-    static Vec3 outsideFountain(Vec3 wanted, float distance) {
-        float nearest = FOUNTAIN_RADIUS + distance;
-        double fromMiddle = Math.hypot(wanted.x(), wanted.z());
-        if (wanted.y() >= FOUNTAIN_HEIGHT || fromMiddle >= nearest) {
-            return wanted;
-        }
-        if (fromMiddle < 0.001) {
-            return new Vec3(0f, wanted.y(), nearest);
-        }
-        float scale = (float) (nearest / fromMiddle);
-        return new Vec3(wanted.x() * scale, wanted.y(), wanted.z() * scale);
-    }
-
     private static void fountain(MeshBuilder builder) {
         Vec3 stone = new Vec3(0.86f, 0.84f, 0.90f);
         Vec3 shade = new Vec3(0.74f, 0.72f, 0.80f);
@@ -388,6 +372,8 @@ final class PlazaScene implements AutoCloseable {
                     continue; // keeps the square free
                 }
                 houses.add(new Facades.House(x, z, half, height, wall, 1000L * ix + iz));
+                float foot = half + Facades.PLINTH;
+                obstacles.box(x - foot, z - foot, x + foot, z + foot, height);
                 builder.floor(x - half, z - half, x + half, z + half, height, roof);
                 if (style == 0) {
                     builder.pyramid(x, height, z, half + 0.4f, 3.5f, roof);
@@ -524,9 +510,11 @@ final class PlazaScene implements AutoCloseable {
         private int count;
 
         private final SpriteAtlas atlas;
+        private final Obstacles obstacles;
 
-        SpriteBatch(SpriteAtlas atlas) {
+        SpriteBatch(SpriteAtlas atlas, Obstacles obstacles) {
             this.atlas = atlas;
+            this.obstacles = obstacles;
         }
 
         void add(Kind kind, float x, float z, float height) {
@@ -546,6 +534,12 @@ final class PlazaScene implements AutoCloseable {
         void add(Kind kind, float x, float z, float height, float radius, float speed, float phase) {
             if ((count + 1) * FLOATS_PER_SPRITE > vertices.length) {
                 vertices = Arrays.copyOf(vertices, vertices.length * 2);
+            }
+            // Trunks and posts are in the way; the crown above them is only a picture.
+            if (kind == Kind.BLOSSOM_TREE || kind == Kind.GREEN_TREE) {
+                obstacles.post(x, z, 0.3f, height * 0.5f);
+            } else if (kind == Kind.LAMP) {
+                obstacles.post(x, z, 0.15f, height);
             }
             SpriteAtlas.Cell cell = atlas.choose(kind, count);
             float half = height * SpriteAtlas.CELL_WIDTH / SpriteAtlas.CELL_HEIGHT / 2f;

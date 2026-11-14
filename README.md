@@ -355,8 +355,13 @@ Sprites ausgestanzt statt transparent.
 Der Brunnen ist ein Schalenbrunnen aus Stein und spuckt Wasser: Die Düse an der Spitze wirft
 eine Fontäne in die kleine Schale, die läuft in die große über und diese in das Becken; vom
 Beckenrand steigen kleine Strahlen zur Mitte, und wo Wasser auftrifft, laufen Ringe über die
-Oberfläche. Der Brunnen ist fest: Der Spieler gleitet am Becken entlang, statt hindurchzugehen
-(darüber hinwegfliegen geht), und die Besucher drehen ihre Runden außerhalb. Jeder Tropfen ist ein Viereck mit Startpunkt, Startgeschwindigkeit und Takt;
+Oberfläche. 
+
+Häuser, das WEST.SIDE-Ensemble, der Brunnen, Baumstämme und Laternen sind fest (`Obstacles`):
+Wer dagegenläuft, gleitet an der Wand entlang. Darüber hinwegfliegen geht, und wer von oben
+kommt, landet auf dem Dach. Die Besucher drehen ihre Runden außerhalb des Brunnens.
+
+Jeder Tropfen ist ein Viereck mit Startpunkt, Startgeschwindigkeit und Takt;
 wo er gerade ist, rechnet der Vertex-Shader (`water`) allein aus der Zeit. Pro Frame fällt
 dafür auf der CPU nichts an, und Texturen braucht das Wasser nicht.
 

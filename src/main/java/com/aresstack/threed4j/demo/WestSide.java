@@ -62,6 +62,13 @@ final class WestSide {
         plan.carPark();
     }
 
+    /** The two office buildings and the car park as what stands in the way; see {@link #build}. */
+    static void obstacles(Obstacles obstacles, float frontZ) {
+        obstacles.box(-32f, frontZ - 62f, -14f, frontZ, TOP);
+        obstacles.box(14f, frontZ - 62f, 32f, frontZ, TOP);
+        obstacles.box(-HALF_WIDTH, frontZ - LENGTH, HALF_WIDTH, frontZ - 62f, 18f);
+    }
+
     // ------------------------------------------------- plan to world coordinates
 
     private Vec3 point(float x, float y, float z) {
