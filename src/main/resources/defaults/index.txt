@@ -143,7 +143,7 @@ library/bluetenviertel/window-007.png
 library/bluetenviertel/window-008.json
 library/bluetenviertel/window-008.svg
 library/bluetenviertel/window-008.png
-library/hauptstadtviertel/district.json
+library/hauptstadtviertel/district.json#2
 library/stadt/visitor-001.json
 library/stadt/visitor-001.svg
 library/stadt/visitor-001.png

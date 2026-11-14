@@ -162,10 +162,11 @@ die Sammlungen von Blütenviertel und Werksviertel und drei geplante Viertel als
 |---|---|---|
 | **Wellenviertel** | östlich vom Startplatz, am Meer | Leuchtturm auf der Landzunge |
 | **Alpenviertel** | westlich vom Startplatz, vor den Bergen | Kirche mit Zwiebelturm und Maibaum |
-| **Hauptstadtviertel** | hinter dem Werksviertel | Fernsehturm |
+| **Hauptstadtviertel** | nördlich vom Startplatz, dem Werksviertel gegenüber | Fernsehturm |
 
-Die Karte ist ein Scherz auf Deutschland: das WEST.SIDE-Ensemble als Bonn, der Leuchtturm als
-Küste, die Alpen, der Fernsehturm als Berlin. Beim ersten Start kopiert
+Die vier liegen rings um das Blütenviertel. Die Karte ist ein Scherz auf Deutschland: das
+WEST.SIDE-Ensemble als Bonn, der Leuchtturm als Küste, gegenüber die Alpen, und Bonn gegenüber
+der Fernsehturm als Berlin. Beim ersten Start kopiert
 `DefaultAssets` sie aus dem Programm in den Asset-Ordner (`src/main/resources/defaults`).
 Jede Datei wird genau einmal angeboten (`library/.defaults` merkt sich, welche): Vorhandenes
 bleibt unberührt, und ein gelöschtes Bild kommt nicht wieder. Abschalten mit

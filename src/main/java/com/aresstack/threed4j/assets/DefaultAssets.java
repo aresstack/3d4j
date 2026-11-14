@@ -38,11 +38,25 @@ public final class DefaultAssets {
             if (in == null) {
                 return List.of();
             }
-            return new String(in.readAllBytes(), StandardCharsets.UTF_8).lines().map(String::trim)
-                    .filter(line -> !line.isEmpty()).toList();
+            return entries(in).stream().map(DefaultAssets::path).toList();
         } catch (IOException e) {
             return List.of();
         }
+    }
+
+    /**
+     * The lines of the index. A line is a path, or a path followed by {@code #} and a
+     * number: the number is raised when a plan the program brings along is reworked,
+     * so that the reworked plan is offered once more.
+     */
+    private static List<String> entries(InputStream in) throws IOException {
+        return new String(in.readAllBytes(), StandardCharsets.UTF_8).lines().map(String::trim)
+                .filter(line -> !line.isEmpty()).toList();
+    }
+
+    private static String path(String entry) {
+        int mark = entry.indexOf('#');
+        return mark < 0 ? entry : entry.substring(0, mark);
     }
 
     /**
@@ -65,10 +79,17 @@ public final class DefaultAssets {
         }
         int copied = 0;
         List<String> now = new ArrayList<>();
-        for (String file : files()) {
-            if (offered.contains(file)) {
+        List<String> entries;
+        try (InputStream in = DefaultAssets.class.getResourceAsStream(ROOT + "index.txt")) {
+            entries = in == null ? List.of() : entries(in);
+        } catch (IOException e) {
+            entries = List.of();
+        }
+        for (String entry : entries) {
+            if (offered.contains(entry)) {
                 continue;
             }
+            String file = path(entry);
             Path target = store.directory().resolve(file);
             try (InputStream in = DefaultAssets.class.getResourceAsStream(ROOT + file)) {
                 if (in == null) {
@@ -80,7 +101,7 @@ public final class DefaultAssets {
                     Files.write(target, content);
                     copied++;
                 }
-                now.add(file);
+                now.add(entry);
             } catch (IOException e) {
                 System.out.println("Library: " + file + " could not be installed (" + e.getMessage() + ")");
             }
