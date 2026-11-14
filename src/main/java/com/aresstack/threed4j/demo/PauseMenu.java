@@ -89,6 +89,14 @@ final class PauseMenu {
             return false;
         }
 
+        /** Whether looking around in full screen needs a held mouse button. */
+        default boolean holdToLook() {
+            return false;
+        }
+
+        default void holdToLook(boolean hold) {
+        }
+
         /** Fill the screen, or go back to a window. */
         default void fullscreen(boolean fill) {
         }
@@ -624,9 +632,13 @@ final class PauseMenu {
         g.drawString(number, (int) (SPEED_BOX.getCenterX() - g.getFontMetrics().stringWidth(number) / 2.0),
                 (int) SPEED_BOX.getCenterY() + 6);
         note(g, "1,00 ist die Vorgabe. Zahl anklicken, tippen, Enter.", 290);
-        note(g, "Umsehen: im Vollbild die Maus bewegen; im Fenster Maustaste", 322);
-        note(g, "halten und ziehen. Die Pfeiltasten gehen immer.", 342);
-        note(g, "Gehen: W A S D, schneller mit Umschalt, E und Q hoch und runter.", 374);
+        label(g, "Umsehen im Vollbild", 326);
+        boolean hold = actions.holdToLook();
+        choice(g, "Maus bewegen", 40, 338, 170, !hold, () -> actions.holdToLook(false));
+        choice(g, "Maustaste halten", 222, 338, 190, hold, () -> actions.holdToLook(true));
+        note(g, "Im Fenster immer Maustaste halten und ziehen. Die Pfeiltasten", 404);
+        note(g, "gehen immer. Loslassen und neu greifen dreht von dort weiter.", 424);
+        note(g, "Gehen: W A S D, schneller mit Umschalt, E und Q hoch und runter.", 456);
     }
 
     private void paintAiTab(Graphics2D g) {

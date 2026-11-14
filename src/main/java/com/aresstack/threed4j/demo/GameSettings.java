@@ -87,6 +87,21 @@ record GameSettings(float renderScale, boolean smoothUpscale, float mouseSpeed) 
         return !"false".equalsIgnoreCase(read(file).getProperty("window.fullscreen"));
     }
 
+    /**
+     * Whether looking around in full screen needs a held mouse button ({@code mouse.hold}), as in a
+     * window. For a mouse that reports places (a virtual machine): letting go and gripping anew
+     * turns on from wherever the pointer is.
+     */
+    static boolean holdToLook(Path file) {
+        return "true".equalsIgnoreCase(read(file).getProperty("mouse.hold"));
+    }
+
+    static void saveHoldToLook(Path file, boolean hold) {
+        Properties properties = read(file);
+        properties.setProperty("mouse.hold", String.valueOf(hold));
+        store(file, properties);
+    }
+
     static void saveFullscreen(Path file, boolean fullscreen) {
         Properties properties = read(file);
         properties.setProperty("window.fullscreen", String.valueOf(fullscreen));

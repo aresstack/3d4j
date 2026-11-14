@@ -110,6 +110,8 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private boolean fullscreenKnown;
     /** Whether the mouse is captured and looks around without a button held. */
     private boolean mouseLook;
+    /** In full screen, too, looking around needs a held mouse button. */
+    private boolean holdToLook = GameSettings.holdToLook(GameSettings.file());
     private Sea sea;
     private Alps alps;
     private String partsShown;
@@ -435,7 +437,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
             }
             // In full screen the mouse belongs to the game while it is played: the pointer is gone and
             // moving the mouse looks around. Every menu gets the pointer back.
-            mouseLook = fills && playing && pause == null && setup == null;
+            mouseLook = fills && playing && pause == null && setup == null && !holdToLook;
             context.window().captureMouse(mouseLook);
         }
         if (input.wasPressed(Key.ESCAPE)) {
@@ -584,6 +586,17 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     @Override
     public boolean fullscreen() {
         return engine.window().fullscreen();
+    }
+
+    @Override
+    public boolean holdToLook() {
+        return holdToLook;
+    }
+
+    @Override
+    public void holdToLook(boolean hold) {
+        holdToLook = hold;
+        GameSettings.saveHoldToLook(GameSettings.file(), hold);
     }
 
     @Override

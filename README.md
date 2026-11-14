@@ -404,7 +404,10 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
   Bildschirmen, auf welchem das Spiel läuft (von links nach rechts nummeriert; gemerkt als
   `window.monitor`).
 - **Steuerung:** Geschwindigkeit der Maus beim Umsehen, als Schieberegler von 0,10 bis 3,00
-  mit einem Zahlenfeld daneben (anklicken, tippen, Enter); 1,00 ist die Vorgabe.
+  mit einem Zahlenfeld daneben (anklicken, tippen, Enter); 1,00 ist die Vorgabe. Dazu „Umsehen im
+  Vollbild“: Maus bewegen oder Maustaste halten (`mouse.hold`). Das Halten ist für Rechner
+  gedacht, deren Maus Positionen meldet (virtuelle Maschine): Loslassen und neu Greifen dreht
+  von dort weiter, wo der Zeiger gerade steht.
 - **KI:** „Nachdenken vor dem Zeichnen“ (Standard, wenig, mittel, viel) wird als
   `reasoning_effort` gesendet, bei „Standard“ gar nicht, wie im Enterprise AI Client.
   „Antwortlänge in Tokens“ ist `max_tokens`; Nachdenken zählt mit.
