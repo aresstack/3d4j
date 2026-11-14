@@ -1097,9 +1097,9 @@ final class SetupScreen implements AutoCloseable {
     }
 
     private void paintWorld(Graphics2D g) {
-        note(g, "Modell: " + selectedModel, 430, 318, TEXT);
+        note(g, "Modell: " + selectedModel, 430, 314, TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        int y = 346;
+        int y = 340;
         for (Map.Entry<AssetSpec, String> entry : assetStates.entrySet()) {
             String state = entry.getValue();
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
@@ -1114,7 +1114,7 @@ final class SetupScreen implements AutoCloseable {
                 AssetSpec spec = entry.getKey();
                 button(g, "neu", 1056, y - 18, 74, 23, PINK_LIGHT, INK, () -> generate(List.of(spec)));
             }
-            y += 27;
+            y += 26;
         }
         if (!generating) {
             if (generatedOnce) {
@@ -1150,7 +1150,7 @@ final class SetupScreen implements AutoCloseable {
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
             g.setColor(messageIsError ? BAD : GOOD);
             // Where the step leaves room: below the fields, inside the empty model list, above the buttons.
-            int y = step == MODEL ? (models.isEmpty() ? 362 : 592) : step == WORLD ? 580 : 540;
+            int y = step == MODEL ? (models.isEmpty() ? 362 : 592) : step == WORLD ? 586 : 540;
             wrapped(g, message, step == MODEL && models.isEmpty() ? 450 : 430, y, 680, 21);
         }
         // Leaving is always possible: the game runs with the built-in pictures.
