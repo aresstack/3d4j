@@ -1,6 +1,50 @@
-# 3d4j
+<img src="docs/images/banner.jpg" alt="Nur zur ZIHR – Die blühende Datenstadt. Ein KI-gestützter 3D-Prototyp, der IT-Systeme als begehbare Stadt erlebbar macht." width="100%">
 
-<img src="src/main/resources/images/cover.jpg" alt="Nur zur ZIHR – Cover" width="320">
+**Eine begehbare, blühende Datenstadt – und gleichzeitig ein Experiment mit einer selbst geschriebenen Java-3D-Engine (3d4j) und KI-generierten Spielgrafiken.**
+
+> **Projektstatus:** Experimenteller Prototyp. Engine und begehbare Stadt sind im Repository enthalten. Ein Chatmodell zeichnet im Hintergrund laufend neue Varianten von Bäumen, Besuchern, Laternen, Büschen, Bodentexturen, Fenstern, Türen und Läden; sie erscheinen im laufenden Spiel.
+
+| | | |
+|---|---|---|
+| <img src="docs/images/stadt.png" alt="Straße im Blütenviertel mit vom Chatmodell gezeichneten Fenstern, Bäumen und Besuchern"> | <img src="docs/images/brunnen.png" alt="Der Brunnen auf dem Platz"> | <img src="docs/images/westside.png" alt="Der Hof des WEST.SIDE-Ensembles"> |
+| Blütenviertel: Fenster, Läden, Bäume und Besucher hat das Chatmodell gezeichnet | Der Brunnen auf dem Platz | Osterei am Ende der Straße: WEST.SIDE |
+
+## Die Idee: IT-Systeme als Stadt erleben
+
+„Nur zur ZIHR“ verbindet eine verspielte, pastellfarbene Stadt mit einem technischen Experiment: Was wäre, wenn sich IT-Strukturen nicht nur in Diagrammen beschreiben, sondern als begehbare Welt betrachten ließen?
+
+Die Häuser bilden die Kulisse, Bäume und Laternen machen die Straßen lebendig, und kleine Besucher bevölkern den Platz. Langfristig soll die Stadt als anschauliche Metapher für Software- und Datenlandschaften dienen. Der aktuelle Stand ist bewusst ein **Prototyp**, keine fertige Fachvisualisierung oder ein vollständiges Spiel.
+
+Das zweite Experiment läuft gewissermaßen hinter den Kulissen: **Die Grafiken werden nicht alle von Hand gezeichnet.** Ein Chatmodell erhält eine Beschreibung des gewünschten Objekts und zeichnet es als SVG. Die Anwendung prüft und speichert die Ergebnisse, rastert sie bei Bedarf und verwendet sie anschließend in der 3D-Szene. So entsteht schrittweise eine wiederverwendbare Bibliothek mit Bäumen, Personen, Laternen und – im laufenden Ausbau – unterschiedlichen Fenster- und Türformen. Ziel ist eine vielfältige Welt, die ohne manuelles Zeichnen jedes einzelnen Details wachsen kann.
+
+### Was man heute ausprobieren kann
+
+- **Durch die Stadt laufen:** Platz mit Brunnen, Straßen, Häuser, Bäume, Laternen und Besucher mit einer frei beweglichen Kamera erkunden; Häuser, Brunnen und Bäume sind fest.
+- **Grafiken austauschen:** Eigene SVG- oder PNG-Dateien in die Sammlung des Stadtteils legen; im Pausenmenü lassen sich Bilder ansehen und löschen.
+- **Motive per KI generieren:** Das Spiel an eine OpenAI-kompatible Chat-API anbinden (Zugang auch aus KeePass); es zeichnet im Hintergrund neue Motive, während man spielt.
+- **Den Renderer untersuchen:** Bildrate, Framezeiten, Auflösung und Backend vergleichen – auch auf Rechnern ohne dedizierten Grafiktreiber.
+
+### So funktioniert die Grafik-Pipeline
+
+```text
+Objektbeschreibung
+       |
+       v
+Chatmodell (OpenAI-kompatible API)
+       |
+       v
+SVG-Antwort -- Validierung / ggf. erneuter Versuch
+       |
+       v
+Sammlung des Stadtteils (SVG + PNG)
+       |
+       v
+Sprite-Atlas / Szene --> 3D-Renderer --> begehbare Datenstadt
+```
+
+Die KI ist **für das Erzeugen der Assets** zuständig; das eigentliche Anzeigen und Begehen der Stadt läuft lokal. Vorhandene Bilder bleiben in der Sammlung und werden wiederverwendet; gezeichnet wird nur, bis die Höchstzahl je Art erreicht ist. Wie gut die Ergebnisse aussehen, hängt auch vom gewählten Modell und den Beschreibungen der Objekte ab.
+
+## Die Engine hinter der Stadt
 
 Grundgerüst für eine 3D-Engine in reinem Java 21. Alles ist in Java geschrieben, auch die
 eingebundenen Bibliotheken; nativen Code bringt das Projekt nicht mit. Fenster, Eingabe und
