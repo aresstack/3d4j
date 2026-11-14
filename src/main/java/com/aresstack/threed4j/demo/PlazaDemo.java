@@ -657,8 +657,15 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
 
     @Override
     public String[] backgroundStatus() {
-        return backgroundArtist == null ? new String[] {"", ""}
-                : new String[] {backgroundArtist.status(), backgroundArtist.progress()};
+        if (backgroundArtist == null) {
+            return new String[] {"", ""};
+        }
+        // The line, the progress, and then every picture being drawn, for a list.
+        java.util.List<String> all = new java.util.ArrayList<>();
+        all.add(backgroundArtist.status());
+        all.add(backgroundArtist.progress());
+        all.addAll(backgroundArtist.drawing());
+        return all.toArray(new String[0]);
     }
 
     @Override

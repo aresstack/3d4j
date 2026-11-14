@@ -782,13 +782,39 @@ final class PauseMenu {
             backgroundDrawing = false;
             actions.backgroundDrawing(false);
         });
-        note(g, "Die KI zeichnet beim Spielen Fenster, Türen und Läden;", 284);
-        note(g, "die Häuser bekommen sie nach und nach.", 304);
         shownStatus = actions.backgroundStatus();
         g.setColor(INK);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
-        g.drawString(fitted(g, shownStatus[1], 440), 40, 340);
-        g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 362);
+        g.drawString(fitted(g, shownStatus[1], 440), 40, 284);
+        int drawing = shownStatus.length - 2;
+        if (drawing < 2) {
+            g.drawString(fitted(g, "Stand: " + shownStatus[0], 440), 40, 306);
+        } else {
+            // Several at the same time: all of them, as many as fit on three lines.
+            g.drawString("Stand: zeichnet " + drawing + " Bilder gleichzeitig:", 40, 306);
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+            g.setColor(TEXT);
+            java.awt.FontMetrics metrics = g.getFontMetrics();
+            int next = 2;
+            for (int line = 0; line < 3 && next < shownStatus.length; line++) {
+                StringBuilder text = new StringBuilder();
+                while (next < shownStatus.length) {
+                    int left = shownStatus.length - next - 1;
+                    String more = left > 0 ? ", " : "";
+                    String rest = line == 2 && left > 0 ? " … und " + left + " weitere" : "";
+                    String with = text + shownStatus[next] + more;
+                    if (text.length() > 0 && metrics.stringWidth(with + rest) > 440) {
+                        break;
+                    }
+                    text.append(shownStatus[next]).append(more);
+                    next++;
+                }
+                if (line == 2 && next < shownStatus.length) {
+                    text.append("… und ").append(shownStatus.length - next).append(" weitere");
+                }
+                g.drawString(fitted(g, text.toString(), 440), 40, 326 + line * 18);
+            }
+        }
 
         if (town == null) {
             button(g, "Sammlung ansehen …", 40, 380, 440, 42, () -> showCollection(true));

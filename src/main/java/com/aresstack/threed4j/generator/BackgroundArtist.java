@@ -40,7 +40,24 @@ public final class BackgroundArtist implements AutoCloseable {
     private BackgroundArtist(AssetStore store) {
         this.store = store;
         statuses.put(0, "wartet");
+        // The setting may change at any time, and a worker in the middle of a picture does not look
+        // at it for minutes: somebody else does, every second.
+        Thread overseer = new Thread(() -> {
+            try {
+                while (!closed) {
+                    hire(AiSetup.parallel());
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }, "3d4j-background-overseer");
+        overseer.setDaemon(true);
+        this.overseer = overseer;
     }
+
+    private final Thread overseer;
+    private final long startedAt = System.currentTimeMillis();
 
     /** Starts workers until there are as many as requests may run at the same time; none is ever stopped. */
     private synchronized void hire(int wanted) {
@@ -57,28 +74,34 @@ public final class BackgroundArtist implements AutoCloseable {
     /** Starts drawing for all districts of the town and for what they share. */
     public static BackgroundArtist start(AssetStore store) {
         BackgroundArtist artist = new BackgroundArtist(store);
-        artist.hire(1);
+        artist.overseer.start();
         return artist;
     }
 
-    /** What it is doing, in German, for the settings: e.g. "zeichnet Fenster 3". */
+    /** What it is doing, in German, in one line: "zeichnet Fenster 3", or how many pictures and which. */
     public String status() {
-        // With several requests at once: what is being drawn; otherwise whatever the first worker says.
-        java.util.Set<String> drawing = new java.util.LinkedHashSet<>();
-        java.util.Set<String> other = new java.util.LinkedHashSet<>();
+        List<String> drawing = drawing();
+        if (drawing.size() == 1) {
+            return "zeichnet " + drawing.get(0);
+        }
+        if (drawing.size() > 1) {
+            return "zeichnet " + drawing.size() + " Bilder: " + String.join(", ", drawing);
+        }
         for (String status : new java.util.TreeMap<>(statuses).values()) {
-            {
-                (status.startsWith("zeichnet ") ? drawing : other).add(status);
+            return status; // nothing is being drawn: whatever the first worker says
+        }
+        return "wartet";
+    }
+
+    /** Every picture being drawn right now, e.g. "Fenster 3 (Werksviertel)"; empty if none is. */
+    public List<String> drawing() {
+        List<String> drawing = new ArrayList<>();
+        for (String status : new java.util.TreeMap<>(statuses).values()) {
+            if (status.startsWith("zeichnet ")) {
+                drawing.add(status.substring(9));
             }
         }
-        if (drawing.isEmpty()) {
-            return other.isEmpty() ? "wartet" : other.iterator().next();
-        }
-        StringBuilder text = new StringBuilder("zeichnet ");
-        for (String status : drawing) {
-            text.append(text.length() > 9 ? ", " : "").append(status.substring(9));
-        }
-        return text.toString();
+        return drawing;
     }
 
     /** How far the collection is, e.g. "34 von 60 Bildern". */
@@ -225,11 +248,9 @@ public final class BackgroundArtist implements AutoCloseable {
 
     private void work(int worker) {
         try {
-            Thread.sleep(worker == 0 ? 4000 : 300); // let the game start first
+            Thread.sleep(Math.max(300, startedAt + 4000 - System.currentTimeMillis())); // let the game start first
             while (!closed) {
-                int parallel = AiSetup.parallel();
-                hire(parallel);
-                if (worker >= parallel) {
+                if (worker >= AiSetup.parallel()) {
                     statuses.remove(worker); // not wanted right now
                     Thread.sleep(2000);
                     continue;
@@ -296,6 +317,7 @@ public final class BackgroundArtist implements AutoCloseable {
     @Override
     public void close() {
         closed = true;
+        overseer.interrupt();
         synchronized (this) {
             for (Thread thread : threads) {
                 thread.interrupt();
