@@ -214,21 +214,59 @@ public final class AiSetup {
         return similar.size() == 1 ? similar.get(0) : models.get(0);
     }
 
+    /** The address Ollama listens at on the machine it runs on. */
+    public static final String OLLAMA_DEFAULT = ChatClient.OLLAMA_DEFAULT;
+
+    /** Whether the remembered access is an Ollama server ({@code chat.provider=ollama}) with {@code chat.baseUrl} as its address. */
+    public static boolean ollama() {
+        return "ollama".equalsIgnoreCase(read(settingsFile()).getProperty("chat.provider", "").trim());
+    }
+
+    /** Remembers whether the access is an Ollama server or an OpenAI-compatible service. */
+    public static void saveOllama(boolean ollama) throws IOException {
+        Properties own = read(settingsFile());
+        set(own, "chat.provider", ollama ? "ollama" : null);
+        Files.createDirectories(home());
+        try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
+            own.store(out, "3d4j asset generator");
+        }
+    }
+
+    /** @return the names of the models installed on an Ollama server, sorted */
+    public static List<String> listOllamaModels(String baseUrl) throws IOException {
+        return ChatClient.ollama(baseUrl, "").models();
+    }
+
     /** Access to the service for generating artwork; safe to use from several threads. */
     public static final class Session {
         private final String baseUrl;
         private final String model;
         private final String apiKey;
+        private final boolean ollama;
 
         public Session(String baseUrl, String model, String apiKey) {
+            this(baseUrl, model, apiKey, false);
+        }
+
+        private Session(String baseUrl, String model, String apiKey, boolean ollama) {
             this.baseUrl = baseUrl;
             this.model = model;
             this.apiKey = apiKey;
+            this.ollama = ollama;
+        }
+
+        /** Access to an Ollama server: no API key, Ollama's own API. */
+        public static Session ollama(String baseUrl, String model) {
+            return new Session(baseUrl, model, null, true);
+        }
+
+        private ChatClient client(String chosenModel) {
+            return ollama ? ChatClient.ollama(baseUrl, chosenModel) : new ChatClient(URI.create(baseUrl), chosenModel, apiKey);
         }
 
         /** A client per piece of work, so that changed request options (answer length, thinking) apply at once. */
         private ChatClient chat() {
-            return new ChatClient(URI.create(baseUrl), model, apiKey);
+            return client(model);
         }
 
         /**
@@ -257,13 +295,12 @@ public final class AiSetup {
          */
         public String draw(PartLibrary library, District district, PartLibrary.Kind kind, int number) {
             String chosen = modelFor(kind);
-            ChatClient chat = new ChatClient(URI.create(baseUrl), chosen != null ? chosen : model, apiKey);
-            return Artist.draw(chat, library, district, kind, number);
+            return Artist.draw(client(chosen != null ? chosen : model), library, district, kind, number);
         }
 
         /** Asks a model of the service a question, e.g. the one that plans districts. */
         public String ask(String chosenModel, String system, String user) throws IOException {
-            return new ChatClient(URI.create(baseUrl), chosenModel, apiKey).ask(system, user);
+            return client(chosenModel).ask(system, user);
         }
 
         /** The model that draws when a kind has none of its own. */
@@ -273,7 +310,7 @@ public final class AiSetup {
 
         /** @return the ids of the models the service offers, sorted; talks to the service */
         public List<String> models() throws IOException {
-            return listModels(baseUrl, apiKey);
+            return client("").models();
         }
     }
 
@@ -299,6 +336,12 @@ public final class AiSetup {
     public static Session resumeSession() {
         try {
             Settings settings = load();
+            if (ollama()) {
+                // A local server needs no key and nobody's consent to be asked again.
+                String server = settings.baseUrl().isBlank() ? OLLAMA_DEFAULT : settings.baseUrl();
+                session = Session.ollama(server, settings.model());
+                return session;
+            }
             String key = apiKeyFromEnvironment();
             String address = normalizeBaseUrl(settings.baseUrl());
             if ((key == null || address == null) && isPaired() && !settings.keePassEntry().isBlank()) {
@@ -325,6 +368,9 @@ public final class AiSetup {
      */
     public static boolean accessKnown() {
         if (session != null) {
+            return true;
+        }
+        if (ollama()) {
             return true;
         }
         Settings settings = load();
@@ -372,6 +418,9 @@ public final class AiSetup {
     /** The model that plans districts ({@code world.model}). */
     public static String worldModel() {
         String value = read(settingsFile()).getProperty("world.model", "").trim();
+        if (value.isEmpty() && ollama()) {
+            return generalModel(); // an Ollama server has the models installed there, not the default by name
+        }
         return value.isEmpty() ? PLANNING_MODEL : value;
     }
 
@@ -387,7 +436,7 @@ public final class AiSetup {
     public static void saveWorld(boolean enabled, String model, int maxDistricts) throws IOException {
         Properties own = read(settingsFile());
         own.setProperty("world.enabled", String.valueOf(enabled));
-        set(own, "world.model", model == null || model.equals(PLANNING_MODEL) ? null : model);
+        set(own, "world.model", model == null || model.equals(ollama() ? generalModel() : PLANNING_MODEL) ? null : model);
         own.setProperty("world.maxDistricts", String.valueOf(Math.max(2, Math.min(24, maxDistricts))));
         Files.createDirectories(home());
         try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {

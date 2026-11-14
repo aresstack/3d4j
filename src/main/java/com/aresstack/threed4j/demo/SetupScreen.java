@@ -74,6 +74,8 @@ final class SetupScreen implements AutoCloseable {
             + "KI-Dienstes. Adresse und API-Key kommen aus dem Eintrag und bleiben in KeePass.";
     private static final String HINT_MANUAL = "Willkommen! Trag ein, wo der KI-Dienst wohnt, und seinen API-Key. "
             + "Der Schlüssel wird nicht gespeichert.";
+    private static final String HINT_OLLAMA = "Willkommen! Mit Ollama zeichnet ein Modell auf deinem eigenen Rechner "
+            + "oder einem Rechner in deinem Netz, zum Beispiel auf der eigenen Grafikkarte.";
     private static final String[] HINTS = {
             HINT_KEEPASS,
             "Diese Modelle bietet der Dienst an. Ich habe eines vorgewählt, du kannst ein anderes anklicken. "
@@ -93,6 +95,9 @@ final class SetupScreen implements AutoCloseable {
     private final String keyFromEnvironment = AiSetup.apiKeyFromEnvironment();
     /** Where access comes from: KeePass, or typed in by hand. */
     private boolean useKeePass = keyFromEnvironment == null;
+    /** Access from an Ollama server instead: no key, the models installed there. Never together with KeePass. */
+    private boolean useOllama;
+    private final StringBuilder ollamaUrl = new StringBuilder();
     private final StringBuilder baseUrl = new StringBuilder();
     private final StringBuilder manualKey = new StringBuilder();
     private final StringBuilder pairingCode = new StringBuilder();
@@ -132,9 +137,17 @@ final class SetupScreen implements AutoCloseable {
         this.backdrop = backdrop;
         this.cover = cover;
         AiSetup.Settings settings = AiSetup.load();
-        baseUrl.append(settings.baseUrl());
+        if (AiSetup.ollama()) {
+            // Ollama was used last: open on it, with its address.
+            useOllama = true;
+            useKeePass = false;
+            ollamaUrl.append(settings.baseUrl().isBlank() ? AiSetup.OLLAMA_DEFAULT : settings.baseUrl());
+        } else {
+            baseUrl.append(settings.baseUrl());
+            ollamaUrl.append(AiSetup.OLLAMA_DEFAULT);
+        }
         rememberedEntry = settings.keePassEntry();
-        focus = useKeePass ? null : baseUrl;
+        focus = accessField();
         // Once paired, connecting needs nothing from the user: do it right away.
         connectOnOpen = useKeePass && AiSetup.isPaired();
         selectedModel = settings.model();
@@ -258,8 +271,13 @@ final class SetupScreen implements AutoCloseable {
         }
     }
 
+    /** The field that takes typing when the access step opens: none with KeePass. */
+    private StringBuilder accessField() {
+        return useOllama ? ollamaUrl : useKeePass ? null : baseUrl;
+    }
+
     private void nextField() {
-        if (step == ACCESS && !useKeePass) {
+        if (step == ACCESS && !useKeePass && !useOllama) {
             focus = focus == baseUrl ? manualKey : baseUrl;
             dirty = true;
         }
@@ -319,12 +337,17 @@ final class SetupScreen implements AutoCloseable {
     }
 
     private void chooseAccess(boolean keePass) {
-        if (busy != null || useKeePass == keePass) {
+        chooseAccess(keePass, false);
+    }
+
+    private void chooseAccess(boolean keePass, boolean ollama) {
+        if (busy != null || useKeePass == keePass && useOllama == ollama) {
             return;
         }
         useKeePass = keePass;
+        useOllama = ollama;
         closeEntries();
-        focus = keePass ? null : baseUrl;
+        focus = accessField();
         say("", false);
     }
 
@@ -420,6 +443,18 @@ final class SetupScreen implements AutoCloseable {
     private void confirmAccess() {
         String address;
         String key;
+        if (useOllama) {
+            String typed = ollamaUrl.toString().isBlank() ? AiSetup.OLLAMA_DEFAULT : ollamaUrl.toString();
+            address = AiSetup.normalizeBaseUrl(typed);
+            if (address == null) {
+                say("Das ist keine Adresse wie " + AiSetup.OLLAMA_DEFAULT + ".", true);
+                return;
+            }
+            ollamaUrl.setLength(0);
+            ollamaUrl.append(address);
+            useAccess(address, ""); // Ollama needs no key
+            return;
+        }
         if (useKeePass) {
             if (selectedEntry == null) {
                 say("Bitte den Eintrag des KI-Dienstes wählen.", true);
@@ -520,6 +555,7 @@ final class SetupScreen implements AutoCloseable {
             AiSetup.save(useKeePass
                     ? new AiSetup.Settings("", model, rememberedEntry)
                     : new AiSetup.Settings(serviceUrl, model, ""));
+            AiSetup.saveOllama(useOllama);
             return true;
         } catch (java.io.IOException e) {
             say("Die Einstellungen lassen sich nicht speichern: " + e.getMessage(), true);
@@ -557,11 +593,15 @@ final class SetupScreen implements AutoCloseable {
         String address = serviceUrl;
         String key = apiKey;
         String wanted = selectedModel == null || selectedModel.isBlank() ? AiSetup.PREFERRED_MODEL : selectedModel;
-        inBackground("Lade die Modelle vom Dienst …", () -> {
+        boolean ollama = useOllama;
+        inBackground(ollama ? "Lade die Modelle von Ollama …" : "Lade die Modelle vom Dienst …", () -> {
             List<String> offered;
             try {
-                offered = AiSetup.listModels(address, key);
+                offered = ollama ? AiSetup.listOllamaModels(address) : AiSetup.listModels(address, key);
             } catch (Exception e) {
+                if (ollama) {
+                    throw new Exception("Ollama antwortet nicht. Läuft Ollama unter " + address + "?\n(" + firstLine(e) + ")");
+                }
                 throw new Exception(firstLine(e).startsWith("proxy route")
                         ? "Der Weg zum KI-Dienst lässt sich nicht bestimmen (Proxy).\n(" + firstLine(e) + ")"
                         : "Der KI-Dienst hat die Modelle nicht geliefert.\n(" + firstLine(e) + ")");
@@ -570,7 +610,8 @@ final class SetupScreen implements AutoCloseable {
                 models = offered;
                 modelScroll = 0;
                 if (offered.isEmpty()) {
-                    say("Der Dienst bietet keine Modelle an.", true);
+                    say(ollama ? "Auf diesem Ollama ist kein Modell installiert (ollama pull …)."
+                            : "Der Dienst bietet keine Modelle an.", true);
                 } else {
                     // Keep an earlier choice if the service still offers it, otherwise suggest GPT-OSS 120B.
                     String choice = offered.contains(wanted) ? wanted : AiSetup.preselect(offered, AiSetup.PREFERRED_MODEL);
@@ -590,7 +631,8 @@ final class SetupScreen implements AutoCloseable {
         }
         say("", false);
         // From here on the game draws by itself, in the background.
-        AiSetup.rememberSession(new AiSetup.Session(serviceUrl, selectedModel, apiKey));
+        AiSetup.rememberSession(useOllama ? AiSetup.Session.ollama(serviceUrl, selectedModel)
+                : new AiSetup.Session(serviceUrl, selectedModel, apiKey));
         finish();
     }
 
@@ -611,7 +653,7 @@ final class SetupScreen implements AutoCloseable {
         if (busy != null) {
             return false;
         }
-        boolean accessEntered = useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank();
+        boolean accessEntered = useOllama || (useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank());
         return switch (target) {
             case ACCESS -> true;
             default -> accessKnown() || step == ACCESS && accessEntered;
@@ -624,14 +666,14 @@ final class SetupScreen implements AutoCloseable {
             return;
         }
         say("", false);
-        boolean accessEntered = useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank();
+        boolean accessEntered = useOllama || (useKeePass ? selectedEntry != null : !baseUrl.toString().isBlank());
         if (step == ACCESS && target == MODEL && accessEntered) {
             confirmAccess(); // like "Weiter": takes what is chosen here and loads the models
             return;
         }
         closeEntries();
         step = target;
-        focus = target == ACCESS && !useKeePass ? baseUrl : null;
+        focus = target == ACCESS ? accessField() : null;
         if (target == MODEL && models.isEmpty()) {
             loadModels();
         }
@@ -762,16 +804,29 @@ final class SetupScreen implements AutoCloseable {
         g.fill(bubble);
         g.setColor(TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        wrapped(g, step == ACCESS && !useKeePass ? HINT_MANUAL : HINTS[step], 450, 222, 660, 23);
+        wrapped(g, step == ACCESS && useOllama ? HINT_OLLAMA : step == ACCESS && !useKeePass ? HINT_MANUAL : HINTS[step],
+                450, 222, 660, 23);
     }
 
     private void paintAccess(Graphics2D g) {
         choice(g, "KeePass", 430, useKeePass, () -> chooseAccess(true));
-        choice(g, "Manuell", 586, !useKeePass, () -> chooseAccess(false));
-        if (useKeePass) {
+        choice(g, "Manuell", 586, !useKeePass && !useOllama, () -> chooseAccess(false));
+        choice(g, "Ollama", 742, useOllama, () -> chooseAccess(false, true));
+        if (useOllama) {
+            paintOllama(g);
+        } else if (useKeePass) {
             paintKeePass(g);
         } else {
             paintManual(g);
+        }
+    }
+
+    private void paintOllama(Graphics2D g) {
+        label(g, "Adresse von Ollama", 430, 372);
+        field(g, ollamaUrl, AiSetup.OLLAMA_DEFAULT, 430, 382, 700, false);
+        note(g, "Ollama braucht keinen API-Key. Die Modelle sind die, die dort installiert sind.", 430, 456, TEXT);
+        if (busy == null) {
+            primary(g, "Weiter", this::confirmAccess);
         }
     }
 
@@ -1044,7 +1099,7 @@ final class SetupScreen implements AutoCloseable {
                 say("", false);
                 closeEntries();
                 step = target;
-                focus = target == ACCESS && !useKeePass ? baseUrl : null;
+                focus = target == ACCESS ? accessField() : null;
                 if (target == MODEL && models.isEmpty() && accessKnown()) {
                     loadModels(); // the drawing step was opened directly, the list is not there yet
                 }

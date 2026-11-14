@@ -291,13 +291,19 @@ nach dem Ladebildschirm ein Menü im Stil des Spiels (später: Pausenmenü, Eins
 „Welt“, „KI-Zugang …“). Es hat zwei Schritte, nach dem Vorbild der Einrichtungsassistenten von
 Space Harvester und Enterprise AI Client:
 
-1. **Zugang:** oben wählt man **KeePass** oder **Manuell**.
+1. **Zugang:** oben wählt man **KeePass**, **Manuell** oder **Ollama**.
    - *KeePass* (vorgewählt): „Koppeln“ verbindet das Spiel mit KeePass. KeePass zeigt ein
      Einmal-Passwort, das man im Menü eintippt; das ist nur beim ersten Mal nötig. Dann wählt man
      in der Auswahlliste den Eintrag des KI-Dienstes. Die **URL des Eintrags ist die Adresse der
      API** (`https://…/v1`), sein **Passwort der API-Key**. Tippen sucht in der Liste, die
      Pfeiltasten blättern.
    - *Manuell:* Adresse und API-Key eintippen. Der Key wird nicht gespeichert.
+   - *Ollama:* die Adresse des Ollama-Servers, vorbelegt mit `http://localhost:11434`. Kein
+     API-Key. Damit zeichnet ein Modell auf dem eigenen Rechner oder im eigenen Netz, etwa auf der
+     eigenen Grafikkarte. Das Spiel spricht Ollamas eigene API, wie AskAI über ollama4j:
+     `GET /api/tags` für die installierten Modelle, `POST /api/chat` für eine Frage, die
+     Antwortlänge als `options.num_predict`, Nachdenken als `think`. Gemerkt wird
+     `chat.provider=ollama` mit der Adresse; beim nächsten Start geht es ohne Nachfrage weiter.
 2. **Modell:** Das Menü lädt die Modelle des Dienstes und wählt `google/gemma-4-31B-it` vor, falls
    angeboten. „Weiter“ startet das Spiel; gezeichnet wird ab dann im Hintergrund.
 
