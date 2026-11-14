@@ -48,4 +48,47 @@ class ChatClientStreamTest {
                 () -> ChatClient.streamed("data: {\"error\":{\"message\":\"model overloaded\"}}\n\n"));
         assertTrue(problem.getMessage().contains("model overloaded"), problem.getMessage());
     }
+
+    /** A stream that hands out its bytes and then fails, as a connection cut by a proxy does. */
+    private static java.io.InputStream cutAfter(String text) {
+        byte[] bytes = text.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        return new java.io.InputStream() {
+            private int at;
+
+            @Override
+            public int read() throws IOException {
+                if (at >= bytes.length) {
+                    throw new IOException("Premature EOF");
+                }
+                return bytes[at++] & 0xFF;
+            }
+        };
+    }
+
+    @Test
+    void readingStopsAtTheEndMarkWithoutWaitingForTheConnectionToClose() throws IOException {
+        String whole = "data: {\"choices\":[{\"delta\":{\"content\":\"<svg/>\"},\"finish_reason\":\"stop\"}]}\n\ndata: [DONE]\n\n";
+        assertEquals("<svg/>", ChatClient.streamed(ChatClient.readStream(cutAfter(whole))).text());
+    }
+
+    @Test
+    void aConnectionCutAfterTheModelFinishedStillGivesTheAnswer() throws IOException {
+        String finished = "data: {\"choices\":[{\"delta\":{\"content\":\"<svg/>\"},\"finish_reason\":\"stop\"}]}\n";
+        assertEquals("<svg/>", ChatClient.streamed(ChatClient.readStream(cutAfter(finished))).text());
+    }
+
+    @Test
+    void aConnectionCutInTheMiddleOfTheAnswerIsAnError() {
+        String half = "data: {\"choices\":[{\"delta\":{\"content\":\"<svg\"},\"finish_reason\":null}]}\n";
+        IOException problem = assertThrows(IOException.class, () -> ChatClient.readStream(cutAfter(half)));
+        assertTrue(problem.getMessage().contains("broke off"), problem.getMessage());
+    }
+
+    @Test
+    void aConnectionClosedQuietlyInTheMiddleOfTheAnswerIsAnErrorToo() {
+        String half = "data: {\"choices\":[{\"delta\":{\"content\":\"<svg\"},\"finish_reason\":null}]}\n";
+        IOException problem = assertThrows(IOException.class, () -> ChatClient.readStream(
+                new java.io.ByteArrayInputStream(half.getBytes(java.nio.charset.StandardCharsets.UTF_8))));
+        assertTrue(problem.getMessage().contains("broke off"), problem.getMessage());
+    }
 }

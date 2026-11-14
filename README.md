@@ -486,6 +486,10 @@ selbst zuständig. Die folgenden Einstellungen gelten für beide.
   zusammengesetzt. So fließen Daten, während das Modell schreibt, und kein Proxy oder Gateway
   auf dem Weg bricht eine stille Verbindung mit HTTP 504 ab. Ein Dienst, der das nicht kann,
   wird für den Rest des Laufs wie früher gefragt; `chat.stream=false` schaltet es ganz ab.
+  Gelesen wird bis zur Endmarke `[DONE]`, nicht bis die Verbindung schließt: Ein Proxy darf sie
+  danach unsauber kappen („Premature EOF“). Bricht der Stream mitten in der Antwort ab oder
+  kommt die Verbindung nicht zustande, wird die Anfrage bis zu zweimal neu gesendet, bevor das
+  Bild als misslungen zählt.
 - **Antwortlänge:** Jede Anfrage sendet `max_tokens` (Standard 16384, sonst `chat.maxTokens` aus
   `.3d4j/generator.properties` oder dem Enterprise AI Client). Meldet der Dienst
   `finish_reason=length`, gilt die Antwort als abgeschnitten und wird nicht verwendet.

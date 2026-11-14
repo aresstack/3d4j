@@ -195,8 +195,15 @@ final class ChatClient {
                 }
             }
             status = connection.getResponseCode();
+            String type = String.valueOf(connection.getContentType());
             try (InputStream in = status / 100 == 2 ? connection.getInputStream() : connection.getErrorStream()) {
-                text = in == null ? "" : new String(in.readAllBytes(), StandardCharsets.UTF_8);
+                if (in == null) {
+                    text = "";
+                } else if (status / 100 == 2 && type.contains("event-stream")) {
+                    text = readStream(in);
+                } else {
+                    text = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+                }
             }
         } catch (IOException e) {
             throw new IOException("cannot reach " + address + " " + way + " (" + e.getClass().getSimpleName() + ": "
@@ -207,6 +214,41 @@ final class ChatClient {
         }
         return text;
     }
+
+    /**
+     * Reads a streamed answer line by line and stops at its end mark instead of waiting for the
+     * connection to close: a proxy on the way may cut the connection without ending it properly
+     * ("Premature EOF"). If the connection breaks after the model has said that it is finished,
+     * the answer is whole and is taken; if it breaks earlier, that is an error.
+     */
+    static String readStream(InputStream in) throws IOException {
+        StringBuilder text = new StringBuilder();
+        java.io.BufferedReader reader = new java.io.BufferedReader(
+                new java.io.InputStreamReader(in, StandardCharsets.UTF_8));
+        String broken = null;
+        try {
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                text.append(line).append('\n');
+                if (line.startsWith("data:") && line.substring(5).trim().equals("[DONE]")) {
+                    return text.toString();
+                }
+            }
+            broken = "the connection was closed"; // quietly, without the end mark
+        } catch (IOException e) {
+            broken = e.getMessage();
+        }
+        if (!FINISHED.matcher(text).find()) {
+            throw new IOException("the stream broke off after " + text.length() + " characters: " + broken);
+        }
+        return text.toString();
+    }
+
+    /** A streamed answer says in its last piece why it ended. */
+    private static final java.util.regex.Pattern FINISHED =
+            java.util.regex.Pattern.compile("\"finish_reason\"\\s*:\\s*\"");
+
+    /** How often a request is sent again when the connection fails or breaks off, before the failure counts. */
+    private static final int TRANSPORT_ATTEMPTS = 3;
 
     /**
      * Lets only as many requests through to the AI at the same time as the settings allow, whoever
@@ -271,11 +313,23 @@ final class ChatClient {
             body.addProperty("reasoning_effort", reasoningEffort);
         }
 
-        String response;
-        try {
+        String response = null;
+        for (int attempt = 1; response == null; attempt++) {
+          try {
             response = exchange(endpoint, body.toString(), 5 * 60_000);
-        } catch (IOException e) {
+          } catch (IOException e) {
             String problem = String.valueOf(e.getMessage());
+            if (problem.startsWith("cannot reach") && attempt < TRANSPORT_ATTEMPTS) {
+                // The connection failed or broke off on the way: that says nothing about the request.
+                System.out.println("AI request: sent again (" + attempt + "): " + problem);
+                try {
+                    Thread.sleep(2000L * attempt);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw e;
+                }
+                continue;
+            }
             if (!stream || !(problem.contains("answered HTTP 400") || problem.contains("answered HTTP 404")
                     || problem.contains("answered HTTP 415") || problem.contains("answered HTTP 422")
                     || problem.contains("answered HTTP 501"))) {
@@ -285,6 +339,7 @@ final class ChatClient {
             STREAMING_REFUSED.add(endpoint);
             body.addProperty("stream", false);
             response = exchange(endpoint, body.toString(), 5 * 60_000);
+          }
         }
         if (response.stripLeading().startsWith("data:") || response.stripLeading().startsWith(":")) {
             Streamed streamed = streamed(response);
