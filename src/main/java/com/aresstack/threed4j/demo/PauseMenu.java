@@ -163,8 +163,6 @@ final class PauseMenu {
     private StringBuilder speedText;
     /** Numbers of requests at the same time that are offered; any other can be typed. */
     private static final int[] PARALLEL_CHOICES = {1, 2, 4, 8, 16, 32, 64};
-    private static final Rectangle2D PARALLEL_BOX = new Rectangle2D.Double(396, 418, 84, 40);
-    private StringBuilder parallelText;
     private static final String[] EFFORTS = {null, "low", "medium", "high"};
     private static final String[] EFFORT_LABELS = {"Standard", "Wenig", "Mittel", "Viel"};
     private static final int[] TOKEN_LIMITS = {2048, 4096, 8192, 16384};
@@ -383,49 +381,92 @@ final class PauseMenu {
             updateMouseSpeed(input, x, y);
         }
         if (settingsPage && tab == 2) {
-            updateParallel(input, x, y);
+            parallelBox.update(input, x, y);
+            tokensBox.update(input, x, y);
         }
         if (input.wasPressed(MouseButton.LEFT) && under >= 0) {
             run(regions.get(under));
         }
     }
 
-    /** The number box of the requests at the same time: clicking, typing, Enter. */
-    private void updateParallel(Input input, double x, double y) {
-        if (input.wasPressed(MouseButton.LEFT)) {
-            if (parallelText != null && !PARALLEL_BOX.contains(x, y)) {
-                applyParallelText(); // a click elsewhere takes what was typed
-            } else if (PARALLEL_BOX.contains(x, y) && parallelText == null) {
-                parallelText = new StringBuilder();
-                dirty = true;
-            }
+    /** A box that shows a whole number and lets another be typed: click, digits, Enter. */
+    private final class NumberBox {
+        private final Rectangle2D area;
+        private final int digits;
+        private final java.util.function.IntConsumer chosen;
+        private StringBuilder text;
+
+        NumberBox(Rectangle2D area, int digits, java.util.function.IntConsumer chosen) {
+            this.area = area;
+            this.digits = digits;
+            this.chosen = chosen;
         }
-        if (parallelText != null) {
+
+        void update(Input input, double x, double y) {
+            if (input.wasPressed(MouseButton.LEFT)) {
+                if (text != null && !area.contains(x, y)) {
+                    apply(); // a click elsewhere takes what was typed
+                } else if (area.contains(x, y) && text == null) {
+                    text = new StringBuilder();
+                    dirty = true;
+                }
+            }
+            if (text == null) {
+                return;
+            }
             for (char character : input.typedText().toCharArray()) {
                 if (character == '\r' || character == '\t') {
-                    applyParallelText();
+                    apply();
                     break;
                 } else if (character == '\b') {
-                    if (parallelText.length() > 0) {
-                        parallelText.setLength(parallelText.length() - 1);
+                    if (text.length() > 0) {
+                        text.setLength(text.length() - 1);
                     }
                     dirty = true;
-                } else if (Character.isDigit(character) && parallelText.length() < 4) {
-                    parallelText.append(character);
+                } else if (Character.isDigit(character) && text.length() < digits) {
+                    text.append(character);
                     dirty = true;
                 }
             }
         }
+
+        private void apply() {
+            try {
+                chosen.accept(Integer.parseInt(text.toString()));
+            } catch (NumberFormatException e) {
+                // nothing usable was typed: the number stays
+            }
+            text = null;
+            dirty = true;
+        }
+
+        void paint(Graphics2D g, int value) {
+            Shape box = new RoundRectangle2D.Double(area.getX(), area.getY(), area.getWidth(), area.getHeight(), 16, 16);
+            g.setColor(Color.WHITE);
+            g.fill(box);
+            g.setColor(PINK_DARK);
+            g.setStroke(new BasicStroke(text != null ? 3.5f : 2.5f));
+            g.draw(box);
+            g.setColor(INK);
+            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+            String number = text != null ? text + "|" : String.valueOf(value);
+            g.drawString(number, (int) (area.getCenterX() - g.getFontMetrics().stringWidth(number) / 2.0),
+                    (int) area.getCenterY() + 6);
+        }
     }
 
-    private void applyParallelText() {
-        try {
-            actions.aiParallel(Integer.parseInt(parallelText.toString()));
-        } catch (NumberFormatException e) {
-            // nothing usable was typed: the number stays
-        }
-        parallelText = null;
-        dirty = true;
+    private final NumberBox parallelBox = new NumberBox(new Rectangle2D.Double(396, 418, 84, 40), 4,
+            this::typedParallel);
+    private final NumberBox tokensBox = new NumberBox(new Rectangle2D.Double(400, 316, 80, 40), 7,
+            this::typedTokens);
+
+    private void typedParallel(int count) {
+        actions.aiParallel(count);
+    }
+
+    private void typedTokens(int tokens) {
+        maxTokens = Math.max(256, tokens);
+        actions.requestOptions(maxTokens, reasoningEffort);
     }
 
     /** The slider and the number box of the mouse speed: dragging, clicking, typing. */
@@ -708,11 +749,12 @@ final class PauseMenu {
         label(g, "Antwortlänge in Tokens", 304);
         for (int i = 0; i < TOKEN_LIMITS.length; i++) {
             int limit = TOKEN_LIMITS[i];
-            choice(g, String.valueOf(limit), 40 + i * 112, 316, 106, limit == maxTokens, () -> {
+            choice(g, String.valueOf(limit), 40 + i * 90, 316, 84, 40, limit == maxTokens, 15, () -> {
                 maxTokens = limit;
                 actions.requestOptions(maxTokens, reasoningEffort);
             });
         }
+        tokensBox.paint(g, maxTokens); // any other length can be typed
         note(g, "Nachdenken zählt mit. Bei abgeschnittenen Antworten erhöhen.", 376);
 
         // For everything that asks the AI: drawing and planning alike. Usual numbers to pick, any other to type.
@@ -723,22 +765,11 @@ final class PauseMenu {
             choice(g, String.valueOf(count), 40 + i * 50, 418, 44, 40, count == parallel, 15,
                     () -> actions.aiParallel(count));
         }
-        Shape box = new RoundRectangle2D.Double(PARALLEL_BOX.getX(), PARALLEL_BOX.getY(), PARALLEL_BOX.getWidth(),
-                PARALLEL_BOX.getHeight(), 16, 16);
-        g.setColor(Color.WHITE);
-        g.fill(box);
-        g.setColor(PINK_DARK);
-        g.setStroke(new BasicStroke(parallelText != null ? 3.5f : 2.5f));
-        g.draw(box);
-        g.setColor(INK);
-        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
-        String number = parallelText != null ? parallelText + "|" : String.valueOf(parallel);
-        g.drawString(number, (int) (PARALLEL_BOX.getCenterX() - g.getFontMetrics().stringWidth(number) / 2.0),
-                (int) PARALLEL_BOX.getCenterY() + 6);
+        parallelBox.paint(g, parallel);
         g.setColor(TEXT);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
         g.drawString("Gilt für alles: Zeichnen und Planen.", 204, 498);
-        g.drawString("Andere Zahl: Feld anklicken, tippen.", 204, 516);
+        g.drawString("Andere Zahlen: Feld anklicken, tippen.", 204, 516);
     }
 
     private void paintWorldTab(Graphics2D g) {

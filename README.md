@@ -420,7 +420,8 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
 Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
 `--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
 (`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`, `chat.parallel`), wo sie auch für `generate` gelten.
-Wie viele Anfragen gleichzeitig bei der KI sein dürfen, steht unter „KI“ („Anfragen
+Die Antwortlänge hat unter „KI“ neben den üblichen Werten ein Feld für jede andere Zahl
+(mindestens 256). Wie viele Anfragen gleichzeitig bei der KI sein dürfen, steht unter „KI“ („Anfragen
 gleichzeitig“: 1, 2, 4 … 64 zur Auswahl oder eine eigene Zahl im Feld daneben, Vorgabe 1) und gilt für alles, was die KI fragt: das Zeichnen im
 Hintergrund, die Planung neuer Viertel und `generate`. Bei 1 kommt alles nacheinander dran, wie
 es ein lokales Modell auf einer Grafikkarte braucht. Schlägt eine Zeichenanfrage fehl, warten
