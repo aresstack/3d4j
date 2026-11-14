@@ -29,9 +29,9 @@ public final class BackgroundArtist implements AutoCloseable {
 
     private final AssetStore store;
     /** One worker per request that may run at the same time; those beyond the setting wait. */
-    private final Thread[] threads = new Thread[AiSetup.MAX_PARALLEL];
+    private final List<Thread> threads = new ArrayList<>();
     /** What each worker is doing; {@code null} for one that has nothing to say. */
-    private final String[] statuses = new String[AiSetup.MAX_PARALLEL];
+    private final Map<Integer, String> statuses = new java.util.concurrent.ConcurrentHashMap<>();
     private final List<Claim> inWork = new ArrayList<>();
     private volatile boolean closed;
     private volatile long pauseUntil;
@@ -39,21 +39,25 @@ public final class BackgroundArtist implements AutoCloseable {
 
     private BackgroundArtist(AssetStore store) {
         this.store = store;
-        statuses[0] = "wartet";
-        for (int i = 0; i < threads.length; i++) {
-            int worker = i;
-            threads[i] = new Thread(() -> work(worker), "3d4j-background-artist-" + (i + 1));
-            threads[i].setDaemon(true);
-            threads[i].setPriority(Thread.MIN_PRIORITY); // the game comes first
+        statuses.put(0, "wartet");
+    }
+
+    /** Starts workers until there are as many as requests may run at the same time; none is ever stopped. */
+    private synchronized void hire(int wanted) {
+        while (!closed && threads.size() < wanted) {
+            int worker = threads.size();
+            Thread thread = new Thread(() -> work(worker), "3d4j-background-artist-" + (worker + 1));
+            thread.setDaemon(true);
+            thread.setPriority(Thread.MIN_PRIORITY); // the game comes first
+            threads.add(thread);
+            thread.start();
         }
     }
 
     /** Starts drawing for all districts of the town and for what they share. */
     public static BackgroundArtist start(AssetStore store) {
         BackgroundArtist artist = new BackgroundArtist(store);
-        for (Thread thread : artist.threads) {
-            thread.start();
-        }
+        artist.hire(1);
         return artist;
     }
 
@@ -62,8 +66,8 @@ public final class BackgroundArtist implements AutoCloseable {
         // With several requests at once: what is being drawn; otherwise whatever the first worker says.
         java.util.Set<String> drawing = new java.util.LinkedHashSet<>();
         java.util.Set<String> other = new java.util.LinkedHashSet<>();
-        for (String status : statuses) {
-            if (status != null) {
+        for (String status : new java.util.TreeMap<>(statuses).values()) {
+            {
                 (status.startsWith("zeichnet ") ? drawing : other).add(status);
             }
         }
@@ -212,7 +216,7 @@ public final class BackgroundArtist implements AutoCloseable {
     private synchronized AiSetup.Session access(int worker) {
         AiSetup.Session session = AiSetup.session();
         if (session == null && System.currentTimeMillis() >= retryAccessAt) {
-            statuses[worker] = "sucht den Zugang zur KI";
+            statuses.put(worker, "sucht den Zugang zur KI");
             session = AiSetup.resumeSession();
             retryAccessAt = System.currentTimeMillis() + 60_000;
         }
@@ -221,15 +225,17 @@ public final class BackgroundArtist implements AutoCloseable {
 
     private void work(int worker) {
         try {
-            Thread.sleep(4000 + worker * 700L); // let the game start first
+            Thread.sleep(worker == 0 ? 4000 : 300); // let the game start first
             while (!closed) {
-                if (worker >= AiSetup.backgroundParallel()) {
-                    statuses[worker] = null; // not wanted right now
+                int parallel = AiSetup.parallel();
+                hire(parallel);
+                if (worker >= parallel) {
+                    statuses.remove(worker); // not wanted right now
                     Thread.sleep(2000);
                     continue;
                 }
                 if (!AiSetup.backgroundEnabled()) {
-                    statuses[worker] = "ausgeschaltet";
+                    statuses.put(worker, "ausgeschaltet");
                     Thread.sleep(2000);
                     continue;
                 }
@@ -240,14 +246,18 @@ public final class BackgroundArtist implements AutoCloseable {
                 }
                 AiSetup.Session session = access(worker);
                 if (session == null) {
-                    statuses[worker] = "wartet auf den Zugang zur KI";
+                    statuses.put(worker, "wartet auf den Zugang zur KI");
                     Thread.sleep(2000);
                     continue;
                 }
                 TownLibrary town = new TownLibrary(store); // read anew: districts come and go
                 Claim claim = claim(town);
                 if (claim == null) {
-                    statuses[worker] = inWorkCount() == 0 ? "fertig: die Sammlungen sind vollständig" : null;
+                    if (inWorkCount() == 0) {
+                        statuses.put(worker, "fertig: die Sammlungen sind vollständig");
+                    } else {
+                        statuses.remove(worker);
+                    }
                     Thread.sleep(inWorkCount() == 0 ? 10_000 : 2000);
                     continue;
                 }
@@ -256,7 +266,7 @@ public final class BackgroundArtist implements AutoCloseable {
                 // "Birke 2 (Werksviertel)"; the people belong to no district.
                 String what = name(job.district(), kind) + " " + claim.number()
                         + (kind.shared() ? "" : " (" + job.district().name() + ")");
-                statuses[worker] = "zeichnet " + what;
+                statuses.put(worker, "zeichnet " + what);
                 String problem;
                 try {
                     problem = session.draw(town.of(job.district(), kind), job.district(), kind, claim.number());
@@ -264,11 +274,11 @@ public final class BackgroundArtist implements AutoCloseable {
                     done(claim);
                 }
                 if (problem == null) {
-                    statuses[worker] = what + " ist fertig";
+                    statuses.put(worker, what + " ist fertig");
                     Thread.sleep(3000);
                 } else {
                     // Not again at once: a service that refuses or a model that fails should not be hammered.
-                    statuses[worker] = what + " misslang: " + problem;
+                    statuses.put(worker, what + " misslang: " + problem);
                     System.out.println("Background artist: " + what + " failed: " + problem);
                     pauseUntil = System.currentTimeMillis() + 45_000;
                     Thread.sleep(45_000);
@@ -286,8 +296,10 @@ public final class BackgroundArtist implements AutoCloseable {
     @Override
     public void close() {
         closed = true;
-        for (Thread thread : threads) {
-            thread.interrupt();
+        synchronized (this) {
+            for (Thread thread : threads) {
+                thread.interrupt();
+            }
         }
     }
 }

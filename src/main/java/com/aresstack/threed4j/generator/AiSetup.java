@@ -449,22 +449,25 @@ public final class AiSetup {
         return !"false".equalsIgnoreCase(read(settingsFile()).getProperty("background.enabled"));
     }
 
-    /** The most requests the background drawing may send at the same time. */
-    public static final int MAX_PARALLEL = 8;
+    /** A ceiling against a slip of the hand; how many are sensible is the user's to say. */
+    public static final int MAX_PARALLEL = 1024;
 
-    /** How many pictures are drawn at the same time ({@code background.parallel}); one unless set. */
-    public static int backgroundParallel() {
+    /**
+     * How many requests may be with the AI at the same time ({@code chat.parallel}); one unless set.
+     * It holds for everything that asks the AI: drawing, planning districts, the generator command.
+     */
+    public static int parallel() {
         try {
             return Math.max(1, Math.min(MAX_PARALLEL,
-                    Integer.parseInt(read(settingsFile()).getProperty("background.parallel", "1").trim())));
+                    Integer.parseInt(read(settingsFile()).getProperty("chat.parallel", "1").trim())));
         } catch (NumberFormatException e) {
             return 1;
         }
     }
 
-    public static void saveBackgroundParallel(int parallel) throws IOException {
+    public static void saveParallel(int parallel) throws IOException {
         Properties own = read(settingsFile());
-        own.setProperty("background.parallel", String.valueOf(Math.max(1, Math.min(MAX_PARALLEL, parallel))));
+        own.setProperty("chat.parallel", String.valueOf(Math.max(1, Math.min(MAX_PARALLEL, parallel))));
         Files.createDirectories(home());
         try (Writer out = Files.newBufferedWriter(settingsFile(), StandardCharsets.UTF_8)) {
             own.store(out, "3d4j asset generator");

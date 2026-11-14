@@ -209,10 +209,47 @@ final class ChatClient {
     }
 
     /**
+     * Lets only as many requests through to the AI at the same time as the settings allow, whoever
+     * asks: the artists, the town planner, the generator command. With one, as a local model on
+     * one graphics card wants it, everything takes its turn.
+     */
+    private static final class Gate {
+        private int inside;
+
+        synchronized void enter() throws IOException {
+            try {
+                while (inside >= AiSetup.parallel()) {
+                    wait(500); // the setting may have changed meanwhile
+                }
+                inside++;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IOException("interrupted while waiting for a turn with the AI");
+            }
+        }
+
+        synchronized void leave() {
+            inside--;
+            notifyAll();
+        }
+    }
+
+    private static final Gate GATE = new Gate();
+
+    /**
      * @return the text of the model's answer
      * @throws IOException with a message for the user if the service cannot be reached or refuses
      */
     String ask(String systemPrompt, String userPrompt) throws IOException {
+        GATE.enter();
+        try {
+            return askNow(systemPrompt, userPrompt);
+        } finally {
+            GATE.leave();
+        }
+    }
+
+    private String askNow(String systemPrompt, String userPrompt) throws IOException {
         if (ollama) {
             return askOllama(systemPrompt, userPrompt);
         }

@@ -419,11 +419,12 @@ Die Einstellungen haben vier Reiter; alles, was sich im Spiel einstellen lässt,
 
 Bild und Steuerung merkt sich das Spiel in `.3d4j/game.properties` (`--scale=` hat Vorrang,
 `--benchmark` ignoriert die Datei), die KI-Werte in `.3d4j/generator.properties`
-(`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`, `background.parallel`), wo sie auch für `generate` gelten.
-Das Zeichnen im Hintergrund schickt eine Anfrage nach der anderen; unter „Welt“ lässt sich mit
-„gleichzeitig“ einstellen, wie viele Bilder nebeneinander entstehen (1 bis 8, Vorgabe 1). Die
-Planung neuer Viertel läuft daneben in einem eigenen Thread. Schlägt eine Anfrage fehl, warten
-alle 45 Sekunden. Das Modell wählt
+(`chat.reasoningEffort`, `chat.maxTokens`, `background.enabled`, `chat.parallel`), wo sie auch für `generate` gelten.
+Wie viele Anfragen gleichzeitig bei der KI sein dürfen, steht unter „KI“ („Anfragen
+gleichzeitig“: 1, 2, 4 … 64 zur Auswahl oder eine eigene Zahl im Feld daneben, Vorgabe 1) und gilt für alles, was die KI fragt: das Zeichnen im
+Hintergrund, die Planung neuer Viertel und `generate`. Bei 1 kommt alles nacheinander dran, wie
+es ein lokales Modell auf einer Grafikkarte braucht. Schlägt eine Zeichenanfrage fehl, warten
+alle Zeichner 45 Sekunden. Das Modell wählt
 man im Zugangsmenü.
 
 Dafür mischt der Renderer im Overlay (nach dem Hochskalieren der Szene) durchsichtige Pixel

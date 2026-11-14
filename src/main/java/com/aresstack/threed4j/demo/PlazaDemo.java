@@ -110,7 +110,7 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     private boolean fullscreenKnown;
     /** Whether the mouse is captured and looks around without a button held. */
     private boolean mouseLook;
-    private int backgroundParallel = AiSetup.backgroundParallel();
+    private int aiParallel = AiSetup.parallel();
     /** In full screen, too, looking around needs a held mouse button. */
     private boolean holdToLook = GameSettings.holdToLook(GameSettings.file());
     private Sea sea;
@@ -590,15 +590,15 @@ public final class PlazaDemo implements Game, PauseMenu.Actions {
     }
 
     @Override
-    public int backgroundParallel() {
-        return backgroundParallel;
+    public int aiParallel() {
+        return aiParallel;
     }
 
     @Override
-    public void backgroundParallel(int parallel) {
-        backgroundParallel = Math.max(1, Math.min(AiSetup.MAX_PARALLEL, parallel));
+    public void aiParallel(int parallel) {
+        aiParallel = Math.max(1, Math.min(AiSetup.MAX_PARALLEL, parallel));
         try {
-            AiSetup.saveBackgroundParallel(backgroundParallel);
+            AiSetup.saveParallel(aiParallel);
         } catch (java.io.IOException e) {
             System.err.println("Settings not saved: " + e.getMessage());
         }

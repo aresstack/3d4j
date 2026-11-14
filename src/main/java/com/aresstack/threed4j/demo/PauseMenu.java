@@ -89,12 +89,12 @@ final class PauseMenu {
             return false;
         }
 
-        /** How many pictures the background drawing asks for at the same time. */
-        default int backgroundParallel() {
+        /** How many requests may be with the AI at the same time, for everything that asks it. */
+        default int aiParallel() {
             return 1;
         }
 
-        default void backgroundParallel(int parallel) {
+        default void aiParallel(int parallel) {
         }
 
         /** Whether looking around in full screen needs a held mouse button. */
@@ -161,6 +161,10 @@ final class PauseMenu {
     private boolean draggingSpeed;
     /** What is typed into the number box; {@code null} while it is not being edited. */
     private StringBuilder speedText;
+    /** Numbers of requests at the same time that are offered; any other can be typed. */
+    private static final int[] PARALLEL_CHOICES = {1, 2, 4, 8, 16, 32, 64};
+    private static final Rectangle2D PARALLEL_BOX = new Rectangle2D.Double(396, 418, 84, 40);
+    private StringBuilder parallelText;
     private static final String[] EFFORTS = {null, "low", "medium", "high"};
     private static final String[] EFFORT_LABELS = {"Standard", "Wenig", "Mittel", "Viel"};
     private static final int[] TOKEN_LIMITS = {2048, 4096, 8192, 16384};
@@ -378,9 +382,50 @@ final class PauseMenu {
         if (settingsPage && tab == 1) {
             updateMouseSpeed(input, x, y);
         }
+        if (settingsPage && tab == 2) {
+            updateParallel(input, x, y);
+        }
         if (input.wasPressed(MouseButton.LEFT) && under >= 0) {
             run(regions.get(under));
         }
+    }
+
+    /** The number box of the requests at the same time: clicking, typing, Enter. */
+    private void updateParallel(Input input, double x, double y) {
+        if (input.wasPressed(MouseButton.LEFT)) {
+            if (parallelText != null && !PARALLEL_BOX.contains(x, y)) {
+                applyParallelText(); // a click elsewhere takes what was typed
+            } else if (PARALLEL_BOX.contains(x, y) && parallelText == null) {
+                parallelText = new StringBuilder();
+                dirty = true;
+            }
+        }
+        if (parallelText != null) {
+            for (char character : input.typedText().toCharArray()) {
+                if (character == '\r' || character == '\t') {
+                    applyParallelText();
+                    break;
+                } else if (character == '\b') {
+                    if (parallelText.length() > 0) {
+                        parallelText.setLength(parallelText.length() - 1);
+                    }
+                    dirty = true;
+                } else if (Character.isDigit(character) && parallelText.length() < 4) {
+                    parallelText.append(character);
+                    dirty = true;
+                }
+            }
+        }
+    }
+
+    private void applyParallelText() {
+        try {
+            actions.aiParallel(Integer.parseInt(parallelText.toString()));
+        } catch (NumberFormatException e) {
+            // nothing usable was typed: the number stays
+        }
+        parallelText = null;
+        dirty = true;
     }
 
     /** The slider and the number box of the mouse speed: dragging, clicking, typing. */
@@ -658,17 +703,42 @@ final class PauseMenu {
                 actions.requestOptions(maxTokens, reasoningEffort);
             });
         }
-        note(g, "Mehr Nachdenken dauert länger. Standard: Modell entscheidet.", 278);
+        note(g, "Mehr Nachdenken dauert länger. Standard: Modell entscheidet.", 274);
 
-        label(g, "Antwortlänge in Tokens", 318);
+        label(g, "Antwortlänge in Tokens", 304);
         for (int i = 0; i < TOKEN_LIMITS.length; i++) {
             int limit = TOKEN_LIMITS[i];
-            choice(g, String.valueOf(limit), 40 + i * 112, 330, 106, limit == maxTokens, () -> {
+            choice(g, String.valueOf(limit), 40 + i * 112, 316, 106, limit == maxTokens, () -> {
                 maxTokens = limit;
                 actions.requestOptions(maxTokens, reasoningEffort);
             });
         }
-        note(g, "Nachdenken zählt mit. Bei abgeschnittenen Antworten erhöhen.", 394);
+        note(g, "Nachdenken zählt mit. Bei abgeschnittenen Antworten erhöhen.", 376);
+
+        // For everything that asks the AI: drawing and planning alike. Usual numbers to pick, any other to type.
+        int parallel = actions.aiParallel();
+        label(g, "Anfragen gleichzeitig", 406);
+        for (int i = 0; i < PARALLEL_CHOICES.length; i++) {
+            int count = PARALLEL_CHOICES[i];
+            choice(g, String.valueOf(count), 40 + i * 50, 418, 44, 40, count == parallel, 15,
+                    () -> actions.aiParallel(count));
+        }
+        Shape box = new RoundRectangle2D.Double(PARALLEL_BOX.getX(), PARALLEL_BOX.getY(), PARALLEL_BOX.getWidth(),
+                PARALLEL_BOX.getHeight(), 16, 16);
+        g.setColor(Color.WHITE);
+        g.fill(box);
+        g.setColor(PINK_DARK);
+        g.setStroke(new BasicStroke(parallelText != null ? 3.5f : 2.5f));
+        g.draw(box);
+        g.setColor(INK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+        String number = parallelText != null ? parallelText + "|" : String.valueOf(parallel);
+        g.drawString(number, (int) (PARALLEL_BOX.getCenterX() - g.getFontMetrics().stringWidth(number) / 2.0),
+                (int) PARALLEL_BOX.getCenterY() + 6);
+        g.setColor(TEXT);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+        g.drawString("Gilt für alles: Zeichnen und Planen.", 204, 498);
+        g.drawString("Andere Zahl: Feld anklicken, tippen.", 204, 516);
     }
 
     private void paintWorldTab(Graphics2D g) {
@@ -681,17 +751,6 @@ final class PauseMenu {
             backgroundDrawing = false;
             actions.backgroundDrawing(false);
         });
-        // How many requests go to the AI at the same time.
-        int parallel = actions.backgroundParallel();
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
-        g.setColor(TEXT);
-        g.drawString("gleichzeitig", 282, 244);
-        choice(g, "–", 366, 221, 34, 34, false, 17, () -> actions.backgroundParallel(parallel - 1));
-        g.setColor(INK);
-        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
-        String count = String.valueOf(parallel);
-        g.drawString(count, 420 - g.getFontMetrics().stringWidth(count) / 2, 244);
-        choice(g, "+", 440, 221, 34, 34, false, 17, () -> actions.backgroundParallel(parallel + 1));
         note(g, "Die KI zeichnet beim Spielen Fenster, Türen und Läden;", 284);
         note(g, "die Häuser bekommen sie nach und nach.", 304);
         shownStatus = actions.backgroundStatus();
