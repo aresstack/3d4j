@@ -240,10 +240,7 @@ public final class Win32Window implements GLWindow {
                     return 0;
                 }
                 case WM_SETFOCUS -> focused = true;
-                case WM_KILLFOCUS -> {
-                    focused = false;
-                    releaseMouse(); // whoever switches to another program gets the pointer back
-                }
+                case WM_KILLFOCUS -> focused = false;
                 case WM_SETCURSOR -> {
                     if ((lParam & 0xFFFF) == HTCLIENT) {
                         showCursor(mouseCaptured ? MemorySegment.NULL : Native.isNull(cursor) ? arrowCursor : cursor);
@@ -274,11 +271,18 @@ public final class Win32Window implements GLWindow {
                 case WM_INPUT -> {
                     // What the mouse itself reports: it keeps coming when the pointer cannot move on,
                     // so the view turns round and round. Windows still wants the message afterwards.
-                    if (mouseCaptured && rawMouseMovement(lParam, rawBuffer, rawSize, rawMovement)) {
+                    boolean movement = rawMouseMovement(lParam, rawBuffer, rawSize, rawMovement);
+                    if (!rawNoted) {
+                        rawNoted = true;
+                        note("first raw input: " + (movement ? "movement" : "a place or no mouse") + ", captured "
+                                + mouseCaptured);
+                    }
+                    if (mouseCaptured && movement) {
                         if (!rawMovementSeen) {
                             rawMovementSeen = true;
                             holdPointer();
                             System.out.println("Mouse: raw input (the mouse reports its own movement)");
+                            note("raw input: the mouse reports its own movement; the pointer is held in the middle");
                         }
                         if (rawMovement[0] != 0 || rawMovement[1] != 0) {
                             input.onMouseDelta(rawMovement[0], rawMovement[1]);
@@ -426,23 +430,29 @@ public final class Win32Window implements GLWindow {
             releaseMouse();
             return;
         }
+        // Asked of Windows with every frame instead of kept from the focus messages: those do not
+        // always come in pairs (a window that starts in front, a change of screen or of style).
+        boolean inFront = inForeground(window);
         if (mouseCaptured) {
-            // Asked for with every frame: Windows drops the fence and the hiding on its own now
-            // and then (another window in front for a moment, a change of screen).
-            if (focused) {
-                clipCursor(captureRect);
-                showCursor(MemorySegment.NULL);
+            if (!inFront) {
+                releaseMouse(); // whoever switches to another program gets the pointer back
+                return;
+            }
+            // Windows drops the fence and the hiding on its own now and then.
+            clipCursor(captureRect);
+            showCursor(MemorySegment.NULL);
+            return;
+        }
+        if (!inFront) {
+            if (!waitingNoted) {
+                waitingNoted = true;
+                note("not captured: the window is not in front (focus messages say " + focused + ")");
             }
             return;
         }
-        if (!focused) {
-            return;
-        }
+        waitingNoted = false;
         if (!rawMouse) {
             rawMouse = registerRawMouse(window);
-            if (!rawMouse) {
-                System.out.println("Mouse: no raw input here; looking follows the pointer");
-            }
         }
         try (Arena temp = Arena.ofConfined()) {
             // The drawable area in screen coordinates: its two corners, turned one after the other.
@@ -453,8 +463,8 @@ public final class Win32Window implements GLWindow {
             centerScreenX = rect.get(JAVA_INT, RECT_LEFT) + width / 2;
             centerScreenY = rect.get(JAVA_INT, RECT_TOP) + height / 2;
             captureRect.copyFrom(rect);
-            clipCursor(captureRect);
-            setCursorPos(centerScreenX, centerScreenY);
+            boolean fenced = clipCursor(captureRect);
+            boolean centered = setCursorPos(centerScreenX, centerScreenY);
             if (rawMovementSeen) {
                 holdPointer();
             }
@@ -462,7 +472,38 @@ public final class Win32Window implements GLWindow {
             relativeMouse.expectAtCenter();
             mouseCaptured = true;
             showCursor(MemorySegment.NULL);
-            pointerVisible(false);
+            int counter = pointerVisible(false);
+            note("captured: area " + width + " x " + height + ", middle " + centerScreenX + ", " + centerScreenY
+                    + ", fence " + fenced + ", put in the middle " + centered + ", pointer counter " + counter
+                    + ", raw input registered " + rawMouse + ", raw movement seen " + rawMovementSeen
+                    + ", remote session " + isRemoteSession() + ", focus messages say " + focused);
+        }
+    }
+
+    private boolean waitingNoted;
+    private boolean rawNoted;
+    private int notes;
+    private static final java.nio.file.Path MOUSE_LOG =
+            java.nio.file.Path.of(System.getProperty("user.home"), ".3d4j", "mouse.log");
+
+    /**
+     * Writes down what capturing the mouse did, in {@code .3d4j/mouse.log}: a game started by
+     * double-click has no console, and whether capturing works depends on the computer.
+     */
+    private void note(String text) {
+        if (notes >= 200) {
+            return;
+        }
+        try {
+            java.nio.file.Files.createDirectories(MOUSE_LOG.getParent());
+            String line = java.time.LocalTime.now().withNano(0) + " " + text + System.lineSeparator();
+            if (notes++ == 0) {
+                java.nio.file.Files.writeString(MOUSE_LOG, line);
+            } else {
+                java.nio.file.Files.writeString(MOUSE_LOG, line, java.nio.file.StandardOpenOption.APPEND);
+            }
+        } catch (java.io.IOException | RuntimeException ignored) {
+            // then it is not written down
         }
     }
 
@@ -478,6 +519,7 @@ public final class Win32Window implements GLWindow {
     private void releaseMouse() {
         if (mouseCaptured) {
             mouseCaptured = false;
+            note("released");
             clipCursor(MemorySegment.NULL);
             pointerVisible(true);
             showCursor(Native.isNull(cursor) ? arrowCursor : cursor);

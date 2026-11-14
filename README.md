@@ -118,7 +118,10 @@ virtuellen Maschinen zuverlässig funktioniert.
 Unter Windows meldet die eingefangene Maus ihre Bewegung selbst (Raw Input, `WM_INPUT`, der
 Nachfolger von DirectInput für Mäuse): in ihren eigenen Schritten und unabhängig davon, wo der
 Zeiger steht. Der Zeiger wird dabei auf einem Punkt in der Mitte festgehalten, und man kann sich
-beliebig oft im Kreis drehen. Die Konsole meldet dann einmal `Mouse: raw input`. Eine
+beliebig oft im Kreis drehen. Die Konsole meldet dann einmal `Mouse: raw input`. Eingefangen
+wird nur, solange das Fenster vorn ist; das wird mit jedem Bild bei Windows erfragt. Was das
+Einfangen getan hat, steht in `~/.3d4j/mouse.log` (bei jedem Start neu), weil ein per Doppelklick
+gestartetes Spiel keine Konsole hat. Eine
 Remote-Sitzung meldet statt Bewegung Positionen; dort und unter X11 gilt das Folgende.
 
 Sonst misst `RelativeMouse` die eingefangene Maus: Bewegung zählt immer von der vorigen Position aus,

@@ -237,6 +237,8 @@ final class Win32Api {
             FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_INT, JAVA_INT));
     private static final MethodHandle GetRawInputData = Native.downcall(USER32, "GetRawInputData",
             FunctionDescriptor.of(JAVA_INT, JAVA_LONG, JAVA_INT, ADDRESS, ADDRESS, JAVA_INT));
+    private static final MethodHandle GetForegroundWindow = Native.downcall(USER32, "GetForegroundWindow",
+            FunctionDescriptor.of(ADDRESS));
     private static final MethodHandle ClipCursor = Native.downcall(USER32, "ClipCursor",
             FunctionDescriptor.of(JAVA_INT, ADDRESS));
     private static final MethodHandle ShowCursor = Native.downcall(USER32, "ShowCursor",
@@ -339,9 +341,18 @@ final class Win32Api {
         }
     }
 
-    static void setCursorPos(int x, int y) {
+    /** Whether this window is the one the user works in right now. */
+    static boolean inForeground(MemorySegment window) {
         try {
-            int ignored = (int) SetCursorPos.invokeExact(x, y);
+            return ((MemorySegment) GetForegroundWindow.invokeExact()).address() == window.address();
+        } catch (Throwable t) {
+            throw Native.rethrow(t);
+        }
+    }
+
+    static boolean setCursorPos(int x, int y) {
+        try {
+            return (int) SetCursorPos.invokeExact(x, y) != 0;
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }
@@ -402,9 +413,9 @@ final class Win32Api {
     }
 
     /** Keeps the pointer inside a rectangle of the screen; {@code NULL} sets it free. */
-    static void clipCursor(MemorySegment rect) {
+    static boolean clipCursor(MemorySegment rect) {
         try {
-            int ignored = (int) ClipCursor.invokeExact(rect);
+            return (int) ClipCursor.invokeExact(rect) != 0;
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }
@@ -414,15 +425,17 @@ final class Win32Api {
      * Hides or shows the pointer for this program by Windows' own counter, beside
      * setting no pointer shape: some setups keep drawing a pointer otherwise.
      */
-    static void pointerVisible(boolean visible) {
+    static int pointerVisible(boolean visible) {
         try {
+            int count = 0;
             // The counter is raised or lowered until it says what is wanted; never endlessly (no mouse: always -1).
             for (int tries = 0; tries < 8; tries++) {
-                int count = (int) ShowCursor.invokeExact(visible ? 1 : 0);
+                count = (int) ShowCursor.invokeExact(visible ? 1 : 0);
                 if (visible ? count >= 0 : count < 0) {
                     break;
                 }
             }
+            return count;
         } catch (Throwable t) {
             throw Native.rethrow(t);
         }
