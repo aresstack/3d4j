@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     // Way through the company proxy (PAC script of Windows, evaluated with GraalJS), as in the
     // Enterprise AI Client and Space Harvester
-    implementation 'com.aresstack:win-proxy-java:0.2.0'
+    implementation 'com.aresstack:win-proxy-java:0.3.0'
     runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
 
     testImplementation sourceSets.launcher.output
